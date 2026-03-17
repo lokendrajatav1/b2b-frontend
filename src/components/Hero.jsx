@@ -135,6 +135,7 @@ const Hero = () => {
                 "Web Development",
                 "App Development",
                 "Electronics",
+                "SEO",
               ].map((tag, idx) => (
                 <div
                   key={idx}
