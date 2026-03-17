@@ -87,7 +87,7 @@ const FeaturedServices = () => {
                       />
                       <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors"></div>
                     </div>
-                    <span className="text-sm font-semibold text-[#444] text-center group-hover:text-black transition-colors">
+                    <span className="text-xs md:text-sm font-semibold text-[#444] text-center group-hover:text-black transition-colors">
                       {item.label}
                     </span>
                   </div>
