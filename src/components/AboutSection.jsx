@@ -234,16 +234,16 @@ const AboutSection = () => {
                   width={64}
                   height={64}
                   className="object-contain"
-                />
+                /> 
               </div>
               <h3 className="text-sm md:text-lg font-bold text-gray-900 mb-0.5 md:mb-3 leading-tight">
                 Sell on B2B Community for free
-              </h3>
+              </h3> 
               <p className="text-gray-500 text-xs md:text-sm leading-relaxed max-w-[220px]">
                 Reach out to millions of active buyers. Sell with us.
               </p>
-            </div>
-
+            </div>  
+  
             {/* Item 3 */}
             <div className="flex flex-col items-center text-center px-2 md:px-6 lg:border-r border-gray-200 last:border-0 h-full">
               <div className="w-16 h-16 md:w-20 md:h-20 relative flex items-center justify-center mb-6">
