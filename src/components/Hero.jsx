@@ -132,9 +132,9 @@ const Hero = () => {
             </p>
             <div className="flex flex-wrap gap-2 md:gap-3">
               {[
-                "Website Development",
+                "Web Development",
                 "App Development",
-                "Electronics Components",
+                "Electronics",
               ].map((tag, idx) => (
                 <div
                   key={idx}

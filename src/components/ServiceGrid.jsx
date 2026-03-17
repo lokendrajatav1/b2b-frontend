@@ -41,7 +41,7 @@ const ServiceGrid = () => {
                 className={`service-icon-wrapper w-16 h-16 md:w-20 md:h-20 flex items-center justify-center bg-white rounded-[20px] shadow-sm mb-3 transition-all duration-300 group-hover:shadow-md group-hover:-translate-y-1 relative ${service.isMore ? 'bg-[#f8fbfe]' : ''}`}
                 style={{
                   border: '1px solid transparent',
-                  background: 'linear-gradient(white, white) padding-box, linear-gradient(135deg, rgba(0, 118, 211, 0.3) 50%, transparent 40%, transparent 60%, rgba(0, 118, 211, 0.3) 100%) border-box'
+                  background: 'linear-gradient(white, white) padding-box, linear-gradient(135deg, rgba(0, 118, 211, 0.3) 0%, transparent 40%, transparent 60%, rgba(0, 118, 211, 0.3) 100%) border-box'
                 }}
               >
                 {service.isMore ? (
