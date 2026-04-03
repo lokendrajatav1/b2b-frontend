@@ -1,0 +1,278 @@
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { apiFetch } from '@/lib/api';
+import { 
+  Settings, 
+  ShieldCheck, 
+  Database, 
+  Globe, 
+  Lock, 
+  Bell, 
+  Mail, 
+  Cloud, 
+  Zap, 
+  RefreshCcw, 
+  Save, 
+  Activity,
+  Layers,
+  CheckCircle2,
+  AlertCircle,
+  TrendingUp,
+  Sliders,
+  CreditCard
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+
+export default function AdminSettings() {
+  const [activeTab, setActiveTab] = useState<'system' | 'auth' | 'notifications' | 'infrastructure'>('system');
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [message, setMessage] = useState({ type: '', text: '' });
+  const [settings, setSettings] = useState({
+    rankingWeightProfile: 0.4,
+    rankingWeightPerformance: 0.6,
+    hubName: 'Mumbai Central',
+    cdnUrl: 'https://cdn.b2b-community.com/primary'
+  });
+
+  useEffect(() => {
+    fetchSettings();
+  }, []);
+
+  const fetchSettings = async () => {
+    try {
+      const data = await apiFetch('/admin/settings');
+      if (data?.data) {
+        setSettings({
+          ...settings,
+          rankingWeightProfile: data.data.rankingWeightProfile,
+          rankingWeightPerformance: data.data.rankingWeightPerformance,
+          hubName: data.data.hubName || 'Mumbai Central',
+          cdnUrl: data.data.cdnUrl || 'https://cdn.b2b-community.com/primary'
+        });
+      }
+    } catch (error) {
+      console.error('Failed to fetch settings:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSave = async () => {
+    setSaving(true);
+    setMessage({ type: '', text: '' });
+    try {
+      await apiFetch('/admin/settings', {
+        method: 'PATCH',
+        body: JSON.stringify(settings)
+      });
+      setMessage({ type: 'success', text: 'Platform settings updated successfully.' });
+      setTimeout(() => setMessage({ type: '', text: '' }), 4000);
+    } catch (error: any) {
+      setMessage({ type: 'error', text: 'Failed to update settings: ' + error.message });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) return <div className="p-10 animate-pulse bg-slate-50 rounded-2xl h-80 border border-slate-100"></div>;
+
+  return (
+    <div className="space-y-8 animate-simple-fade pb-20 p-2 md:p-0">
+      {/* Clean Admin Header */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-gray-100 max-w-6xl mx-auto">
+        <div>
+            <h1 className="text-2xl font-semibold text-gray-900 tracking-tight flex items-center gap-3">
+              Platform Configuration
+              <div className="p-1.5 bg-gray-50 text-gray-500 rounded-lg border border-gray-200">
+                  <Settings className="w-5 h-5" />
+              </div>
+            </h1>
+            <p className="text-gray-500 font-medium mt-1 text-sm">Manage global marketplace settings and vendor ranking logic.</p>
+        </div>
+        
+        <button 
+            onClick={handleSave}
+            disabled={saving}
+            className="px-5 py-2.5 bg-blue-600 text-white rounded-xl font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-50 shadow-sm transition-colors hover:bg-blue-700"
+        >
+            {saving ? <RefreshCcw className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+            Save Changes
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+        {/* Simple Side Nav */}
+        <div className="lg:col-span-1 space-y-2">
+            {[
+                { id: 'system', label: 'Ranking Logic', icon: Sliders, desc: 'Vendor Algorithm' },
+                { id: 'infrastructure', label: 'Platform Core', icon: Layers, desc: 'Global Config' },
+                { id: 'auth', label: 'Security Options', icon: Lock, desc: 'Access Control' },
+                { id: 'notifications', label: 'Alert Settings', icon: Bell, desc: 'System Events' },
+            ].map((tab) => (
+                <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id as any)}
+                    className={`w-full p-4 rounded-xl text-left flex items-center gap-4 transition-colors ${ activeTab === tab.id ? 'bg-blue-50 text-blue-700 font-semibold border-blue-100 shadow-sm' : 'text-gray-600 border border-transparent hover:bg-gray-50' }`}
+                >
+                    <tab.icon className={`w-5 h-5 shrink-0 ${activeTab === tab.id ? 'text-blue-600' : 'text-gray-400'}`} />
+                    <div className="flex flex-col">
+                        <span className="text-sm font-semibold">{tab.label}</span>
+                        <span className={`text-xs ${activeTab === tab.id ? 'text-blue-500 font-medium' : 'text-gray-400'}`}>{tab.desc}</span>
+                    </div>
+                </button>
+            ))}
+        </div>
+
+        {/* Content Node */}
+        <div className="lg:col-span-3 bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-sm">
+            <AnimatePresence mode="wait">
+                {message.text && (
+                    <motion.div 
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className={`mb-8 p-4 rounded-xl border text-sm font-semibold flex items-center gap-3 shadow-sm ${ message.type === 'success' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-red-50 text-red-700 border-red-200' }`}
+                    >
+                        {message.type === 'success' ? <CheckCircle2 className="w-5 h-5 text-emerald-500" /> : <AlertCircle className="w-5 h-5 text-red-500" />}
+                        {message.text}
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            <div className="min-h-[400px]">
+                {activeTab === 'system' && (
+                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-10">
+                        <div className="space-y-4 mb-8 border-b border-gray-100 pb-6">
+                          <div className="flex items-center gap-3">
+                            <div className="p-2 bg-blue-50 rounded-xl text-blue-600 border border-blue-100">
+                              <TrendingUp className="w-5 h-5" />
+                            </div>
+                            <h3 className="text-lg font-semibold text-gray-900 tracking-tight">Vendor Ranking Algorithm</h3>
+                          </div>
+                          <p className="text-sm font-medium text-gray-500 max-w-2xl leading-relaxed">
+                             Fine-tune the weight distribution for vendor scores. These adjustments directly impact the default search order for buyers.
+                          </p>
+                       </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                            <div className="space-y-4">
+                                <div className="space-y-3">
+                                  <div className="flex items-center justify-between">
+                                    <label className="text-sm font-semibold text-gray-700">Profile Completeness ({Math.round(settings.rankingWeightProfile * 100)}%)</label>
+                                    <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded border border-blue-100 uppercase tracking-widest">Base Weight</span>
+                                  </div>
+                                  <input 
+                                    type="range"
+                                    min="0"
+                                    max="1"
+                                    step="0.05"
+                                    value={settings.rankingWeightProfile}
+                                    onChange={(e) => setSettings({...settings, rankingWeightProfile: parseFloat(e.target.value)})}
+                                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600 outline-none"
+                                  />
+                                </div>
+                                <p className="text-xs text-gray-500 font-medium leading-relaxed">
+                                  Importance of a fully filled profile (photos, verified GST, detailed descriptions, etc).
+                                </p>
+                            </div>
+
+                            <div className="space-y-4">
+                                <div className="space-y-3">
+                                  <div className="flex items-center justify-between">
+                                    <label className="text-sm font-semibold text-gray-700">Service Performance ({Math.round(settings.rankingWeightPerformance * 100)}%)</label>
+                                    <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded border border-blue-100 uppercase tracking-widest">Growth Weight</span>
+                                  </div>
+                                  <input 
+                                    type="range"
+                                    min="0"
+                                    max="1"
+                                    step="0.05"
+                                    value={settings.rankingWeightPerformance}
+                                    onChange={(e) => setSettings({...settings, rankingWeightPerformance: parseFloat(e.target.value)})}
+                                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600 outline-none"
+                                  />
+                                </div>
+                                <p className="text-xs text-gray-500 font-medium leading-relaxed">
+                                  Influence of response times, lead conversion rates, and overall buyer satisfaction scores.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="bg-amber-50 p-5 rounded-xl border border-amber-200 flex gap-4 items-start shadow-sm mt-8">
+                           <AlertCircle className="w-5 h-5 text-amber-600 shrink-0" />
+                           <div className="space-y-1">
+                             <p className="text-sm font-semibold text-amber-900 leading-none">Algorithm Recalculation</p>
+                             <p className="text-xs font-medium text-amber-700 leading-relaxed mt-1">
+                               Saving these changes will trigger a background update for all vendor listings. Rankings will stabilize within a few minutes.
+                             </p>
+                           </div>
+                        </div>
+                    </motion.div>
+                )}
+
+                {(activeTab === 'auth' || activeTab === 'infrastructure') && (
+                  <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-8">
+                      <div className="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4">
+                        <Layers className="w-5 h-5 text-blue-600" />
+                        <h3 className="text-lg font-semibold text-gray-900">Platform Core Details</h3>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div className="space-y-2">
+                              <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Marketplace ID</label>
+                              <input 
+                                  type="text" 
+                                  value="B2B-INDIA-ROOT-01" 
+                                  disabled
+                                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl outline-none font-medium text-gray-500 cursor-not-allowed text-sm"
+                              />
+                          </div>
+
+                          <div className="space-y-2">
+                              <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Operational Hub</label>
+                              <input 
+                                  type="text" 
+                                  value={settings.hubName}
+                                  onChange={(e) => setSettings({...settings, hubName: e.target.value})}
+                                  className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none font-medium text-gray-900 text-sm transition-all"
+                              />
+                          </div>
+                      </div>
+                  </motion.div>
+                )}
+
+                {activeTab === 'notifications' && (
+                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
+                        <div className="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4">
+                          <Bell className="w-5 h-5 text-blue-600" />
+                          <h3 className="text-lg font-semibold text-gray-900">System Alert Preferences</h3>
+                        </div>
+                        {[
+                            { title: 'Vendor Onboarding', desc: 'Alert when new verification documents are uploaded', icon: ShieldCheck, enabled: true },
+                            { title: 'Payment Exceptions', desc: 'Instant alerts for subscription or billing failures', icon: CreditCard, enabled: true },
+                            { title: 'Inquiry Spikes', desc: 'Notify if lead volume exceeds threshold', icon: Zap, enabled: false },
+                        ].map((n) => (
+                            <div key={n.title} className="p-5 bg-gray-50 rounded-2xl border border-gray-100 flex items-center justify-between group/row hover:border-blue-100 hover:bg-white transition-all shadow-sm">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-10 h-10 bg-white rounded-xl border border-gray-200 flex items-center justify-center text-gray-400 group-hover/row:text-blue-600 group-hover/row:border-blue-100 transition-colors shadow-sm">
+                                        <n.icon className="w-5 h-5" />
+                                    </div>
+                                    <div className="space-y-0.5">
+                                         <h4 className="text-sm font-semibold text-gray-900 leading-none">{n.title}</h4>
+                                         <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">{n.desc}</p>
+                                    </div>
+                                </div>
+                                <div className={`w-12 h-6 rounded-full p-1 cursor-pointer transition-all flex items-center shrink-0 ${n.enabled ? 'bg-blue-600' : 'bg-gray-200'}`}>
+                                    <div className={`w-4 h-4 bg-white rounded-full transition-transform shadow-sm ${n.enabled ? 'translate-x-6' : 'translate-x-0'}`}></div>
+                                </div>
+                            </div>
+                        ))}
+                    </motion.div>
+                )}
+            </div>
+        </div>
+      </div>
+    </div>
+  );
+}

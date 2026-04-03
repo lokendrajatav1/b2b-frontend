@@ -18,16 +18,16 @@ const Footer = () => {
               Connect with leading business services and experts worldwide. India&apos;s largest B2B marketplace for trusted discovery.
             </p>
             <div className="flex items-center gap-4">
-              <Link href="#" className="p-2 bg-white/5 rounded-full hover:bg-[#4ecdc4]/20 hover:text-[#4ecdc4] transition-all">
+              <Link href="#" className="p-2 bg-white/5 rounded-full">
                 <Facebook className="w-5 h-5" />
               </Link>
-              <Link href="#" className="p-2 bg-white/5 rounded-full hover:bg-[#4ecdc4]/20 hover:text-[#4ecdc4] transition-all">
+              <Link href="#" className="p-2 bg-white/5 rounded-full">
                 <Twitter className="w-5 h-5" />
               </Link>
-              <Link href="#" className="p-2 bg-white/5 rounded-full hover:bg-[#4ecdc4]/20 hover:text-[#4ecdc4] transition-all">
+              <Link href="#" className="p-2 bg-white/5 rounded-full">
                 <Linkedin className="w-5 h-5" />
               </Link>
-              <Link href="#" className="p-2 bg-white/5 rounded-full hover:bg-[#4ecdc4]/20 hover:text-[#4ecdc4] transition-all">
+              <Link href="#" className="p-2 bg-white/5 rounded-full">
                 <Instagram className="w-5 h-5" />
               </Link>
             </div>
@@ -39,7 +39,7 @@ const Footer = () => {
             <ul className="space-y-3">
               {["Marketing Services", "IT & Development", "Advertising & PR", "Design & Creative", "Business Consultation"].map((link) => (
                 <li key={link}>
-                  <Link href="#" className="text-gray-400 hover:text-[#4ecdc4] text-sm transition-colors block">
+                  <Link href="#" className="text-gray-400 text-sm block">
                     {link}
                   </Link>
                 </li>
@@ -53,7 +53,7 @@ const Footer = () => {
             <ul className="space-y-3">
               {["About Us", "Contact Us", "Careers", "Verified Partners", "Sell with us"].map((link) => (
                 <li key={link}>
-                  <Link href="#" className="text-gray-400 hover:text-[#4ecdc4] text-sm transition-colors block">
+                  <Link href="#" className="text-gray-400 text-sm block">
                     {link}
                   </Link>
                 </li>
@@ -87,9 +87,9 @@ const Footer = () => {
             © {new Date().getFullYear()} B2B Community. All rights reserved.
           </p>
           <div className="flex items-center gap-8">
-            <Link href="#" className="text-gray-500 hover:text-white text-xs transition-colors">Privacy Policy</Link>
-            <Link href="#" className="text-gray-500 hover:text-white text-xs transition-colors">Terms of Service</Link>
-            <Link href="#" className="text-gray-500 hover:text-white text-xs transition-colors">Cookie Settings</Link>
+            <Link href="#" className="text-gray-500 text-xs">Privacy Policy</Link>
+            <Link href="#" className="text-gray-500 text-xs">Terms of Service</Link>
+            <Link href="#" className="text-gray-500 text-xs">Cookie Settings</Link>
           </div>
         </div>
       </div>

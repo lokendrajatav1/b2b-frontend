@@ -58,13 +58,13 @@ const categories = [
 
 const FeaturedServices = () => {
   return (
-    <section className="featured-services-section py-12 bg-white">
-      <div className="max-w-7xl mx-auto px-3 md:px-12 lg:px-16">
+    <section className="featured-services-section py-12 bg-gray-50/50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {categories.map((cat, idx) => (
             <div
               key={idx}
-              className="featured-card bg-white border border-gray-200 rounded-3xl p-4 md:p-6 shadow-sm hover:shadow-md transition-shadow"
+              className="featured-card bg-white border border-gray-200 rounded-3xl p-4 md:p-6"
             >
               <h3 className="text-xl font-bold text-[#05252e] mb-6">
                 {cat.title}
@@ -80,14 +80,13 @@ const FeaturedServices = () => {
                         src={item.img}
                         alt={item.label}
                         fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-110"
+                        className="object-cover"
                         onError={(e) => {
-                          // Placeholder color if image missing
                         }}
                       />
-                      <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors"></div>
+                      <div className="absolute inset-0 bg-black/5"></div>
                     </div>
-                    <span className="text-xs md:text-sm font-semibold text-[#444] text-center group-hover:text-black transition-colors">
+                    <span className="text-xs md:text-sm font-semibold text-[#444] text-center">
                       {item.label}
                     </span>
                   </div>

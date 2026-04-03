@@ -1,23 +1,24 @@
 "use client";
 
-import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import ServiceGrid from "@/components/ServiceGrid";
 import FeaturedServices from "@/components/FeaturedServices";
 import AboutSection from "@/components/AboutSection";
-import Footer from "@/components/Footer";
+import CitySuppliers from "@/components/CitySuppliers";
+import QuoteForm from "@/components/QuoteForm";
+import AdBanner from "@/components/AdBanner";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white text-gray-900">
-      <Navbar />
+    <div className="min-h-screen bg-white text-gray-900 pt-6">
       <main>
         <Hero />
         <ServiceGrid />
         <FeaturedServices />
+        <CitySuppliers />
+        <QuoteForm />
         <AboutSection />
       </main>
-      <Footer />
     </div>
   );
 }

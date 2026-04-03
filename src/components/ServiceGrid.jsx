@@ -2,73 +2,104 @@
 
 import React from "react";
 import Image from "next/image";
-import { Menu } from "lucide-react";
+import { 
+  Menu, 
+  Settings,
+  Cpu,
+  Package,
+  HardHat,
+  Stethoscope,
+  Pill,
+  Box,
+  FlaskConical,
+  Layers,
+  Sparkles,
+  Wrench,
+  Monitor,
+  Diamond,
+  Home,
+  Leaf,
+  Gamepad2,
+  Truck,
+  Briefcase,
+  Hotel,
+  BookOpen,
+  Compass,
+  Users,
+  Ship,
+  Paintbrush,
+  Zap,
+  LayoutGrid
+} from "lucide-react";
+import Link from "next/link";
 
 const services = [
-  { id: 1, label: "Restaurants", img: "/services/restaurant-2022.svg" },
-  { id: 2, label: "Hotels", img: "/services/hotel-2022.svg" },
-  { id: 3, label: "Beauty Spa", img: "/services/beauty.svg" },
-  { id: 4, label: "Home Decor", img: "/services/homedecor.svg" },
-  { id: 5, label: "Wedding Planning", img: "/services/hotkey_wedding_icon.webp" },
-  { id: 6, label: "Education", img: "/services/education.svg" },
-  { id: 7, label: "Rent & Hire", img: "/services/renthire.svg" },
-  { id: 8, label: "Hospitals", img: "/services/hospital_2023.svg" },
-  { id: 9, label: "Contractors", img: "/services/contractor-2022.svg" },
-  { id: 10, label: "Pet Shops", img: "/services/pet_shops_2023.svg" },
-  { id: 11, label: "PG/Hostels", img: "/services/pg-hostels-rooms.svg" },
-  { id: 12, label: "Estate Agent", img: "/services/estate-agent.svg" },
-  { id: 13, label: "Dentists", img: "/services/dentist_2023.svg" },
-  { id: 14, label: "Gym", img: "/services/gym_2023.svg" },
-  { id: 15, label: "Loans", img: "/services/loans.svg" },
-  { id: 16, label: "Event Organisers", img: "/services/eventorganizers.svg" },
-  { id: 17, label: "Driving Schools", img: "/services/driving_school_2023.svg" },
-  { id: 18, label: "Packers & Movers", img: "/services/packers_movers_2023.svg" },
-  { id: 19, label: "Courier Service", img: "/services/courier_2023.svg" },
-  { id: 20, label: "Popular Categories", img: null, isMore: true },
+  { id: 1, label: "Machine Parts", icon: Settings, color: "text-blue-600", bg: "bg-blue-50" },
+  { id: 2, label: "Industrial Machines", icon: Cpu, color: "text-emerald-600", bg: "bg-emerald-50" },
+  { id: 3, label: "Industrial Supplies", icon: Package, color: "text-orange-600", bg: "bg-orange-50" },
+  { id: 4, label: "Construction", icon: HardHat, color: "text-amber-600", bg: "bg-amber-50" },
+  { id: 5, label: "Hospitals & Labs", icon: Stethoscope, color: "text-rose-600", bg: "bg-rose-50" },
+  { id: 6, label: "Drugs & Pharma", icon: Pill, color: "text-indigo-600", bg: "bg-indigo-50" },
+  { id: 7, label: "Electronics", icon: Cpu, color: "text-sky-600", bg: "bg-sky-50" },
+  { id: 8, label: "Packing Machines", icon: Box, color: "text-slate-600", bg: "bg-slate-50" },
+  { id: 9, label: "Chemicals", icon: FlaskConical, color: "text-violet-600", bg: "bg-violet-50" },
+  { id: 10, label: "Metals", icon: Layers, color: "text-stone-600", bg: "bg-stone-50" },
+  { id: 11, label: "Beauty & Care", icon: Sparkles, color: "text-pink-600", bg: "bg-pink-50" },
+  { id: 12, label: "Engineering Services", icon: Wrench, color: "text-cyan-600", bg: "bg-cyan-50" },
+  { id: 13, label: "IT & Computers", icon: Monitor, color: "text-blue-500", bg: "bg-blue-50" },
+  { id: 14, label: "Jewelry & Gems", icon: Diamond, color: "text-rose-500", bg: "bg-rose-50" },
+  { id: 15, label: "Home Supplies", icon: Home, color: "text-amber-500", bg: "bg-amber-50" },
+  { id: 16, label: "Herbal Products", icon: Leaf, color: "text-green-600", bg: "bg-green-50" },
+  { id: 17, label: "Sports & Toys", icon: Gamepad2, color: "text-orange-500", bg: "bg-orange-50" },
+  { id: 18, label: "Transport & Logistics", icon: Truck, color: "text-blue-700", bg: "bg-blue-50" },
+  { id: 19, label: "Business Services", icon: Briefcase, color: "text-slate-700", bg: "bg-slate-50" },
+  { id: 20, label: "Travel & Hotels", icon: Hotel, color: "text-teal-600", bg: "bg-teal-50" },
+  { id: 21, label: "Education & Training", icon: BookOpen, color: "text-indigo-700", bg: "bg-indigo-50" },
+  { id: 22, label: "Architects & Interiors", icon: Compass, color: "text-orange-700", bg: "bg-orange-50" },
+  { id: 23, label: "HR & Recruitment", icon: Users, color: "text-blue-800", bg: "bg-blue-50" },
+  { id: 24, label: "Rail & Shipping", icon: Ship, color: "text-sky-700", bg: "bg-sky-50" },
+  { id: 25, label: "Housekeeping", icon: Paintbrush, color: "text-amber-700", bg: "bg-amber-50" },
+  { id: 26, label: "Electronics Parts", icon: Cpu, color: "text-purple-600", bg: "bg-purple-50" },
+  { id: 27, label: "Popular", icon: LayoutGrid, color: "text-white", bg: "bg-[#007367]", isMore: true },
 ];
 
 const ServiceGrid = () => {
   return (
-    <section className="service-grid-section py-12 bg-white">
-      <div className="container mx-auto px-6 md:px-12 lg:px-16">
-        <div className="grid grid-cols-4  md:grid-cols-5 lg:grid-cols-10  gap-x-4 gap-y-4 md:gap-y-8">
+    <section className="service-grid-section py-20 bg-white">
+      <div className="max-w-[1500px] mx-auto px-4 sm:px-6">
+        <div className="mb-16 px-4">
+           <div className="space-y-4">
+              <h2 className="text-[#007367] font-bold tracking-widest text-xs uppercase flex items-center gap-2">
+                <span className="w-8 h-px bg-[#007367]"></span>
+                Sourcing Made Simple
+              </h2>
+              <h3 className="text-3xl md:text-5xl font-semibold text-[#0f172a] tracking-tight">
+                Explore Our <br />
+                <span className="text-[#007367]">Marketplace.</span>
+              </h3>
+           </div>
+        </div>
+
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-9 gap-4 md:gap-6 lg:gap-8">
           {services.map((service) => (
-            <div
+            <Link
               key={service.id}
+              href={service.isMore ? "/search?q" : `/search?q=${service.label}`}
               className="service-item flex flex-col items-center group cursor-pointer"
             >
               <div 
-                className={`service-icon-wrapper w-16 h-16 md:w-20 md:h-20 flex items-center justify-center bg-white rounded-[20px] shadow-sm mb-3 transition-all duration-300 group-hover:shadow-md group-hover:-translate-y-1 relative ${service.isMore ? 'bg-[#f8fbfe]' : ''}`}
-                style={{
-                  border: '1px solid transparent',
-                  background: 'linear-gradient(white, white) padding-box, linear-gradient(135deg, rgba(0, 118, 211, 0.3) 0%, transparent 40%, transparent 60%, rgba(0, 118, 211, 0.3) 100%) border-box'
-                }}
+                className={`service-icon-wrapper w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 flex items-center justify-center rounded-[24px] lg:rounded-[32px] mb-4 lg:mb-5 relative border border-gray-100 group-hover:border-[#007367]/20 group-hover:shadow-2xl group-hover:shadow-[#007367]/10 transition-all duration-500 ${service.bg}`}
               >
-                {service.isMore ? (
-                  <div className="w-10 h-10 rounded-full bg-[#052842] flex items-center justify-center">
-                    <Menu className="w-5 h-5 text-white" />
-                  </div>
-                ) : (
-                  <div className="relative w-10 h-10 md:w-12 md:h-12 flex items-center  justify-center">
-                    {/* Placeholder for when images aren't added yet */}
-                    <div className="absolute inset-0 bg-gray-50 rounded flex items-center justify-center text-[10px] text-gray-300 font-bold uppercase overflow-hidden">
-                       <Image 
-                        src={service.img} 
-                        alt={service.label}
-                        fill
-                        className="object-contain p-1"
-                        onError={(e) => {
-                          // Silently fail or show placeholder if image missing
-                        }}
-                      />
-                    </div>
-                  </div>
-                )}
+                <div className="relative w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                   <service.icon className={`w-full h-full ${service.color} stroke-[1.2px]`} />
+                </div>
+                
+                <div className="absolute inset-0 rounded-[24px] lg:rounded-[32px] bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
               </div>
-              <span className="service-label text-xs md:text-[13px] font-medium text-[#444] text-center leading-tight group-hover:text-black transition-colors">
+              <span className="service-label text-[10px] md:text-[12px] lg:text-[13px] font-bold text-slate-800 text-center leading-tight tracking-tight px-1 group-hover:text-[#007367] transition-colors">
                 {service.label}
               </span>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
