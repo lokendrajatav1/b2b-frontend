@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import DashboardSidebar from '@/components/dashboard/DashboardSidebar';
 import NotificationDropdown from '@/components/dashboard/NotificationDropdown';
 import { useAuth } from '@/context/AuthContext';
@@ -10,11 +10,12 @@ import { Search, Settings, HelpCircle, ChevronDown, UserCircle, LogOut } from 'l
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { user, loading, logout } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
   const [isSidebarCollapsed, setIsSidebarCollapsed] = React.useState(false);
 
   useEffect(() => {
     if (!loading) {
-      const path = window.location.pathname;
+      const path = pathname;
       
       if (!user) {
         router.push('/login');
@@ -63,7 +64,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
              <div className="hidden lg:block shrink-0">
                 <h2 className="text-sm font-bold text-gray-900 uppercase tracking-widest flex items-center gap-2">
                    <div className="w-1 h-4 bg-blue-600 rounded-full" />
-                   {window.location.pathname.includes('/admin') ? 'ADMIN HQ' : (window.location.pathname.includes('/subadmin') ? 'TEAM HUB' : 'VENDOR PORTAL')}
+                   {user.role === 'ADMIN' ? 'ADMIN PANEL' : (user.role === 'SUBADMIN' ? 'SUB ADMIN PANEL' : 'VENDOR PANEL')}
                 </h2>
              </div>
              
@@ -90,7 +91,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <div className="flex items-center gap-3 cursor-pointer p-1.5 rounded-xl border border-transparent hover:bg-gray-50 transition-all group relative">
               <div className="text-right hidden sm:block">
                 <p className="text-sm font-semibold text-gray-900 capitalize leading-none">
-                  {user.name && isNaN(Number(user.name)) ? user.name : 'Guest Member'}
+                  {user.name && isNaN(Number(user.name)) ? user.name : 'Authorized User'}
                 </p>
               </div>
               <div className="w-9 h-9 rounded-lg bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 shadow-sm group-hover:shadow-md transition-all">

@@ -119,8 +119,8 @@ export default function DashboardSidebar({ isCollapsed, onToggle }) {
                 </div>
                 <div>
                   <span className="text-xl font-semibold text-gray-900 tracking-tight leading-none block">MARKETER.</span>
-                  <span className="text-[10px] font-semibold text-blue-600 uppercase tracking-widest mt-1 block">
-                    {userRole === 'ADMIN' ? 'Control Plane' : (userRole === 'SUBADMIN' ? 'Team Workspace' : 'Vendor Hub')}
+                  <span className="text-[10px] font-bold text-blue-600 uppercase tracking-widest mt-1 block">
+                    {userRole === 'ADMIN' ? 'ADMIN PANEL' : (userRole === 'SUBADMIN' ? 'SUB ADMIN PANEL' : 'VENDOR PANEL')}
                   </span>
                 </div>
              </Link>
