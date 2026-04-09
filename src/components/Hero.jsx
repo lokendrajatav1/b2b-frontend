@@ -34,9 +34,12 @@ const Hero = () => {
 
   const handleSearch = async () => {
     if (activeTab === "match") {
-      router.push(`/post-requirement?q=${encodeURIComponent(searchQuery)}`);
+      router.push(`/post-requirement?q=${encodeURIComponent(searchQuery)}&city=${encodeURIComponent(locationQuery)}`);
     } else {
-      // Perform Inline Search
+      // Navigate to search page first
+      router.push(`/search?q=${encodeURIComponent(searchQuery)}&city=${encodeURIComponent(locationQuery)}`);
+      
+      // Also show dropdown for instant feedback
       setIsSearching(true);
       setShowDropdown(true);
       
@@ -124,19 +127,31 @@ const Hero = () => {
                   transition={{ duration: 0.2, ease: "easeOut" }}
                   className="hero-search-container flex flex-col md:flex-row gap-4 mb-3"
                 >
-                  <div className="relative flex-grow">
+                  <div className="relative flex-[1.5] flex items-center px-8 bg-white border border-gray-200 rounded-2xl outline-none shadow-sm focus-within:border-[#007367]/60 focus-within:ring-4 focus-within:ring-[#007367]/5 transition-all duration-300">
+                    <Search className="w-5 h-5 text-gray-400 mr-3 shrink-0" />
                     <input
                       type="text"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       onKeyDown={handleKeyDown}
                       placeholder="What product or service do you need?"
-                      className="hero-search-input w-full h-[60px] px-6 bg-white border border-gray-200 rounded-2xl outline-none text-lg placeholder:text-gray-400 shadow-sm focus:border-[#007367]/30 transition-colors"
+                      className="w-full h-[62px] bg-transparent outline-none text-lg font-medium text-[#05252e] placeholder:text-gray-400"
+                    />
+                  </div>
+                  <div className="relative flex-1 flex items-center px-8 bg-white border border-gray-200 rounded-2xl outline-none shadow-sm focus-within:border-[#007367]/60 focus-within:ring-4 focus-within:ring-[#007367]/5 transition-all duration-300">
+                    <MapPin className="w-5 h-5 text-gray-400 mr-3 shrink-0" />
+                    <input
+                      type="text"
+                      value={locationQuery}
+                      onChange={(e) => setLocationQuery(e.target.value)}
+                      onKeyDown={handleKeyDown}
+                      placeholder="Your City..."
+                      className="w-full h-[62px] bg-transparent outline-none text-lg font-medium text-[#05252e] placeholder:text-gray-400"
                     />
                   </div>
                   <button 
                     onClick={handleSearch}
-                    className="hero-btn-match h-[60px] bg-[#05252e] hover:bg-[#0a3f4e] text-white px-8 rounded-2xl font-semibold text-base whitespace-nowrap shadow-md transition-colors"
+                    className="hero-btn-match h-[62px] bg-[#05252e] hover:bg-[#007367] text-white px-10 rounded-2xl font-black text-sm uppercase tracking-widest whitespace-nowrap shadow-lg hover:shadow-emerald-900/10 active:scale-95 transition-all duration-300"
                   >
                     Get Matched
                   </button>
@@ -150,8 +165,8 @@ const Hero = () => {
                   transition={{ duration: 0.2, ease: "easeOut" }}
                   className="relative mb-3"
                 >
-                  <div className="hero-browse-container flex flex-col md:flex-row items-stretch gap-4 relative z-20">
-                      <div className="relative flex-[1.5] flex items-center px-6 py-4 md:py-0 bg-white rounded-2xl border border-[#05252e]/10 shadow-sm focus-within:border-[#007367]/30 transition-colors">
+                  <div className="hero-browse-container flex flex-col md:flex-row items-stretch gap-3 relative z-20">
+                      <div className="relative flex-[1.5] flex items-center px-5 py-4 md:py-0 bg-white rounded-2xl border border-gray-200 shadow-sm focus-within:border-[#007367]/60 focus-within:ring-4 focus-within:ring-[#007367]/5 transition-all duration-300">
                         <Search className="w-5 h-5 text-gray-400 mr-3 shrink-0" />
                         <input
                           type="text"
@@ -159,23 +174,23 @@ const Hero = () => {
                           onChange={(e) => setSearchQuery(e.target.value)}
                           onKeyDown={handleKeyDown}
                           placeholder="Search for products, services, or companies..."
-                          className="w-full bg-transparent outline-none text-base text-[#05252e] placeholder:text-gray-400"
+                          className="w-full h-[58px] bg-transparent outline-none text-base font-medium text-[#05252e] placeholder:text-gray-400"
                         />
                       </div>
-                      <div className="relative flex-1 flex items-center px-6 py-4 md:py-0 bg-white rounded-2xl border border-[#05252e]/10 shadow-sm focus-within:border-[#007367]/30 transition-colors">
+                      <div className="relative flex-1 flex items-center px-5 py-4 md:py-0 bg-white rounded-2xl border border-gray-200 shadow-sm focus-within:border-[#007367]/60 focus-within:ring-4 focus-within:ring-[#007367]/5 transition-all duration-300">
                         <MapPin className="w-5 h-5 text-gray-400 mr-3 shrink-0" />
                         <input
                           type="text"
                           value={locationQuery}
                           onChange={(e) => setLocationQuery(e.target.value)}
                           onKeyDown={handleKeyDown}
-                          placeholder="Any location"
-                          className="w-full bg-transparent outline-none text-base text-[#05252e] placeholder:text-gray-400"
+                          placeholder="Location..."
+                          className="w-full h-[58px] bg-transparent outline-none text-base font-medium text-[#05252e] placeholder:text-gray-400"
                         />
                       </div>
                       <button 
                         onClick={handleSearch}
-                        className="bg-[#05252e] hover:bg-[#0a3f4e] transition-colors text-white px-9 py-3.5 rounded-2xl font-bold text-base whitespace-nowrap shadow-md"
+                        className="bg-[#05252e] hover:bg-[#007367] transition-all duration-300 text-white px-9 py-3.5 rounded-2xl font-black text-sm uppercase tracking-widest whitespace-nowrap shadow-lg hover:shadow-emerald-900/10 active:scale-95 flex items-center justify-center"
                       >
                         Search
                       </button>
@@ -265,27 +280,35 @@ const Hero = () => {
           </div>
 
           {/* Popular Searches */}
-          <div className="mt-6">
-            <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">
-              Popular Searches
+          <div className="mt-8">
+            <p className="text-[11px] font-black text-gray-400 uppercase tracking-[0.2em] mb-4">
+              Popular Industries
             </p>
-            <div className="flex flex-wrap gap-2 md:gap-3">
+            <div className="flex flex-wrap gap-2.5">
               {[
-                "Web Development",
-                "App Development",
-                "Electronics",
-                "SEO",
+                "Machine Parts",
+                "Industrial Machines",
+                "Industrial Supplies",
+                "Construction",
+                "Hospitals & Labs",
+                "Drugs & Pharma",
+                "Electronics"
               ].map((tag, idx) => (
                 <button
                   key={idx}
                   onClick={() => {
                     setSearchQuery(tag);
-                    setActiveTab("browse");
-                    router.push(`/search?q=${encodeURIComponent(tag)}`);
+                    setTimeout(() => {
+                        if (activeTab === "match") {
+                            router.push(`/post-requirement?q=${encodeURIComponent(tag)}&city=${encodeURIComponent(locationQuery)}`);
+                        } else {
+                            router.push(`/search?q=${encodeURIComponent(tag)}&city=${encodeURIComponent(locationQuery)}`);
+                        }
+                    }, 0);
                   }}
-                  className="hero-tag shrink-0 flex items-center px-3 py-1.5 md:px-4 md:py-2 bg-white hover:bg-gray-50 border border-gray-200 rounded-xl text-[11px] md:text-[13px] font-medium text-gray-700 transition-colors cursor-pointer"
+                  className="group flex items-center px-4 py-2.5 bg-white hover:bg-white border border-gray-200 hover:border-[#007367] hover:shadow-xl hover:shadow-[#007367]/5 hover:-translate-y-0.5 rounded-xl text-[12px] font-bold text-gray-600 hover:text-[#007367] transition-all duration-300 cursor-pointer"
                 >
-                  <Search className="w-3.5 h-3.5 mr-2 text-gray-400" />
+                  <Search className="w-3.5 h-3.5 mr-2.5 text-gray-300 group-hover:text-[#007367] transition-colors" />
                   {tag}
                 </button>
               ))}

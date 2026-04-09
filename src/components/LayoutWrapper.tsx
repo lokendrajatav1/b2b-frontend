@@ -1,8 +1,10 @@
 'use client';
 
+import React, { Suspense } from 'react';
 import { usePathname } from 'next/navigation';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import PhoneLoginPopup from './PhoneLoginPopup';
 
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -28,9 +30,16 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar />
-      <main className="flex-1">{children}</main>
+      <React.Suspense fallback={<div className="h-16 bg-white shadow-sm animate-pulse" />}>
+        <Navbar />
+      </React.Suspense>
+      <main className="flex-1">
+        <React.Suspense fallback={<div className="flex items-center justify-center min-h-[50vh]"><div className="w-8 h-8 border-4 border-[#007367]/20 border-t-[#007367] rounded-full animate-spin" /></div>}>
+          {children}
+        </React.Suspense>
+      </main>
       <Footer />
+      <PhoneLoginPopup />
     </div>
   );
 }

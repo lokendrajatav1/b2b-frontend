@@ -1,7 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Send, Mail, Handshake } from 'lucide-react';
 
 const QuoteForm = () => {
+  const router = useRouter();
+  const [query, setQuery] = useState('');
+  const [phone, setPhone] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!query || !phone) return;
+    router.push(`/post-requirement?q=${encodeURIComponent(query)}&phone=${encodeURIComponent(phone)}`);
+  };
+
   const steps = [
     {
       icon: <Send className="w-8 h-8 text-blue-400" />,
@@ -51,13 +62,16 @@ const QuoteForm = () => {
               Tell us what you need
             </h3>
             
-            <form className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-5">
               {/* Product Name Input */}
               <div>
                 <input 
                   type="text" 
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
                   placeholder="What product or service do you need?" 
                   className="w-full h-14 px-5 border border-gray-200 rounded-xl focus:outline-none focus:border-[#007367] focus:ring-1 focus:ring-[#007367] transition-all text-gray-700 placeholder-gray-400 bg-gray-50/50 focus:bg-white"
+                  required
                 />
               </div>
 
@@ -68,8 +82,11 @@ const QuoteForm = () => {
                 </div>
                 <input 
                   type="tel" 
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                   placeholder="Enter your mobile" 
                   className="w-full h-14 px-5 border border-gray-200 rounded-r-xl focus:outline-none focus:border-[#007367] focus:ring-1 focus:ring-[#007367] transition-all text-gray-700 placeholder-gray-400 bg-gray-50/50 focus:bg-white"
+                  required
                 />
               </div>
 
@@ -91,4 +108,4 @@ const QuoteForm = () => {
   );
 };
 
-export default QuoteForm;
+export default QuoteForm;

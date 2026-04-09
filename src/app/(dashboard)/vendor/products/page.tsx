@@ -45,7 +45,7 @@ export default function VendorProducts() {
     description: '',
     price: '',
     category: '',
-    image: '',
+    images: [] as string[],
     moq: '1',
     availability: true,
     specifications: '',
@@ -105,7 +105,7 @@ export default function VendorProducts() {
         description: p.description || '',
         price: parseFloat(p.price) || 0,
         category: p.category || '',
-        image: p.image || p.imageUrl || '', 
+        images: Array.isArray(p.images) ? p.images : (p.imageUrl || p.image ? [p.imageUrl || p.image] : []),
         moq: parseInt(p.moq) || 1,
         availability: p.availability,
         specifications: p.specifications || '',
@@ -145,6 +145,11 @@ export default function VendorProducts() {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    if (newProduct.images.length >= 5) {
+      setMessage({ type: 'error', text: 'Maximum 5 images allowed per item' });
+      return;
+    }
+
     setUploading(true);
     const formData = new FormData();
     formData.append('image', file);
@@ -161,7 +166,7 @@ export default function VendorProducts() {
       
       const data = await response.json();
       if (data.success) {
-        setNewProduct({ ...newProduct, image: data.data.url });
+        setNewProduct({ ...newProduct, images: [...newProduct.images, data.data.url] });
         setMessage({ type: 'success', text: 'Visual asset uploaded' });
       } else {
         throw new Error(data.message);
@@ -170,8 +175,16 @@ export default function VendorProducts() {
       setMessage({ type: 'error', text: 'Upload failed: ' + error.message });
     } finally {
       setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
       setTimeout(() => setMessage({ type: '', text: '' }), 3000);
     }
+  };
+
+  const removeImage = (index: number) => {
+    setNewProduct({
+      ...newProduct,
+      images: newProduct.images.filter((_, i) => i !== index)
+    });
   };
 
   const saveProduct = async () => {
@@ -213,7 +226,7 @@ export default function VendorProducts() {
           setNewProduct({ 
               name: '', description: '', price: '', 
               category: (vendorData.categories && vendorData.categories[0]?.name) || categories[0]?.name || '', 
-              image: '', moq: '1', availability: true, specifications: '',
+              images: [], moq: '1', availability: true, specifications: '',
               type: activeTab
           });
           setShowProductForm(false);
@@ -249,7 +262,7 @@ export default function VendorProducts() {
         description: product.description || '',
         price: product.price?.toString() || '',
         category: product.category || categories[0]?.name || '',
-        image: product.image || product.imageUrl || '',
+        images: Array.isArray(product.images) ? product.images : (product.imageUrl || product.image ? [product.imageUrl || product.image] : []),
         moq: product.moq?.toString() || '1',
         availability: product.availability !== undefined ? product.availability : true,
         specifications: product.specifications || '',
@@ -361,19 +374,34 @@ export default function VendorProducts() {
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div className="space-y-4">
-                                        <label className="text-xs font-semibold text-gray-500">Image</label>
-                                        <div className="w-full aspect-video bg-white border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-center relative overflow-hidden group cursor-pointer hover:bg-gray-50 transition-colors" onClick={() => fileInputRef.current?.click()}>
-                                            {newProduct.image ? (
-                                                <img src={newProduct.image} className="w-full h-full object-cover" />
-                                            ) : (
-                                                <div className="text-center space-y-2">
-                                                   <Upload className="w-6 h-6 text-gray-300 mx-auto" />
-                                                   <span className="text-xs font-semibold text-gray-400">Upload Image</span>
+                                        <label className="text-xs font-semibold text-gray-500">Images ({newProduct.images.length}/5)</label>
+                                        <div className="grid grid-cols-2 gap-3">
+                                            {newProduct.images.map((img, idx) => (
+                                                <div key={idx} className="relative aspect-video rounded-xl overflow-hidden border border-gray-100 group">
+                                                    <img src={img} className="w-full h-full object-cover" />
+                                                    <button 
+                                                        onClick={(e) => { e.stopPropagation(); removeImage(idx); }}
+                                                        className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                                                    >
+                                                        <X className="w-3 h-3" />
+                                                    </button>
+                                                </div>
+                                            ))}
+                                            
+                                            {newProduct.images.length < 5 && (
+                                                <div 
+                                                    className="aspect-video bg-white border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-center relative overflow-hidden group cursor-pointer hover:bg-gray-50 transition-colors" 
+                                                    onClick={() => fileInputRef.current?.click()}
+                                                >
+                                                    <div className="text-center space-y-1">
+                                                       <Upload className="w-5 h-5 text-gray-300 mx-auto" />
+                                                       <span className="text-[10px] font-semibold text-gray-400">Add Image</span>
+                                                    </div>
+                                                    {uploading && <div className="absolute inset-0 bg-white/80 flex items-center justify-center"><RefreshCcw className="w-4 h-4 animate-spin text-blue-600" /></div>}
                                                 </div>
                                             )}
-                                            {uploading && <div className="absolute inset-0 bg-white/80 flex items-center justify-center"><RefreshCcw className="w-5 h-5 animate-spin text-blue-600" /></div>}
-                                            <input type="file" ref={fileInputRef} className="hidden" onChange={handleImageUpload} accept="image/*" />
                                         </div>
+                                        <input type="file" ref={fileInputRef} className="hidden" onChange={handleImageUpload} accept="image/*" />
                                     </div>
 
                                     <div className="space-y-4">
@@ -448,7 +476,9 @@ export default function VendorProducts() {
                     {vendorData.products.filter((p: any) => (p.type || 'PRODUCT') === activeTab).map((p: any) => (
                         <div key={p.id} className="group relative flex items-start gap-5 p-4 bg-white border border-gray-100 rounded-2xl hover:border-blue-200 hover:shadow-md transition-all">
                              <div className="w-16 h-16 bg-gray-50 rounded-xl overflow-hidden border border-gray-100 shrink-0">
-                                {p.imageUrl || p.image ? (
+                                {p.images && p.images.length > 0 ? (
+                                    <img src={p.images[0]} className="w-full h-full object-cover" />
+                                ) : p.imageUrl || p.image ? (
                                     <img src={p.imageUrl || p.image} className="w-full h-full object-cover" />
                                 ) : (
                                     <div className="w-full h-full flex items-center justify-center text-gray-300 bg-gray-50">

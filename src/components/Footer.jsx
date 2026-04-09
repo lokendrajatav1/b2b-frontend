@@ -6,11 +6,11 @@ import { Facebook, Twitter, Linkedin, Instagram, Mail, Phone, MapPin } from "luc
 
 const Footer = () => {
   return (
-    <footer className="bg-[#17313b] text-white pt-20 pb-10">
+    <footer className="bg-[#17313b] text-white pt-12 pb-8">
       <div className="container mx-auto px-6 md:px-12 lg:px-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
           {/* Brand & Description */}
-          <div className="space-y-6">
+          <div className="space-y-4">
             <Link href="/" className="text-3xl font-black tracking-tight text-white flex items-center">
               B2B Community<span className="text-[#4ecdc4]">.</span>
             </Link>
@@ -34,9 +34,9 @@ const Footer = () => {
           </div>
 
           {/* Service Categories */}
-          <div className="space-y-6">
-            <h4 className="text-lg font-bold text-white uppercase tracking-wider">Top Services</h4>
-            <ul className="space-y-3">
+          <div className="space-y-4">
+            <h4 className="text-sm font-bold text-white uppercase tracking-wider">Top Services</h4>
+            <ul className="space-y-2">
               {["Marketing Services", "IT & Development", "Advertising & PR", "Design & Creative", "Business Consultation"].map((link) => (
                 <li key={link}>
                   <Link href="#" className="text-gray-400 text-sm block">
@@ -48,9 +48,9 @@ const Footer = () => {
           </div>
 
           {/* Company */}
-          <div className="space-y-6">
-            <h4 className="text-lg font-bold text-white uppercase tracking-wider">Company</h4>
-            <ul className="space-y-3">
+          <div className="space-y-4">
+            <h4 className="text-sm font-bold text-white uppercase tracking-wider">Company</h4>
+            <ul className="space-y-2">
               {["About Us", "Contact Us", "Careers", "Verified Partners", "Sell with us"].map((link) => (
                 <li key={link}>
                   <Link href="#" className="text-gray-400 text-sm block">
@@ -62,9 +62,9 @@ const Footer = () => {
           </div>
 
           {/* Contact & Support */}
-          <div className="space-y-6">
-            <h4 className="text-lg font-bold text-white uppercase tracking-wider">Contact</h4>
-            <ul className="space-y-4">
+          <div className="space-y-4">
+            <h4 className="text-sm font-bold text-white uppercase tracking-wider">Contact</h4>
+            <ul className="space-y-3">
               <li className="flex items-start gap-3 text-gray-400 text-sm">
                 <MapPin className="w-5 h-5 text-[#4ecdc4] shrink-0" />
                 <span>Sector 62, Noida, Uttar Pradesh, India</span>
@@ -82,14 +82,14 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
           <p className="text-gray-500 text-sm">
             © {new Date().getFullYear()} B2B Community. All rights reserved.
           </p>
           <div className="flex items-center gap-8">
+            <Link href="#" className="text-gray-500 text-xs text-right">Industry Access</Link>
             <Link href="#" className="text-gray-500 text-xs">Privacy Policy</Link>
             <Link href="#" className="text-gray-500 text-xs">Terms of Service</Link>
-            <Link href="#" className="text-gray-500 text-xs">Cookie Settings</Link>
           </div>
         </div>
       </div>

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { apiFetch } from '@/lib/api';
 import { 
   User, 
@@ -34,8 +34,19 @@ export default function PostRequirementPage() {
   const [error, setError] = useState('');
   const [matchedVendors, setMatchedVendors] = useState<any[]>([]);
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
+    const q = searchParams.get('q');
+    const city = searchParams.get('city');
+    if (q || city) {
+      setFormData(prev => ({
+        ...prev,
+        searchKeyword: q || prev.searchKeyword,
+        city: city || prev.city
+      }));
+    }
+
     const fetchCategories = async () => {
       try {
         const data = await apiFetch('/vendors/categories');
@@ -45,7 +56,7 @@ export default function PostRequirementPage() {
       }
     };
     fetchCategories();
-  }, []);
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -133,11 +144,6 @@ export default function PostRequirementPage() {
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6 sm:p-12">
       <div className="w-full max-w-2xl">
         <div className="text-center mb-10">
-          <Link href="/" className="inline-flex mb-8">
-            <h1 className="text-2xl font-bold text-slate-900 flex items-center justify-center gap-1.5">
-              B2B Community <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
-            </h1>
-          </Link>
           <h2 className="text-3xl font-bold text-slate-900 mb-2">Post Your Requirement</h2>
           <p className="text-slate-500 text-sm">Fill in the details to get direct quotes from verified suppliers.</p>
         </div>

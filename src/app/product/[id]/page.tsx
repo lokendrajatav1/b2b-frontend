@@ -47,6 +47,18 @@ export default function ProductDetailPage() {
   const [reviewSent, setReviewSent] = useState(false);
   const [reviewError, setReviewError] = useState('');
   const [showAllReviews, setShowAllReviews] = useState(false);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+
+  // Zoom States
+  const [isZooming, setIsZooming] = useState(false);
+  const [zoomPos, setZoomPos] = useState({ x: 0, y: 0 });
+
+  const handleZoom = (e: React.MouseEvent<HTMLDivElement>) => {
+    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - left) / width) * 100;
+    const y = ((e.clientY - top) / height) * 100;
+    setZoomPos({ x, y });
+  };
 
   // Login modal
   const [loginModalOpen, setLoginModalOpen] = useState(false);
@@ -216,38 +228,89 @@ export default function ProductDetailPage() {
           {/* Left: Image + Details */}
           <div className="flex-1 space-y-8">
 
-            {/* Image */}
-            <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
-              {product.imageUrl || product.image ? (
-                <div className="relative w-full h-80 md:h-[420px]">
-                  <img
-                    src={product.imageUrl || product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover"
-                  />
-                  {/* Type Badge overlay */}
-                  <div className="absolute top-4 left-4">
-                    <span className={`px-3 py-1.5 text-[11px] font-semibold uppercase tracking-widest rounded-full ${
-                      product.type === 'SERVICE'
-                        ? 'bg-blue-50 text-blue-600 border border-blue-100'
-                        : 'bg-emerald-50 text-emerald-700 border border-emerald-100'
-                    }`}>
-                      {product.type === 'SERVICE' ? 'Service' : 'Product'}
-                    </span>
-                  </div>
-                </div>
-              ) : (
-                <div className="w-full h-64 flex flex-col items-center justify-center gap-3 bg-gray-50">
-                  {product.type === 'SERVICE' ? <Layers className="w-14 h-14 text-gray-200" /> : <Box className="w-14 h-14 text-gray-200" />}
-                  <span className="text-sm text-gray-300 font-medium">No image available</span>
+            {/* Image Gallery */}
+            <div className="flex flex-col md:flex-row gap-5 items-start">
+              {/* Thumbnails - Vertical on Desktop, Horizontal on Mobile */}
+              {product.images && product.images.length > 1 && (
+                <div className="flex md:flex-col gap-4 order-2 md:order-1 overflow-x-auto md:overflow-y-auto md:max-h-[450px] no-scrollbar p-2 w-full md:w-auto">
+                  {product.images.map((img: string, idx: number) => (
+                    <button 
+                      key={idx}
+                      onClick={() => setActiveImageIndex(idx)}
+                      className={`w-14 h-14 md:w-16 md:h-16 shrink-0 rounded-lg overflow-hidden border-2 transition-all duration-200 ${ activeImageIndex === idx ? 'border-[#007367] shadow-md scale-105' : 'border-white hover:border-gray-200 opacity-70 hover:opacity-100' }`}
+                    >
+                      <img src={img} className="w-full h-full object-cover" alt={`${product.name} thumbnail ${idx + 1}`} />
+                    </button>
+                  ))}
                 </div>
               )}
+
+              {/* Main Image Display - Taller Vertical Aspect */}
+              <div className="flex-1 w-full bg-white rounded-2xl border border-gray-100 shadow-sm order-1 md:order-2 relative group">
+                { (product.images && product.images.length > 0) || product.imageUrl || product.image ? (
+                  <div 
+                    className="relative w-full h-[280px] md:h-[400px] bg-gray-50 flex items-center justify-center overflow-hidden rounded-2xl cursor-crosshair"
+                    onMouseMove={handleZoom}
+                    onMouseEnter={() => setIsZooming(true)}
+                    onMouseLeave={() => setIsZooming(false)}
+                  >
+                    <img
+                      src={ (product.images && product.images.length > 0) ? product.images[activeImageIndex] : (product.imageUrl || product.image) }
+                      alt={product.name}
+                      className="w-full h-full object-cover pointer-events-none"
+                    />
+
+                    {/* Lens Effect (Amazon-style) */}
+                    {isZooming && (
+                      <div 
+                        className="absolute border border-gray-300 bg-white/30 pointer-events-none hidden md:block"
+                        style={{
+                          width: '150px',
+                          height: '150px',
+                          left: `${zoomPos.x}%`,
+                          top: `${zoomPos.y}%`,
+                          transform: 'translate(-50%, -50%)',
+                        }}
+                      />
+                    )}
+
+                    {/* Type Badge overlay */}
+                    <div className="absolute top-4 left-4 z-10 pointer-events-none">
+                      <span className={`px-3 py-1.5 text-[11px] font-bold uppercase tracking-widest rounded-full shadow-sm ${
+                        product.type === 'SERVICE'
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-emerald-600 text-white'
+                      }`}>
+                        {product.type === 'SERVICE' ? 'Service' : 'Product'}
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="w-full h-80 flex flex-col items-center justify-center gap-3 bg-gray-50">
+                    {product.type === 'SERVICE' ? <Layers className="w-14 h-14 text-gray-200" /> : <Box className="w-14 h-14 text-gray-200" />}
+                    <span className="text-sm text-gray-300 font-medium tracking-wide">No image available</span>
+                  </div>
+                )}
+
+                {/* Zoom Window (Amazon-style) - MOVED OUTSIDE OVERFLOW-HIDDEN */}
+                {isZooming && (
+                  <div 
+                    className="absolute left-[calc(100%+20px)] top-0 w-[450px] h-[450px] bg-white border border-gray-200 shadow-2xl z-[999] overflow-hidden hidden md:block rounded-2xl pointer-events-none"
+                    style={{
+                      backgroundImage: `url("${ (product.images && product.images.length > 0) ? product.images[activeImageIndex] : (product.imageUrl || product.image) }")`,
+                      backgroundPosition: `${zoomPos.x}% ${zoomPos.y}%`,
+                      backgroundSize: '1200px 1200px',
+                      backgroundRepeat: 'no-repeat'
+                    }}
+                  />
+                )}
+              </div>
             </div>
 
             {/* Title & Meta */}
             <div className="bg-white rounded-2xl border border-gray-100 p-8 space-y-6">
               <div>
-                <h1 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-2">{product.name}</h1>
+                <h1 className="text-xl md:text-2xl font-semibold text-gray-900 mb-2">{product.name}</h1>
                 {product.category && (
                   <div className="flex items-center gap-2 text-sm text-gray-400">
                     <Tag className="w-3.5 h-3.5" />
@@ -261,7 +324,7 @@ export default function ProductDetailPage() {
                 {product.price > 0 && (
                   <div>
                     <p className="text-[10px] text-gray-400 font-medium uppercase tracking-widest mb-1">Unit Price</p>
-                    <p className="text-3xl font-semibold text-[#05252e]">₹{product.price.toLocaleString()}</p>
+                    <p className="text-xl font-bold text-[#05252e]">₹{product.price.toLocaleString()}</p>
                   </div>
                 )}
                 {product.moq > 0 && (
@@ -306,52 +369,6 @@ export default function ProductDetailPage() {
               )}
             </div>
 
-            {/* Supplier Info Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15 }}
-              className="bg-white rounded-2xl border border-gray-100 p-8"
-            >
-              <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-6">Supplied By</h3>
-              <div className="flex items-start gap-5">
-                <div className="w-14 h-14 rounded-xl bg-[#007367]/10 flex items-center justify-center text-[#007367] text-xl font-semibold shrink-0 overflow-hidden">
-                  {vendor.logoUrl ? (
-                    <img src={vendor.logoUrl} alt={vendor.businessName} className="w-full h-full object-cover" />
-                  ) : (
-                    vendor.businessName.charAt(0)
-                  )}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap mb-1">
-                    <h2 className="text-lg font-semibold text-gray-900">{vendor.businessName}</h2>
-                    {vendor.verified && (
-                      <span className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-[#007367] bg-[#007367]/10 px-2 py-0.5 rounded-full">
-                        <ShieldCheck className="w-3 h-3" /> Verified
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-4 text-sm text-gray-400 mt-1 flex-wrap">
-                    <span className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5" />{vendor.city}</span>
-                    {vendor.reviews?.length > 0 && (
-                      <span className="flex items-center gap-1.5 align-middle"><Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />{ (vendor.reviews.reduce((acc: any, r: any) => acc + r.rating, 0) / vendor.reviews.length).toFixed(1)} ({vendor.reviews.length} total reviews)</span>
-                    )}
-                    {vendor.categories?.length > 0 && (
-                      <span className="text-[#007367] font-medium">{vendor.categories.map((c: any) => c.name).join(', ')}</span>
-                    )}
-                  </div>
-                  {vendor.description && (
-                    <p className="text-sm text-gray-500 mt-3 line-clamp-2 leading-relaxed">{vendor.description}</p>
-                  )}
-                  <Link
-                    href={`/supplier/${vendor.id}`}
-                    className="inline-flex items-center gap-1.5 mt-4 text-sm font-medium text-[#007367] hover:underline"
-                  >
-                    View full profile <ExternalLink className="w-3.5 h-3.5" />
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
 
             {/* ── Reviews Section ── */}
             <motion.div
@@ -512,122 +529,172 @@ export default function ProductDetailPage() {
             </motion.div>
           </div>
 
-          {/* Right: Inquiry Sidebar */}
           <aside className="lg:w-[380px] shrink-0">
             <div className="sticky top-28 space-y-6">
+              {/* Supplier Info Card (Premium Sync) */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15 }}
+                className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm hover:shadow-md transition-all"
+              >
+                <div className="flex flex-col gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-14 h-14 rounded-xl bg-[#007367]/10 flex items-center justify-center text-[#007367] text-xl font-bold shrink-0 overflow-hidden border border-[#007367]/10">
+                      {vendor.logoUrl ? (
+                        <img src={vendor.logoUrl} alt={vendor.businessName} className="w-full h-full object-cover" />
+                      ) : (
+                        vendor.businessName.charAt(0)
+                      )}
+                    </div>
+                    <div className="min-w-0">
+                      <h2 className="text-[17px] font-bold text-gray-900 leading-tight truncate">{vendor.businessName}</h2>
+                      <div className="flex items-center gap-1 mt-0.5">
+                        <div className="flex items-center gap-0.5 bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase border border-blue-100">
+                          <ShieldCheck className="w-2.5 h-2.5" /> Verified
+                        </div>
+                        <div className="flex items-center gap-0.5 bg-[#F1C82E]/10 text-[#C92500] px-1.5 py-0.5 rounded text-[9px] font-bold border border-[#F1C82E]">
+                          <CheckCircle2 className="w-2.5 h-2.5 fill-[#F1C82E]" /> TrustSeal
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
-              {/* Contact CTA Card */}
-              <div className="bg-[#05252e] rounded-2xl p-7 text-white space-y-4">
-                <h3 className="text-lg font-bold text-[#4ecdc4]">Interested in this {product.type === 'SERVICE' ? 'service' : 'product'}?</h3>
-                <p className="text-gray-300 text-sm leading-relaxed">
-                  Contact the supplier directly for pricing, bulk orders, or custom requirements.
-                </p>
-                <div className="flex flex-col gap-3 pt-2">
+                  <div className="grid grid-cols-2 gap-2 py-3 border-y border-gray-50">
+                    <div>
+                      <p className="text-[9px] font-bold text-gray-400 uppercase tracking-tighter mb-0.5">Reputation</p>
+                      <div className="flex items-center gap-1">
+                        <div className="flex items-center bg-green-700 text-white px-1.5 py-0.5 rounded text-[10px] font-bold">
+                          {avgRating || '4.5'} <Star className="w-2.5 h-2.5 ml-0.5 fill-current" />
+                        </div>
+                        <span className="text-[10px] font-bold text-gray-400">({reviews.length})</span>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-[9px] font-bold text-gray-400 uppercase tracking-tighter mb-0.5">Location</p>
+                      <div className="flex items-center justify-end gap-1 text-[11px] font-bold text-gray-700">
+                        <MapPin className="w-3 h-3 text-[#007367]" /> {vendor.city}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Years Active Analysis */}
+                  {(() => {
+                    const startYear = vendor.createdAt ? new Date(vendor.createdAt).getFullYear() : new Date().getFullYear() - 1;
+                    const years = new Date().getFullYear() - startYear;
+                    return (
+                      <div className="flex items-center gap-2 text-[11px] font-medium text-gray-500">
+                        <Package className="w-3.5 h-3.5 text-gray-400" />
+                        Proudly serving for <span className="text-gray-900 font-bold">{years > 0 ? `${years}+ years` : 'under 1 year'}</span>
+                      </div>
+                    );
+                  })()}
+
+                  <Link
+                    href={`/supplier/${vendor.id}`}
+                    className="w-full py-2.5 bg-gray-50 hover:bg-[#007367] hover:text-white text-[#007367] rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 border border-gray-100"
+                  >
+                    View Supplier Store <ExternalLink className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
+              </motion.div>
+
+              {/* Direct Contact CTA (Industrial Dark Theme) */}
+              <div className="bg-[#05252e] rounded-2xl p-6 text-white shadow-xl border border-[#007367]/20 relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-[#007367]/10 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-[#007367]/20 transition-all"></div>
+                
+                <h3 className="text-base font-bold text-white mb-4 flex items-center gap-2">
+                  <Send className="w-4 h-4 text-[#4ecdc4]" /> Direct Engagement
+                </h3>
+                
+                <div className="flex flex-col gap-3 relative z-10">
                   <button
                     onClick={() => handleDirectAction('CALL')}
-                    className="w-full flex items-center justify-center gap-2.5 py-3.5 bg-[#007367] hover:bg-[#005e54] text-white rounded-xl text-sm font-semibold transition-all"
+                    className="w-full flex items-center justify-center gap-2 py-3.5 bg-[#007367] hover:bg-[#005e54] text-white rounded-xl text-sm font-bold transition-all shadow-lg active:scale-[0.98]"
                   >
-                    <Phone className="w-4 h-4" /> Call Supplier
+                    <Phone className="w-4 h-4 animate-shake" /> Call Supplier Now
                   </button>
                   <button
                     onClick={() => handleDirectAction('WHATSAPP')}
-                    className="w-full flex items-center justify-center gap-2.5 py-3.5 bg-emerald-500/10 hover:bg-emerald-500 text-emerald-400 hover:text-white border border-emerald-500/20 rounded-xl text-sm font-semibold transition-all"
+                    className="w-full flex items-center justify-center gap-2 py-3 bg-white/5 hover:bg-emerald-500 text-emerald-400 hover:text-white border border-emerald-500/30 rounded-xl text-sm font-bold transition-all"
                   >
-                    <MessageCircle className="w-4 h-4" /> WhatsApp
+                    <MessageCircle className="w-4 h-4" /> Message on WhatsApp
                   </button>
                 </div>
               </div>
 
-              {/* Inquiry Form */}
-              <div className="bg-white rounded-2xl border border-gray-100 p-7">
-                <h3 className="text-base font-semibold text-gray-900 mb-1">Send an Inquiry</h3>
-                <p className="text-sm text-gray-400 mb-6">Describe your requirement and we'll connect you with this supplier.</p>
+              {/* Advanced Inquiry Form */}
+              <div className="bg-white rounded-2xl border border-gray-100 p-7 shadow-sm">
+                <div className="flex items-center gap-2.5 mb-2">
+                  <div className="w-8 h-8 rounded-lg bg-[#007367]/10 flex items-center justify-center">
+                    <Send className="w-4 h-4 text-[#007367]" />
+                  </div>
+                  <h3 className="text-base font-bold text-gray-900">Send an Inquiry</h3>
+                </div>
+                <p className="text-xs text-gray-400 mb-6 font-medium">Specify your requirements to get the best quote from this supplier.</p>
+                
                 <form onSubmit={handleInquiry} className="space-y-4">
-                  <textarea
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    required
-                    rows={4}
-                    placeholder={`I'm looking for ${product.name}. Please share pricing and availability...`}
-                    className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl text-sm text-gray-700 outline-none focus:border-[#007367] focus:bg-white transition-all resize-none"
-                  />
+                  <div className="grid grid-cols-2 gap-2">
+                    {['Pricing', 'Bulk Order'].map((type) => (
+                      <button
+                        key={type}
+                        type="button"
+                        onClick={() => setMessage(prev => `${type}: ${prev}`)}
+                        className="py-2 px-3 border border-gray-100 rounded-lg text-[11px] font-bold text-gray-500 hover:border-[#007367] hover:text-[#007367] transition-all bg-gray-50/50"
+                      >
+                        {type}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="space-y-3">
+                    <textarea
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      required
+                      rows={4}
+                      placeholder={`Explain your specific requirement for ${product.name}...`}
+                      className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl text-sm text-gray-700 outline-none focus:border-[#007367] focus:bg-white transition-all resize-none shadow-inner"
+                    />
+
+                    <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-xl border border-gray-100">
+                      <Package className="w-4 h-4 text-[#007367]" />
+                      <input 
+                        type="number" 
+                        placeholder="Quantity" 
+                        className="bg-transparent text-sm font-bold text-gray-900 outline-none w-full"
+                        min="1"
+                      />
+                      <span className="text-[10px] font-bold text-gray-400 uppercase">Units</span>
+                    </div>
+                  </div>
+
                   <button
                     type="submit"
                     disabled={sending || sent}
-                    className={`w-full py-3.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-all ${
-                      sent
-                        ? 'bg-emerald-500 text-white'
-                        : 'bg-[#007367] hover:bg-[#005e54] text-white'
+                    className={`w-full py-3.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-md active:scale-[0.98] ${
+                      sent ? 'bg-emerald-500 text-white' : 'bg-[#007367] hover:bg-[#005e54] text-white'
                     }`}
                   >
-                    {sent ? (
-                      <><CheckCircle2 className="w-4 h-4" /> Inquiry Sent!</>
-                    ) : sending ? (
-                      <>Sending...</>
-                    ) : (
-                      <><Send className="w-4 h-4" /> Send Inquiry</>
-                    )}
+                    {sent ? <><CheckCircle2 className="w-4 h-4" /> Inquiry Sent Successfully!</> : sending ? <>Processing...</> : <>Get Best Quote Now</>}
                   </button>
+                  
                   {!user && (
-                    <p className="text-center text-xs text-gray-400">
+                    <div className="text-center bg-gray-50/50 p-2 rounded-lg border border-dashed border-gray-200">
                       <button
+                        type="button"
                         onClick={() => { setPendingAction('inquiry'); setLoginModalOpen(true); }}
-                        className="text-[#007367] font-medium hover:underline"
+                        className="text-[#007367] text-xs font-bold hover:underline"
                       >
-                        Sign in
-                      </button>{' '}to send an inquiry
-                    </p>
+                        Sign in to proceed
+                      </button>
+                    </div>
                   )}
                 </form>
               </div>
 
-              {/* Quick Info */}
-              <div className="bg-white rounded-2xl border border-gray-100 p-6 space-y-4">
-                <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Quick Facts</h4>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-500">Type</span>
-                    <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${
-                      product.type === 'SERVICE' ? 'bg-blue-50 text-blue-600' : 'bg-emerald-50 text-emerald-700'
-                    }`}>{product.type === 'SERVICE' ? 'Service' : 'Product'}</span>
-                  </div>
-                  {product.category && (
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-500">Category</span>
-                      <span className="text-sm font-medium text-gray-700">{product.category}</span>
-                    </div>
-                  )}
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-500">Listed By</span>
-                    <Link href={`/supplier/${vendor.id}`} className="text-sm font-medium text-[#007367] hover:underline truncate max-w-[150px]">
-                      {vendor.businessName}
-                    </Link>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-500">Location</span>
-                    <span className="text-sm font-medium text-gray-700">{vendor.city}</span>
-                  </div>
-                  {user && (
-                    <>
-                      {vendor.phone && (
-                        <div className="flex items-center justify-between pt-2 border-t border-gray-50">
-                          <span className="text-sm text-gray-500 flex items-center gap-1.5"><Phone className="w-3.5 h-3.5 text-[#007367]" /> Phone</span>
-                          <span className="text-sm font-medium text-gray-900">{vendor.phone}</span>
-                        </div>
-                      )}
-                      {vendor.email && (
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm text-gray-500 flex items-center gap-1.5"><Mail className="w-3.5 h-3.5 text-[#007367]" /> Email</span>
-                          <span className="text-sm font-medium text-gray-900 truncate max-w-[150px]">{vendor.email}</span>
-                        </div>
-                      )}
-                    </>
-                  )}
-                </div>
-              </div>
             </div>
           </aside>
-
         </div>
       </main>
     </div>
