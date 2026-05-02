@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google"; // Keep only Inter for a clean look
+import { Open_Sans } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 
-const inter = Inter({
-  variable: "--font-inter",
+const openSans = Open_Sans({
+  variable: "--font-open-sans",
   subsets: ["latin"],
 });
 
@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 };
 
 import LayoutWrapper from "@/components/LayoutWrapper";
+import GoogleAdsProvider from "@/components/GoogleAdsProvider";
 
 export default function RootLayout({
   children,
@@ -23,9 +24,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.variable} font-sans antialiased bg-gray-50 text-slate-800`}
+        className={`${openSans.variable} font-sans antialiased bg-gray-50 text-slate-800`}
       >
         <AuthProvider>
+          <GoogleAdsProvider />
           <LayoutWrapper>
             {children}
           </LayoutWrapper>

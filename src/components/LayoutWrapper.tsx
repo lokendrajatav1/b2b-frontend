@@ -14,9 +14,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
   const noLayoutRoutes = [
     '/admin',
     '/vendor',
-    '/subadmin',
-    '/wp-admin',
-    '/wp-subadmin',
+    '/super-admin',
     '/login',
     '/register'
   ];

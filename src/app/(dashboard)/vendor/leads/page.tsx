@@ -47,16 +47,27 @@ export default function VendorLeads() {
   }, []);
 
   const handleUpdateStatus = async (leadId: string, status: 'CLOSED' | 'REDISTRIBUTE') => {
+    // Optimistic Update: Remove from list immediately if passing or closing
+    const originalLeads = [...leads];
+    if (status === 'REDISTRIBUTE') {
+       setLeads(leads.filter((l: any) => l.id !== leadId));
+    }
+
     try {
       await apiFetch(`/leads/${leadId}/status`, {
         method: 'PATCH',
         body: JSON.stringify({ status }),
       });
-      // Refresh list
-      const data = await apiFetch('/leads/my-leads');
-      setLeads(data.data);
+      
+      // If closing, we keep the state from the server to show "Won"
+      if (status === 'CLOSED') {
+        const data = await apiFetch('/leads/my-leads');
+        setLeads(data.data);
+      }
     } catch (error) {
       console.error('Status update failed:', error);
+      // Rollback on error
+      setLeads(originalLeads);
     }
   };
 
@@ -69,18 +80,18 @@ export default function VendorLeads() {
       {/* Clean Leads Header */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-gray-100">
         <div>
-            <h1 className="text-2xl font-semibold text-gray-900 flex items-center gap-3">
+            <h1 className="text-2xl font-semibold text-slate-900 flex items-center gap-3">
               My Leads
               <div className="flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 border border-emerald-100 rounded-full">
                 <Activity className="w-3.5 h-3.5 text-emerald-600" />
-                <span className="text-xs font-semibold text-emerald-600">Receiving Leads</span>
+                <span className="text-base font-semibold text-emerald-600">Receiving Leads</span>
               </div>
             </h1>
-            <p className="text-gray-500 font-medium mt-1 text-sm">Review and respond to inquiries from potential buyers.</p>
+            <p className="text-slate-700 font-medium mt-1 text-base">Review and respond to inquiries from potential buyers.</p>
         </div>
         
         <div className="flex items-center gap-3">
-            <button className="px-4 py-2 bg-white border border-gray-200 rounded-xl text-gray-700 font-semibold text-sm hover:bg-gray-50 transition-all flex items-center gap-2">
+            <button className="px-4 py-2 bg-white border border-gray-200 rounded-none text-slate-800 font-semibold text-base hover:bg-gray-50 transition-all flex items-center gap-2">
                 Export Leads
             </button>
         </div>
@@ -91,7 +102,7 @@ export default function VendorLeads() {
                 <button 
                     key={st}
                     onClick={() => setFilter(st)}
-                    className={`px-5 py-2 rounded-xl font-semibold text-sm transition-all border ${ filter === st ? 'bg-blue-600 text-white border-blue-600 shadow-sm' : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50' }`}
+                    className={`px-5 py-2 rounded-xl font-semibold text-base transition-all border ${ filter === st ? 'bg-[#007367] text-white border-blue-600 shadow-sm' : 'bg-white text-slate-800 border-gray-200 hover:bg-gray-50' }`}
                 >
                     {st === 'ALL' ? 'All Leads' : st === 'DISTRIBUTED' ? 'Active' : st === 'CLOSED' ? 'Won' : 'Expired'}
                 </button>
@@ -105,19 +116,19 @@ export default function VendorLeads() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.05 }}
             key={lead.id} 
-            className="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:border-blue-100 transition-all shadow-sm"
+            className="group bg-white rounded-none border border-gray-100 overflow-hidden hover:border-[#007367]/10 transition-all shadow-sm"
           >
             <div className="flex flex-col md:flex-row">
                 {/* Status Column */}
                 <div className="md:w-32 shrink-0 bg-gray-50/50 p-6 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-gray-100">
-                    <div className="w-10 h-10 bg-white rounded-xl border border-gray-200 flex items-center justify-center text-blue-500 mb-2">
+                    <div className="w-10 h-10 bg-white rounded-none border border-gray-200 flex items-center justify-center text-slate-600 mb-2">
                         <Users className="w-5 h-5" />
                     </div>
                     <div className="text-center">
-                        <p className="text-xs font-semibold text-gray-700 mb-0.5">
+                        <p className="text-base font-semibold text-slate-800 mb-0.5">
                            {lead.status === 'DISTRIBUTED' ? 'New' : lead.status === 'CLOSED' ? 'Won' : lead.status}
                         </p>
-                        <p className="text-xs font-medium text-gray-400">{new Date(lead.createdAt).toLocaleDateString()}</p>
+                        <p className="text-base font-medium text-slate-500">{new Date(lead.createdAt).toLocaleDateString()}</p>
                     </div>
                 </div>
 
@@ -126,34 +137,30 @@ export default function VendorLeads() {
                     <div className="space-y-4 flex-1">
                         <div className="space-y-1.5">
                              <div className="flex flex-wrap items-center gap-3">
-                                 <h3 className="text-lg font-semibold text-gray-900">{lead.buyerName}</h3>
-                                 <span className="text-xs font-medium text-gray-400">ID #{lead.id.slice(0,8)}</span>
+                                 <h3 className="text-lg font-semibold text-slate-900">{lead.buyerName}</h3>
+                                 <span className="text-sm font-medium text-slate-400">ID #{lead.id.slice(0,8)}</span>
                              </div>
                              <div className="flex items-center gap-4">
-                                <div className="flex items-center gap-1.5 text-xs font-medium text-gray-500">
+                                <div className="flex items-center gap-1.5 text-sm font-medium text-slate-600">
                                     <MapPin className="w-3.5 h-3.5" />
                                     {lead.city}
                                 </div>
-                                <div className="flex items-center gap-1.5 text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-lg border border-blue-100/50">
+                                <div className="flex items-center gap-1.5 text-xs font-semibold text-[#007367] bg-[#007367]/5 px-2 py-0.5 rounded-none border border-[#007367]/10">
                                     <Layers className="w-3.5 h-3.5" />
                                     {lead.category?.name || 'Inquiry'}
                                 </div>
                              </div>
                         </div>
 
-                        <div className="flex flex-wrap items-center gap-4 text-xs font-semibold">
-                            <div className="flex items-center gap-1.5 text-gray-500 hover:text-blue-600 transition-colors cursor-default">
+                        <div className="flex flex-wrap items-center gap-4 text-sm font-medium">
+                            <div className="flex items-center gap-1.5 text-slate-600 hover:text-[#007367] transition-colors cursor-default">
                                 <Phone className="w-3.5 h-3.5" />
                                 {lead.phone || 'N/A'}
                             </div>
-                            <div className="flex items-center gap-1.5 text-blue-600 bg-blue-50 px-2 py-0.5 rounded-lg border border-blue-100/50">
-                                <Layers className="w-3.5 h-3.5" />
-                                {lead.category?.name || 'Hub Inquiry'}
-                            </div>
                         </div>
 
-                        <div className="p-4 bg-gray-50 rounded-xl border border-gray-100 text-[13px] text-gray-600 font-medium leading-relaxed italic relative overflow-hidden group">
-                            <div className="absolute top-0 left-0 w-1 h-full bg-blue-500/10 group-hover:bg-blue-500 transition-all"></div>
+                        <div className="p-4 bg-gray-50/50 rounded-none border border-gray-100 text-sm text-slate-700 font-medium leading-relaxed italic relative overflow-hidden group">
+                            <div className="absolute top-0 left-0 w-1 h-full bg-[#007367]/10 group-hover:bg-[#007367]/30 transition-all"></div>
                             "{lead.message || (lead.searchKeyword ? `Buyer was searching for '${lead.searchKeyword}' and your business matched their criteria.` : `Buyer submitted a request for ${lead.category?.name} in ${lead.city}.`)}"
                         </div>
                     </div>
@@ -162,7 +169,7 @@ export default function VendorLeads() {
                         <div className="grid grid-cols-2 gap-2">
                             <a 
                                 href={`tel:${lead.phone}`}
-                                className="h-10 bg-white border border-gray-200 text-gray-700 rounded-xl font-bold text-[11px] uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-gray-50 hover:border-gray-300 transition-all shadow-sm"
+                                className="h-10 bg-white border border-gray-200 text-slate-800 rounded-none font-semibold text-base uppercase  flex items-center justify-center gap-2 hover:bg-gray-50 hover:border-gray-300 transition-all shadow-sm"
                             >
                                 <Phone className="w-3.5 h-3.5 text-emerald-500" />
                                 Call
@@ -171,7 +178,7 @@ export default function VendorLeads() {
                                 href={`https://wa.me/${lead.phone?.replace(/[^0-9]/g, '')}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="h-10 bg-white border border-gray-200 text-blue-600 rounded-xl font-bold text-[11px] uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-blue-50 hover:border-blue-200 transition-all shadow-sm"
+                                className="h-10 bg-white border border-gray-200 text-[#007367] rounded-none font-semibold text-base uppercase  flex items-center justify-center gap-2 hover:bg-[#007367]/5 hover:border-blue-200 transition-all shadow-sm"
                             >
                                 <MessageSquare className="w-3.5 h-3.5" />
                                 WhatsApp
@@ -179,24 +186,24 @@ export default function VendorLeads() {
                         </div>
 
                         <div className="flex items-center gap-2">
-                           {lead.status === 'DISTRIBUTED' && (
+                           {(lead.status === 'DISTRIBUTED' || lead.status === 'PENDING') && (
                                 <>
                                 <button 
                                     onClick={() => handleUpdateStatus(lead.id, 'CLOSED')}
-                                    className="flex-1 h-10 bg-blue-600 text-white rounded-xl font-semibold text-xs hover:bg-blue-700 transition-all shadow-sm"
+                                    className="flex-1 h-10 bg-[#007367] text-white rounded-none font-semibold text-base hover:bg-[#005e54] transition-all shadow-sm"
                                 >
                                     Mark as Won
                                 </button>
                                 <button 
                                     onClick={() => handleUpdateStatus(lead.id, 'REDISTRIBUTE')}
-                                    className="px-4 h-10 bg-white border border-gray-200 text-gray-500 rounded-xl font-semibold text-xs hover:bg-gray-50 transition-all"
+                                    className="px-4 h-10 bg-white border border-gray-200 text-slate-700 rounded-none font-semibold text-base hover:bg-gray-50 transition-all"
                                 >
                                     Pass
                                 </button>
                                 </>
                            )}
                            {lead.status === 'CLOSED' && (
-                               <div className="w-full h-10 bg-emerald-50 text-emerald-700 border border-emerald-100 rounded-xl font-semibold text-xs flex items-center justify-center gap-2">
+                               <div className="w-full h-10 bg-emerald-50 text-emerald-700 border border-emerald-100 rounded-none font-semibold text-base flex items-center justify-center gap-2">
                                    <ShieldCheck className="w-4 h-4" />
                                    Deal Won
                                 </div>
@@ -207,15 +214,17 @@ export default function VendorLeads() {
             </div>
           </motion.div>
         )) : (
-          <div className="text-center py-16 bg-white rounded-2xl border border-gray-100 space-y-3 shadow-sm">
+          <div className="text-center py-16 bg-white rounded-none border border-gray-100 space-y-3 shadow-sm">
               <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center mx-auto border border-gray-100">
                  <History className="w-6 h-6 text-gray-300" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900">No leads found</h3>
-              <p className="text-gray-500 font-medium text-sm">When buyers reach out to you, their inquiries will appear here.</p>
+              <h3 className="text-lg font-semibold text-slate-900">No leads found</h3>
+              <p className="text-slate-700 font-medium text-base">When buyers reach out to you, their inquiries will appear here.</p>
           </div>
         )}
       </div>
     </div>
   );
 }
+
+

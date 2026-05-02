@@ -97,34 +97,34 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
       >
         <button 
             onClick={onClose} 
-            className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-900 hover:bg-gray-100 rounded-full transition-colors z-10"
+            className="absolute top-4 right-4 p-2 text-slate-500 hover:text-slate-900 hover:bg-gray-100 rounded-full transition-colors z-10"
         >
             <X className="w-5 h-5" />
         </button>
 
         {/* Vendor Header Section */}
         <div className="bg-[#f8fafc] p-6 pb-8 border-b border-gray-100 relative">
-            <span className="text-[#007367] text-xs font-bold uppercase tracking-wider block mb-2">
+            <span className="text-[#007367] text-base font-semibold uppercase  block mb-2">
                 {vendor.category?.name || 'Business Service'}
             </span>
-            <h2 className="text-xl font-bold text-gray-900 leading-snug mb-3 pr-8">
+            <h2 className="text-xl font-semibold text-slate-900 leading-snug mb-3 pr-8">
                 {vendor.businessName}
             </h2>
             
-            <div className="flex items-center text-sm font-medium text-gray-500 mb-4">
+            <div className="flex items-center text-base font-medium text-slate-700 mb-4">
                 <MapPin className="w-4 h-4 mr-1.5" /> {vendor.city}
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gray-100 text-gray-700 text-xs font-bold rounded border border-gray-200">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gray-100 text-slate-800 text-base font-semibold rounded border border-gray-200">
                     <FileText className="w-3 h-3" /> GST
                 </span>
                 {vendor.verified && (
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-green-50 text-green-700 text-xs font-bold rounded border border-green-200">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-green-50 text-green-700 text-base font-semibold rounded border border-green-200">
                         <ShieldCheck className="w-3 h-3" /> Verified Supplier
                     </span>
                 )}
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-blue-50 text-blue-700 text-xs font-bold rounded border border-blue-200">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#007367]/5 text-blue-700 text-base font-semibold rounded border border-blue-200">
                     <Clock className="w-3 h-3" /> 11 yrs
                 </span>
             </div>
@@ -133,12 +133,12 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
         {/* Login Form Section */}
         <div className="p-8">
             <div className="mb-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-1">Connect with this Supplier</h3>
-                <p className="text-sm font-medium text-gray-500">We just need to verify your mobile number to get started.</p>
+                <h3 className="text-xl font-semibold text-slate-900 mb-1">Connect with this Supplier</h3>
+                <p className="text-base font-medium text-slate-700">We just need to verify your mobile number to get started.</p>
             </div>
 
             {error && (
-                <div className="mb-6 p-3 bg-red-50 text-red-600 text-xs font-bold border border-red-100 rounded-xl">
+                <div className="mb-6 p-3 bg-red-50 text-red-600 text-base font-semibold border border-red-100 rounded-xl">
                     {error}
                 </div>
             )}
@@ -148,14 +148,14 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
                     <div>
                         <div className="relative flex items-center">
                             <div className="absolute left-0 pl-4 py-3 flex items-center pr-3 border-r border-gray-200 pointer-events-none">
-                                <span className="text-gray-500 font-bold text-sm">+91</span>
+                                <span className="text-slate-700 font-semibold text-base">+91</span>
                             </div>
                             <input
                                 type="tel"
                                 required
                                 value={phone}
                                 onChange={(e) => setPhone(e.target.value)}
-                                className="w-full pl-[4.5rem] pr-4 py-4 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:border-[#007367] focus:bg-white text-gray-900 font-bold transition-all shadow-sm"
+                                className="w-full pl-[4.5rem] pr-4 py-4 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:border-[#007367] focus:bg-white text-slate-900 font-semibold transition-all shadow-sm"
                                 placeholder="Enter your Mobile"
                             />
                         </div>
@@ -164,10 +164,10 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
                     <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}>
                         <div className="bg-emerald-50 rounded-xl p-4 mb-4 flex items-center justify-between border border-emerald-100">
                            <div className="flex flex-col">
-                             <span className="text-emerald-800 text-xs font-bold uppercase tracking-wider mb-1">We've sent a code to +91 {phone}</span>
-                             <span className="text-emerald-900 font-medium text-sm">Almost there! Just type it in below.</span>
+                             <span className="text-emerald-800 text-base font-semibold uppercase  mb-1">We've sent a code to +91 {phone}</span>
+                             <span className="text-emerald-900 font-medium text-base">Almost there! Just type it in below.</span>
                            </div>
-                           <button type="button" onClick={() => setOtpSent(false)} className="text-emerald-600 hover:text-emerald-800 text-xs font-bold underline transition-colors">Edit</button>
+                           <button type="button" onClick={() => setOtpSent(false)} className="text-emerald-600 hover:text-emerald-800 text-base font-semibold underline transition-colors">Edit</button>
                         </div>
                         <input
                             type="text"
@@ -176,7 +176,7 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
                             autoFocus
                             value={otp}
                             onChange={(e) => setOtp(e.target.value)}
-                            className="w-full px-4 py-4 bg-white border-2 border-emerald-200 rounded-xl outline-none focus:border-emerald-500 text-center text-3xl font-black tracking-[10px] text-gray-900 transition-all shadow-inner"
+                            className="w-full px-4 py-4 bg-white border-2 border-emerald-200 rounded-xl outline-none focus:border-emerald-500 text-center text-3xl font-semibold  text-slate-900 transition-all shadow-inner"
                             placeholder="••••••"
                         />
                     </motion.div>
@@ -185,7 +185,7 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
                 <button
                     type="submit"
                     disabled={loading}
-                    className={`w-full py-4 rounded-xl font-bold text-white transition-all shadow-md flex items-center justify-center gap-2 ${
+                    className={`w-full py-4 rounded-xl font-semibold text-white transition-all shadow-md flex items-center justify-center gap-2 ${
                         otpSent ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-[#007367] hover:bg-[#005e54]'
                     } disabled:opacity-50`}
                 >
@@ -195,7 +195,7 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
                 </button>
             </form>
 
-            <p className="text-center text-xs text-gray-400 font-medium mt-6">
+            <p className="text-center text-base text-slate-500 font-medium mt-6">
                 By logging in, you agree to our Terms of Service and Privacy Policy.
             </p>
         </div>

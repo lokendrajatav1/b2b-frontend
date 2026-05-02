@@ -1,0 +1,5 @@
+1:"$Sreact.fragment"
+2:I[97367,["/_next/static/chunks/00r6d91w-xwan.js","/_next/static/chunks/0on29.tijdp3o.js","/_next/static/chunks/00-csyj9a6t-x.js"],"ViewportBoundary"]
+3:I[97367,["/_next/static/chunks/00r6d91w-xwan.js","/_next/static/chunks/0on29.tijdp3o.js","/_next/static/chunks/00-csyj9a6t-x.js"],"MetadataBoundary"]
+4:"$Sreact.suspense"
+0:{"rsc":["$","$1","h",{"children":[["$","meta",null,{"name":"robots","content":"noindex"}],["$","$L2",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$L3",null,{"children":["$","$4",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"B2B Community | India's Largest Marketplace"}],["$","meta","1",{"name":"description","content":"Connect buyers with sellers in India's leading B2B marketplace."}]]}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"dLkfQY3sp6ATbxXBigCE_"}

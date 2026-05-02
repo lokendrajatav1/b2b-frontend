@@ -1,55 +1,65 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fdfdfe;
+  --background: #f8f9fa;
   --foreground: #1e293b;
-  --primary: #3b82f6;
+  --primary: #007367;
+  --secondary: #e88c30;
   --border-light: #f1f5f9;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-inter);
+  --font-sans: var(--font-open-sans);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-inter), sans-serif;
+  font-family: var(--font-open-sans), sans-serif;
   -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.025em; /* Closer spacing as requested */
 }
 
 @layer base {
-  /* Global Typography: Focus on Medium and Normal */
-  h1, h2, h3, h4 {
-    font-weight: 600; /* Semi-bold for headers only */
-    color: #0f172a;
+  /* Soft UI Typography */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    color: #1e293b;
+    letter-spacing: -0.025em;
   }
 
   p, span, div, label, input, button {
-    font-weight: 500; /* Medium for balance */
-    font-size: 0.875rem; /* Standard 14px size */
+    font-weight: 500; 
+    font-size: 1rem; 
+    letter-spacing: -0.025em;
+  }
+
+  strong, .font-semibold {
+    font-weight: 600;
   }
 }
 
-/* Simple Card Definition */
-.simple-card {
+/* Soft UI Card (from image) */
+.simple-card, .bg-white.rounded-2xl, .bg-white.rounded-3xl {
   background: white;
-  border: 1px solid #f1f5f9;
+  border: none !important;
   border-radius: 1rem;
-  padding: 1.5rem;
-  transition: all 0.2s ease;
+  box-shadow: 0 20px 27px 0 rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
 }
 
 .simple-card:hover {
-  border-color: #e2e8f0;
+  transform: translateY(-2px);
+  box-shadow: 0 20px 27px 0 rgba(0, 0, 0, 0.08);
 }
 
-/* Sidebar Specific (White-Clean) */
+/* Sidebar Specific */
 .sidebar-active-link {
-  background: #eff6ff;
-  color: #2563eb;
+  background: white;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  color: #344767;
   font-weight: 600;
 }
 
@@ -70,4 +80,9 @@ body {
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* Smooth transitions */
+* {
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }

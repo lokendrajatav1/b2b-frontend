@@ -64,7 +64,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="hero-container relative w-full min-h-[600px] flex items-center overflow-hidden bg-[#ffffff]">
+    <section className="hero-container relative w-full pt-12 pb-16 md:pt-20 md:pb-24 lg:min-h-[550px] flex flex-col justify-center overflow-hidden bg-[#ffffff]">
       {/* Background Image on Right */}
       <div className="hero-image-wrapper absolute right-0 top-0 w-3/4 h-full hidden lg:block">
         <Image
@@ -79,7 +79,7 @@ const Hero = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 w-full relative z-20">
         <div className="max-w-2xl w-full">
           {/* Headline */}
-          <h2 className="text-[35px] md:text-[56px] lg:text-[60px] leading-[1.1] mt-10 md:mt-0 font-bold text-[#05252e] mb-10 tracking-tight">
+          <h2 className="text-[35px] md:text-[56px] lg:text-[60px] leading-[1.1] mt-10 md:mt-0 font-semibold text-[#05252e] mb-10 ">
             Find trusted partners to grow your business.
           </h2>
 
@@ -94,21 +94,21 @@ const Hero = () => {
 
             <button
               onClick={() => { setActiveTab("match"); setShowDropdown(false); }}
-              className={`relative z-10 flex items-center justify-center w-[150px] py-2 rounded-full font-semibold text-sm transition-colors duration-300 ${
-                activeTab === "match" ? "text-white" : "text-gray-600 hover:text-gray-900"
+              className={`relative z-10 flex items-center justify-center w-[150px] py-2 rounded-full font-semibold text-base transition-colors duration-300 ${
+                activeTab === "match" ? "text-white" : "text-slate-800 hover:text-slate-900"
               }`}
             >
-              <Sparkles
+              {/* <Sparkles
                 className={`w-4 h-4 mr-2 ${
-                  activeTab === "match" ? "text-white" : "text-gray-500"
+                  activeTab === "match" ? "text-white" : "text-slate-700"
                 }`}
-              />
+              /> */}
               Match me with suppliers
             </button>
             <button
               onClick={() => setActiveTab("browse")}
-              className={`relative z-10 flex items-center justify-center w-[165px] py-2 rounded-full font-semibold text-sm transition-colors duration-300 ${
-                activeTab === "browse" ? "text-white" : "text-gray-600 hover:text-gray-900"
+              className={`relative z-10 flex items-center justify-center w-[165px] py-2 rounded-full font-semibold text-base transition-colors duration-300 ${
+                activeTab === "browse" ? "text-white" : "text-slate-800 hover:text-slate-900"
               }`}
             >
               Explore the directory
@@ -128,30 +128,30 @@ const Hero = () => {
                   className="hero-search-container flex flex-col md:flex-row gap-4 mb-3"
                 >
                   <div className="relative flex-[1.5] flex items-center px-8 bg-white border border-gray-200 rounded-2xl outline-none shadow-sm focus-within:border-[#007367]/60 focus-within:ring-4 focus-within:ring-[#007367]/5 transition-all duration-300">
-                    <Search className="w-5 h-5 text-gray-400 mr-3 shrink-0" />
+                    <Search className="w-5 h-5 text-slate-500 mr-3 shrink-0" />
                     <input
                       type="text"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       onKeyDown={handleKeyDown}
                       placeholder="What product or service do you need?"
-                      className="w-full h-[62px] bg-transparent outline-none text-lg font-medium text-[#05252e] placeholder:text-gray-400"
+                      className="w-full h-[62px] bg-transparent outline-none text-lg font-medium text-[#05252e] placeholder:text-slate-500"
                     />
                   </div>
                   <div className="relative flex-1 flex items-center px-8 bg-white border border-gray-200 rounded-2xl outline-none shadow-sm focus-within:border-[#007367]/60 focus-within:ring-4 focus-within:ring-[#007367]/5 transition-all duration-300">
-                    <MapPin className="w-5 h-5 text-gray-400 mr-3 shrink-0" />
+                    <MapPin className="w-5 h-5 text-slate-500 mr-3 shrink-0" />
                     <input
                       type="text"
                       value={locationQuery}
                       onChange={(e) => setLocationQuery(e.target.value)}
                       onKeyDown={handleKeyDown}
                       placeholder="Your City..."
-                      className="w-full h-[62px] bg-transparent outline-none text-lg font-medium text-[#05252e] placeholder:text-gray-400"
+                      className="w-full h-[62px] bg-transparent outline-none text-lg font-medium text-[#05252e] placeholder:text-slate-500"
                     />
                   </div>
                   <button 
                     onClick={handleSearch}
-                    className="hero-btn-match h-[62px] bg-[#05252e] hover:bg-[#007367] text-white px-10 rounded-2xl font-black text-sm uppercase tracking-widest whitespace-nowrap shadow-lg hover:shadow-emerald-900/10 active:scale-95 transition-all duration-300"
+                    className="hero-btn-match h-[62px] bg-[#007367] hover:bg-[#005e54] text-white px-10 rounded-2xl font-semibold text-base uppercase  whitespace-nowrap shadow-lg hover:shadow-[#007367]/10 active:scale-95 transition-all duration-300"
                   >
                     Get Matched
                   </button>
@@ -167,30 +167,30 @@ const Hero = () => {
                 >
                   <div className="hero-browse-container flex flex-col md:flex-row items-stretch gap-3 relative z-20">
                       <div className="relative flex-[1.5] flex items-center px-5 py-4 md:py-0 bg-white rounded-2xl border border-gray-200 shadow-sm focus-within:border-[#007367]/60 focus-within:ring-4 focus-within:ring-[#007367]/5 transition-all duration-300">
-                        <Search className="w-5 h-5 text-gray-400 mr-3 shrink-0" />
+                        <Search className="w-5 h-5 text-slate-500 mr-3 shrink-0" />
                         <input
                           type="text"
                           value={searchQuery}
                           onChange={(e) => setSearchQuery(e.target.value)}
                           onKeyDown={handleKeyDown}
                           placeholder="Search for products, services, or companies..."
-                          className="w-full h-[58px] bg-transparent outline-none text-base font-medium text-[#05252e] placeholder:text-gray-400"
+                          className="w-full h-[58px] bg-transparent outline-none text-base font-medium text-[#05252e] placeholder:text-slate-500"
                         />
                       </div>
                       <div className="relative flex-1 flex items-center px-5 py-4 md:py-0 bg-white rounded-2xl border border-gray-200 shadow-sm focus-within:border-[#007367]/60 focus-within:ring-4 focus-within:ring-[#007367]/5 transition-all duration-300">
-                        <MapPin className="w-5 h-5 text-gray-400 mr-3 shrink-0" />
+                        <MapPin className="w-5 h-5 text-slate-500 mr-3 shrink-0" />
                         <input
                           type="text"
                           value={locationQuery}
                           onChange={(e) => setLocationQuery(e.target.value)}
                           onKeyDown={handleKeyDown}
                           placeholder="Location..."
-                          className="w-full h-[58px] bg-transparent outline-none text-base font-medium text-[#05252e] placeholder:text-gray-400"
+                          className="w-full h-[58px] bg-transparent outline-none text-base font-medium text-[#05252e] placeholder:text-slate-500"
                         />
                       </div>
                       <button 
                         onClick={handleSearch}
-                        className="bg-[#05252e] hover:bg-[#007367] transition-all duration-300 text-white px-9 py-3.5 rounded-2xl font-black text-sm uppercase tracking-widest whitespace-nowrap shadow-lg hover:shadow-emerald-900/10 active:scale-95 flex items-center justify-center"
+                        className="bg-[#007367] hover:bg-[#005e54] transition-all duration-300 text-white px-9 py-3.5 rounded-2xl font-semibold text-base uppercase  whitespace-nowrap shadow-lg hover:shadow-[#007367]/10 active:scale-95 flex items-center justify-center"
                       >
                         Search
                       </button>
@@ -207,10 +207,10 @@ const Hero = () => {
                           >
                              {/* Header Row */}
                              <div className="flex items-center justify-between px-6 py-4 border-b border-gray-50 bg-gray-50/50">
-                                 <h4 className="text-xs font-bold text-gray-500 uppercase tracking-widest">
+                                 <h4 className="text-base font-semibold text-slate-700 uppercase ">
                                      {isSearching ? 'Searching our directory...' : 'Top Matches'}
                                  </h4>
-                                 <button onClick={() => setShowDropdown(false)} className="text-gray-400 hover:text-gray-600 transition-colors">
+                                 <button onClick={() => setShowDropdown(false)} className="text-slate-500 hover:text-slate-800 transition-colors">
                                      <X className="w-4 h-4" />
                                  </button>
                              </div>
@@ -233,15 +233,15 @@ const Hero = () => {
                                                     {vendor.gallery?.[0]?.url ? (
                                                         <img src={vendor.gallery[0].url} alt="" className="w-full h-full object-cover" />
                                                     ) : (
-                                                        <span className="text-lg font-bold text-gray-400">{vendor.businessName.charAt(0)}</span>
+                                                        <span className="text-lg font-semibold text-slate-500">{vendor.businessName.charAt(0)}</span>
                                                     )}
                                                 </div>
                                                 <div className="flex-1 min-w-0">
                                                     <div className="flex items-center gap-2 mb-1">
-                                                        <h5 className="font-bold text-gray-900 truncate group-hover:text-[#007367] transition-colors">{vendor.businessName}</h5>
+                                                        <h5 className="font-semibold text-slate-900 truncate group-hover:text-[#007367] transition-colors">{vendor.businessName}</h5>
                                                         {vendor.verified && <ShieldCheck className="w-3.5 h-3.5 text-[#007367]" />}
                                                     </div>
-                                                    <div className="flex items-center gap-3 text-xs text-gray-500 font-medium">
+                                                    <div className="flex items-center gap-3 text-base text-slate-700 font-medium">
                                                         <span className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5" /> {vendor.city}</span>
                                                         <span className="w-1 h-1 rounded-full bg-gray-300"></span>
                                                         <span className="truncate">{vendor.category?.name || 'Business'}</span>
@@ -254,8 +254,8 @@ const Hero = () => {
                                  ) : (
                                      <div className="py-12 text-center w-full">
                                         <Search className="w-8 h-8 text-gray-300 mx-auto mb-3" />
-                                        <p className="text-sm font-bold text-gray-900">We couldn't find any suppliers matching your search.</p>
-                                        <p className="text-xs text-gray-500 mt-1">Try broadening your search terms or location.</p>
+                                        <p className="text-base font-semibold text-slate-900">We couldn't find any suppliers matching your search.</p>
+                                        <p className="text-base text-slate-700 mt-1">Try broadening your search terms or location.</p>
                                      </div>
                                  )}
                              </div>
@@ -265,7 +265,7 @@ const Hero = () => {
                                  <Link 
                                     href={`/search?q=${encodeURIComponent(searchQuery)}&city=${encodeURIComponent(locationQuery)}`}
                                     onClick={() => setShowDropdown(false)}
-                                    className="w-full py-4 bg-gray-50 hover:bg-gray-100 text-[#007367] font-bold text-sm text-center transition-colors border-t border-gray-100 block"
+                                    className="w-full py-4 bg-gray-50 hover:bg-gray-100 text-[#007367] font-semibold text-base text-center transition-colors border-t border-gray-100 block"
                                  >
                                      See all matching results
                                  </Link>
@@ -281,7 +281,7 @@ const Hero = () => {
 
           {/* Popular Searches */}
           <div className="mt-8">
-            <p className="text-[11px] font-black text-gray-400 uppercase tracking-[0.2em] mb-4">
+            <p className="text-base font-semibold text-slate-500 uppercase  mb-4">
               Popular Industries
             </p>
             <div className="flex flex-wrap gap-2.5">
@@ -306,7 +306,7 @@ const Hero = () => {
                         }
                     }, 0);
                   }}
-                  className="group flex items-center px-4 py-2.5 bg-white hover:bg-white border border-gray-200 hover:border-[#007367] hover:shadow-xl hover:shadow-[#007367]/5 hover:-translate-y-0.5 rounded-xl text-[12px] font-bold text-gray-600 hover:text-[#007367] transition-all duration-300 cursor-pointer"
+                  className="group flex items-center px-4 py-2.5 bg-white hover:bg-white border border-gray-200 hover:border-[#007367] hover:shadow-xl hover:shadow-[#007367]/5 hover:-translate-y-0.5 rounded-xl text-base font-semibold text-slate-800 hover:text-[#007367] transition-all duration-300 cursor-pointer"
                 >
                   <Search className="w-3.5 h-3.5 mr-2.5 text-gray-300 group-hover:text-[#007367] transition-colors" />
                   {tag}

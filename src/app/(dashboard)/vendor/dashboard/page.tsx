@@ -93,13 +93,13 @@ export default function VendorDashboard() {
       {/* Humanized Header */}
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6 border-b border-gray-100">
         <div className="space-y-2">
-            <h1 className="text-2xl font-semibold text-gray-900 flex items-center gap-3">
+            <h1 className="text-2xl font-semibold text-slate-900 flex items-center gap-3">
               Welcome back, {profile?.businessName?.split(' ')[0] || 'Partner'}!
-              <div className={`p-1 rounded-lg border ${profile?.verified ? 'bg-blue-50 border-blue-100 text-blue-600' : 'bg-amber-50 border-amber-100 text-amber-600'}`}>
+              <div className={`p-1 rounded-lg border ${profile?.verified ? 'bg-[#007367]/10 border-[#007367]/20 text-[#007367]' : 'bg-amber-50 border-amber-100 text-amber-600'}`}>
                 <ShieldCheck className="w-4 h-4" />
               </div>
             </h1>
-            <p className="text-gray-500 font-medium text-sm">
+            <p className="text-slate-700 font-medium text-base">
               {profile?.verified 
                 ? "Your business is visible to thousands of buyers right now." 
                 : "We're reviewing your profile to get you verified and ready."}
@@ -109,14 +109,14 @@ export default function VendorDashboard() {
         <div className="flex flex-wrap items-center gap-4">
             <Link 
               href="/vendor/products" 
-              className="px-5 py-2.5 bg-blue-600 text-white rounded-xl font-semibold text-sm flex items-center gap-2 hover:bg-blue-700 transition-all shadow-sm"
+              className="px-5 py-2.5 bg-[#007367] text-white rounded-none font-semibold text-base flex items-center gap-2 hover:bg-[#005e54] transition-all shadow-sm"
             >
                 <PlusCircle className="w-4 h-4" />
                 Add New Listing
             </Link>
             <Link 
               href="/vendor/profile" 
-              className="px-5 py-2.5 bg-white border border-gray-200 text-gray-700 rounded-xl font-semibold text-sm hover:bg-gray-50 transition-all"
+              className="px-5 py-2.5 bg-white border border-gray-200 text-slate-800 rounded-none font-semibold text-base hover:bg-gray-50 transition-all"
             >
                 Update Profile
             </Link>
@@ -131,14 +131,19 @@ export default function VendorDashboard() {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: i * 0.1 }}
-            className="bg-white p-6 rounded-2xl border border-gray-100 group hover:border-blue-200 hover:shadow-md transition-all duration-300"
+            className="bg-white p-6 rounded-none border border-gray-100 group hover:border-blue-200 hover:shadow-md transition-all duration-300"
           >
-            <div className={`w-10 h-10 bg-${stat.color}-50 text-${stat.color}-600 rounded-xl flex items-center justify-center mb-4 border border-${stat.color}-100/50 group-hover:scale-110 transition-transform`}>
+            <div className={`w-10 h-10 ${
+              stat.color === 'blue' ? 'bg-[#007367]/10 text-[#007367] border-[#007367]/20' :
+              stat.color === 'emerald' ? 'bg-[#e88c30]/10 text-[#e88c30] border-[#e88c30]/20' :
+              stat.color === 'amber' ? 'bg-amber-50 text-amber-600 border-amber-100/50' : 
+              'bg-[#007367]/5 text-[#007367] border-[#007367]/10'
+            } rounded-xl flex items-center justify-center mb-4 border group-hover:scale-110 transition-transform`}>
               <stat.icon className="w-5 h-5" />
             </div>
-            <p className="text-xs font-semibold text-gray-500 mb-1">{stat.label}</p>
-            <h3 className="text-2xl font-semibold text-gray-900">{stat.value}</h3>
-            <p className="text-xs font-medium text-gray-400 mt-1">{stat.desc}</p>
+            <p className="text-base font-semibold text-slate-700 mb-1">{stat.label}</p>
+            <h3 className="text-2xl font-semibold text-slate-900">{stat.value}</h3>
+            <p className="text-base font-medium text-slate-500 mt-1">{stat.desc}</p>
           </motion.div>
         ))}
       </div>
@@ -148,28 +153,28 @@ export default function VendorDashboard() {
         {/* Recent Activity Feed */}
         <div className="lg:col-span-2 space-y-6">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
-               <Activity className="w-4 h-4 text-blue-600" />
+            <h3 className="text-base font-semibold text-slate-900 flex items-center gap-2">
+               <Activity className="w-4 h-4 text-[#007367]" />
                Recent Activity
             </h3>
-            <Link href="/vendor/leads" className="text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors">See All Leads</Link>
+            <Link href="/vendor/leads" className="text-base font-semibold text-[#007367] hover:text-[#005e54] transition-colors">See All Leads</Link>
           </div>
           
-          <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
+          <div className="bg-white rounded-none border border-gray-100 overflow-hidden shadow-sm">
             {leads.length > 0 ? leads.map((lead: any, idx) => (
               <div key={lead.id} className={`p-6 ${idx !== leads.length - 1 ? 'border-b border-gray-50' : ''} hover:bg-gray-50/50 transition-all group`}>
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center font-semibold text-lg text-gray-500 border border-gray-200 group-hover:bg-blue-50 group-hover:text-blue-600 group-hover:border-blue-100 transition-all">
+                    <div className="w-12 h-12 bg-gray-100 rounded-none flex items-center justify-center font-semibold text-lg text-slate-700 border border-gray-200 group-hover:bg-[#007367]/10 group-hover:text-[#007367] group-hover:border-[#007367]/20 transition-all">
                       {lead.buyerName.charAt(0)}
                     </div>
                     <div className="space-y-1">
-                      <h4 className="text-sm font-semibold text-gray-900">{lead.buyerName}</h4>
+                      <h4 className="text-base font-semibold text-slate-900">{lead.buyerName}</h4>
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="text-xs font-medium text-gray-500 flex items-center gap-1">
+                        <span className="text-base font-medium text-slate-700 flex items-center gap-1">
                           <MapPin className="w-3 h-3" /> {lead.city}
                         </span>
-                        <div className="px-2 py-0.5 bg-blue-50 text-blue-600 rounded-md text-xs font-semibold border border-blue-100/50">
+                        <div className="px-2 py-0.5 bg-[#007367]/10 text-[#007367] rounded-none text-base font-semibold border border-[#007367]/20">
                           {lead.category?.name}
                         </div>
                       </div>
@@ -178,12 +183,12 @@ export default function VendorDashboard() {
 
                   <div className="flex items-center gap-4">
                     <div className="text-right hidden md:block">
-                       <p className="text-xs font-medium text-gray-400">Received</p>
-                       <p className="text-xs font-semibold text-gray-600">{new Date(lead.createdAt).toLocaleDateString()}</p>
+                       <p className="text-base font-medium text-slate-500">Received</p>
+                       <p className="text-base font-semibold text-slate-800">{new Date(lead.createdAt).toLocaleDateString()}</p>
                     </div>
                     <Link 
                       href={`/vendor/leads?id=${lead.id}`}
-                      className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-xs font-semibold text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-all flex items-center gap-1.5"
+                      className="px-4 py-2 bg-white border border-gray-200 rounded-none text-base font-semibold text-slate-800 hover:bg-gray-50 hover:text-slate-900 transition-all flex items-center gap-1.5"
                     >
                       Reply to Lead
                     </Link>
@@ -195,33 +200,33 @@ export default function VendorDashboard() {
                 <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center mx-auto border border-gray-100">
                   <LayoutGrid className="w-6 h-6 text-gray-300" />
                 </div>
-                <p className="text-sm font-semibold text-gray-500">You don't have any leads yet.</p>
+                <p className="text-base font-semibold text-slate-700">You don't have any leads yet.</p>
               </div>
             )}
           </div>
 
           {/* New Feature: Business Insights Snapshot */}
-          <div className="bg-blue-50 rounded-2xl p-8 border border-blue-100 relative overflow-hidden group">
+          <div className="bg-[#f0f9f8] rounded-2xl p-8 border border-[#007367]/20 relative overflow-hidden group">
              <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div className="space-y-3">
-                   <h3 className="text-lg font-semibold text-blue-900">How You Compare</h3>
-                   <p className="text-blue-800 text-sm font-medium max-w-md">
-                     You are performing <span className="font-semibold">12% better</span> than the category average. Keep your response speed low to maintain this lead.
+                   <h3 className="text-lg font-semibold text-[#007367]">How You Compare</h3>
+                   <p className="text-[#007367]/80 text-base font-medium max-w-md">
+                     You are performing <span className="font-semibold text-[#007367]">12% better</span> than the category average. Keep your response speed low to maintain this lead.
                    </p>
                    <div className="flex items-center gap-6 pt-3">
                       <div>
-                         <p className="text-xs font-medium text-blue-700/70 mb-1">Your Score</p>
-                         <p className="text-xl font-semibold text-blue-900">{stats.rankingScore.toFixed(1)}</p>
+                         <p className="text-base font-medium text-[#007367]/70 mb-1">Your Score</p>
+                         <p className="text-xl font-semibold text-[#007367]">{stats.rankingScore.toFixed(1)}</p>
                       </div>
-                      <div className="w-px h-8 bg-blue-200"></div>
+                      <div className="w-px h-8 bg-[#007367]/20"></div>
                       <div>
-                         <p className="text-xs font-medium text-blue-700/70 mb-1">Category Avg</p>
-                         <p className="text-xl font-semibold text-blue-800/60">{(analytics?.categoryBenchmark || 0).toFixed(1)}</p>
+                         <p className="text-base font-medium text-[#007367]/70 mb-1">Category Avg</p>
+                         <p className="text-xl font-semibold text-[#007367]/60">{(analytics?.categoryBenchmark || 0).toFixed(1)}</p>
                       </div>
                    </div>
                 </div>
-                <div className="hidden md:flex items-center justify-center p-4 bg-white/50 rounded-2xl border border-white">
-                   <BarChart3 className="w-10 h-10 text-blue-500" />
+                <div className="hidden md:flex items-center justify-center p-4 bg-white/60 rounded-none border border-white">
+                   <BarChart3 className="w-10 h-10 text-[#007367]" />
                 </div>
              </div>
           </div>
@@ -230,24 +235,24 @@ export default function VendorDashboard() {
         {/* Sidebar Context */}
         <div className="space-y-6">
            {/* Profile Connectivity */}
-           <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-6">
+           <div className="bg-white rounded-none border border-gray-100 p-6 shadow-sm space-y-6">
               <div className="flex items-center justify-between">
-                 <h3 className="text-sm font-semibold text-gray-900">Social Links</h3>
-                 <Globe className="w-4 h-4 text-gray-400" />
+                 <h3 className="text-base font-semibold text-slate-900">Social Links</h3>
+                 <Globe className="w-4 h-4 text-slate-500" />
               </div>
               
               <div className="space-y-3">
                  {[
-                   { id: 'linkedin', icon: Linkedin, color: 'text-blue-600' },
+                   { id: 'linkedin', icon: Linkedin, color: 'text-[#007367]' },
                    { id: 'instagram', icon: Instagram, color: 'text-pink-600' },
                    { id: 'facebook', icon: Facebook, color: 'text-blue-800' }
                  ].map(social => (
-                    <div key={social.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100 hover:border-blue-100 transition-all">
-                       <div className="flex items-center gap-2.5">
+                    <div key={social.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-none border border-gray-100 hover:border-[#007367]/30 transition-all">
+                       <div className="flex items-center gap-2.5 shrink-0">
                           <social.icon className={`w-4 h-4 ${social.color}`} />
-                          <span className="text-xs font-semibold text-gray-700 capitalize">{social.id}</span>
+                          <span className="text-base font-semibold text-slate-800 capitalize">{social.id}</span>
                        </div>
-                       <span className="text-xs font-medium text-gray-500">
+                       <span className="text-base font-medium text-slate-700 truncate ml-2 text-right">
                           {profile?.socialLinks?.[social.id] ? `@${profile.socialLinks[social.id]}` : 'Not Linked'}
                        </span>
                     </div>
@@ -255,29 +260,29 @@ export default function VendorDashboard() {
               </div>
 
               <div className="pt-4 border-t border-gray-50 space-y-2">
-                 <div className="flex items-center justify-between text-xs font-semibold text-gray-500">
+                 <div className="flex items-center justify-between text-base font-semibold text-slate-700">
                    <span>Business Location</span>
                    <MapPin className="w-3 h-3" />
                  </div>
-                 <p className="text-sm font-medium text-gray-700">
+                 <p className="text-base font-medium text-slate-800">
                    {profile?.address || "Address not provided"}
-                   {profile?.city && <><br /><span className="text-gray-900 font-semibold">{profile.city}</span></>}
+                   {profile?.city && <><br /><span className="text-slate-900 font-semibold">{profile.city}</span></>}
                  </p>
               </div>
            </div>
 
            {/* Quick Support / Feedback */}
-           <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100 space-y-4">
-              <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-gray-600 shadow-sm border border-gray-100">
+           <div className="bg-gray-50 rounded-none p-6 border border-gray-100 space-y-4">
+              <div className="w-10 h-10 bg-white rounded-none flex items-center justify-center text-slate-800 shadow-sm border border-gray-100">
                  <MessageSquare className="w-5 h-5" />
               </div>
               <div>
-                 <h4 className="text-sm font-semibold text-gray-900 mb-1">Need some help?</h4>
-                 <p className="text-xs font-medium text-gray-600">
+                 <h4 className="text-base font-semibold text-slate-900 mb-1">Need some help?</h4>
+                 <p className="text-base font-medium text-slate-800">
                    Our support team is always here to help you get the most out of your profile.
                  </p>
               </div>
-              <button className="w-full py-2.5 bg-white border border-gray-200 rounded-xl text-xs font-semibold text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-all">
+              <button className="w-full py-2.5 bg-white border border-gray-200 rounded-none text-base font-semibold text-slate-800 hover:bg-gray-100 hover:text-slate-900 transition-all">
                 Contact Support
               </button>
            </div>
@@ -286,3 +291,5 @@ export default function VendorDashboard() {
     </div>
   );
 }
+
+

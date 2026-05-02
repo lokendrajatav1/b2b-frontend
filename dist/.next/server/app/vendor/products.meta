@@ -1,0 +1,17 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/(dashboard)/layout,_N_T_/(dashboard)/vendor/layout,_N_T_/(dashboard)/vendor/products/layout,_N_T_/(dashboard)/vendor/products/page,_N_T_/vendor/products"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/!KGRhc2hib2FyZCk/vendor/products/__PAGE__",
+    "/!KGRhc2hib2FyZCk/vendor/products",
+    "/!KGRhc2hib2FyZCk/vendor",
+    "/!KGRhc2hib2FyZCk",
+    "/_index",
+    "/_head"
+  ]
+}

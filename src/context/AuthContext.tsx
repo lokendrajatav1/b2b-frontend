@@ -9,9 +9,11 @@ interface User {
   name: string;
   email: string;
   phone?: string;
-  role: 'ADMIN' | 'SUBADMIN' | 'VENDOR' | 'BUYER';
+  role: 'SUPERADMIN' | 'ADMIN' | 'VENDOR' | 'BUYER';
+  avatar?: string;
+  city?: string;
   vendor?: any;
-  subAdmin?: any;
+  admin?: any;
 }
 
 
@@ -71,8 +73,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       router.push(redirectUrl);
     } else {
       // Redirect based on role
-      if (userData.role === 'ADMIN') router.push('/admin/dashboard');
-      else if (userData.role === 'SUBADMIN') router.push('/subadmin/dashboard');
+      if (userData.role === 'SUPERADMIN') router.push('/super-admin/dashboard');
+      else if (userData.role === 'ADMIN') router.push('/admin/dashboard');
       else if (userData.role === 'VENDOR') router.push('/vendor/dashboard');
       else router.push('/');
     }

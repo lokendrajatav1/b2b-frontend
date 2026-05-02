@@ -17,7 +17,7 @@ const QuoteForm = () => {
     {
       icon: <Send className="w-8 h-8 text-blue-400" />,
       label: "What are you looking for?",
-      bgColor: "bg-blue-50"
+      bgColor: "bg-[#007367]/5"
     },
     {
       icon: <Mail className="w-8 h-8 text-teal-400" />,
@@ -38,7 +38,7 @@ const QuoteForm = () => {
           
           {/* Left Side: Marketing/Steps */}
           <div className="space-y-10">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 leading-tight">
+            <h2 className="text-3xl md:text-4xl font-semibold text-slate-900 leading-tight">
               Get free quotes from <br className="hidden md:block" /> verified suppliers
             </h2>
             
@@ -48,7 +48,7 @@ const QuoteForm = () => {
                   <div className={`w-14 h-14 md:w-16 md:h-16 ${step.bgColor} rounded-full flex items-center justify-center shrink-0`}>
                     {step.icon}
                   </div>
-                  <p className="text-sm font-medium text-gray-700 leading-snug">
+                  <p className="text-base font-medium text-slate-800 leading-snug">
                     {step.label}
                   </p>
                 </div>
@@ -58,7 +58,7 @@ const QuoteForm = () => {
 
           {/* Right Side: Lead Form */}
           <div className="bg-white p-6 md:p-8 rounded-2xl border border-gray-100 shadow-xl shadow-gray-200/40">
-            <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-6">
+            <h3 className="text-xl md:text-2xl font-semibold text-slate-900 mb-6">
               Tell us what you need
             </h3>
             
@@ -70,14 +70,14 @@ const QuoteForm = () => {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="What product or service do you need?" 
-                  className="w-full h-14 px-5 border border-gray-200 rounded-xl focus:outline-none focus:border-[#007367] focus:ring-1 focus:ring-[#007367] transition-all text-gray-700 placeholder-gray-400 bg-gray-50/50 focus:bg-white"
+                  className="w-full h-14 px-5 border border-gray-200 rounded-xl focus:outline-none focus:border-[#007367] focus:ring-1 focus:ring-[#007367] transition-all text-slate-800 placeholder-gray-400 bg-gray-50/50 focus:bg-white"
                   required
                 />
               </div>
 
               {/* Mobile Number Input Group */}
               <div className="flex">
-                <div className="h-14 px-5 border border-gray-200 border-r-0 rounded-l-xl bg-gray-50/50 flex items-center text-gray-500 font-medium">
+                <div className="h-14 px-5 border border-gray-200 border-r-0 rounded-l-xl bg-gray-50/50 flex items-center text-slate-700 font-medium">
                   +91
                 </div>
                 <input 
@@ -85,7 +85,7 @@ const QuoteForm = () => {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="Enter your mobile" 
-                  className="w-full h-14 px-5 border border-gray-200 rounded-r-xl focus:outline-none focus:border-[#007367] focus:ring-1 focus:ring-[#007367] transition-all text-gray-700 placeholder-gray-400 bg-gray-50/50 focus:bg-white"
+                  className="w-full h-14 px-5 border border-gray-200 rounded-r-xl focus:outline-none focus:border-[#007367] focus:ring-1 focus:ring-[#007367] transition-all text-slate-800 placeholder-gray-400 bg-gray-50/50 focus:bg-white"
                   required
                 />
               </div>
@@ -108,4 +108,4 @@ const QuoteForm = () => {
   );
 };
 
-export default QuoteForm;
+export default QuoteForm;

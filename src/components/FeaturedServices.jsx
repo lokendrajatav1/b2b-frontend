@@ -66,7 +66,7 @@ const FeaturedServices = () => {
               key={idx}
               className="featured-card bg-white border border-gray-200 rounded-3xl p-4 md:p-6"
             >
-              <h3 className="text-xl font-bold text-[#05252e] mb-6">
+              <h3 className="text-xl font-semibold text-[#05252e] mb-6">
                 {cat.title}
               </h3>
               <div className="grid grid-cols-3 gap-4">
@@ -86,7 +86,7 @@ const FeaturedServices = () => {
                       />
                       <div className="absolute inset-0 bg-black/5"></div>
                     </div>
-                    <span className="text-xs md:text-sm font-semibold text-[#444] text-center">
+                    <span className="text-base md:text-base font-semibold text-[#444] text-center">
                       {item.label}
                     </span>
                   </div>

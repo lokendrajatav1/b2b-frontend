@@ -3,27 +3,37 @@
 import React, { useState, useEffect } from 'react';
 import { apiFetch } from '@/lib/api';
 import { 
-  Target, 
+  Building2, 
   Search, 
   Filter, 
-  ChevronRight, 
-  Mail, 
-  Phone, 
-  MapPin, 
+  ShieldCheck, 
+  XCircle, 
   Clock, 
+  MapPin, 
+  Globe, 
+  FileText, 
   CheckCircle2, 
+  RefreshCcw, 
   AlertCircle,
   MoreVertical,
-  Activity,
-  Zap,
   ArrowRight,
-  MessageSquare,
-  RefreshCcw,
   UserCheck,
-  ShieldCheck,
+  ChevronRight,
+  ExternalLink,
+  Zap,
+  CheckCheck,
+  Mail,
+  Smartphone,
+  ShieldAlert,
+  X,
+  Linkedin,
+  Instagram,
+  Facebook,
+  MessageSquare,
   Package,
   Layers,
-  Briefcase
+  Activity,
+  Target as TargetIcon
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -34,7 +44,6 @@ export default function AdminLeads() {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
-  const [typeFilter, setTypeFilter] = useState('ALL');
   const [assigning, setAssigning] = useState<string | null>(null);
   const [categoryVendors, setCategoryVendors] = useState<any[]>([]);
 
@@ -63,14 +72,21 @@ export default function AdminLeads() {
 
   const fetchVendorsByCategory = async (catId: string) => {
     try {
-      const data = await apiFetch(`/admin/users?role=VENDOR&limit=50`);
-      // IMPORTANT: Vendors have a many-to-many relationship with categories (v.categories array),
-      // they do NOT have a direct v.categoryId property. Checking v.categories is required.
-      const matching = (data.data?.users || [])
-        .map((u: any) => u.vendor)
-        .filter((v: any) => 
-           v && v.categories?.some((c: any) => c.id === catId || c.name === selectedLead?.category?.name)
-        );
+      // 1. Try fetching directly by categoryId
+      let data = await apiFetch(`/vendors?categoryId=${catId}&limit=100&verified=true`);
+      let matching = data.data?.vendors || [];
+      
+      // 2. Fallback: If no vendors found by ID, try searching by the category name
+      if (matching.length === 0 && selectedLead?.category?.name) {
+        const searchData = await apiFetch(`/vendors?search=${encodeURIComponent(selectedLead.category.name)}&limit=100&verified=true`);
+        matching = searchData.data?.vendors || [];
+      }
+
+      // 3. Ultra-Fallback: If still empty, show all verified vendors (General Hub Partners)
+      if (matching.length === 0) {
+        const allData = await apiFetch(`/vendors?limit=20&verified=true`);
+        matching = allData.data?.vendors || [];
+      }
       
       setCategoryVendors(matching);
     } catch (error) {
@@ -82,7 +98,14 @@ export default function AdminLeads() {
     try {
       setLoading(true);
       const data = await apiFetch('/admin/leads');
-      setLeads(data.data?.leads || []);
+      const fetchedLeads = data.data?.leads || [];
+      setLeads(fetchedLeads);
+      
+      // Update selected lead if it's currently open to reflect latest status/vendor
+      if (selectedLead) {
+        const updated = fetchedLeads.find((l: any) => l.id === selectedLead.id);
+        if (updated) setSelectedLead(updated);
+      }
     } catch (error) {
       console.error('Failed to fetch leads:', error);
     } finally {
@@ -97,8 +120,8 @@ export default function AdminLeads() {
         method: 'PATCH',
         body: JSON.stringify({ vendorId })
       });
-      fetchLeads();
-      setLeads(leads.map(l => l.id === leadId ? { ...l, status: 'DISTRIBUTED' } : l));
+      // Refresh all leads and the selected lead state
+      await fetchLeads();
     } catch (error) {
       console.error('Failed to assign lead:', error);
     } finally {
@@ -111,185 +134,139 @@ export default function AdminLeads() {
     const matchesSearch = 
       lead.buyerName?.toLowerCase().includes(searchLow) || 
       lead.phone?.toLowerCase().includes(searchLow) ||
-      lead.buyerEmail?.toLowerCase().includes(searchLow) ||
       lead.category?.name?.toLowerCase().includes(searchLow) ||
       lead.city?.toLowerCase().includes(searchLow);
     
     const matchesStatus = statusFilter === 'ALL' || lead.status === statusFilter;
-    const matchesType = typeFilter === 'ALL' || lead.type === typeFilter;
-    
-    return matchesSearch && matchesStatus && matchesType;
+    return matchesSearch && matchesStatus;
   });
 
   return (
-    <div className="space-y-8 animate-simple-fade pb-20 p-2 md:p-0">
+    <div className="space-y-8 animate-simple-fade pb-20 p-2 md:p-0 font-medium">
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-gray-100 max-w-7xl mx-auto">
         <div>
-           <h1 className="text-2xl font-semibold text-gray-900 tracking-tight flex items-center gap-3">
-             Market Demand Streams
-             <div className="p-1.5 bg-blue-50 text-blue-600 rounded-lg border border-blue-100">
-                <MessageSquare className="w-5 h-5" />
+           <h1 className="text-2xl font-semibold text-slate-900  flex items-center gap-3">
+             Hub Demand Stream
+             <div className="p-1.5 bg-[#007367]/5 text-[#007367] rounded-none border border-[#007367]/10">
+                <TargetIcon className="w-5 h-5" />
              </div>
            </h1>
-           <p className="text-gray-500 font-medium mt-1 text-sm">Review incoming buyer requirements and curate their distribution to matching vendors.</p>
+           <p className="text-slate-700 font-medium mt-1 text-base">Distribute incoming inquiries to your verified regional hub partners.</p>
         </div>
 
         <div className="flex items-center gap-3">
            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
               <input 
                 type="text" 
-                placeholder="Search leads, category or city..." 
+                placeholder="Search leads..." 
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-100 rounded-xl text-[13px] font-medium outline-none focus:bg-white focus:border-blue-500 focus:shadow-md transition-all"
+                className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-100 rounded-none text-base font-semibold outline-none focus:bg-white focus:border-[#007367] transition-all"
               />
            </div>
 
-           {/* Filters Group */}
-           <div className="flex items-center gap-2 shrink-0">
-              <div className="relative group">
-                <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
-                <select 
-                  value={statusFilter}
-                  onChange={(e) => setStatusFilter(e.target.value)}
-                  className="pl-8 pr-6 py-2 bg-white border border-gray-200 rounded-lg text-[11px] font-bold text-gray-600 outline-none focus:border-blue-500 appearance-none cursor-pointer hover:bg-gray-50 transition-all shadow-sm"
-                >
-                  <option value="ALL">Status</option>
-                  <option value="PENDING">Pending (New)</option>
-                  <option value="DISTRIBUTED">Distributed</option>
-                  <option value="CLOSED">Closed/Converted</option>
-                  <option value="EXPIRED">Expired</option>
-                </select>
-              </div>
+           <select 
+             value={statusFilter}
+             onChange={(e) => setStatusFilter(e.target.value)}
+             className="px-4 py-2.5 bg-white border border-gray-200 rounded-none text-base font-semibold text-slate-800 outline-none focus:border-[#007367] appearance-none cursor-pointer shadow-sm min-w-[140px]"
+           >
+             <option value="ALL">All Signals</option>
+             <option value="PENDING">Pending Check</option>
+             <option value="DISTRIBUTED">Assigned Hub</option>
+           </select>
 
-              <select 
-                value={typeFilter}
-                onChange={(e) => setTypeFilter(e.target.value)}
-                className="px-3 py-2 bg-white border border-gray-200 rounded-lg text-[11px] font-bold text-gray-600 outline-none focus:border-blue-500 appearance-none cursor-pointer hover:bg-gray-50 transition-all shadow-sm"
-              >
-                <option value="ALL">Type</option>
-                <option value="DIRECT">Direct</option>
-                <option value="MARKETPLACE">Marketplace</option>
-              </select>
-
-              <button onClick={fetchLeads} className="p-2 bg-white border border-gray-200 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-all shadow-sm">
-                <RefreshCcw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
-              </button>
-           </div>
+           <button onClick={fetchLeads} className="p-2.5 bg-white border border-gray-200 rounded-none text-slate-500 hover:text-[#007367] transition-all shadow-sm">
+             <RefreshCcw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+           </button>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto">
-        <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm flex flex-col">
-          <div className="overflow-x-auto max-h-[calc(100vh-260px)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200">
-            <table className="w-full text-left border-collapse relative">
-              <thead className="sticky top-0 z-20">
-                <tr className="bg-gray-50 border-b border-gray-100 shadow-sm">
-                  <th className="px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Buyer Details</th>
-                  <th className="px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Inquiry Type</th>
-                  <th className="px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Location</th>
-                  <th className="px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Status</th>
-                  <th className="px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Matched Vendor</th>
-                  <th className="px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest text-right">Actions</th>
+        <div className="bg-white rounded-none border border-gray-100 overflow-hidden shadow-sm">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left whitespace-nowrap min-w-[800px]">
+              <thead>
+                <tr className="bg-gray-50/50 border-b border-gray-50">
+                  <th className="px-8 py-5 text-base font-semibold text-slate-500 uppercase ">Inquiry Intelligence</th>
+                  <th className="px-8 py-5 text-base font-semibold text-slate-500 uppercase  text-center">Signal Status</th>
+                  <th className="px-8 py-5 text-base font-semibold text-slate-500 uppercase ">Assigned Partner</th>
+                  <th className="px-8 py-5 text-base font-semibold text-slate-500 uppercase  text-right">Control</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
                 {loading ? (
                   [1,2,3,4,5].map(i => (
                     <tr key={i} className="animate-pulse">
-                      <td colSpan={6} className="px-6 py-8"><div className="h-10 bg-gray-50 rounded-xl"></div></td>
+                      <td colSpan={4} className="px-8 py-8"><div className="h-10 bg-gray-50 rounded-xl"></div></td>
                     </tr>
                   ))
                 ) : filteredLeads.length > 0 ? (
                   filteredLeads.map((lead) => (
                   <tr key={lead.id} className="group hover:bg-gray-50/50 transition-colors">
-                    <td className="px-6 py-4">
+                    <td className="px-8 py-5">
                         <div className="flex flex-col">
-                           <span className="text-sm font-semibold text-gray-900 tracking-tight leading-tight">
-                             {lead.searchKeyword ? `Looking for "${lead.searchKeyword}"` : `Inquiry from ${lead.buyerName}`}
-                           </span>
-                           <div className="flex items-center gap-3 mt-1.5">
-                              <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest flex items-center gap-1">
-                                <Phone className="w-2.5 h-2.5" /> {lead.phone || 'N/A'}
-                              </span>
-                           </div>
-                           <span className="text-[9px] font-bold text-gray-300 uppercase tracking-widest mt-1 flex items-center gap-1.5">
-                             <Clock className="w-2.5 h-2.5" /> Posted {new Date(lead.createdAt).toLocaleDateString()}
-                           </span>
-                        </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="space-y-1.5">
-                        <div className="flex items-center gap-1.5 text-xs text-gray-600 font-medium">
-                          <Package className="w-3 h-3 text-gray-400" /> {lead.category?.name || 'N/A'}
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                        <div className="flex items-center gap-1.5 text-[10px] text-gray-400 font-bold uppercase tracking-wider">
-                           <MapPin className="w-3 h-3" /> {lead.city || 'Global Reach'}
-                        </div>
-                    </td>
-                    <td className="px-6 py-4">
-                       <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-widest ${
-                         lead.status === 'PENDING' ? 'bg-amber-50 text-amber-700 border border-amber-100' :
-                         lead.status === 'DISTRIBUTED' ? 'bg-blue-50 text-blue-700 border border-blue-100' :
-                         'bg-emerald-50 text-emerald-700 border border-emerald-100'
-                       }`}>
-                          <div className={`w-1 h-1 rounded-full ${
-                             lead.status === 'PENDING' ? 'bg-amber-500' : 
-                             lead.status === 'DISTRIBUTED' ? 'bg-blue-500' : 'bg-emerald-500'
-                          }`}></div>
-                          {lead.status === 'PENDING' ? 'Open Market' : lead.status === 'DISTRIBUTED' ? 'Linked' : 'Closed'}
-                       </div>
-                    </td>
-                    <td className="px-6 py-4">
-                       {lead.vendor ? (
-                         <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600 border border-emerald-100 text-[10px] font-bold shadow-sm">
-                              {lead.vendor.businessName?.charAt(0) || 'V'}
+                            <span className="text-base font-semibold text-slate-900 leading-tight group-hover:text-[#007367] transition-colors">
+                                {lead.searchKeyword ? `Demand: ${lead.searchKeyword}` : `Requirement: ${lead.buyerName}`}
+                            </span>
+                            <div className="flex items-center gap-3 mt-2">
+                                <span className="text-base font-semibold text-black uppercase  flex items-center gap-1.5">
+                                    <MapPin className="w-3 h-3 text-[#007367]" /> {lead.city}
+                                </span>
+                                <span className="w-1 h-1 bg-gray-200 rounded-full" />
+                                <span className="text-base font-semibold text-black uppercase ">
+                                    {new Date(lead.createdAt).toLocaleDateString()}
+                                </span>
                             </div>
-                            <div>
-                               <p className="text-xs font-semibold text-gray-900 leading-none capitalize truncate max-w-[150px]">{lead.vendor.businessName}</p>
-                               <p className="text-[10px] font-medium text-gray-500 mt-1">Verified Partner</p>
-                            </div>
-                         </div>
-                       ) : (
-                         <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Unassigned</span>
-                       )}
+                        </div>
                     </td>
-                    <td className="px-6 py-4 text-right">
-                       <button 
-                         onClick={() => { setSelectedLead(lead); setIsDetailOpen(true); }}
-                         className={`p-2 rounded-lg transition-all inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest ${
-                           !lead.vendor 
-                             ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-500/20' 
-                             : 'text-gray-400 hover:text-blue-600 hover:bg-blue-50'
-                         }`}
-                       >
-                         {lead.vendor ? 'Review Details' : 'Assign Vendor'}
-                         <ArrowRight className="w-3.5 h-3.5" />
-                       </button>
+                    <td className="px-8 py-5 text-center">
+                        <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-base font-semibold uppercase  border transition-all ${
+                            lead.status === 'PENDING' ? 'bg-amber-50 text-amber-600 border-amber-100' :
+                            'bg-emerald-50 text-emerald-600 border-emerald-100 shadow-sm'
+                        }`}>
+                            <div className={`w-1.5 h-1.5 rounded-full ${
+                                lead.status === 'PENDING' ? 'bg-amber-500 animate-pulse' : 'bg-emerald-500'
+                            }`}></div>
+                            {lead.status === 'PENDING' ? 'Awaiting Hub Distribution' : 'Successfully Assigned'}
+                        </div>
+                    </td>
+                    <td className="px-8 py-5">
+                    {lead.vendor ? (
+                        <div className="flex items-center gap-3">
+                            <span className="text-base font-semibold text-slate-900 truncate max-w-[150px]">{lead.vendor.businessName}</span>
+                        </div>
+                    ) : (
+                        <span className="text-base font-semibold text-black uppercase  italic">No Link Established</span>
+                    )}
+                    </td>
+                    <td className="px-8 py-5 text-right">
+                        <button 
+                            onClick={() => { setSelectedLead(lead); setIsDetailOpen(true); }}
+                            className="px-5 py-2.5 bg-white border border-gray-100 text-[#007367] rounded-none font-semibold text-base uppercase  hover:bg-[#007367] hover:text-white transition-all shadow-sm flex items-center gap-2 ml-auto"
+                        >
+                            Manage
+                            <ChevronRight className="w-3.5 h-3.5" />
+                        </button>
                     </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={6} className="py-24 text-center">
-                     <Layers className="w-16 h-16 text-gray-200 mx-auto mb-4" />
-                     <p className="text-sm font-semibold text-gray-400">Workspace clear. No leads found.</p>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={4} className="py-32 text-center bg-gray-50/20">
+                        <CheckCheck className="w-20 h-20 text-gray-200 mx-auto mb-6" />
+                        <h3 className="text-xl font-semibold text-slate-500 ">Queue Optimized</h3>
+                        <p className="text-base font-medium text-black max-w-xs mx-auto mt-2 uppercase">All market inquiries in your hub have been processed and distributed.</p>
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-    </div>
 
-      {/* Side Detail Sheet */}
       <AnimatePresence>
         {isDetailOpen && selectedLead && (
           <>
@@ -298,145 +275,112 @@ export default function AdminLeads() {
                 animate={{ opacity: 1 }} 
                 exit={{ opacity: 0 }}
                 onClick={() => setIsDetailOpen(false)}
-                className="fixed inset-0 bg-black/50 backdrop-blur-sm z-90 h-screen overflow-hidden"
+                className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100]"
              />
              <motion.div 
                 initial={{ x: '100%' }} 
                 animate={{ x: 0 }} 
                 exit={{ x: '100%' }}
                 transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                className="fixed right-0 top-0 h-screen w-full max-w-md bg-white shadow-2xl z-100 border-l border-gray-100 flex flex-col"
+                className="fixed right-0 top-0 h-screen w-full max-w-xl bg-white shadow-2xl z-[110] flex flex-col overflow-hidden"
              >
-                {/* Sidebar Header */}
-                <div className="p-6 border-b border-gray-50 flex items-center justify-between bg-white sticky top-0 z-10">
-                   <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 border border-blue-100 shadow-sm">
-                         <Target className="w-5 h-5" />
+               <div className="p-8 border-b border-gray-50 flex items-center justify-between bg-white shrink-0">
+                  <div className="flex items-center gap-3">
+                     <div className="w-2 h-10 bg-[#007367] rounded-full" />
+                     <h2 className="text-2xl font-semibold text-slate-900  uppercase">Inquiry Intelligence</h2>
+                  </div>
+                  <button onClick={() => setIsDetailOpen(false)} className="p-3 bg-gray-50 hover:bg-gray-100 rounded-none transition-all">
+                     <X className="w-6 h-6 text-slate-500" />
+                  </button>
+               </div>
+
+               <div className="flex-1 overflow-y-auto p-10 space-y-10">
+                   <div className="bg-gray-50/50 p-8 rounded-none border border-gray-100 flex gap-6 items-center shadow-inner">
+                      <div className="w-16 h-16 bg-white rounded-none flex items-center justify-center text-[#007367] border border-[#007367]/10 shrink-0 shadow-lg">
+                         <MessageSquare className="w-8 h-8" />
                       </div>
                       <div>
-                         <h2 className="text-sm font-bold text-gray-900 tracking-tight">Lead Intelligence</h2>
-                         <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-0.5">Ref: {selectedLead.id.split('-')[0].toUpperCase()}</p>
-                      </div>
-                   </div>
-                   <button 
-                     onClick={() => setIsDetailOpen(false)}
-                     className="p-2 hover:bg-gray-100 rounded-lg transition-all group"
-                   >
-                     <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-gray-900" />
-                   </button>
-                </div>
-
-                <div className="flex-1 overflow-y-auto p-6 space-y-8">
-                   {/* Main Requirement Title */}
-                   <div>
-                      <h3 className="text-xl font-bold text-gray-900 leading-tight tracking-tight">
-                         {selectedLead.searchKeyword ? `Looking for "${selectedLead.searchKeyword}"` : `Requirement via ${selectedLead.buyerName}`}
-                      </h3>
-                      <div className="flex items-center gap-2 mt-3">
-                         <span className="px-2 py-0.5 bg-gray-100 text-[10px] font-bold text-gray-500 rounded-md uppercase tracking-wider">Inquiry</span>
-                         <span className="px-2 py-0.5 bg-blue-50 text-[10px] font-bold text-blue-600 rounded-md uppercase tracking-wider border border-blue-100">{selectedLead.type || 'Standard'}</span>
+                         <h3 className="text-xl font-semibold text-slate-900 leading-tight">
+                            {selectedLead.searchKeyword ? `Requirement: ${selectedLead.searchKeyword}` : `Inquiry from ${selectedLead.buyerName}`}
+                         </h3>
+                         <p className="text-base font-semibold text-slate-500 uppercase  mt-2">Reference: {selectedLead.id.split('-')[0].toUpperCase()}</p>
                       </div>
                    </div>
 
-                   {/* Quick Info Grid */}
-                   <div className="grid grid-cols-2 gap-4">
-                      <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100 transition-all hover:bg-white hover:shadow-sm">
-                         <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Buyer Identity</p>
-                         <p className="text-xs font-bold text-gray-900 truncate flex items-center gap-1.5">
-                            <UserCheck className="w-3 h-3 text-blue-500" /> {selectedLead.buyerName || 'Private User'}
-                         </p>
+                  <div className="space-y-4">
+                     <h4 className="text-base font-semibold text-black uppercase  pl-1 border-b border-gray-50 pb-2">Transmission Message</h4>
+                     <div className="p-8 bg-white border border-gray-100 rounded-none text-base text-slate-800 font-semibold leading-relaxed italic shadow-sm border-l-4 border-[#e88c30]">
+                        "{selectedLead.message}"
+                     </div>
+                  </div>
+
+                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <div className="space-y-4">
+                         <h4 className="text-base font-semibold text-black uppercase  pl-1 border-b border-gray-50 pb-2">Buyer Credentials</h4>
+                          <div className="space-y-3">
+                             <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-none border border-gray-100">
+                                <UserCheck className="w-5 h-5 text-[#007367] shrink-0" />
+                                <span className="text-base font-semibold text-slate-900">{selectedLead.buyerName || 'Verification Needed'}</span>
+                             </div>
+                             <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-none border border-gray-100">
+                                <Smartphone className="w-5 h-5 text-[#e88c30] shrink-0" />
+                                <span className="text-base font-semibold text-slate-900">{selectedLead.phone || 'N/A'}</span>
+                             </div>
+                          </div>
                       </div>
-                      <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100 transition-all hover:bg-white hover:shadow-sm">
-                         <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Phone Contact</p>
-                         <p className="text-xs font-bold text-gray-900 truncate flex items-center gap-1.5">
-                            <Phone className="w-3 h-3 text-emerald-500" /> {selectedLead.phone || 'N/A'}
-                         </p>
-                      </div>
-                      <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100 transition-all hover:bg-white hover:shadow-sm">
-                         <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Target Location</p>
-                         <p className="text-xs font-bold text-gray-900 truncate flex items-center gap-1.5">
-                            <MapPin className="w-3 h-3 text-gray-400" /> {selectedLead.city || 'Global Reach'}
-                         </p>
-                      </div>
-                      <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100 transition-all hover:bg-white hover:shadow-sm">
-                         <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Category Hub</p>
-                         <p className="text-xs font-bold text-gray-900 truncate flex items-center gap-1.5">
-                            <Package className="w-3 h-3 text-indigo-400" /> {selectedLead.category?.name || 'General'}
-                         </p>
+
+                      <div className="space-y-4">
+                         <h4 className="text-base font-semibold text-black uppercase  pl-1 border-b border-gray-50 pb-2">Target Market</h4>
+                         <div className="p-8 bg-[#007367]/5/50 border border-[#007367]/10 rounded-none flex flex-col items-center justify-center text-center gap-3">
+                            <Layers className="w-8 h-8 text-[#007367]" />
+                            <span className="text-base font-semibold text-indigo-700 uppercase ">{selectedLead.category?.name || 'General Hub'}</span>
+                         </div>
                       </div>
                    </div>
 
-                   {/* Message Content */}
-                   <div className="space-y-3">
-                      <div className="flex items-center justify-between px-1">
-                         <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Inquiry Message</h4>
-                         <MessageSquare className="w-3 h-3 text-gray-300" />
-                      </div>
-                      <div className="p-5 bg-white border border-gray-100 rounded-2xl text-[13px] text-gray-600 font-medium leading-relaxed italic shadow-sm relative overflow-hidden group">
-                         <div className="absolute top-0 left-0 w-1 h-full bg-blue-500/10 group-hover:bg-blue-500 transition-all"></div>
-                         "{selectedLead.message}"
-                      </div>
-                   </div>
-
-                   {/* Assignment Workflow */}
-                   <div className="space-y-4 pt-4 border-t border-gray-50">
-                      <div className="flex items-center justify-between px-1">
-                         <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest text-blue-600">Opportunity Matching</h4>
-                         <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
+                   <div className="pt-10 border-t border-gray-50 space-y-6">
+                      <div className="flex items-center justify-between">
+                        <h4 className="text-base font-semibold text-black uppercase  pl-1">Hub Distribution Center</h4>
+                        <span className="text-base font-semibold text-[#007367] bg-[#007367]/5 px-3 py-1 rounded-full uppercase er">{categoryVendors.length} Hub Partners Available</span>
                       </div>
                       
-                      {selectedLead.vendor && (
-                        <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 flex items-center justify-between mb-2">
-                           <div className="flex items-center gap-3">
-                              <div className="w-9 h-9 bg-white rounded-xl text-emerald-600 shadow-sm border border-emerald-100 flex items-center justify-center font-bold text-sm">
-                                 {selectedLead.vendor.businessName?.charAt(0)}
-                              </div>
-                              <div>
-                                 <p className="text-xs font-bold text-emerald-900">{selectedLead.vendor.businessName}</p>
-                                 <p className="text-[10px] font-medium text-emerald-700">Matched Partner</p>
-                              </div>
-                           </div>
-                           <CheckCircle2 className="w-5 h-5 text-emerald-500 fill-white" />
-                        </div>
-                      )}
-
-                      <div className="space-y-2">
-                          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-1 mb-2">
-                            {selectedLead.vendor ? 'Re-Route to Hub Vendor:' : 'Select Target Vendor:'}
-                          </p>
+                      <div className="space-y-4">
                           {categoryVendors.length > 0 ? (
                             categoryVendors.map(vendor => (
-                              <div key={vendor.id} className="flex items-center justify-between p-3 bg-white border border-gray-100 rounded-xl hover:border-blue-200 hover:shadow-md hover:shadow-blue-500/5 transition-all group cursor-default">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-8 h-8 bg-gray-50 rounded-lg flex items-center justify-center text-gray-400 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors font-bold text-[11px]">
-                                      {vendor.businessName?.charAt(0)}
-                                    </div>
+                              <div key={vendor.id} className="flex items-center justify-between p-4 bg-white border border-gray-100 rounded-none hover:border-[#007367]/30 hover:shadow-md transition-all group">
+                                <div className="flex items-center gap-4">
+                                    {vendor.logoUrl ? (
+                                      <img src={vendor.logoUrl} alt={vendor.businessName} className="w-14 h-14 object-cover border border-gray-100 shrink-0" />
+                                    ) : (
+                                      <div className="w-14 h-14 bg-gray-50 flex items-center justify-center text-slate-300 border border-gray-100 shrink-0">
+                                        <Building2 className="w-7 h-7" />
+                                      </div>
+                                    )}
                                     <div>
-                                       <span className="text-[11px] font-bold text-gray-900 block leading-none">{vendor.businessName}</span>
-                                       <span className="text-[9px] font-medium text-gray-400 mt-1 block">Verified Vendor</span>
+                                        <span className="text-base font-semibold text-slate-900 block group-hover:text-[#007367] transition-colors">{vendor.businessName}</span>
+                                        <span className="text-xs font-semibold text-slate-500 uppercase tracking-tight">{vendor.city} Hub Partner</span>
                                     </div>
                                 </div>
                                 <button 
                                   onClick={() => handleAssign(selectedLead.id, vendor.id)}
                                   disabled={assigning === selectedLead.id || selectedLead.vendor?.id === vendor.id}
-                                  className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all disabled:opacity-50 ${selectedLead.vendor?.id === vendor.id ? 'bg-gray-100 text-gray-400' : 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/20'}`}
+                                  className={`px-5 py-2.5 rounded-none text-sm font-semibold uppercase tracking-wide transition-all ${selectedLead.vendor?.id === vendor.id ? 'bg-emerald-50 text-emerald-600 border border-emerald-100 cursor-default' : 'bg-[#007367] hover:bg-[#005e54] text-white shadow-sm'}`}
                                 >
-                                  {assigning === selectedLead.id ? '...' : selectedLead.vendor?.id === vendor.id ? 'Linked' : 'Assign'}
+                                  {assigning === selectedLead.id ? <RefreshCcw className="w-4 h-4 animate-spin" /> : selectedLead.vendor?.id === vendor.id ? 'Active Link' : 'Connect'}
                                 </button>
                               </div>
                             ))
                           ) : (
-                            <div className="p-6 bg-gray-50 rounded-2xl border border-dashed border-gray-200 text-center">
-                               <AlertCircle className="w-6 h-6 text-gray-300 mx-auto mb-2" />
-                               <p className="text-[11px] font-medium text-gray-500 italic px-4">
-                                 No verified vendors found in this category hub yet.
-                               </p>
+                            <div className="flex flex-col items-center justify-center py-12 px-8 text-center bg-gray-50/50 rounded-none border-2 border-dashed border-gray-100">
+                                <Activity className="w-12 h-12 text-gray-200 mb-4" />
+                                <h5 className="text-base font-semibold text-slate-500 uppercase ">No matching partners</h5>
+                                <p className="text-base font-medium text-slate-500 mt-2 max-w-[200px]">No verified vendors in this category were found within your hub registry.</p>
                             </div>
                           )}
                       </div>
                    </div>
                 </div>
-            </motion.div>
+             </motion.div>
           </>
         )}
       </AnimatePresence>

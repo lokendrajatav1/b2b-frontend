@@ -1,0 +1,17 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/(dashboard)/layout,_N_T_/(dashboard)/super-admin/layout,_N_T_/(dashboard)/super-admin/refunds/layout,_N_T_/(dashboard)/super-admin/refunds/page,_N_T_/super-admin/refunds"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/!KGRhc2hib2FyZCk/super-admin/refunds/__PAGE__",
+    "/!KGRhc2hib2FyZCk/super-admin/refunds",
+    "/!KGRhc2hib2FyZCk/super-admin",
+    "/!KGRhc2hib2FyZCk",
+    "/_index",
+    "/_head"
+  ]
+}

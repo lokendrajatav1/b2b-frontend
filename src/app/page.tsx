@@ -10,7 +10,7 @@ import AdBanner from "@/components/AdBanner";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white text-gray-900 pt-6">
+    <div className="min-h-screen bg-white text-slate-900">
       <main>
         <Hero />
         <ServiceGrid />

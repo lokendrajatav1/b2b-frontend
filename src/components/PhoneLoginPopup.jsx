@@ -84,20 +84,20 @@ export default function PhoneLoginPopup() {
       >
         <button 
             onClick={handleSkip} 
-            className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-900 transition-colors"
+            className="absolute top-4 right-4 p-2 text-slate-500 hover:text-slate-900 transition-colors"
         >
-            <span className="text-xs mr-2">Skip</span>
+            <span className="text-base mr-2">Skip</span>
             <X className="w-4 h-4" />
         </button>
 
         <div className="p-10 pt-16">
             <div className="mb-8">
-                <h3 className="text-xl text-gray-900 mb-2">Welcome</h3>
-                <p className="text-sm text-gray-500">Sign in to continue to community.</p>
+                <h3 className="text-xl text-slate-900 mb-2">Welcome</h3>
+                <p className="text-base text-slate-700">Sign in to continue to community.</p>
             </div>
 
             {error && (
-                <div className="mb-6 py-2 text-xs text-red-500 border-t border-red-100">
+                <div className="mb-6 py-2 text-base text-red-500 border-t border-red-100">
                     {error}
                 </div>
             )}
@@ -106,22 +106,22 @@ export default function PhoneLoginPopup() {
                 {!otpSent ? (
                     <div>
                         <div className="flex border-b border-gray-200">
-                            <span className="py-4 pr-3 text-gray-400 text-sm">+91</span>
+                            <span className="py-4 pr-3 text-slate-500 text-base">+91</span>
                             <input
                                 type="tel"
                                 required
                                 value={phone}
                                 onChange={(e) => setPhone(e.target.value)}
-                                className="w-full py-4 bg-transparent outline-none text-gray-900 text-sm"
+                                className="w-full py-4 bg-transparent outline-none text-slate-900 text-base"
                                 placeholder="Mobile number"
                             />
                         </div>
                     </div>
                 ) : (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                        <div className="flex justify-between items-center mb-4 text-xs">
-                          <span className="text-gray-500">OTP sent to +91 {phone}</span>
-                          <button type="button" onClick={() => setOtpSent(false)} className="text-gray-400 underline">Edit</button>
+                        <div className="flex justify-between items-center mb-4 text-base">
+                          <span className="text-slate-700">OTP sent to +91 {phone}</span>
+                          <button type="button" onClick={() => setOtpSent(false)} className="text-slate-500 underline">Edit</button>
                         </div>
                         <input
                             type="text"
@@ -130,7 +130,7 @@ export default function PhoneLoginPopup() {
                             autoFocus
                             value={otp}
                             onChange={(e) => setOtp(e.target.value)}
-                            className="w-full py-4 border-b border-gray-200 outline-none text-center text-xl tracking-widest text-gray-900"
+                            className="w-full py-4 border-b border-gray-200 outline-none text-center text-xl  text-slate-900"
                             placeholder="Code"
                         />
                     </motion.div>
@@ -139,7 +139,7 @@ export default function PhoneLoginPopup() {
                 <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-3 bg-gray-900 text-white rounded-full text-xs transition-opacity hover:opacity-90 flex items-center justify-center gap-2 disabled:opacity-50 mt-6"
+                    className="w-full py-3 bg-gray-900 text-white rounded-full text-base transition-opacity hover:opacity-90 flex items-center justify-center gap-2 disabled:opacity-50 mt-6"
                 >
                     {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : (
                         otpSent ? 'Verify' : 'Continue'

@@ -24,6 +24,8 @@ import {
   ChevronRight,
   MessageSquare,
   UserCircle,
+  X,
+  Loader2,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -52,6 +54,89 @@ export default function ProductDetailPage() {
   // Zoom States
   const [isZooming, setIsZooming] = useState(false);
   const [zoomPos, setZoomPos] = useState({ x: 0, y: 0 });
+
+  // Enquiry modal
+  const [enquiryOpen, setEnquiryOpen] = useState(false);
+  const [enquiryCity, setEnquiryCity] = useState('');
+  const [enquiryQty, setEnquiryQty] = useState('');
+  const [enquiryMsg, setEnquiryMsg] = useState('');
+  const [enquirySending, setEnquirySending] = useState(false);
+  const [enquirySent, setEnquirySent] = useState(false);
+
+  // Call Now modal
+  const [callModalOpen, setCallModalOpen] = useState(false);
+  const [callPhone, setCallPhone] = useState('');
+  const [callSending, setCallSending] = useState(false);
+  const [callSent, setCallSent] = useState(false);
+
+  useEffect(() => {
+    if (user?.phone) setCallPhone(user.phone);
+  }, [user]);
+
+  const handleCallSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!user) { 
+      setPendingAction('CALL'); 
+      setLoginModalOpen(true); 
+      return; 
+    }
+    try {
+      // We only use /leads/direct for Call Now to avoid duplicate leads.
+      // The backend has been updated to keep these for Admin review only (vendorId: null).
+      await apiFetch('/leads/direct', {
+        method: 'POST',
+        body: JSON.stringify({
+          vendorId: product.vendor.id,
+          actionType: 'CALL',
+          buyerName: user.name,
+          phone: callPhone,
+          city: user.city || product.vendor.city || 'India',
+          categoryId: product.vendor.categories?.[0]?.id,
+          message: `CALL REQUEST: User wants to call ${product.vendor.businessName} regarding ${product.name}. Preferred Phone: ${callPhone}`
+        }),
+      });
+      setCallSent(true);
+
+      setTimeout(() => { 
+        setCallSent(false); 
+        setCallModalOpen(false);
+        // We trigger the tel: link after closing the modal for a cleaner exit
+        const phone = product.vendor.phone?.replace(/[^0-9]/g, '');
+        if (phone && phone !== '**********') {
+          window.location.href = `tel:${phone}`;
+        }
+      }, 2500);
+    } catch (e) { 
+      console.error(e); 
+    } finally { 
+      setCallSending(false); 
+    }
+  };
+
+  const popularCitySuggestions = ['Indore', 'Bhopal', 'Delhi', 'Bengaluru', 'Mumbai'];
+
+  const handleEnquirySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!user) { setPendingAction('inquiry'); setLoginModalOpen(true); return; }
+    setEnquirySending(true);
+    try {
+      await apiFetch('/leads', {
+        method: 'POST',
+        body: JSON.stringify({
+          vendorId: product.vendor.id,
+          buyerName: user.name,
+          phone: user.phone || enquiryCity,
+          city: enquiryCity || product.vendor.city,
+          categoryId: product.vendor.categories?.[0]?.id,
+          searchKeyword: product.name,
+          message: enquiryMsg || `Enquiry for ${product.name}. Qty: ${enquiryQty}`,
+        }),
+      });
+      setEnquirySent(true);
+      setTimeout(() => { setEnquirySent(false); setEnquiryOpen(false); }, 2500);
+    } catch (e) { console.error(e); }
+    finally { setEnquirySending(false); }
+  };
 
   const handleZoom = (e: React.MouseEvent<HTMLDivElement>) => {
     const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
@@ -186,8 +271,10 @@ export default function ProductDetailPage() {
 
   // Retry pending action after login
   const handleModalSuccess = () => {
-    if (pendingAction === 'CALL' || pendingAction === 'WHATSAPP') {
-      setTimeout(() => handleDirectAction(pendingAction as 'CALL' | 'WHATSAPP'), 300);
+    if (pendingAction === 'CALL') {
+      setCallModalOpen(true);
+    } else if (pendingAction === 'WHATSAPP') {
+      setTimeout(() => handleDirectAction('WHATSAPP'), 300);
     }
     setPendingAction(null);
   };
@@ -203,6 +290,298 @@ export default function ProductDetailPage() {
   return (
     <div className="min-h-screen bg-[#f8fafc]">
 
+      {/* ── IndiaMart-style Enquiry Modal ── */}
+      {enquiryOpen && product && (
+        <div
+          className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+          onClick={() => setEnquiryOpen(false)}
+        >
+          <div
+            className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col md:flex-row"
+            style={{ maxHeight: '90vh' }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Left: Product + Supplier */}
+            <div className="md:w-[260px] shrink-0 bg-gray-50 border-r border-gray-100 flex flex-col overflow-y-auto">
+              <div className="w-full h-44 bg-white border-b border-gray-100 flex items-center justify-center overflow-hidden">
+                {(product.images && product.images.length > 0) || product.imageUrl ? (
+                  <img
+                    src={(product.images && product.images.length > 0) ? product.images[activeImageIndex] : product.imageUrl}
+                    alt={product.name}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <Package className="w-12 h-12 text-gray-200" />
+                )}
+              </div>
+              <div className="p-5 space-y-4">
+                <div>
+                  <h3 className="font-bold text-gray-900 text-sm leading-tight mb-1">{product.name}</h3>
+                  {product.price > 0 && (
+                    <p className="text-lg font-black text-[#1b5e20]">
+                      ₹ {product.price.toLocaleString()}
+                      <span className="text-xs font-medium text-gray-500">/{product.moq > 1 ? `${product.moq} units` : 'Piece'}</span>
+                    </p>
+                  )}
+                </div>
+                <div className="border-t border-gray-100 pt-4 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <ExternalLink className="w-3.5 h-3.5 text-[#0076a8]" />
+                    <span className="text-sm font-bold text-[#0076a8]">{vendor.businessName}</span>
+                  </div>
+                  {vendor.phone && vendor.phone !== '**********' && (
+                    <div className="flex items-center gap-2 text-sm font-bold text-gray-900">
+                      <Phone className="w-3.5 h-3.5 text-[#007367]" /> {vendor.phone}
+                    </div>
+                  )}
+                  <div className="flex items-center gap-2 text-xs text-gray-500">
+                    <MapPin className="w-3.5 h-3.5" /> {vendor.city}
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    <span className="flex items-center gap-1 text-[10px] font-bold text-[#1b5e20] bg-green-50 border border-green-200 px-2 py-0.5 rounded">
+                      <CheckCircle2 className="w-3 h-3" /> GST
+                    </span>
+                    <span className="flex items-center gap-1 text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded">
+                      <CheckCircle2 className="w-3 h-3 fill-amber-400" /> TrustSEAL
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1 bg-[#1b5e20] text-white rounded px-2 py-0.5 text-xs font-bold">
+                      {avgRating || '4.5'} <Star className="w-3 h-3 fill-white ml-0.5" />
+                    </div>
+                    <span className="text-xs text-gray-400">({reviews.length})</span>
+                  </div>
+                  <button
+                    onClick={() => { setEnquiryOpen(false); setCallModalOpen(true); }}
+                    className="w-full py-2.5 bg-[#e65100] hover:bg-[#c74600] text-white rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-colors mt-2"
+                  >
+                    <Phone className="w-4 h-4" /> Call Now
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Right: Enquiry Form */}
+            <div className="flex-1 flex flex-col overflow-y-auto">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+                <h2 className="text-base font-bold text-gray-900">Provide details to talk to the supplier</h2>
+                <button onClick={() => setEnquiryOpen(false)} className="p-1.5 rounded-full hover:bg-gray-100 transition-colors">
+                  <X className="w-5 h-5 text-gray-500" />
+                </button>
+              </div>
+
+              {enquirySent ? (
+                <div className="flex-1 flex flex-col items-center justify-center gap-4 p-8">
+                  <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
+                    <CheckCircle2 className="w-8 h-8 text-[#1b5e20]" />
+                  </div>
+                  <p className="text-lg font-bold text-gray-900">Enquiry Sent!</p>
+                  <p className="text-sm text-gray-500 text-center">The supplier will contact you shortly.</p>
+                </div>
+              ) : (
+                <form onSubmit={handleEnquirySubmit} className="flex-1 p-6 space-y-4">
+                  <div>
+                    <label className="text-xs font-bold text-gray-700 uppercase tracking-wide mb-1.5 block">
+                      City or Pincode <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={enquiryCity}
+                      onChange={(e) => setEnquiryCity(e.target.value)}
+                      placeholder="City or Pincode*"
+                      className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm font-medium text-gray-900 outline-none focus:border-[#007367] focus:ring-2 focus:ring-[#007367]/10 transition-all"
+                    />
+                    <div className="flex items-center justify-between mt-1.5 text-xs">
+                      <span className="text-gray-400">
+                        Suggestions:{' '}
+                        {popularCitySuggestions.slice(0, 3).map((c) => (
+                          <button key={c} type="button" onClick={() => setEnquiryCity(c)} className="text-[#0076a8] hover:underline font-semibold mr-1">{c}</button>
+                        ))}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (navigator.geolocation) {
+                            navigator.geolocation.getCurrentPosition(async (pos) => {
+                              const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&zoom=10`);
+                              const data = await res.json();
+                              setEnquiryCity(data.address.city || data.address.town || '');
+                            });
+                          }
+                        }}
+                        className="text-[#0076a8] hover:underline font-semibold"
+                      >
+                        Detect My City
+                      </button>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-xs font-bold text-gray-700 uppercase tracking-wide mb-1.5 block">Quantity Required</label>
+                    <input
+                      type="number"
+                      value={enquiryQty}
+                      onChange={(e) => setEnquiryQty(e.target.value)}
+                      placeholder="e.g. 100 pieces"
+                      min="1"
+                      className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm font-medium text-gray-900 outline-none focus:border-[#007367] transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs font-bold text-gray-700 uppercase tracking-wide mb-1.5 block">Your Message (Optional)</label>
+                    <textarea
+                      value={enquiryMsg}
+                      onChange={(e) => setEnquiryMsg(e.target.value)}
+                      rows={3}
+                      placeholder="Describe your requirements..."
+                      className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm font-medium text-gray-900 outline-none focus:border-[#007367] transition-all resize-none"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    disabled={enquirySending || !enquiryCity}
+                    className="w-full py-3.5 bg-[#007367] hover:bg-[#005e54] disabled:opacity-60 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-colors shadow-md"
+                  >
+                    {enquirySending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                    {enquirySending ? 'Sending...' : 'Submit'}
+                  </button>
+                  <p className="text-center text-xs text-gray-400">By submitting, you agree to our Terms & Privacy Policy.</p>
+                </form>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Call Now Modal (As requested by user) ── */}
+      {callModalOpen && product && (
+        <div
+          className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+          onClick={() => setCallModalOpen(false)}
+        >
+          <div
+            className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col md:flex-row"
+            style={{ maxHeight: '90vh' }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Left: Product + Supplier */}
+            <div className="md:w-[260px] shrink-0 bg-gray-50 border-r border-gray-100 flex flex-col overflow-y-auto">
+              <div className="w-full h-44 bg-white border-b border-gray-100 flex items-center justify-center overflow-hidden relative">
+                {(product.images && product.images.length > 0) || product.imageUrl ? (
+                  <img
+                    src={(product.images && product.images.length > 0) ? product.images[activeImageIndex] : product.imageUrl}
+                    alt={product.name}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <Package className="w-12 h-12 text-gray-200" />
+                )}
+                <div className="absolute top-2 left-2">
+                  <span className="bg-[#1b5e20] text-white text-[10px] font-bold px-2 py-0.5 rounded">
+                    Calling Supplier
+                  </span>
+                </div>
+              </div>
+              <div className="p-5 space-y-4">
+                <div>
+                  <h3 className="font-bold text-gray-900 text-sm leading-tight mb-1">{product.name}</h3>
+                  {product.price > 0 && (
+                    <p className="text-lg font-black text-[#1b5e20]">
+                      ₹ {product.price.toLocaleString()}
+                    </p>
+                  )}
+                </div>
+                <div className="border-t border-gray-100 pt-4 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <ExternalLink className="w-3.5 h-3.5 text-[#0076a8]" />
+                    <span className="text-sm font-bold text-[#0076a8]">{vendor.businessName}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-gray-500">
+                    <MapPin className="w-3.5 h-3.5" /> {vendor.city}
+                  </div>
+                  <div className="pt-2">
+                     <div className="flex items-center gap-1.5 bg-[#1b5e20] text-white rounded-lg px-2.5 py-1 w-fit text-[11px] font-bold">
+                        <Star className="w-3 h-3 fill-white" /> {avgRating || '4.5'}
+                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right: Call Form */}
+            <div className="flex-1 flex flex-col overflow-y-auto">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+                <h2 className="text-base font-bold text-gray-900">Confirm your number to call</h2>
+                <button onClick={() => setCallModalOpen(false)} className="p-1.5 rounded-full hover:bg-gray-100 transition-colors">
+                  <X className="w-5 h-5 text-gray-500" />
+                </button>
+              </div>
+
+              {callSent ? (
+                <div className="flex-1 flex flex-col items-center justify-center gap-4 p-8 bg-white">
+                  <motion.div 
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="w-20 h-20 rounded-full bg-green-50 flex items-center justify-center border-2 border-green-500/20"
+                  >
+                    <CheckCircle2 className="w-10 h-10 text-green-600" />
+                  </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-center"
+                  >
+                    <p className="text-xl font-black text-gray-900">Enquiry Sent Successfully!</p>
+                    <p className="text-sm text-gray-500 mt-2">Connecting you to the supplier now...</p>
+                  </motion.div>
+                </div>
+              ) : (
+                <form onSubmit={handleCallSubmit} className="flex-1 p-6 flex flex-col justify-center space-y-6">
+                  <div className="space-y-3">
+                    <label className="text-xs font-bold text-gray-700 uppercase tracking-wide block">
+                      Your Mobile Number <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative group">
+                      <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-2 border-r border-gray-200 pr-3">
+                        <img src="https://flagcdn.com/w20/in.png" alt="India" className="w-5 h-auto rounded-sm" />
+                        <span className="text-sm font-bold text-gray-500">+91</span>
+                      </div>
+                      <input
+                        type="tel"
+                        required
+                        pattern="[0-9]{10}"
+                        value={callPhone}
+                        onChange={(e) => setCallPhone(e.target.value.replace(/[^0-9]/g, '').slice(0, 10))}
+                        placeholder="10 digit mobile number"
+                        className="w-full border border-gray-300 rounded-xl pl-24 pr-4 py-4 text-lg font-bold text-gray-900 outline-none focus:border-[#007367] focus:ring-4 focus:ring-[#007367]/10 transition-all"
+                      />
+                    </div>
+                    <p className="text-[10px] text-gray-400 font-medium">Supplier will call you back on this number if busy.</p>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={callSending || callPhone.length !== 10}
+                    className="w-full py-4 bg-[#e65100] hover:bg-[#c74600] disabled:opacity-60 text-white rounded-xl font-black text-base flex items-center justify-center gap-3 transition-all shadow-lg hover:shadow-xl active:scale-[0.98]"
+                  >
+                    {callSending ? <Loader2 className="w-6 h-6 animate-spin" /> : <Phone className="w-5 h-5 fill-white" />}
+                    {callSending ? 'Processing...' : 'Call Now'}
+                  </button>
+                  
+                  <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                    <div className="flex items-start gap-3">
+                      <ShieldCheck className="w-5 h-5 text-[#1b5e20] shrink-0" />
+                      <p className="text-[11px] text-gray-500 leading-relaxed">
+                        Your privacy is our priority. Your number is only shared with this verified supplier to facilitate your business inquiry.
+                      </p>
+                    </div>
+                  </div>
+                </form>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+      
       <VendorLoginModal
         isOpen={loginModalOpen}
         onClose={() => setLoginModalOpen(false)}
@@ -212,15 +591,15 @@ export default function ProductDetailPage() {
       <main className="max-w-7xl mx-auto px-4 md:px-10 py-12 pt-24">
         {/* Breadcrumb row */}
         <div className="flex items-center gap-2 text-sm text-gray-400 mb-10">
-          <button onClick={() => router.back()} className="hover:text-[#007367] transition-colors flex items-center gap-1 font-medium">
+          <button onClick={() => router.back()} className="hover:text-[#1b5e20] transition-colors flex items-center gap-1 font-bold">
             <ArrowLeft className="w-4 h-4" /> Search Results
           </button>
           <ChevronRight className="w-4 h-4" />
-          <Link href={`/supplier/${vendor.id}`} className="hover:text-[#007367] transition-colors font-medium">
+          <Link href={`/supplier/${vendor.id}`} className="hover:text-[#1b5e20] transition-colors font-bold uppercase tracking-wider text-[11px]">
             {vendor.businessName}
           </Link>
           <ChevronRight className="w-4 h-4" />
-          <span className="text-gray-700 font-medium truncate max-w-[200px]">{product.name}</span>
+          <span className="text-gray-900 font-black tracking-tight truncate max-w-[200px]">{product.name}</span>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-10">
@@ -232,12 +611,12 @@ export default function ProductDetailPage() {
             <div className="flex flex-col md:flex-row gap-5 items-start">
               {/* Thumbnails - Vertical on Desktop, Horizontal on Mobile */}
               {product.images && product.images.length > 1 && (
-                <div className="flex md:flex-col gap-4 order-2 md:order-1 overflow-x-auto md:overflow-y-auto md:max-h-[450px] no-scrollbar p-2 w-full md:w-auto">
+                <div className="flex md:flex-col gap-4 order-2 md:order-1 overflow-x-auto md:overflow-y-auto md:max-h-[500px] no-scrollbar p-2 w-full md:w-auto">
                   {product.images.map((img: string, idx: number) => (
                     <button 
                       key={idx}
                       onClick={() => setActiveImageIndex(idx)}
-                      className={`w-14 h-14 md:w-16 md:h-16 shrink-0 rounded-lg overflow-hidden border-2 transition-all duration-200 ${ activeImageIndex === idx ? 'border-[#007367] shadow-md scale-105' : 'border-white hover:border-gray-200 opacity-70 hover:opacity-100' }`}
+                      className={`w-16 h-16 md:w-20 md:h-20 shrink-0 rounded-xl overflow-hidden border-[3px] transition-all duration-300 ${ activeImageIndex === idx ? 'border-[#1b5e20] shadow-lg scale-110' : 'border-white hover:border-[#1b5e20]/30 shadow-sm opacity-80 hover:opacity-100' }`}
                     >
                       <img src={img} className="w-full h-full object-cover" alt={`${product.name} thumbnail ${idx + 1}`} />
                     </button>
@@ -276,12 +655,12 @@ export default function ProductDetailPage() {
 
                     {/* Type Badge overlay */}
                     <div className="absolute top-4 left-4 z-10 pointer-events-none">
-                      <span className={`px-3 py-1.5 text-[11px] font-bold uppercase tracking-widest rounded-full shadow-sm ${
+                      <span className={`px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] rounded-full shadow-xl border border-white/20 backdrop-blur-md ${
                         product.type === 'SERVICE'
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-emerald-600 text-white'
+                          ? 'bg-blue-600/90 text-white'
+                          : 'bg-[#1b5e20]/90 text-white'
                       }`}>
-                        {product.type === 'SERVICE' ? 'Service' : 'Product'}
+                        {product.type === 'SERVICE' ? 'Service Available' : 'Product Catalogue'}
                       </span>
                     </div>
                   </div>
@@ -307,102 +686,141 @@ export default function ProductDetailPage() {
               </div>
             </div>
 
-            {/* Title & Meta */}
-            <div className="bg-white rounded-2xl border border-gray-100 p-8 space-y-6">
+            {/* Premium Title & Meta Data Structure */}
+            <div className="bg-white rounded-3xl border border-gray-100 p-8 md:p-10 space-y-8 shadow-sm">
               <div>
-                <h1 className="text-xl md:text-2xl font-semibold text-gray-900 mb-2">{product.name}</h1>
-                {product.category && (
-                  <div className="flex items-center gap-2 text-sm text-gray-400">
-                    <Tag className="w-3.5 h-3.5" />
-                    <span>{product.category}</span>
-                  </div>
-                )}
+                <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 leading-tight">{product.name}</h1>
+                <div className="flex items-center gap-4">
+                  {product.category && (
+                    <div className="flex items-center gap-2 text-[15px] font-medium text-[#1b5e20] bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-100/50">
+                      <Tag className="w-4 h-4" />
+                      <span>{product.category}</span>
+                    </div>
+                  )}
+                  {avgRating && (
+                    <div className="flex items-center gap-1.5 bg-amber-50 text-amber-700 px-3 py-1.5 rounded-lg text-[15px] font-bold border border-amber-200/50">
+                      {avgRating} <Star className="w-4 h-4 fill-current" />
+                    </div>
+                  )}
+                </div>
               </div>
 
-              {/* Price & MOQ Row */}
-              <div className="flex flex-wrap items-center gap-6 py-6 border-y border-gray-50">
+              {/* Premium Price & MOQ Row */}
+              <div className="flex flex-wrap items-center justify-between gap-8 py-8 border-y border-gray-100">
                 {product.price > 0 && (
                   <div>
-                    <p className="text-[10px] text-gray-400 font-medium uppercase tracking-widest mb-1">Unit Price</p>
-                    <p className="text-xl font-bold text-[#05252e]">₹{product.price.toLocaleString()}</p>
+                    <p className="text-xs text-gray-400 font-semibold uppercase tracking-widest mb-2">Unit Price</p>
+                    <p className="text-xl font-black text-[#1b5e20]">₹{product.price.toLocaleString()}</p>
                   </div>
                 )}
+                
                 {product.moq > 0 && (
-                  <div className="h-10 w-px bg-gray-100 hidden sm:block" />
+                  <div className="hidden sm:block h-12 w-px bg-gray-100" />
                 )}
+                
                 {product.moq > 0 && (
                   <div>
-                    <p className="text-[10px] text-gray-400 font-medium uppercase tracking-widest mb-1">Min. Order Qty</p>
+                    <p className="text-xs text-gray-400 font-semibold uppercase tracking-widest mb-2">Min. Order Qty</p>
                     <div className="flex items-center gap-2">
-                      <Package className="w-4 h-4 text-[#007367]" />
-                      <p className="text-lg font-semibold text-[#007367]">{product.moq} Units</p>
+                      <Package className="w-5 h-5 text-[#e65100]" />
+                      <p className="text-xl  text-gray-900">{product.moq} Units</p>
                     </div>
                   </div>
                 )}
+                
                 {product.availability !== undefined && (
                   <>
-                    <div className="h-10 w-px bg-gray-100 hidden sm:block" />
+                    <div className="hidden sm:block h-12 w-px bg-gray-100" />
                     <div>
-                      <p className="text-[10px] text-gray-400 font-medium uppercase tracking-widest mb-1">Availability</p>
-                      <span className={`text-sm font-semibold ${product.availability ? 'text-emerald-600' : 'text-red-500'}`}>
-                        {product.availability ? '✓ In Stock' : '✗ Out of Stock'}
+                      <p className="text-xs text-gray-400 font-semibold uppercase tracking-widest mb-2">Availability</p>
+                      <span className={`text-[15px] font-bold flex items-center gap-2 ${product.availability ? 'text-emerald-600' : 'text-red-500'}`}>
+                        {product.availability ? <><CheckCircle2 className="w-5 h-5" /> In Stock</> : <><CheckCircle2 className="w-5 h-5" /> Out of Stock</>}
                       </span>
                     </div>
                   </>
                 )}
               </div>
 
-              {/* Description */}
-              {product.description && (
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wider">Description</h3>
-                  <p className="text-gray-500 leading-relaxed">{product.description}</p>
-                </div>
-              )}
+              {/* Enhanced Specs & Description with Light Green Shaded Boxes */}
+              <div className="space-y-8 pt-2">
+                {product.specifications && (
+                  <div>
+                    <h3 className="text-base font-bold text-gray-800 mb-4 flex items-center gap-2 uppercase tracking-wide">
+                      <Box className="w-5 h-5 text-[#1b5e20]" /> Specifications
+                    </h3>
+                    <div className="bg-emerald-50/60 p-6 md:p-8 rounded-2xl border border-emerald-100/60 text-[15px] font-medium text-gray-700 shadow-inner">
+                      {(() => {
+                        try {
+                          const parsed = typeof product.specifications === 'string' && product.specifications.startsWith('[') ? JSON.parse(product.specifications) : null;
+                          if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].key) {
+                            return (
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-8">
+                                {parsed.map((spec: any, idx: number) => (
+                                  <div key={idx} className="flex flex-col border-b border-emerald-100/60 pb-2">
+                                    <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">{spec.key}</span>
+                                    <span className="text-[15px] font-semibold text-gray-900 mt-0.5">{spec.value}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            );
+                          }
+                          return <div className="leading-loose whitespace-pre-line">{product.specifications}</div>;
+                        } catch (e) {
+                          return <div className="leading-loose whitespace-pre-line">{product.specifications}</div>;
+                        }
+                      })()}
+                    </div>
+                  </div>
+                )}
 
-              {/* Specifications */}
-              {product.specifications && (
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wider">Specifications</h3>
-                  <p className="text-gray-500 leading-relaxed whitespace-pre-line">{product.specifications}</p>
-                </div>
-              )}
+                {product.description && (
+                  <div>
+                    <h3 className="text-base font-bold text-gray-800 mb-4 flex items-center gap-2 uppercase tracking-wide">
+                      <Layers className="w-5 h-5 text-[#1b5e20]" /> Description
+                    </h3>
+                    <div className="bg-emerald-50/60 p-6 md:p-8 rounded-2xl border border-emerald-100/60 text-[15px] font-medium text-gray-700 leading-loose shadow-inner">
+                      {product.description}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
-
-            {/* ── Reviews Section ── */}
+            {/* ── Premium Reviews Section ── */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.25 }}
-              className="bg-white rounded-2xl border border-gray-100 p-8 space-y-8"
+              className="bg-white rounded-3xl border border-gray-100 p-8 md:p-10 shadow-sm space-y-10"
             >
               {/* Header */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <MessageSquare className="w-5 h-5 text-[#007367]" />
-                  <h3 className="text-base font-semibold text-gray-900">Ratings & Reviews</h3>
+              <div className="flex items-center justify-between pb-6 border-b border-gray-100">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center border border-emerald-100/50">
+                    <MessageSquare className="w-5 h-5 text-[#1b5e20]" />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900">Ratings & Reviews</h3>
                   {reviews.length > 0 && (
-                    <span className="text-xs font-medium text-gray-400 bg-gray-50 px-2.5 py-1 rounded-full border border-gray-100">
+                    <span className="text-sm font-bold text-[#1b5e20] bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100/50">
                       {reviews.length} {reviews.length === 1 ? 'review' : 'reviews'}
                     </span>
                   )}
                 </div>
                 {avgRating && (
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-2xl font-semibold text-gray-900">{avgRating}</span>
-                    <Star className="w-5 h-5 fill-amber-400 text-amber-400" />
+                  <div className="flex items-center gap-2 bg-amber-50 px-4 py-2 rounded-xl border border-amber-100">
+                    <span className="text-2xl font-bold text-amber-600">{avgRating}</span>
+                    <Star className="w-6 h-6 fill-amber-400 text-amber-400" />
                   </div>
                 )}
               </div>
 
               {/* Write a Review Form */}
               {user ? (
-                <form onSubmit={handleReview} className="bg-gray-50 rounded-xl p-6 space-y-4 border border-gray-100">
-                  <h4 className="text-sm font-semibold text-gray-700">Write a Review</h4>
+                <form onSubmit={handleReview} className="bg-emerald-50/40 rounded-2xl p-8 space-y-6 border border-emerald-100/60 shadow-inner">
+                  <h4 className="text-base font-bold text-gray-800 flex items-center gap-2">Write a Review</h4>
 
                   {/* Star Picker */}
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-2 bg-white px-5 py-3 rounded-xl border border-emerald-100/50 w-max shadow-sm">
                     {[1, 2, 3, 4, 5].map((star) => (
                       <button
                         key={star}
@@ -410,10 +828,10 @@ export default function ProductDetailPage() {
                         onClick={() => setReviewRating(star)}
                         onMouseEnter={() => setHoverRating(star)}
                         onMouseLeave={() => setHoverRating(0)}
-                        className="p-0.5 focus:outline-none"
+                        className="p-1 focus:outline-none transition-transform hover:scale-110"
                       >
                         <Star
-                          className={`w-7 h-7 transition-colors ${
+                          className={`w-8 h-8 transition-colors drop-shadow-sm ${
                             star <= (hoverRating || reviewRating)
                               ? 'fill-amber-400 text-amber-400'
                               : 'text-gray-200'
@@ -422,47 +840,46 @@ export default function ProductDetailPage() {
                       </button>
                     ))}
                     {reviewRating > 0 && (
-                      <span className="ml-2 text-sm text-gray-500">
+                      <span className="ml-4 text-[15px] font-bold text-[#1b5e20]">
                         {['', 'Poor', 'Fair', 'Good', 'Very Good', 'Excellent'][reviewRating]}
                       </span>
                     )}
                   </div>
 
-                  {/* Comment */}
                   <textarea
                     value={reviewComment}
                     onChange={(e) => setReviewComment(e.target.value)}
-                    rows={3}
+                    rows={4}
                     placeholder="Share your experience with this product or service..."
-                    className="w-full p-3.5 bg-white border border-gray-100 rounded-xl text-sm text-gray-700 outline-none focus:border-[#007367] transition-all resize-none"
+                    className="w-full p-5 bg-white border border-emerald-100/60 rounded-xl text-[15px] font-medium text-gray-700 outline-none focus:border-[#1b5e20] transition-all resize-none shadow-sm"
                   />
 
                   {reviewError && (
-                    <p className="text-sm text-red-500">{reviewError}</p>
+                    <p className="text-[15px] font-medium text-red-500 bg-red-50 p-3 rounded-lg border border-red-100">{reviewError}</p>
                   )}
 
                   <button
                     type="submit"
                     disabled={reviewSending || reviewSent}
-                    className={`px-6 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 transition-all ${
+                    className={`px-8 py-3.5 rounded-xl text-[15px] font-bold flex items-center gap-3 transition-all shadow-md ${
                       reviewSent
                         ? 'bg-emerald-500 text-white'
-                        : 'bg-[#007367] hover:bg-[#005e54] text-white'
+                        : 'bg-[#1b5e20] hover:bg-[#144216] text-white hover:-translate-y-0.5'
                     }`}
                   >
                     {reviewSent ? (
-                      <><CheckCircle2 className="w-4 h-4" /> Review Submitted!</>
+                      <><CheckCircle2 className="w-5 h-5" /> Review Submitted!</>
                     ) : reviewSending ? 'Submitting...' : (
-                      <><Send className="w-4 h-4" /> Submit Review</>
+                      <><Send className="w-5 h-5" /> Submit Review</>
                     )}
                   </button>
                 </form>
               ) : (
-                <div className="bg-gray-50 rounded-xl p-5 text-center border border-gray-100">
+                <div className="bg-gray-50 rounded-2xl p-6 text-center border border-gray-100">
                   <p className="text-sm text-gray-500">
                     <button
                       onClick={() => { setPendingAction('review'); setLoginModalOpen(true); }}
-                      className="text-[#007367] font-medium hover:underline"
+                      className="text-[#1b5e20] font-medium hover:underline"
                     >
                       Sign in
                     </button>{' '}to leave a review
@@ -473,11 +890,11 @@ export default function ProductDetailPage() {
               {/* Reviews List */}
               {reviews.length > 0 ? (
                 <div className="space-y-6">
-                  <div className="space-y-5 divide-y divide-gray-50">
+                  <div className="space-y-6 divide-y divide-gray-100">
                     {(showAllReviews ? reviews : reviews.slice(0, 5)).map((review: any, idx: number) => (
-                      <div key={review.id || idx} className={`flex gap-4 ${idx > 0 ? 'pt-5' : ''}`}>
-                        <div className="w-10 h-10 rounded-full bg-[#007367]/10 flex items-center justify-center shrink-0">
-                          <UserCircle className="w-6 h-6 text-[#007367]" />
+                      <div key={review.id || idx} className={`flex gap-4 ${idx > 0 ? 'pt-6' : ''}`}>
+                        <div className="w-10 h-10 rounded-full bg-[#1b5e20]/10 flex items-center justify-center shrink-0 border border-[#1b5e20]/20">
+                          <UserCircle className="w-6 h-6 text-[#1b5e20]" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between gap-2 mb-1">
@@ -500,7 +917,7 @@ export default function ProductDetailPage() {
                             ))}
                           </div>
                           {review.comment && (
-                            <p className="text-sm text-gray-500 leading-relaxed">{review.comment}</p>
+                            <p className="text-[15px] font-medium text-gray-700 leading-relaxed bg-emerald-50/40 p-5 rounded-xl border border-emerald-100/50">{review.comment}</p>
                           )}
                         </div>
                       </div>
@@ -510,7 +927,7 @@ export default function ProductDetailPage() {
                   {reviews.length > 5 && (
                     <button
                       onClick={() => setShowAllReviews(!showAllReviews)}
-                      className="w-full py-3 border border-gray-100 rounded-xl text-sm font-semibold text-[#007367] hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"
+                      className="w-full py-3 border border-gray-200 rounded-xl text-sm font-semibold text-[#1b5e20] hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"
                     >
                       {showAllReviews ? (
                         <>Show Less <ChevronRight className="w-4 h-4 rotate-90" /></>
@@ -540,7 +957,7 @@ export default function ProductDetailPage() {
               >
                 <div className="flex flex-col gap-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-14 h-14 rounded-xl bg-[#007367]/10 flex items-center justify-center text-[#007367] text-xl font-bold shrink-0 overflow-hidden border border-[#007367]/10">
+                    <div className="w-14 h-14 rounded-xl bg-[#1b5e20]/10 flex items-center justify-center text-[#1b5e20] text-xl font-bold shrink-0 overflow-hidden border border-[#1b5e20]/10">
                       {vendor.logoUrl ? (
                         <img src={vendor.logoUrl} alt={vendor.businessName} className="w-full h-full object-cover" />
                       ) : (
@@ -573,7 +990,7 @@ export default function ProductDetailPage() {
                     <div className="text-right">
                       <p className="text-[9px] font-bold text-gray-400 uppercase tracking-tighter mb-0.5">Location</p>
                       <div className="flex items-center justify-end gap-1 text-[11px] font-bold text-gray-700">
-                        <MapPin className="w-3 h-3 text-[#007367]" /> {vendor.city}
+                        <MapPin className="w-3 h-3 text-[#1b5e20]" /> {vendor.city}
                       </div>
                     </div>
                   </div>
@@ -592,33 +1009,36 @@ export default function ProductDetailPage() {
 
                   <Link
                     href={`/supplier/${vendor.id}`}
-                    className="w-full py-2.5 bg-gray-50 hover:bg-[#007367] hover:text-white text-[#007367] rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 border border-gray-100"
+                    className="w-full py-2.5 bg-gray-50 hover:bg-[#1b5e20] hover:text-white text-[#1b5e20] rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 border border-gray-100"
                   >
                     View Supplier Store <ExternalLink className="w-3.5 h-3.5" />
                   </Link>
                 </div>
               </motion.div>
 
-              {/* Direct Contact CTA (Industrial Dark Theme) */}
-              <div className="bg-[#05252e] rounded-2xl p-6 text-white shadow-xl border border-[#007367]/20 relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-[#007367]/10 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-[#007367]/20 transition-all"></div>
+              {/* Direct Contact CTA */}
+              <div className="bg-white rounded-3xl p-8 shadow-md border border-emerald-100 relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-40 h-40 bg-emerald-50 rounded-full -mr-16 -mt-16 blur-2xl group-hover:bg-emerald-100/50 transition-all"></div>
                 
-                <h3 className="text-base font-bold text-white mb-4 flex items-center gap-2">
-                  <Send className="w-4 h-4 text-[#4ecdc4]" /> Direct Engagement
+                <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2 relative z-10">
+                  <Send className="w-5 h-5 text-[#1b5e20]" /> Contact Details
                 </h3>
                 
-                <div className="flex flex-col gap-3 relative z-10">
+                <div className="flex flex-col gap-4 relative z-10">
                   <button
-                    onClick={() => handleDirectAction('CALL')}
-                    className="w-full flex items-center justify-center gap-2 py-3.5 bg-[#007367] hover:bg-[#005e54] text-white rounded-xl text-sm font-bold transition-all shadow-lg active:scale-[0.98]"
+                    onClick={() => {
+                      if (!user) { setPendingAction('CALL'); setLoginModalOpen(true); return; }
+                      setCallModalOpen(true);
+                    }}
+                    className="w-full flex items-center justify-center gap-3 py-4 bg-[#e65100] hover:bg-[#c74600] text-white rounded-xl text-[15px] font-bold transition-all shadow-lg active:scale-[0.98]"
                   >
-                    <Phone className="w-4 h-4 animate-shake" /> Call Supplier Now
+                    <Phone className="w-5 h-5" /> Call Supplier Now
                   </button>
                   <button
                     onClick={() => handleDirectAction('WHATSAPP')}
-                    className="w-full flex items-center justify-center gap-2 py-3 bg-white/5 hover:bg-emerald-500 text-emerald-400 hover:text-white border border-emerald-500/30 rounded-xl text-sm font-bold transition-all"
+                    className="w-full flex items-center justify-center gap-3 py-4 bg-emerald-50 hover:bg-[#1b5e20] hover:text-white text-[#1b5e20] border border-[#1b5e20]/20 rounded-xl text-[15px] font-bold transition-all"
                   >
-                    <MessageCircle className="w-4 h-4" /> Message on WhatsApp
+                    <MessageCircle className="w-5 h-5" /> Message on WhatsApp
                   </button>
                 </div>
               </div>
@@ -626,8 +1046,8 @@ export default function ProductDetailPage() {
               {/* Advanced Inquiry Form */}
               <div className="bg-white rounded-2xl border border-gray-100 p-7 shadow-sm">
                 <div className="flex items-center gap-2.5 mb-2">
-                  <div className="w-8 h-8 rounded-lg bg-[#007367]/10 flex items-center justify-center">
-                    <Send className="w-4 h-4 text-[#007367]" />
+                  <div className="w-8 h-8 rounded-lg bg-[#1b5e20]/10 flex items-center justify-center">
+                    <Send className="w-4 h-4 text-[#1b5e20]" />
                   </div>
                   <h3 className="text-base font-bold text-gray-900">Send an Inquiry</h3>
                 </div>
@@ -640,7 +1060,7 @@ export default function ProductDetailPage() {
                         key={type}
                         type="button"
                         onClick={() => setMessage(prev => `${type}: ${prev}`)}
-                        className="py-2 px-3 border border-gray-100 rounded-lg text-[11px] font-bold text-gray-500 hover:border-[#007367] hover:text-[#007367] transition-all bg-gray-50/50"
+                        className="py-2 px-3 border border-gray-100 rounded-lg text-[11px] font-bold text-gray-500 hover:border-[#1b5e20] hover:text-[#1b5e20] transition-all bg-gray-50/50"
                       >
                         {type}
                       </button>
@@ -654,11 +1074,11 @@ export default function ProductDetailPage() {
                       required
                       rows={4}
                       placeholder={`Explain your specific requirement for ${product.name}...`}
-                      className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl text-sm text-gray-700 outline-none focus:border-[#007367] focus:bg-white transition-all resize-none shadow-inner"
+                      className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl text-sm text-gray-700 outline-none focus:border-[#1b5e20] focus:bg-white transition-all resize-none shadow-inner"
                     />
 
                     <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-xl border border-gray-100">
-                      <Package className="w-4 h-4 text-[#007367]" />
+                      <Package className="w-4 h-4 text-[#1b5e20]" />
                       <input 
                         type="number" 
                         placeholder="Quantity" 
@@ -673,7 +1093,7 @@ export default function ProductDetailPage() {
                     type="submit"
                     disabled={sending || sent}
                     className={`w-full py-3.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-md active:scale-[0.98] ${
-                      sent ? 'bg-emerald-500 text-white' : 'bg-[#007367] hover:bg-[#005e54] text-white'
+                      sent ? 'bg-emerald-500 text-white' : 'bg-[#1b5e20] hover:bg-[#144216] text-white'
                     }`}
                   >
                     {sent ? <><CheckCircle2 className="w-4 h-4" /> Inquiry Sent Successfully!</> : sending ? <>Processing...</> : <>Get Best Quote Now</>}
@@ -684,7 +1104,7 @@ export default function ProductDetailPage() {
                       <button
                         type="button"
                         onClick={() => { setPendingAction('inquiry'); setLoginModalOpen(true); }}
-                        className="text-[#007367] text-xs font-bold hover:underline"
+                        className="text-[#1b5e20] text-xs font-bold hover:underline"
                       >
                         Sign in to proceed
                       </button>

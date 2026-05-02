@@ -41,11 +41,11 @@ const AboutSection = () => {
             {/* Left Content Area (Minimized width for maximum banner space) */}
             <div className="lg:flex-3 space-y-8">
               <div className="space-y-4 text-left">
-                <h2 className="text-3xl md:text-5xl font-bold text-[#333333] leading-tight">
+                <h2 className="text-3xl md:text-5xl font-semibold text-[#333333] leading-tight">
                   We connect <br />
                   <span className="text-[#333333]/90">Buyers & Sellers</span>
                 </h2>
-                <p className="text-gray-900 text-lg font-medium leading-relaxed max-w-xl">
+                <p className="text-slate-900 text-lg font-medium leading-relaxed max-w-xl">
                   B2B Community is India&apos;s largest online B2B marketplace,
                   connecting buyers with suppliers.
                 </p>
@@ -53,10 +53,10 @@ const AboutSection = () => {
 
               <div className="grid grid-cols-3 gap-4 pt-4">
                 <div className="flex flex-col items-center text-center space-y-3">
-                  <div className="w-10 md:w-14 h-10 md:h-14 rounded-full border-2 border-blue-200 flex items-center justify-center bg-blue-50/30">
+                  <div className="w-10 md:w-14 h-10 md:h-14 rounded-full border-2 border-blue-200 flex items-center justify-center bg-[#007367]/5/30">
                     <Star className="w-7 h-7 text-blue-500" />
                   </div>
-                  <span className="font-bold text-[#333333] text-sm leading-tight">
+                  <span className="font-semibold text-[#333333] text-base leading-tight">
                     Trusted
                     <br />
                     Platform
@@ -64,20 +64,20 @@ const AboutSection = () => {
                 </div>
 
                 <div className="flex flex-col items-center text-center space-y-3">
-                  <div className="w-10 md:w-14 h-10 md:h-14 rounded-full border-2 border-blue-200 flex items-center justify-center bg-blue-50/30">
+                  <div className="w-10 md:w-14 h-10 md:h-14 rounded-full border-2 border-blue-200 flex items-center justify-center bg-[#007367]/5/30">
                     <ShieldCheck className="w-7 h-7 text-blue-500" />
                   </div>
-                  <span className="font-bold text-[#333333] text-sm leading-tight">
+                  <span className="font-semibold text-[#333333] text-base leading-tight">
                     Safe &<br />
                     Secure
                   </span>
                 </div>
 
                 <div className="flex flex-col items-center text-center space-y-3">
-                  <div className="w-10 md:w-14 h-10 md:h-14 rounded-full border-2 border-blue-200 flex items-center justify-center bg-blue-50/30">
+                  <div className="w-10 md:w-14 h-10 md:h-14 rounded-full border-2 border-blue-200 flex items-center justify-center bg-[#007367]/5/30">
                     <MessageCircle className="w-7 h-7 text-blue-500" />
                   </div>
-                  <span className="font-bold text-[#333333] text-sm leading-tight">
+                  <span className="font-semibold text-[#333333] text-base leading-tight">
                     Quick
                     <br />
                     Assistance
@@ -172,7 +172,7 @@ const AboutSection = () => {
             {/* Right Side: Content Area */}
             <div className="flex-1 space-y-5 text-left">
               <div className="space-y-4">
-                <h4 className="text-[#4ecdc4] font-bold text-lg tracking-wide">
+                <h4 className="text-[#4ecdc4] font-semibold text-lg tracking-wide">
                   Selling B2B Services?
                 </h4>
                 <h2 className="text-4xl md:text-5xl  text-white leading-tight">
@@ -188,7 +188,7 @@ const AboutSection = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row items-start gap-6 pt-4">
-                <button className="px-10 py-3 md:py-4 rounded-xl border-2 border-white text-white font-bold text-lg hover:bg-white hover:text-[#0d2e38] transition-all transform hover:scale-105 active:scale-95 cursor-pointer">
+                <button className="px-10 py-3 md:py-4 rounded-xl border-2 border-white text-white font-semibold text-lg hover:bg-white hover:text-[#0d2e38] transition-all transform hover:scale-105 active:scale-95 cursor-pointer">
                   Create a Profile
                 </button>
               </div>
@@ -200,7 +200,7 @@ const AboutSection = () => {
       {/* More for You Section */}
       <section className="more-for-you py-20 bg-white">
         <div className="container mx-auto px-6 md:px-12 lg:px-20">
-          <h2 className="text-3xl font-bold text-gray-800 mb-12">
+          <h2 className="text-3xl font-semibold text-slate-900 mb-12">
             More for You
           </h2>
 
@@ -216,10 +216,10 @@ const AboutSection = () => {
                   className="object-contain"
                 />
               </div>
-              <h3 className="text-sm md:text-lg font-bold text-gray-900 mb-0.5 md:mb-3 leading-tight">
+              <h3 className="text-base md:text-lg font-semibold text-slate-900 mb-0.5 md:mb-3 leading-tight">
                 Connect with verified partners
               </h3>
-              <p className="text-gray-500 text-xs md:text-sm leading-relaxed max-w-[220px]">
+              <p className="text-slate-700 text-base md:text-base leading-relaxed max-w-[220px]">
                 Tell us your requirement & let our experts find verified sellers
                 for you
               </p>
@@ -236,10 +236,10 @@ const AboutSection = () => {
                   className="object-contain"
                 /> 
               </div>
-              <h3 className="text-sm md:text-lg font-bold text-gray-900 mb-0.5 md:mb-3 leading-tight">
+              <h3 className="text-base md:text-lg font-semibold text-slate-900 mb-0.5 md:mb-3 leading-tight">
                 Sell on B2B Community for free
               </h3> 
-              <p className="text-gray-500 text-xs md:text-sm leading-relaxed max-w-[220px]">
+              <p className="text-slate-700 text-base md:text-base leading-relaxed max-w-[220px]">
                 Reach out to millions of active buyers. Sell with us.
               </p>
             </div>  
@@ -255,10 +255,10 @@ const AboutSection = () => {
                   className="object-contain"
                 />
               </div>
-              <h3 className="text-sm md:text-lg font-bold text-gray-900 mb-0.5 md:mb-3 leading-tight">
+              <h3 className="text-base md:text-lg font-semibold text-slate-900 mb-0.5 md:mb-3 leading-tight">
                 Expert Consultation
               </h3>
-              <p className="text-gray-500 text-xs md:text-sm leading-relaxed max-w-[220px]">
+              <p className="text-slate-700 text-base md:text-base leading-relaxed max-w-[220px]">
                 Get personalized advice from specialists to scale your business
                 faster.
               </p>
@@ -275,10 +275,10 @@ const AboutSection = () => {
                   className="object-contain"
                 />
               </div>
-              <h3 className="text-sm md:text-lg font-bold text-gray-900 mb-0.5 md:mb-3 leading-tight">
+              <h3 className="text-base md:text-lg font-semibold text-slate-900 mb-0.5 md:mb-3 leading-tight">
                 Data-driven insights
               </h3>
-              <p className="text-gray-500 text-xs md:text-sm leading-relaxed max-w-[220px]">
+              <p className="text-slate-700 text-base md:text-base leading-relaxed max-w-[220px]">
                 Access premium market reports and vendor analytics to stay
                 ahead.
               </p>
@@ -290,7 +290,7 @@ const AboutSection = () => {
       <section className="faq-section py-24 bg-white">
         <div className="container mx-auto px-6 md:px-12 lg:px-20">
           <div className="text-left mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+            <h2 className="text-3xl md:text-4xl font-semibold text-slate-900">
               Frequently asked questions
             </h2>
           </div>
@@ -350,13 +350,13 @@ const AboutSection = () => {
                         }
                         className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-gray-100/50 transition-colors cursor-pointer"
                       >
-                        <span className="text-base font-semibold text-gray-700">
+                        <span className="text-base font-semibold text-slate-800">
                           {faq.q}
                         </span>
                         {activeFaqIndex === faqIndex ? (
-                          <Minus className="w-5 h-5 text-gray-600" />
+                          <Minus className="w-5 h-5 text-slate-800" />
                         ) : (
-                          <Plus className="w-5 h-5 text-gray-600" />
+                          <Plus className="w-5 h-5 text-slate-800" />
                         )}
                       </button>
                       <AnimatePresence>
@@ -367,7 +367,7 @@ const AboutSection = () => {
                             exit={{ height: 0, opacity: 0 }}
                             transition={{ duration: 0.2, ease: "easeInOut" }}
                           >
-                            <div className="px-6 pb-5 text-gray-600 text-sm leading-relaxed">
+                            <div className="px-6 pb-5 text-slate-800 text-base leading-relaxed">
                               {faq.a}
                             </div>
                           </motion.div>

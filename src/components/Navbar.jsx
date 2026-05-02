@@ -95,14 +95,11 @@ const Navbar = () => {
           {/* Logo & Search */}
           <div className="flex items-center gap-6 lg:gap-10">
             <Link href="/" className="flex items-center shrink-0">
-              <h1 className="text-[28px] lg:text-[32px] font-bold text-[#05252e] tracking-tighter flex items-center leading-none">
-                B2B Community
-                <span className="w-2.5 h-2.5 bg-[#ff3b3b] rounded-full ml-1 mb-1"></span>
-              </h1>
+              <img src="/logo.png" alt="Logo" className="h-10 lg:h-14 w-auto object-contain" />
             </Link>
 
             {/* Desktop IndiaMart Style Search Bar */}
-            <form onSubmit={handleSearch} className="hidden lg:flex relative w-[600px] h-11 items-center bg-white border border-[#d0d0d0] rounded-[4px] shadow-sm focus-within:border-[#0076a8] focus-within:shadow-md transition-all divide-x divide-gray-200">
+            <form onSubmit={handleSearch} className="hidden lg:flex relative w-[600px] h-11 items-center bg-white border border-[#d0d0d0] rounded-[4px] shadow-sm focus-within:border-[#007367] focus-within:shadow-md transition-all divide-x divide-gray-200">
               {/* City Selection */}
               <div className="w-[160px] h-full relative flex items-center px-2 hover:bg-gray-50 transition-colors cursor-pointer city-dropdown-container">
                 <MapPin className="w-4 h-4 text-[#e43737] mr-1.5 shrink-0" />
@@ -112,27 +109,27 @@ const Navbar = () => {
                   onFocus={() => setIsCityDropdownOpen(true)}
                   onChange={(e) => setCityQuery(e.target.value)}
                   placeholder="Enter city"
-                  className="w-full bg-transparent outline-none text-[13px] font-semibold text-gray-700 placeholder:text-gray-400 truncate"
+                  className="w-full bg-transparent outline-none text-base font-semibold text-slate-800 placeholder:text-slate-500 truncate"
                 />
-                <ChevronDown className={`w-3.5 h-3.5 text-gray-400 ml-1 transition-transform ${isCityDropdownOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-3.5 h-3.5 text-slate-500 ml-1 transition-transform ${isCityDropdownOpen ? 'rotate-180' : ''}`} />
                 
                 {/* City Dropdown Menu */}
                 {isCityDropdownOpen && (
                     <div className="absolute top-full left-0 mt-1 w-[220px] bg-white border border-gray-100 rounded-xl shadow-2xl py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200 max-h-[300px] overflow-y-auto">
-                        <p className="px-4 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest bg-gray-50/50">Popular Cities</p>
+                        <p className="px-4 py-2 text-base font-semibold text-slate-500 uppercase  bg-gray-50/50">Popular Cities</p>
                         {popularCities.filter(c => c.toLowerCase().includes(cityQuery.toLowerCase())).map(city => (
                             <button
                                 key={city}
                                 type="button"
                                 onClick={() => handleCitySelect(city)}
-                                className="w-full text-left px-4 py-2.5 text-[13px] font-semibold text-gray-700 hover:bg-[#007367]/5 hover:text-[#007367] transition-all flex items-center gap-2"
+                                className="w-full text-left px-4 py-2.5 text-base font-semibold text-slate-800 hover:bg-[#007367]/5 hover:text-[#007367] transition-all flex items-center gap-2"
                             >
                                 <MapPin className="w-3.5 h-3.5 opacity-40" />
                                 {city}
                             </button>
                         ))}
                         {popularCities.filter(c => c.toLowerCase().includes(cityQuery.toLowerCase())).length === 0 && (
-                             <p className="px-4 py-4 text-xs text-center text-gray-400 font-medium">No matches for "{cityQuery}"</p>
+                             <p className="px-4 py-4 text-base text-center text-slate-500 font-medium">No matches for "{cityQuery}"</p>
                         )}
                     </div>
                 )}
@@ -145,19 +142,19 @@ const Navbar = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Enter product / service to search"
-                  className="w-full h-full bg-transparent outline-none text-[13px] font-medium text-gray-700 placeholder:text-gray-500"
+                  className="w-full h-full bg-transparent outline-none text-base font-medium text-slate-800 placeholder:text-slate-700"
                 />
                 
                 {/* Image Search / Lens Mockup */}
-                <button type="button" className="p-2 text-gray-400 hover:text-[#0076a8] transition-colors rounded-full hover:bg-white">
+                {/* <button type="button" className="p-2 text-slate-500 hover:text-[#007367] transition-colors rounded-full hover:bg-white">
                   <Camera className="w-5 h-5 stroke-[1.5]" />
-                </button>
+                </button> */}
               </div>
 
               {/* Search Button */}
               <button 
                 type="submit" 
-                className="h-full px-8 bg-[#007367] hover:bg-[#005e54] text-white font-bold text-[14px] transition-all flex items-center gap-2"
+                className="h-full px-8 bg-[#007367] hover:bg-[#005e54] text-white font-semibold text-base transition-all flex items-center gap-2"
               >
                 <Search className="w-4 h-4" />
                 Search
@@ -181,10 +178,10 @@ const Navbar = () => {
                   />
                 </div>
                 <div className="flex items-center gap-1">
-                  <span className="text-[14px] font-bold text-[#05252e]">
+                  <span className="text-base font-semibold text-[#05252e]">
                     {user ? `Hi, ${user.name?.split(' ')[0]}` : 'Account'}
                   </span>
-                  <ChevronDown className={`w-3.5 h-3.5 text-gray-400 group-hover:text-[#0076a8] transition-transform ${isUserDropdownOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown className={`w-3.5 h-3.5 text-slate-500 group-hover:text-[#007367] transition-transform ${isUserDropdownOpen ? 'rotate-180' : ''}`} />
                 </div>
               </button>
 
@@ -194,27 +191,30 @@ const Navbar = () => {
                   {user ? (
                     <>
                       <div className="px-5 py-3 border-b border-gray-50 bg-gray-50/50">
-                        <p className="text-[12px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Signed in as</p>
-                        <p className="text-sm font-bold text-gray-900 truncate">{user.name}</p>
+                        <p className="text-base font-semibold text-slate-500 uppercase  mb-0.5">Signed in as</p>
+                        <p className="text-base font-semibold text-slate-900 truncate">{user.name}</p>
                       </div>
                       
                       <div className="p-2">
+                        <Link href="/profile" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-semibold text-slate-800 hover:bg-[#007367]/5 hover:text-[#007367] transition-all">
+                          <UserCircle className="w-4 h-4" /> My Profile
+                        </Link>
                         {user.role !== 'BUYER' && (
                           <Link 
-                            href={user.role === 'ADMIN' ? '/admin/dashboard' : '/vendor/dashboard'}
-                            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[14px] font-semibold text-gray-700 hover:bg-[#0076a8]/5 hover:text-[#0076a8] transition-all"
+                            href={user.role === 'SUPERADMIN' ? '/super-admin/dashboard' : user.role === 'ADMIN' ? '/admin/dashboard' : '/vendor/dashboard'}
+                            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-semibold text-slate-800 hover:bg-[#007367]/5 hover:text-[#007367] transition-all mt-1"
                           >
                             <LayoutDashboard className="w-4 h-4" /> Dashboard
                           </Link>
                         )}
                         <div className="h-px bg-gray-50 my-2 mx-2"></div>
-                        <Link href="/post-requirement" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[14px] font-semibold text-gray-700 hover:bg-[#0076a8]/5 hover:text-[#0076a8] transition-all">
+                        <Link href="/post-requirement" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-semibold text-slate-800 hover:bg-[#007367]/5 hover:text-[#007367] transition-all">
                           <MessageSquare className="w-4 h-4" /> Post a Requirement
                         </Link>
                         <div className="h-px bg-gray-50 my-2 mx-2"></div>
                         <button 
                           onClick={logout}
-                          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[14px] font-semibold text-red-500 hover:bg-red-50 transition-all"
+                          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-semibold text-red-500 hover:bg-red-50 transition-all"
                         >
                           <LogOut className="w-4 h-4" /> Sign Out
                         </button>
@@ -223,30 +223,30 @@ const Navbar = () => {
                   ) : (
                     <>
                       <div className="px-5 py-4 text-center border-b border-gray-50">
-                        <p className="text-sm text-gray-500 mb-3 font-medium">Access your account or grow your business</p>
+                        <p className="text-base text-slate-700 mb-3 font-medium">Access your account or grow your business</p>
                         <Link 
                           href="/login" 
-                          className="block w-full py-2.5 bg-[#0076a8] text-white rounded-xl font-bold text-[14px] hover:bg-[#005e86] shadow-md active:scale-95 transition-all mb-2"
+                          className="block w-full py-2.5 bg-[#007367] text-white rounded-xl font-semibold text-base hover:bg-[#005e54] shadow-md active:scale-95 transition-all mb-2"
                         >
                           Sign In
                         </Link>
                         <Link 
                           href="/register" 
-                          className="block w-full py-2.5 border border-gray-200 text-[#05252e] rounded-xl font-bold text-[14px] hover:bg-gray-50 transition-all"
+                          className="block w-full py-2.5 border border-gray-200 text-[#05252e] rounded-xl font-semibold text-base hover:bg-gray-50 transition-all"
                         >
                           Join for Free
                         </Link>
                       </div>
                       <div className="p-2 text-center sm:text-left">
-                        <Link href="/post-requirement" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[14px] font-semibold text-gray-700 hover:bg-[#0076a8]/5 hover:text-[#0076a8] transition-all">
+                        <Link href="/post-requirement" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-semibold text-slate-800 hover:bg-[#007367]/5 hover:text-[#007367] transition-all">
                           <MessageSquare className="w-4 h-4 text-blue-500" /> Post a Requirement
                         </Link>
-                        <Link href="/suppliers" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[14px] font-semibold text-gray-700 hover:bg-[#0076a8]/5 hover:text-[#0076a8] transition-all">
+                        <Link href="/suppliers" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-semibold text-slate-800 hover:bg-[#007367]/5 hover:text-[#007367] transition-all">
                           <Search className="w-4 h-4 text-emerald-500" /> Find Suppliers
                         </Link>
 
                         <div className="h-px bg-gray-50 my-2 mx-2"></div>
-                        <Link href="/about" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[14px] font-semibold text-gray-400 hover:text-gray-600 transition-all">
+                        <Link href="/about" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-semibold text-slate-500 hover:text-slate-800 transition-all">
                           About Us
                         </Link>
                       </div>
@@ -271,10 +271,7 @@ const Navbar = () => {
       {isMobileMenuOpen && (
         <div className="lg:hidden bg-white fixed inset-0 z-50 p-6 flex flex-col overflow-y-auto">
           <div className="flex items-center justify-between border-b pb-4 mb-6">
-            <h1 className="text-2xl font-bold text-[#05252e] tracking-tighter flex items-center">
-              B2B Community
-              <span className="w-2 h-2 bg-[#ff3b3b] rounded-full ml-0.5 mt-2"></span>
-            </h1>
+            <img src="/logo.png" alt="Logo" className="h-16 w-auto object-contain" />
             <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 hover:bg-gray-100 rounded-full">
               <X size={28} className="text-[#05252e]" />
             </button>
@@ -284,13 +281,13 @@ const Navbar = () => {
              {/* Mobile IndiaMart Style Search */}
              <form onSubmit={(e) => { handleSearch(e); setIsMobileMenuOpen(false); }} className="w-full space-y-3">
                 <div className="relative">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
                     <input
                       type="text"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="Enter product / service to search"
-                      className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 focus:border-[#007367] rounded-lg outline-none text-[14px] font-medium text-gray-700 transition-all placeholder:text-gray-400"
+                      className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 focus:border-[#007367] rounded-lg outline-none text-base font-medium text-slate-800 transition-all placeholder:text-slate-500"
                     />
                 </div>
                 <div className="relative">
@@ -300,10 +297,10 @@ const Navbar = () => {
                       value={cityQuery}
                       onChange={(e) => setCityQuery(e.target.value)}
                       placeholder="Enter city"
-                      className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 focus:border-[#007367] rounded-lg outline-none text-[14px] font-medium text-gray-700 transition-all placeholder:text-gray-400"
+                      className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 focus:border-[#007367] rounded-lg outline-none text-base font-medium text-slate-800 transition-all placeholder:text-slate-500"
                     />
                 </div>
-                <button type="submit" className="w-full py-3.5 bg-[#007367] hover:bg-[#005e54] text-white rounded-lg font-bold flex items-center justify-center gap-2 transition-colors shadow-md">
+                <button type="submit" className="w-full py-3.5 bg-[#007367] hover:bg-[#005e54] text-white rounded-lg font-semibold flex items-center justify-center gap-2 transition-colors shadow-md">
                   <Search className="w-4 h-4" /> Search
                 </button>
              </form>
@@ -311,12 +308,26 @@ const Navbar = () => {
              {(!user || user.role !== 'BUYER') && (
                <Link
                   href="/post-requirement"
-                  className="block text-2xl font-black text-[#0076a8] tracking-tight hover:text-slate-900 transition-colors"
+                  className="block text-2xl font-semibold text-[#007367]  hover:text-slate-900 transition-colors"
                   onClick={() => setIsMobileMenuOpen(false)}
                >
                   Post a Requirement
                </Link>
              )}
+             <Link
+               href="/suppliers"
+               className="block text-2xl font-semibold text-[#007367]  hover:text-slate-900 transition-colors"
+               onClick={() => setIsMobileMenuOpen(false)}
+             >
+               Find Suppliers
+             </Link>
+             <Link
+               href="/about"
+               className="block text-xl font-semibold text-slate-700  hover:text-slate-900 transition-colors"
+               onClick={() => setIsMobileMenuOpen(false)}
+             >
+               About Us
+             </Link>
           </div>
 
           <div className="pt-8 border-t border-gray-100 flex flex-col space-y-4">
@@ -330,16 +341,16 @@ const Navbar = () => {
                     />
                   </div>
                   <div>
-                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Welcome Back</p>
-                    <h3 className="text-2xl font-black text-[#05252e]">Hi, {user.name?.split(' ')[0]}</h3>
+                    <p className="text-base font-semibold text-slate-500 uppercase  leading-none mb-1">Welcome Back</p>
+                    <h3 className="text-2xl font-semibold text-[#05252e]">Hi, {user.name?.split(' ')[0]}</h3>
                   </div>
                 </div>
             )}
             {user ? (
                <>
                   <Link 
-                    href={user.role === 'ADMIN' ? '/admin/dashboard' : user.role === 'VENDOR' ? '/vendor/dashboard' : '/post-requirement'}
-                    className="bg-[#05252e] text-white px-6 py-4 rounded-full font-bold text-center flex items-center justify-center gap-2"
+                    href={user.role === 'SUPERADMIN' ? '/super-admin/dashboard' : user.role === 'ADMIN' ? '/admin/dashboard' : user.role === 'VENDOR' ? '/vendor/dashboard' : '/post-requirement'}
+                    className="bg-[#007367] text-white px-6 py-4 rounded-full font-semibold text-center flex items-center justify-center gap-2"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     <LayoutDashboard className="w-5 h-5" />
@@ -347,7 +358,7 @@ const Navbar = () => {
                   </Link>
                   <button 
                     onClick={() => { logout(); setIsMobileMenuOpen(false); }}
-                    className="text-center text-red-500 font-bold py-3 flex items-center justify-center gap-2"
+                    className="text-center text-red-500 font-semibold py-3 flex items-center justify-center gap-2"
                   >
                     <LogOut className="w-5 h-5" /> Sign Out
                   </button>
@@ -356,14 +367,14 @@ const Navbar = () => {
                <>
                   <Link 
                     href="/register" 
-                    className="bg-[#05252e] text-white px-6 py-4 rounded-full font-black tracking-wide text-center uppercase"
+                    className="bg-[#007367] text-white px-6 py-4 rounded-full font-semibold tracking-wide text-center uppercase"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Join Network
                   </Link>
                   <Link 
                     href="/login" 
-                    className="text-center text-[#05252e] font-bold py-2"
+                    className="text-center text-[#05252e] font-semibold py-2"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Sign In

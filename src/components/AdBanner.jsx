@@ -3,14 +3,14 @@ import { Play, Info, MoreVertical } from 'lucide-react';
 
 // Mock data - in a real app, this might come from props or an API
 const adData = [
-  { id: 1, discount: '-25%', imageUrl: 'https://placehold.co/100x150/e91e63/white?text=Invite+1' },
-  { id: 2, discount: '-29%', imageUrl: 'https://placehold.co/100x150/000000/white?text=Invite+2' },
-  { id: 3, discount: '-22%', imageUrl: 'https://placehold.co/100x150/f06292/white?text=Invite+3' },
-  { id: 4, discount: '-27%', imageUrl: 'https://placehold.co/100x150/455a64/white?text=Invite+4' },
-  { id: 5, discount: '-25%', imageUrl: 'https://placehold.co/100x150/880e4f/white?text=Invite+5' },
-  { id: 6, discount: '-22%', imageUrl: 'https://placehold.co/100x150/5d4037/white?text=Invite+6' },
-  { id: 7, discount: '-27%', imageUrl: 'https://placehold.co/100x150/ad1457/white?text=Invite+7' },
-  { id: 8, discount: '-25%', imageUrl: 'https://placehold.co/100x150/0277bd/white?text=Invite+8' },
+  { id: 1, discount: '-25%', imageUrl: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&q=80&w=400' },
+  { id: 2, discount: '-29%', imageUrl: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=400' },
+  { id: 3, discount: '-22%', imageUrl: 'https://images.unsplash.com/photo-1532187875462-be93d5e493c8?auto=format&fit=crop&q=80&w=400' },
+  { id: 4, discount: '-27%', imageUrl: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&q=80&w=400' },
+  { id: 5, discount: '-25%', imageUrl: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&q=80&w=400' },
+  { id: 6, discount: '-22%', imageUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=400' },
+  { id: 7, discount: '-27%', imageUrl: 'https://images.unsplash.com/photo-1516937941344-00b4e0337589?auto=format&fit=crop&q=80&w=400' },
+  { id: 8, discount: '-25%', imageUrl: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&q=80&w=400' },
 ];
 
 const AdBanner = () => {
@@ -34,7 +34,7 @@ const AdBanner = () => {
               
               {/* Discount Badge */}
               <div className="absolute top-1 left-1 bg-white/95 border border-[#c2185b] rounded-sm px-1 shadow-sm">
-                <span className="text-[10px] font-bold text-[#c2185b]">
+                <span className="text-base font-semibold text-[#c2185b]">
                   {item.discount}
                 </span>
               </div>

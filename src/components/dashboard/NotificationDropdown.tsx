@@ -76,7 +76,7 @@ export default function NotificationDropdown() {
         <div className="relative" ref={dropdownRef}>
             <button 
                 onClick={() => setIsOpen(!isOpen)}
-                className={`p-2.5 rounded-lg transition-colors relative group ${isOpen ? 'bg-blue-50 text-blue-600' : 'text-gray-500 hover:bg-gray-200/50'}`}
+                className={`p-2.5 rounded-lg transition-colors relative group ${isOpen ? 'bg-[#007367]/5 text-[#007367]' : 'text-slate-700 hover:bg-gray-200/50'}`}
             >
                 <Bell className="w-5 h-5" />
                 {unreadCount > 0 && (
@@ -95,15 +95,15 @@ export default function NotificationDropdown() {
                         {/* Header */}
                         <div className="p-4 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
                             <div className="flex items-center gap-2">
-                                <h3 className="text-sm font-semibold text-gray-900">Notifications</h3>
-                                <div className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded-md text-xs font-semibold leading-none">
+                                <h3 className="text-base font-semibold text-slate-900">Notifications</h3>
+                                <div className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded-md text-base font-semibold leading-none">
                                     {unreadCount} new
                                 </div>
                             </div>
                             {unreadCount > 0 && (
                                 <button 
                                     onClick={markAllRead}
-                                    className="text-xs font-medium text-blue-600 hover:text-blue-700 transition-colors"
+                                    className="text-base font-medium text-[#007367] hover:text-blue-700 transition-colors"
                                 >
                                     Mark all read
                                 </button>
@@ -127,32 +127,32 @@ export default function NotificationDropdown() {
                                     <div 
                                         key={n.id} 
                                         onClick={() => !n.isRead && markAsRead(n.id)}
-                                        className={`p-4 border-b border-gray-50 flex gap-3 transition-colors cursor-pointer group ${!n.isRead ? 'bg-blue-50/30' : 'hover:bg-gray-50'}`}
+                                        className={`p-4 border-b border-gray-50 flex gap-3 transition-colors cursor-pointer group ${!n.isRead ? 'bg-[#007367]/5/30' : 'hover:bg-gray-50'}`}
                                     >
-                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border ${!n.isRead ? 'bg-white border-blue-100' : 'bg-gray-50 border-gray-100'}`}>
-                                            <Info className={`w-5 h-5 ${!n.isRead ? 'text-blue-600' : 'text-gray-400'}`} />
+                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border ${!n.isRead ? 'bg-white border-[#007367]/10' : 'bg-gray-50 border-gray-100'}`}>
+                                            <Info className={`w-5 h-5 ${!n.isRead ? 'text-[#007367]' : 'text-slate-500'}`} />
                                         </div>
                                         <div className="flex-1 space-y-1">
                                             <div className="flex items-center justify-between">
-                                                <h4 className="text-sm font-semibold text-gray-900">{n.title}</h4>
-                                                <div className="flex items-center gap-1.5 text-gray-400">
+                                                <h4 className="text-base font-semibold text-slate-900">{n.title}</h4>
+                                                <div className="flex items-center gap-1.5 text-slate-500">
                                                     <Clock className="w-3 h-3" />
-                                                    <span className="text-xs font-medium">{new Date(n.createdAt).toLocaleDateString()}</span>
+                                                    <span className="text-base font-medium">{new Date(n.createdAt).toLocaleDateString()}</span>
                                                 </div>
                                             </div>
-                                            <p className="text-xs text-gray-500 font-medium leading-relaxed">{n.message}</p>
+                                            <p className="text-base text-slate-700 font-medium leading-relaxed">{n.message}</p>
                                         </div>
                                         {!n.isRead && (
-                                            <div className="w-2 h-2 bg-blue-600 rounded-full mt-1.5 shrink-0"></div>
+                                            <div className="w-2 h-2 bg-[#007367] rounded-full mt-1.5 shrink-0"></div>
                                         )}
                                     </div>
                                 ))
                             ) : (
-                                <div className="p-12 text-center text-gray-400 space-y-3">
+                                <div className="p-12 text-center text-slate-500 space-y-3">
                                     <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center mx-auto border border-gray-100">
                                         <Bell className="w-6 h-6 text-gray-300" />
                                     </div>
-                                    <p className="text-sm font-medium">You're all caught up!</p>
+                                    <p className="text-base font-medium">You're all caught up!</p>
                                 </div>
                             )}
                         </div>
@@ -161,12 +161,12 @@ export default function NotificationDropdown() {
                         <div className="p-3 bg-gray-50/50 text-center border-t border-gray-100/50">
                             <Link 
                                 href={
+                                    user?.role === 'SUPERADMIN' ? '/super-admin/notifications' : 
                                     user?.role === 'ADMIN' ? '/admin/notifications' : 
-                                    user?.role === 'SUBADMIN' ? '/subadmin/notifications' : 
                                     '/vendor/notifications'
                                 }
                                 onClick={() => setIsOpen(false)}
-                                className="text-[11px] font-bold text-gray-400 hover:text-blue-600 transition-colors uppercase tracking-widest flex items-center justify-center gap-2"
+                                className="text-base font-semibold text-slate-500 hover:text-[#007367] transition-colors uppercase  flex items-center justify-center gap-2"
                             >
                                 View all notification vault
                             </Link>
