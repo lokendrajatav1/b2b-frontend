@@ -140,12 +140,12 @@ export default function AdminUsers() {
       {/* Header Section */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-gray-100 max-w-7xl mx-auto">
         <div className="space-y-1">
-           <div className="flex items-center gap-2 text-[#e88c30] font-semibold uppercase  text-base mb-1">
+           <div className="flex items-center gap-2 text-[#f58220] font-semibold uppercase  text-base mb-1">
               <Sparkles className="w-3 h-3" /> HUB DIRECTORY
            </div>
            <h1 className="text-2xl font-semibold text-slate-900  flex items-center gap-3">
              Platform Members
-             <div className="p-1.5 bg-[#007367]/5 text-[#007367] rounded-none border border-[#007367]/10">
+             <div className="p-1.5 bg-[#164e33]/5 text-[#164e33] rounded-xl border border-[#164e33]/10">
                 <Users className="w-5 h-5" />
              </div>
            </h1>
@@ -164,7 +164,7 @@ export default function AdminUsers() {
                     <button 
                       key={range.value}
                       onClick={() => setTimeRange(range.value)}
-                      className={`px-4 py-2 text-base font-semibold uppercase  transition-all rounded-lg ${timeRange === range.value ? 'bg-white text-[#007367] shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}
+                      className={`px-4 py-2 text-base font-semibold uppercase  transition-all rounded-lg ${timeRange === range.value ? 'bg-white text-[#164e33] shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}
                     >
                         {range.label}
                     </button>
@@ -178,17 +178,17 @@ export default function AdminUsers() {
                 placeholder="Find a member..." 
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-none text-base font-semibold outline-none focus:border-[#007367] transition-all w-64 shadow-sm"
+                className="pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-base font-semibold outline-none focus:border-[#164e33] transition-all w-64 shadow-sm"
               />
            </div>
-           <button onClick={fetchUsers} className="p-3 bg-white border border-gray-200 rounded-none text-slate-500 hover:text-[#007367] hover:bg-[#007367]/5 transition-all shadow-sm group">
+           <button onClick={fetchUsers} className="p-3 bg-white border border-gray-200 rounded-xl text-slate-500 hover:text-[#164e33] hover:bg-[#164e33]/5 transition-all shadow-sm group">
               <RefreshCcw className={`w-4 h-4 ${loading ? 'animate-spin' : 'group-hover:rotate-180 transition-transform duration-500'}`} />
            </button>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto">
-        <div className="bg-white rounded-none border border-gray-100 overflow-hidden shadow-sm">
+        <div className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
                 <thead>
@@ -212,14 +212,14 @@ export default function AdminUsers() {
                         <td className="px-8 py-5">
                           <div className="flex items-center gap-4">
                             {user.avatar && (
-                              <div className="w-10 h-10 rounded-none overflow-hidden border border-gray-100 shrink-0">
+                              <div className="w-10 h-10 rounded-xl overflow-hidden border border-gray-100 shrink-0">
                                  <img src={user.avatar} alt="" className="w-full h-full object-cover" />
                               </div>
                             )}
                             <div>
-                                <p className="text-base font-semibold text-slate-900 capitalize leading-none group-hover:text-[#007367] transition-colors">{user.name || 'Anonymous User'}</p>
+                                <p className="text-base font-semibold text-slate-900 capitalize leading-none group-hover:text-[#164e33] transition-colors">{user.name || 'Anonymous User'}</p>
                                 {user.role === 'VENDOR' && user.vendor?.businessName && (
-                                    <p className="text-base font-semibold text-[#e88c30] uppercase er mt-2 flex items-center gap-1">
+                                    <p className="text-base font-semibold text-[#f58220] uppercase er mt-2 flex items-center gap-1">
                                     <Building2 className="w-3 h-3" /> {user.vendor.businessName}
                                     </p>
                                 )}
@@ -228,15 +228,15 @@ export default function AdminUsers() {
                         </td>
                         <td className="px-8 py-5">
                         <div className="flex items-center gap-2 text-slate-700 font-semibold text-base italic">
-                            <Mail className="w-3.5 h-3.5 text-[#007367]/60" />
+                            <Mail className="w-3.5 h-3.5 text-[#164e33]/60" />
                             <span>{user.email}</span>
                         </div>
                         </td>
                         <td className="px-8 py-5 text-center">
                         <div className="inline-flex items-center gap-2">
                             <div className={`px-4 py-1.5 rounded-full text-base font-semibold  uppercase border ${
-                                user.role === 'SUPERADMIN' ? 'bg-[#007367]/5 text-[#007367] border-[#007367]/10' :
-                                user.role === 'VENDOR' ? 'bg-[#007367]/5 text-[#007367] border-[#007367]/10' :
+                                user.role === 'SUPERADMIN' ? 'bg-[#164e33]/5 text-[#164e33] border-[#164e33]/10' :
+                                user.role === 'VENDOR' ? 'bg-[#164e33]/5 text-[#164e33] border-[#164e33]/10' :
                                 'bg-gray-50 text-slate-700 border-gray-100'
                             }`}>
                             {user.role}
@@ -249,20 +249,20 @@ export default function AdminUsers() {
                              {user.role === 'VENDOR' && user.vendor && (
                                 <button 
                                   onClick={() => { setBoostConfig({vendorId: user.vendor.id, score: (user.vendor.manualBoost || 0).toString()}); setIsBoostModalOpen(true); }}
-                                  className={`p-2 rounded-none transition-all ${ (user.vendor.manualBoost || 0) > 0 ? 'text-amber-600 bg-amber-50' : 'text-slate-500 hover:text-amber-500 hover:bg-amber-50' }`}
+                                  className={`p-2 rounded-xl transition-all ${ (user.vendor.manualBoost || 0) > 0 ? 'text-amber-600 bg-amber-50' : 'text-slate-500 hover:text-amber-500 hover:bg-amber-50' }`}
                                 >
                                   <Zap className={`w-4 h-4 ${(user.vendor.manualBoost || 0) > 0 ? 'fill-amber-500' : ''}`} />
                                 </button>
                              )}
                              <button 
                                onClick={() => { setSelectedUser({...user}); setIsModalOpen(true); }}
-                               className="p-2 text-slate-500 hover:text-[#007367] hover:bg-[#007367]/5 rounded-none transition-all"
+                               className="p-2 text-slate-500 hover:text-[#164e33] hover:bg-[#164e33]/5 rounded-xl transition-all"
                              >
                                <Edit2 className="w-4 h-4" />
                              </button>
                              <button 
                                onClick={() => { setUserToDelete(user); setIsDeleteModalOpen(true); }}
-                               className="p-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-none transition-all"
+                               className="p-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all"
                              >
                                {updatingId === user.id ? <RefreshCcw className="w-4 h-4 animate-spin text-red-500" /> : <Trash2 className="w-4 h-4" />}
                              </button>
@@ -290,9 +290,9 @@ export default function AdminUsers() {
         {isModalOpen && selectedUser && (
           <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsModalOpen(false)} className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
-            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="relative bg-white rounded-none p-8 max-w-md w-full shadow-2xl border border-gray-100">
+            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="relative bg-white rounded-xl p-8 max-w-md w-full shadow-2xl border border-gray-100">
               <div className="flex items-center gap-3 mb-6">
-                <div className="p-2.5 bg-[#007367]/5 text-[#007367] rounded-none border border-[#007367]/10">
+                <div className="p-2.5 bg-[#164e33]/5 text-[#164e33] rounded-xl border border-[#164e33]/10">
                   <ShieldCheck className="w-5 h-5" />
                 </div>
                 <h3 className="text-xl font-bold text-slate-900 uppercase ">Administrative Access</h3>
@@ -300,7 +300,7 @@ export default function AdminUsers() {
               <form onSubmit={handleUpdateUser} className="space-y-6">
                 <div className="space-y-2">
                   <label className="text-base font-bold text-black uppercase  ml-1">Member Role</label>
-                  <select value={selectedUser.role} onChange={(e) => setSelectedUser({...selectedUser, role: e.target.value})} className="w-full p-4 bg-gray-50 border border-transparent rounded-none text-base font-bold focus:bg-white focus:border-[#007367]/20 outline-none">
+                  <select value={selectedUser.role} onChange={(e) => setSelectedUser({...selectedUser, role: e.target.value})} className="w-full p-4 bg-gray-50 border border-transparent rounded-xl text-base font-bold focus:bg-white focus:border-[#164e33]/20 outline-none">
                     <option value="VENDOR">Vendor Partnership</option>
                     <option value="BUYER">Procurement Officer (Buyer)</option>
                     <option value="ADMIN">Strategic Administrator</option>
@@ -309,16 +309,16 @@ export default function AdminUsers() {
                 </div>
                 <div className="space-y-2">
                   <label className="text-base font-bold text-black uppercase  ml-1">Access Authorization</label>
-                  <select value={selectedUser.isActive ? 'true' : 'false'} onChange={(e) => setSelectedUser({...selectedUser, isActive: e.target.value === 'true'})} className="w-full p-4 bg-gray-50 border border-transparent rounded-none text-base font-bold focus:bg-white focus:border-[#007367]/20 outline-none">
+                  <select value={selectedUser.isActive ? 'true' : 'false'} onChange={(e) => setSelectedUser({...selectedUser, isActive: e.target.value === 'true'})} className="w-full p-4 bg-gray-50 border border-transparent rounded-xl text-base font-bold focus:bg-white focus:border-[#164e33]/20 outline-none">
                     <option value="true">Grant Platform Access</option>
                     <option value="false">Restrict / Suspend User</option>
                   </select>
                 </div>
                 <div className="pt-4 flex gap-3">
-                  <button type="submit" disabled={updatingId === 'modal'} className="flex-1 py-4 bg-[#007367] text-white rounded-none font-bold uppercase  shadow-lg shadow-[#007367]/20 transition-all active:scale-95 disabled:opacity-50">
+                  <button type="submit" disabled={updatingId === 'modal'} className="flex-1 py-4 bg-[#164e33] text-white rounded-xl font-bold uppercase  shadow-lg shadow-[#164e33]/20 transition-all active:scale-95 disabled:opacity-50">
                     {updatingId === 'modal' ? 'Applying...' : 'Commit Changes'}
                   </button>
-                  <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 py-4 bg-gray-50 text-slate-700 rounded-none font-bold uppercase  hover:bg-gray-100">Cancel</button>
+                  <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 py-4 bg-gray-50 text-slate-700 rounded-xl font-bold uppercase  hover:bg-gray-100">Cancel</button>
                 </div>
               </form>
             </motion.div>
@@ -331,9 +331,9 @@ export default function AdminUsers() {
         {isBoostModalOpen && boostConfig && (
           <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsBoostModalOpen(false)} className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
-            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="relative bg-white rounded-none p-8 max-w-md w-full shadow-2xl border border-gray-100">
+            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="relative bg-white rounded-xl p-8 max-w-md w-full shadow-2xl border border-gray-100">
                <div className="flex items-center gap-3 mb-6">
-                 <div className="p-2.5 bg-amber-50 text-amber-600 rounded-none border border-amber-100">
+                 <div className="p-2.5 bg-amber-50 text-amber-600 rounded-xl border border-amber-100">
                     <Zap className="w-5 h-5 fill-amber-500" />
                  </div>
                  <h3 className="text-xl font-bold text-slate-900 uppercase ">Priority Positioning</h3>
@@ -342,13 +342,13 @@ export default function AdminUsers() {
                <form onSubmit={handleBoost} className="space-y-6">
                   <div className="space-y-2">
                      <label className="text-base font-bold text-black uppercase  ml-1">Strategic Boost Score (0-100)</label>
-                     <input type="number" step="0.1" value={boostConfig.score} onChange={(e) => setBoostConfig({...boostConfig, score: e.target.value})} className="w-full p-4 bg-gray-50 border border-transparent rounded-none text-base font-bold focus:bg-white focus:border-[#007367]/20 outline-none" placeholder="e.g. 5.0" />
+                     <input type="number" step="0.1" value={boostConfig.score} onChange={(e) => setBoostConfig({...boostConfig, score: e.target.value})} className="w-full p-4 bg-gray-50 border border-transparent rounded-xl text-base font-bold focus:bg-white focus:border-[#164e33]/20 outline-none" placeholder="e.g. 5.0" />
                   </div>
                   <div className="pt-4 flex gap-3">
-                     <button type="submit" disabled={updatingId === 'boost'} className="flex-1 py-4 bg-amber-600 text-white rounded-none font-bold uppercase  shadow-lg shadow-amber-500/20">
+                     <button type="submit" disabled={updatingId === 'boost'} className="flex-1 py-4 bg-amber-600 text-white rounded-xl font-bold uppercase  shadow-lg shadow-amber-500/20">
                         {updatingId === 'boost' ? 'Applying...' : 'Apply Position'}
                      </button>
-                     <button type="button" onClick={() => setIsBoostModalOpen(false)} className="flex-1 py-4 bg-gray-50 text-slate-700 rounded-none font-bold uppercase ">Cancel</button>
+                     <button type="button" onClick={() => setIsBoostModalOpen(false)} className="flex-1 py-4 bg-gray-50 text-slate-700 rounded-xl font-bold uppercase ">Cancel</button>
                   </div>
                </form>
             </motion.div>
@@ -361,12 +361,12 @@ export default function AdminUsers() {
         {isDeleteModalOpen && userToDelete && (
           <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsDeleteModalOpen(false)} className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
-            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="relative bg-white rounded-none p-8 max-w-md w-full shadow-2xl border border-gray-100">
+            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="relative bg-white rounded-xl p-8 max-w-md w-full shadow-2xl border border-gray-100">
                <h3 className="text-xl font-bold text-slate-900 mb-2 uppercase ">Remove Registry Member?</h3>
                <p className="text-base text-slate-500 font-semibold mb-8">This action will permanently remove <span className="text-slate-900 font-bold">"{userToDelete.name}"</span> from the platform registry. This cannot be undone.</p>
                <div className="flex flex-col gap-3">
-                  <button onClick={handleDelete} className="w-full py-4 bg-red-600 text-white rounded-none font-bold uppercase  shadow-lg shadow-red-500/20">Remove Permanently</button>
-                  <button onClick={() => setIsDeleteModalOpen(false)} className="w-full py-4 bg-gray-50 text-slate-700 rounded-none font-bold uppercase ">Keep Member</button>
+                  <button onClick={handleDelete} className="w-full py-4 bg-red-600 text-white rounded-xl font-bold uppercase  shadow-lg shadow-red-500/20">Remove Permanently</button>
+                  <button onClick={() => setIsDeleteModalOpen(false)} className="w-full py-4 bg-gray-50 text-slate-700 rounded-xl font-bold uppercase ">Keep Member</button>
                </div>
             </motion.div>
           </div>
@@ -375,3 +375,5 @@ export default function AdminUsers() {
     </div>
   );
 }
+
+

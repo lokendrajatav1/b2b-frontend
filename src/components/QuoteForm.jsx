@@ -17,7 +17,7 @@ const QuoteForm = () => {
     {
       icon: <Send className="w-8 h-8 text-blue-400" />,
       label: "What are you looking for?",
-      bgColor: "bg-[#007367]/5"
+      bgColor: "bg-[#164e33]/5"
     },
     {
       icon: <Mail className="w-8 h-8 text-teal-400" />,
@@ -70,7 +70,7 @@ const QuoteForm = () => {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="What product or service do you need?" 
-                  className="w-full h-14 px-5 border border-gray-200 rounded-xl focus:outline-none focus:border-[#007367] focus:ring-1 focus:ring-[#007367] transition-all text-slate-800 placeholder-gray-400 bg-gray-50/50 focus:bg-white"
+                  className="w-full h-14 px-5 border border-gray-200 rounded-xl focus:outline-none focus:border-[#164e33] focus:ring-1 focus:ring-[#164e33] transition-all text-slate-800 placeholder-gray-400 bg-gray-50/50 focus:bg-white"
                   required
                 />
               </div>
@@ -85,7 +85,7 @@ const QuoteForm = () => {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="Enter your mobile" 
-                  className="w-full h-14 px-5 border border-gray-200 rounded-r-xl focus:outline-none focus:border-[#007367] focus:ring-1 focus:ring-[#007367] transition-all text-slate-800 placeholder-gray-400 bg-gray-50/50 focus:bg-white"
+                  className="w-full h-14 px-5 border border-gray-200 rounded-r-xl focus:outline-none focus:border-[#164e33] focus:ring-1 focus:ring-[#164e33] transition-all text-slate-800 placeholder-gray-400 bg-gray-50/50 focus:bg-white"
                   required
                 />
               </div>
@@ -94,7 +94,7 @@ const QuoteForm = () => {
               <div className="pt-2">
                 <button 
                   type="submit" 
-                  className="w-full h-14 bg-[#007367] hover:bg-[#005e54] text-white font-semibold rounded-xl transition-colors shadow-md shadow-[#007367]/20"
+                  className="w-full h-14 bg-[#164e33] hover:bg-[#113f29] text-white font-semibold rounded-xl transition-colors shadow-md shadow-[#164e33]/20"
                 >
                   Get Free Quotes
                 </button>
@@ -109,3 +109,4 @@ const QuoteForm = () => {
 };
 
 export default QuoteForm;
+

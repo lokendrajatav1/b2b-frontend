@@ -66,7 +66,7 @@ const FeaturedServices = () => {
               key={idx}
               className="featured-card bg-white border border-gray-200 rounded-3xl p-4 md:p-6"
             >
-              <h3 className="text-xl font-semibold text-[#05252e] mb-6">
+              <h3 className="text-xl font-semibold text-[#164e33] mb-6">
                 {cat.title}
               </h3>
               <div className="grid grid-cols-3 gap-4">

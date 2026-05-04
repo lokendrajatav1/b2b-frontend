@@ -47,7 +47,7 @@ export default function AdminActivityLogs() {
     if (action.includes('DELETE') || action.includes('REJECT')) return 'bg-rose-50 text-rose-600 border-rose-100';
     if (action.includes('APPROVE') || action.includes('CREATE')) return 'bg-emerald-50 text-emerald-600 border-emerald-100';
     if (action.includes('UPDATE')) return 'bg-amber-50 text-amber-600 border-amber-100';
-    return 'bg-[#007367]/5 text-[#007367] border-[#007367]/10';
+    return 'bg-[#164e33]/5 text-[#164e33] border-[#164e33]/10';
   };
 
   return (
@@ -56,7 +56,7 @@ export default function AdminActivityLogs() {
         <div>
            <h1 className="text-xl font-semibold text-slate-900  flex items-center gap-3">
              System Activity Audit
-             <div className="p-1.5 bg-[#007367]/5 text-[#007367] rounded-none border border-[#007367]/10">
+             <div className="p-1.5 bg-[#164e33]/5 text-[#164e33] rounded-xl border border-[#164e33]/10">
                 <History className="w-4 h-4" />
              </div>
            </h1>
@@ -69,7 +69,7 @@ export default function AdminActivityLogs() {
               <select 
                 value={module}
                 onChange={(e) => { setModule(e.target.value); setPage(1); }}
-                className="pl-10 pr-8 py-2.5 bg-white border border-gray-200 rounded-none text-base font-semibold outline-none focus:border-blue-500 transition-all appearance-none cursor-pointer"
+                className="pl-10 pr-8 py-2.5 bg-white border border-gray-200 rounded-xl text-base font-semibold outline-none focus:border-blue-500 transition-all appearance-none cursor-pointer"
               >
                  <option value="">All Modules</option>
                  <option value="VENDOR">Vendors</option>
@@ -81,13 +81,13 @@ export default function AdminActivityLogs() {
               </select>
               <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
             </div>
-           <button onClick={() => fetchLogs()} className="p-2.5 bg-white border border-gray-200 rounded-none text-slate-500 hover:text-[#007367] hover:bg-[#007367]/5 transition-all shadow-sm">
+           <button onClick={() => fetchLogs()} className="p-2.5 bg-white border border-gray-200 rounded-xl text-slate-500 hover:text-[#164e33] hover:bg-[#164e33]/5 transition-all shadow-sm">
               <RefreshCcw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
            </button>
         </div>
       </div>
 
-      <div className="flex-1 min-h-0 bg-white border border-gray-100 rounded-none shadow-sm overflow-hidden flex flex-col w-full max-w-full">
+      <div className="flex-1 min-h-0 bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden flex flex-col w-full max-w-full">
           <div className="flex-1 overflow-x-auto overflow-y-auto custom-scrollbar w-full">
              <table className="w-full text-left border-collapse min-w-[1000px]">
                 <thead className="sticky top-0 z-20">
@@ -108,7 +108,7 @@ export default function AdminActivityLogs() {
                       ))
                    ) : logs.length > 0 ? (
                       logs.map(log => (
-                         <tr key={log.id} className="hover:bg-[#007367]/5/20 transition-all duration-300 group cursor-default">
+                         <tr key={log.id} className="hover:bg-[#164e33]/5/20 transition-all duration-300 group cursor-default">
                             <td className="px-6 py-5 whitespace-nowrap">
                                <div className="flex flex-col text-base">
                                   <span className="font-semibold text-slate-900 leading-tight">{format(new Date(log.createdAt), 'MMM dd, yyyy')}</span>
@@ -125,7 +125,7 @@ export default function AdminActivityLogs() {
                                </div>
                             </td>
                             <td className="px-6 py-5">
-                               <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-50 text-slate-800 rounded-none border border-gray-100 w-fit">
+                               <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-50 text-slate-800 rounded-xl border border-gray-100 w-fit">
                                   <Layers className="w-3 h-3 opacity-40" />
                                   <span className="text-base font-semibold uppercase ">{log.module}</span>
                                </div>
@@ -158,5 +158,6 @@ export default function AdminActivityLogs() {
     </div>
   );
 }
+
 
 

@@ -64,21 +64,21 @@ export default function AdminRegistration() {
         className="w-full max-w-4xl bg-white rounded-[3rem] shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-2 border border-white"
       >
         {/* Left Side - Visual Content */}
-        <div className="hidden lg:flex flex-col justify-between p-16 bg-[#007367] text-white relative overflow-hidden">
+        <div className="hidden lg:flex flex-col justify-between p-16 bg-[#164e33] text-white relative overflow-hidden">
             <div className="absolute top-0 right-0 p-32 opacity-10 rotate-12">
                 <Building2 className="w-64 h-64" />
             </div>
             
             <div className="relative z-10">
                 <Link href="/" className="flex items-center gap-3 group mb-20 inline-block">
-                    <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-[#007367] group-hover:scale-110 transition-transform shadow-lg">
+                    <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-[#164e33] group-hover:scale-110 transition-transform shadow-lg">
                         <Sparkles className="w-6 h-6" />
                     </div>
                     <span className="text-xl font-semibold ">Admission Master</span>
                 </Link>
 
                 <div className="space-y-8">
-                    <h1 className="text-5xl font-semibold leading-tight ">Regional Hub <br/><span className="text-[#e88c30]">Administrator</span></h1>
+                    <h1 className="text-5xl font-semibold leading-tight ">Regional Hub <br/><span className="text-[#f58220]">Administrator</span></h1>
                     <p className="text-lg text-white/70 leading-relaxed max-w-sm">
                         Join our global network of administrative hubs. Manage vendors, oversee product listings, and drive regional marketplace growth.
                     </p>
@@ -97,7 +97,7 @@ export default function AdminRegistration() {
 
         {/* Right Side - Registration Form */}
         <div className="p-10 md:p-16 relative">
-            <Link href="/login" className="absolute top-8 left-8 text-slate-500 hover:text-[#007367] flex items-center gap-2 text-base font-semibold uppercase  transition-all">
+            <Link href="/login" className="absolute top-8 left-8 text-slate-500 hover:text-[#164e33] flex items-center gap-2 text-base font-semibold uppercase  transition-all">
                 <ChevronLeft className="w-4 h-4" />
                 Back to Portal
             </Link>
@@ -141,13 +141,13 @@ export default function AdminRegistration() {
                         <div className="space-y-2">
                             <label className="text-base font-semibold text-slate-500 uppercase  ml-1">Full Name</label>
                             <div className="relative group">
-                                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#007367] transition-all" />
+                                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#164e33] transition-all" />
                                 <input 
                                     type="text" 
                                     required
                                     value={formData.name}
                                     onChange={(e) => setFormData({...formData, name: e.target.value})}
-                                    className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-transparent rounded-2xl text-base font-semibold focus:bg-white focus:border-[#007367]/20 outline-none transition-all"
+                                    className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-transparent rounded-2xl text-base font-semibold focus:bg-white focus:border-[#164e33]/20 outline-none transition-all"
                                     placeholder="John Doe"
                                 />
                             </div>
@@ -156,13 +156,13 @@ export default function AdminRegistration() {
                         <div className="space-y-2">
                             <label className="text-base font-semibold text-slate-500 uppercase  ml-1">Email Address</label>
                             <div className="relative group">
-                                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#007367] transition-all" />
+                                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#164e33] transition-all" />
                                 <input 
                                     type="email" 
                                     required
                                     value={formData.email}
                                     onChange={(e) => setFormData({...formData, email: e.target.value})}
-                                    className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-transparent rounded-2xl text-base font-semibold focus:bg-white focus:border-[#007367]/20 outline-none transition-all"
+                                    className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-transparent rounded-2xl text-base font-semibold focus:bg-white focus:border-[#164e33]/20 outline-none transition-all"
                                     placeholder="admin@hub.com"
                                 />
                             </div>
@@ -171,13 +171,13 @@ export default function AdminRegistration() {
                         <div className="space-y-2">
                             <label className="text-base font-semibold text-slate-500 uppercase  ml-1">Contact Number</label>
                             <div className="relative group">
-                                <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#007367] transition-all" />
+                                <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#164e33] transition-all" />
                                 <input 
                                     type="tel" 
                                     required
                                     value={formData.phone}
                                     onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                                    className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-transparent rounded-2xl text-base font-semibold focus:bg-white focus:border-[#007367]/20 outline-none transition-all"
+                                    className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-transparent rounded-2xl text-base font-semibold focus:bg-white focus:border-[#164e33]/20 outline-none transition-all"
                                     placeholder="+91 00000 00000"
                                 />
                             </div>
@@ -186,13 +186,13 @@ export default function AdminRegistration() {
                         <div className="space-y-2">
                             <label className="text-base font-semibold text-slate-500 uppercase  ml-1">Security Key</label>
                             <div className="relative group">
-                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#007367] transition-all" />
+                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#164e33] transition-all" />
                                 <input 
                                     type="password" 
                                     required
                                     value={formData.password}
                                     onChange={(e) => setFormData({...formData, password: e.target.value})}
-                                    className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-transparent rounded-2xl text-base font-semibold focus:bg-white focus:border-[#007367]/20 outline-none transition-all"
+                                    className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-transparent rounded-2xl text-base font-semibold focus:bg-white focus:border-[#164e33]/20 outline-none transition-all"
                                     placeholder="••••••••••••"
                                 />
                             </div>
@@ -201,13 +201,13 @@ export default function AdminRegistration() {
                         <div className="space-y-2">
                             <label className="text-base font-semibold text-slate-500 uppercase  ml-1">Hub Location</label>
                             <div className="relative group">
-                                <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#007367] transition-all" />
+                                <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#164e33] transition-all" />
                                 <input 
                                     type="text" 
                                     required
                                     value={formData.hubName}
                                     onChange={(e) => setFormData({...formData, hubName: e.target.value})}
-                                    className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-transparent rounded-2xl text-base font-semibold focus:bg-white focus:border-[#007367]/20 outline-none transition-all"
+                                    className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-transparent rounded-2xl text-base font-semibold focus:bg-white focus:border-[#164e33]/20 outline-none transition-all"
                                     placeholder="e.g. Mumbai North"
                                 />
                             </div>
@@ -216,13 +216,13 @@ export default function AdminRegistration() {
                         <div className="space-y-2">
                             <label className="text-base font-semibold text-slate-500 uppercase  ml-1">Department</label>
                             <div className="relative group">
-                                <Layers className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#007367] transition-all" />
+                                <Layers className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#164e33] transition-all" />
                                 <input 
                                     type="text" 
                                     required
                                     value={formData.department}
                                     onChange={(e) => setFormData({...formData, department: e.target.value})}
-                                    className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-transparent rounded-2xl text-base font-semibold focus:bg-white focus:border-[#007367]/20 outline-none transition-all"
+                                    className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-transparent rounded-2xl text-base font-semibold focus:bg-white focus:border-[#164e33]/20 outline-none transition-all"
                                     placeholder="e.g. Quality Assurance"
                                 />
                             </div>
@@ -234,7 +234,7 @@ export default function AdminRegistration() {
                     <button 
                         type="submit"
                         disabled={loading}
-                        className="w-full py-5 bg-[#007367] hover:bg-[#005e54] text-white rounded-[2rem] font-semibold flex items-center justify-center gap-3 shadow-xl shadow-[#007367]/20 transition-all active:scale-95 disabled:opacity-50 mt-4"
+                        className="w-full py-5 bg-[#164e33] hover:bg-[#113f29] text-white rounded-[2rem] font-semibold flex items-center justify-center gap-3 shadow-xl shadow-[#164e33]/20 transition-all active:scale-95 disabled:opacity-50 mt-4"
                     >
                         {loading ? <RefreshCcw className="w-6 h-6 animate-spin" /> : <ShieldCheck className="w-6 h-6" />}
                         {loading ? 'Initializing Credentials...' : 'Complete Hub Onboarding'}
@@ -243,7 +243,7 @@ export default function AdminRegistration() {
 
                 <div className="text-center pt-6">
                     <p className="text-base font-semibold text-slate-500 uppercase ">
-                        Already in the registry? <Link href="/login" className="text-[#007367] hover:underline">Access Portal</Link>
+                        Already in the registry? <Link href="/login" className="text-[#164e33] hover:underline">Access Portal</Link>
                     </p>
                 </div>
             </form>
@@ -252,3 +252,5 @@ export default function AdminRegistration() {
     </div>
   );
 }
+
+

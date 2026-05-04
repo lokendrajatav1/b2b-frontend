@@ -76,7 +76,7 @@ export default function NotificationDropdown() {
         <div className="relative" ref={dropdownRef}>
             <button 
                 onClick={() => setIsOpen(!isOpen)}
-                className={`p-2.5 rounded-lg transition-colors relative group ${isOpen ? 'bg-[#007367]/5 text-[#007367]' : 'text-slate-700 hover:bg-gray-200/50'}`}
+                className={`p-2.5 rounded-lg transition-colors relative group ${isOpen ? 'bg-[#164e33]/5 text-[#164e33]' : 'text-slate-700 hover:bg-gray-200/50'}`}
             >
                 <Bell className="w-5 h-5" />
                 {unreadCount > 0 && (
@@ -90,7 +90,7 @@ export default function NotificationDropdown() {
                         initial={{ opacity: 0, y: 10, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                        className="absolute right-0 mt-4 w-96 bg-white rounded-2xl border border-gray-100 shadow-xl z-50 overflow-hidden"
+                        className="fixed sm:absolute inset-x-4 sm:inset-x-auto sm:right-0 mt-4 sm:w-96 bg-white rounded-2xl border border-gray-100 shadow-2xl z-50 overflow-hidden"
                     >
                         {/* Header */}
                         <div className="p-4 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
@@ -103,7 +103,7 @@ export default function NotificationDropdown() {
                             {unreadCount > 0 && (
                                 <button 
                                     onClick={markAllRead}
-                                    className="text-base font-medium text-[#007367] hover:text-blue-700 transition-colors"
+                                    className="text-base font-medium text-[#164e33] hover:text-blue-700 transition-colors"
                                 >
                                     Mark all read
                                 </button>
@@ -127,10 +127,10 @@ export default function NotificationDropdown() {
                                     <div 
                                         key={n.id} 
                                         onClick={() => !n.isRead && markAsRead(n.id)}
-                                        className={`p-4 border-b border-gray-50 flex gap-3 transition-colors cursor-pointer group ${!n.isRead ? 'bg-[#007367]/5/30' : 'hover:bg-gray-50'}`}
+                                        className={`p-4 border-b border-gray-50 flex gap-3 transition-colors cursor-pointer group ${!n.isRead ? 'bg-[#164e33]/5/30' : 'hover:bg-gray-50'}`}
                                     >
-                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border ${!n.isRead ? 'bg-white border-[#007367]/10' : 'bg-gray-50 border-gray-100'}`}>
-                                            <Info className={`w-5 h-5 ${!n.isRead ? 'text-[#007367]' : 'text-slate-500'}`} />
+                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border ${!n.isRead ? 'bg-white border-[#164e33]/10' : 'bg-gray-50 border-gray-100'}`}>
+                                            <Info className={`w-5 h-5 ${!n.isRead ? 'text-[#164e33]' : 'text-slate-500'}`} />
                                         </div>
                                         <div className="flex-1 space-y-1">
                                             <div className="flex items-center justify-between">
@@ -143,7 +143,7 @@ export default function NotificationDropdown() {
                                             <p className="text-base text-slate-700 font-medium leading-relaxed">{n.message}</p>
                                         </div>
                                         {!n.isRead && (
-                                            <div className="w-2 h-2 bg-[#007367] rounded-full mt-1.5 shrink-0"></div>
+                                            <div className="w-2 h-2 bg-[#164e33] rounded-full mt-1.5 shrink-0"></div>
                                         )}
                                     </div>
                                 ))
@@ -166,7 +166,7 @@ export default function NotificationDropdown() {
                                     '/vendor/notifications'
                                 }
                                 onClick={() => setIsOpen(false)}
-                                className="text-base font-semibold text-slate-500 hover:text-[#007367] transition-colors uppercase  flex items-center justify-center gap-2"
+                                className="text-base font-semibold text-slate-500 hover:text-[#164e33] transition-colors uppercase  flex items-center justify-center gap-2"
                             >
                                 View all notification vault
                             </Link>
@@ -177,3 +177,4 @@ export default function NotificationDropdown() {
         </div>
     );
 }
+

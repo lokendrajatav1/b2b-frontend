@@ -104,7 +104,7 @@ export default function RegisterPage() {
           </div>
           <h2 className="text-2xl font-semibold text-slate-900 mb-2">Vendor Registered</h2>
           <p className="text-slate-500 mb-8">Successfully registered as a vendor. Please login to continue.</p>
-          <Link href="/login" className="w-full inline-block py-4 bg-[#007367] text-white rounded-xl font-semibold hover:bg-[#005e54] transition-colors shadow-sm">Sign In Now</Link>
+          <Link href="/login" className="w-full inline-block py-4 bg-[#164e33] text-white rounded-xl font-semibold hover:bg-[#113f29] transition-colors shadow-sm">Sign In Now</Link>
         </motion.div>
       </div>
     );
@@ -248,7 +248,7 @@ export default function RegisterPage() {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full py-4 bg-[#007367] text-white rounded-xl font-semibold hover:bg-[#005e54] transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2 shadow-sm shadow-blue-200"
+                        className="w-full py-4 bg-[#164e33] text-white rounded-xl font-semibold hover:bg-[#113f29] transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2 shadow-sm shadow-blue-200"
                     >
                         {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Register as Vendor'}
                         {!loading && <ArrowRight className="w-4 h-4" />}
@@ -257,15 +257,16 @@ export default function RegisterPage() {
 
                 <div className="text-center pt-8 border-t border-slate-50">
                     <p className="text-base text-slate-400 mb-1">Already have an account?</p>
-                    <Link href="/login" className="text-base font-semibold text-[#007367] hover:underline">Sign in here</Link>
+                    <Link href="/login" className="text-base font-semibold text-[#164e33] hover:underline">Sign in here</Link>
                 </div>
             </form>
         </div>
 
         <div className="text-center mt-10">
-            <p className="text-base text-slate-400">Joining as a Buyer? Use our <Link href="/login" className="text-[#007367] font-semibold hover:underline">Phone Login</Link> for instant access.</p>
+            <p className="text-base text-slate-400">Joining as a Buyer? Use our <Link href="/login" className="text-[#164e33] font-semibold hover:underline">Phone Login</Link> for instant access.</p>
         </div>
       </div>
     </div>
   );
 }
+

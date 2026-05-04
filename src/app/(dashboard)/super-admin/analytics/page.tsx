@@ -114,11 +114,11 @@ export default function AdminAnalytics() {
   ];
 
   const colorMap: any = {
-    blue:   { bg: 'bg-[#007367]/5',   text: 'text-[#007367]',   bar: 'bg-[#007367]/50'   },
+    blue:   { bg: 'bg-[#164e33]/5',   text: 'text-[#164e33]',   bar: 'bg-[#164e33]/50'   },
     green:  { bg: 'bg-green-50',  text: 'text-green-600',  bar: 'bg-green-500'  },
     amber:  { bg: 'bg-amber-50',  text: 'text-amber-600',  bar: 'bg-amber-500'  },
     purple: { bg: 'bg-purple-50', text: 'text-purple-600', bar: 'bg-purple-500' },
-    indigo: { bg: 'bg-[#007367]/5', text: 'text-[#007367]', bar: 'bg-[#007367]/50' },
+    indigo: { bg: 'bg-[#164e33]/5', text: 'text-[#164e33]', bar: 'bg-[#164e33]/50' },
   };
 
   return (
@@ -141,7 +141,7 @@ export default function AdminAnalytics() {
         <button
           onClick={() => load(true)}
           disabled={refreshing}
-          className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-none text-base text-slate-800 hover:bg-gray-50 transition-all shadow-sm"
+          className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-xl text-base text-slate-800 hover:bg-gray-50 transition-all shadow-sm"
         >
           <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
           {refreshing ? 'Refreshing...' : 'Refresh'}
@@ -158,7 +158,7 @@ export default function AdminAnalytics() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.07 }}
-              className="bg-white rounded-none border border-gray-200 shadow-sm p-5"
+              className="bg-white rounded-xl border border-gray-200 shadow-sm p-5"
             >
               <div className={`w-9 h-9 rounded-xl ${c.bg} ${c.text} flex items-center justify-center mb-3`}>
                 <card.icon className="w-4 h-4" />
@@ -175,7 +175,7 @@ export default function AdminAnalytics() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
 
         {/* Lead Status Breakdown */}
-        <div className="bg-white rounded-none border border-gray-200 shadow-sm p-5">
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
           <p className="text-base font-medium text-slate-800 mb-4">Lead Pipeline</p>
           <div className="space-y-3">
             {[
@@ -201,7 +201,7 @@ export default function AdminAnalytics() {
         </div>
 
         {/* Conversion Metrics */}
-        <div className="bg-white rounded-none border border-gray-200 shadow-sm p-5">
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
           <p className="text-base font-medium text-slate-800 mb-4">Conversion Rate</p>
           <div className="flex items-center justify-center py-4">
             <div className="text-center">
@@ -212,7 +212,7 @@ export default function AdminAnalytics() {
             </div>
           </div>
           <div className="grid grid-cols-2 gap-3 mt-2">
-            <div className="bg-gray-50 rounded-none p-3 text-center">
+            <div className="bg-gray-50 rounded-xl p-3 text-center">
               <p className="text-lg font-semibold text-slate-900 tabular-nums">{con.totalLeads ?? 0}</p>
               <p className="text-base text-slate-500">Total Leads</p>
             </div>
@@ -224,7 +224,7 @@ export default function AdminAnalytics() {
         </div>
 
         {/* Plan Comparison */}
-        <div className="bg-white rounded-none border border-gray-200 shadow-sm p-5">
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
           <p className="text-base font-medium text-slate-800 mb-4">Subscription Plans</p>
           <div className="space-y-3">
             {pln.length > 0 ? pln.map((plan: any, i: number) => (
@@ -246,15 +246,15 @@ export default function AdminAnalytics() {
       </div>
 
       {/* ── Top Categories ── */}
-      <div className="bg-white rounded-none border border-gray-200 shadow-sm p-5">
+      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
         <p className="text-base font-medium text-slate-800 mb-4">Category Performance</p>
         {cat.length > 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
             {cat.slice(0, 10).map((c: any) => (
-              <div key={c.id} className="bg-gray-50 rounded-none p-3 text-center border border-gray-100">
+              <div key={c.id} className="bg-gray-50 rounded-xl p-3 text-center border border-gray-100">
                 <p className="text-base font-medium text-slate-900 truncate">{c.name}</p>
                 <p className="text-base text-slate-500 mt-1">{c._count.vendors} vendors</p>
-                <p className="text-base text-[#007367] font-medium">{c._count.leads} leads</p>
+                <p className="text-base text-[#164e33] font-medium">{c._count.leads} leads</p>
               </div>
             ))}
           </div>
@@ -267,7 +267,7 @@ export default function AdminAnalytics() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
 
         {/* Vendor Locations */}
-        <div className="bg-white rounded-none border border-gray-200 shadow-sm p-5">
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
           <div className="flex items-center gap-2 mb-4">
             <MapPin className="w-4 h-4 text-slate-600" />
             <p className="text-base font-medium text-slate-800">Vendor Locations</p>
@@ -292,7 +292,7 @@ export default function AdminAnalytics() {
         </div>
 
         {/* Lead Locations */}
-        <div className="bg-white rounded-none border border-gray-200 shadow-sm p-5">
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
           <div className="flex items-center gap-2 mb-4">
             <Target className="w-4 h-4 text-amber-500" />
             <p className="text-base font-medium text-slate-800">Lead Hotspots</p>
@@ -321,7 +321,7 @@ export default function AdminAnalytics() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
 
         {/* Vendor Keywords */}
-        <div className="bg-white rounded-none border border-gray-200 shadow-sm p-5">
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
           <div className="flex items-center gap-2 mb-4">
             <Tag className="w-4 h-4 text-purple-500" />
             <p className="text-base font-medium text-slate-800">Top Vendor Keywords</p>
@@ -338,7 +338,7 @@ export default function AdminAnalytics() {
         </div>
 
         {/* Lead Search Keywords */}
-        <div className="bg-white rounded-none border border-gray-200 shadow-sm p-5">
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
           <div className="flex items-center gap-2 mb-4">
             <Tag className="w-4 h-4 text-green-500" />
             <p className="text-base font-medium text-slate-800">Buyer Search Terms</p>
@@ -356,7 +356,7 @@ export default function AdminAnalytics() {
       </div>
 
       {/* ── Recent Leads ── */}
-      <div className="bg-white rounded-none border border-gray-200 shadow-sm p-5">
+      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
         <p className="text-base font-medium text-slate-800 mb-4">Recent Leads</p>
         {(data?.recentLeads?.length ?? 0) > 0 ? (
           <div className="overflow-x-auto">
@@ -402,5 +402,6 @@ export default function AdminAnalytics() {
     </div>
   );
 }
+
 
 

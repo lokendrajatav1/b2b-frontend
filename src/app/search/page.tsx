@@ -569,8 +569,8 @@ function SearchContent() {
                                 </div>
                                 <div className="border-t border-gray-100 pt-4 space-y-2">
                                     <div className="flex items-center gap-2">
-                                        <CheckCircle2 className="w-3.5 h-3.5 text-[#007367]" />
-                                        <span className="text-base font-semibold text-[#007367] truncate">{callTargetProduct.vendor.businessName}</span>
+                                        <CheckCircle2 className="w-3.5 h-3.5 text-[#164e33]" />
+                                        <span className="text-base font-semibold text-[#164e33] truncate">{callTargetProduct.vendor.businessName}</span>
                                     </div>
                                     <div className="flex items-center gap-2 text-base text-slate-700">
                                         <MapPin className="w-3.5 h-3.5" /> {callTargetProduct.vendor.city}
@@ -614,7 +614,7 @@ function SearchContent() {
                                         </label>
                                         <div className="relative group">
                                             <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-2 border-r border-gray-200 pr-3">
-                                                <img src="https://flagcdn.com/w20/in.png" alt="India" className="w-5 h-auto rounded-sm" />
+                                                <img src="https://flagcdn.com/w20/in.png" alt="India" className="w-5 h-auto rounded-lg" />
                                                 <span className="text-base font-semibold text-slate-700">+91</span>
                                             </div>
                                             <input
@@ -624,7 +624,7 @@ function SearchContent() {
                                                 value={callPhone}
                                                 onChange={(e) => setCallPhone(e.target.value.replace(/[^0-9]/g, '').slice(0, 10))}
                                                 placeholder="10 digit mobile number"
-                                                className="w-full border border-gray-300 rounded-xl pl-24 pr-4 py-4 text-lg font-semibold text-slate-900 outline-none focus:border-[#007367] focus:ring-4 focus:ring-[#007367]/10 transition-all"
+                                                className="w-full border border-gray-300 rounded-xl pl-24 pr-4 py-4 text-lg font-semibold text-slate-900 outline-none focus:border-[#164e33] focus:ring-4 focus:ring-[#164e33]/10 transition-all"
                                             />
                                         </div>
                                     </div>
@@ -667,9 +667,10 @@ function SearchContent() {
             >
                 <header className="px-6 py-5 border-b border-gray-100 flex items-center justify-between bg-white">
                     <div className="space-y-0.5">
-                        <h2 className="text-lg font-semibold text-slate-900 uppercase er">Explore More</h2>
-                        <div className="flex items-center gap-2">
-                            <p className="text-base text-slate-500 font-semibold uppercase ">Advanced Filters</p>
+                        <h2 className="text-xl font-bold text-[#164e33] tracking-wide uppercase">Explore More</h2>
+                        <div className="flex items-center gap-3">
+                            <p className="text-xs text-slate-500 font-bold uppercase tracking-wider">Advanced Filters</p>
+                            <span className="w-1 h-1 rounded-full bg-gray-300"></span>
                             <button
                                 onClick={() => {
                                     updateURL({
@@ -684,7 +685,7 @@ function SearchContent() {
                                     setSearchQuery('');
                                     setLocationQuery('');
                                 }}
-                                className="text-base font-semibold text-[#ff3b3b] uppercase  hover:underline"
+                                className="text-xs font-bold text-[#f58220] uppercase tracking-wider hover:text-orange-600 transition-colors"
                             >
                                 Clear All
                             </button>
@@ -698,95 +699,97 @@ function SearchContent() {
                     </button>
                 </header>
 
-                <div className="flex-1 overflow-y-auto p-8 space-y-12">
+                <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-10 custom-scrollbar">
                     {/* Price Range Section */}
-                    <section className="space-y-4">
-                        <h3 className="text-base font-semibold text-slate-900 uppercase  border-l-4 border-[#007367] pl-3">Price Range</h3>
-                        <div className="grid grid-cols-2 gap-3">
+                    <section className="space-y-5">
+                        <div className="flex items-center gap-3">
+                           <div className="w-1.5 h-6 bg-[#164e33] rounded-full"></div>
+                           <h3 className="text-base font-bold text-slate-900 tracking-wide uppercase">Price Range</h3>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             {['Below ₹600', '₹601 - ₹1,000', '₹1,001 - ₹3,000', 'Above ₹3,001'].map(p => (
                                 <label
                                     key={p}
                                     onClick={() => handlePriceFilter(p)}
-                                    className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all group ${currentPriceRange === p ? 'bg-[#007367]/10 border border-[#007367]/20 shadow-sm' : 'bg-gray-50 hover:bg-gray-100 border border-transparent'}`}
+                                    className={`flex items-center justify-between p-3.5 rounded-2xl cursor-pointer transition-all duration-300 border shadow-sm ${currentPriceRange === p ? 'bg-[#164e33] border-[#164e33] shadow-md transform scale-[1.02]' : 'bg-white hover:bg-gray-50 border-gray-200'}`}
                                 >
-                                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${currentPriceRange === p ? 'border-[#007367]' : 'border-gray-300 group-hover:border-[#007367]'}`}>
-                                        {currentPriceRange === p && <div className="w-2.5 h-2.5 bg-[#007367] rounded-full"></div>}
+                                    <span className={`text-sm font-bold ${currentPriceRange === p ? 'text-white' : 'text-slate-700'}`}>{p}</span>
+                                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${currentPriceRange === p ? 'border-white' : 'border-gray-300'}`}>
+                                        {currentPriceRange === p && <div className="w-2.5 h-2.5 bg-white rounded-full"></div>}
                                     </div>
-                                    <span className={`text-base font-semibold ${currentPriceRange === p ? 'text-[#007367]' : 'text-slate-800'}`}>{p}</span>
                                 </label>
                             ))}
                         </div>
                     </section>
 
                     {/* Sub Categories Grid - Connected to Backend */}
-                    <section className="space-y-4">
-                        <div className="flex items-center justify-between pr-2">
-                            <h3 className="text-base font-semibold text-slate-900 uppercase  border-l-4 border-[#ff3b3b] pl-3">Categories</h3>
+                    <section className="space-y-5">
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                               <div className="w-1.5 h-6 bg-[#f58220] rounded-full"></div>
+                               <h3 className="text-base font-bold text-slate-900 tracking-wide uppercase">Categories</h3>
+                            </div>
                             {categories.length > 6 && (
                                 <button
                                     onClick={() => setShowAllCategories(!showAllCategories)}
-                                    className="text-base font-semibold text-[#007367] uppercase hover:underline"
+                                    className="text-sm font-bold text-[#164e33] uppercase tracking-wide hover:text-[#f58220] transition-colors"
                                 >
                                     {showAllCategories ? 'Show Less' : 'View All'}
                                 </button>
                             )}
                         </div>
                         <div className="grid grid-cols-2 gap-4">
-                            {(showAllCategories ? categories : categories.slice(0, 6)).map((cat: any) => (
+                            {(showAllCategories ? categories : categories.slice(0, 6)).map((cat: any) => {
+                                const getCategoryFallbackImage = (name: string) => {
+                                    const n = (name || '').toLowerCase();
+                                    if(n.includes('interior') || n.includes('architect')) return 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80&w=200';
+                                    if(n.includes('beauty') || n.includes('care')) return 'https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&q=80&w=200';
+                                    if(n.includes('business') || n.includes('service')) return 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80&w=200';
+                                    if(n.includes('chemical')) return 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&q=80&w=200';
+                                    if(n.includes('construction')) return 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&q=80&w=200';
+                                    if(n.includes('pharma') || n.includes('drug')) return 'https://images.unsplash.com/photo-1585435557343-3b092031a831?auto=format&fit=crop&q=80&w=200';
+                                    return 'https://images.unsplash.com/photo-1586528116311-ad8ed7450849?auto=format&fit=crop&q=80&w=200';
+                                };
+                                const imageSrc = cat.imageUrl || getCategoryFallbackImage(cat.name);
+                                
+                                return (
                                 <div
                                     key={cat.id}
                                     onClick={() => { updateURL({ category: cat.id, page: 1 }); setIsExploreOpen(false); }}
-                                    className={`flex flex-col items-center gap-3 p-4 border rounded-2xl transition-all cursor-pointer group ${currentCategoryId === cat.id ? 'bg-[#ff3b3b]/5 border-[#ff3b3b]/20 shadow-md' : 'bg-slate-50/50 border-gray-100 hover:border-[#007367] hover:shadow-lg'}`}
+                                    className={`flex flex-col items-center gap-3 p-4 border rounded-2xl transition-all duration-300 cursor-pointer group ${currentCategoryId === cat.id ? 'bg-gradient-to-br from-[#164e33]/10 to-transparent border-[#164e33]/30 shadow-md ring-1 ring-[#164e33]/20' : 'bg-white border-gray-100 hover:border-[#164e33]/40 hover:shadow-lg'}`}
                                 >
-                                    <div className="w-20 h-20 relative rounded-xl overflow-hidden shadow-sm bg-white flex items-center justify-center">
-                                        {cat.imageUrl ? (
-                                            <img src={cat.imageUrl} alt={cat.name} className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" />
-                                        ) : (
-                                            <Layers className="w-8 h-8 text-gray-200" />
-                                        )}
+                                    <div className={`w-16 h-16 relative rounded-xl overflow-hidden shadow-sm flex items-center justify-center transition-transform duration-500 group-hover:scale-110 ${currentCategoryId === cat.id ? 'bg-white' : 'bg-gray-50'}`}>
+                                        <img src={imageSrc} alt={cat.name} className="object-cover w-full h-full" />
                                     </div>
-                                    <span className={`text-base font-semibold text-center uppercase  leading-none ${currentCategoryId === cat.id ? 'text-[#ff3b3b]' : 'text-slate-800'}`}>{cat.name}</span>
+                                    <span className={`text-xs font-bold text-center uppercase tracking-wide leading-tight ${currentCategoryId === cat.id ? 'text-[#164e33]' : 'text-slate-700'}`}>{cat.name}</span>
                                 </div>
-                            ))}
-                        </div>
-                    </section>
-
-                    {/* Brands Section */}
-                    <section className="space-y-4">
-                        <h3 className="text-base font-semibold text-slate-900 uppercase  border-l-4 border-[#007367] pl-3">Top Brands</h3>
-                        <div className="grid grid-cols-4 gap-4">
-                            {[
-                                'https://5.imimg.com/data5/CH/YB/HT/GLADMIN-60238/gic-level-controllers-125x125.jpg',
-                                'https://5.imimg.com/data5/BrandMcat/LC/TT/AG/GLADMIN-60238/gelco-electronics-125x125.jpg',
-                                'https://5.imimg.com/data5/BrandMcat/HF/FH/HW/GLADMIN-60238/grundfos-125x125.jpg',
-                                'https://5.imimg.com/data5/BrandMcat/QW/GZ/CM/GLADMIN-60238/kirloskar-125x125.jpg'
-                            ].map((img, i) => (
-                                <div key={i} className="aspect-square rounded-full border-2 border-gray-100 p-2 hover:border-[#007367] transition-all cursor-pointer bg-white shadow-sm overflow-hidden flex items-center justify-center">
-                                    <img src={img} alt="brand" className="w-full h-full object-contain grayscale hover:grayscale-0 transition-all opacity-70 hover:opacity-100" />
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     </section>
 
                     {/* Seller Type & Trust */}
-                    <section className="space-y-4 pb-10">
-                        <h3 className="text-base font-semibold text-slate-900 uppercase  border-l-4 border-[#f59e0b] pl-3">Trust & Verification</h3>
+                    <section className="space-y-5 pb-10">
+                        <div className="flex items-center gap-3">
+                           <div className="w-1.5 h-6 bg-emerald-500 rounded-full"></div>
+                           <h3 className="text-base font-bold text-slate-900 tracking-wide uppercase">Trust & Verification</h3>
+                        </div>
                         <div className="space-y-4">
                             <label
                                 onClick={() => updateURL({ verified: !isVerified, page: 1 })}
-                                className={`flex items-center justify-between p-4 rounded-2xl cursor-pointer transition-all border ${isVerified ? 'bg-emerald-50 border-emerald-200 shadow-sm' : 'bg-gray-50 border-transparent hover:bg-gray-100'}`}
+                                className={`flex items-center justify-between p-5 rounded-2xl cursor-pointer transition-all duration-300 border ${isVerified ? 'bg-gradient-to-r from-emerald-50 to-white border-emerald-200 shadow-md transform scale-[1.02]' : 'bg-white border-gray-200 shadow-sm hover:border-emerald-200'}`}
                             >
-                                <div className="flex items-center gap-3">
-                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${isVerified ? 'bg-emerald-500 text-white' : 'bg-gray-200 text-slate-500'}`}>
-                                        <Search className="w-5 h-5" />
+                                <div className="flex items-center gap-4">
+                                    <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors shadow-inner ${isVerified ? 'bg-emerald-500 text-white' : 'bg-gray-100 text-slate-400'}`}>
+                                        <ShieldCheck className="w-6 h-6" />
                                     </div>
                                     <div>
-                                        <p className={`text-base font-semibold uppercase  ${isVerified ? 'text-emerald-700' : 'text-slate-800'}`}>Verified Sellers Only</p>
-                                        <p className="text-base text-slate-700 font-medium">Business verified by B2B Community</p>
+                                        <p className={`text-sm font-bold uppercase tracking-wide mb-0.5 ${isVerified ? 'text-emerald-700' : 'text-slate-800'}`}>Verified Sellers Only</p>
+                                        <p className="text-xs text-slate-500 font-semibold">Premium B2B Partners</p>
                                     </div>
                                 </div>
-                                <div className={`w-12 h-6 rounded-full relative transition-colors ${isVerified ? 'bg-emerald-500' : 'bg-gray-300'}`}>
-                                    <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${isVerified ? 'left-7' : 'left-1'}`}></div>
+                                <div className={`w-14 h-7 rounded-full relative transition-colors duration-300 shadow-inner ${isVerified ? 'bg-emerald-500' : 'bg-gray-300'}`}>
+                                    <div className={`absolute top-1 w-5 h-5 bg-white rounded-full shadow transition-all duration-300 ${isVerified ? 'left-8' : 'left-1'}`}></div>
                                 </div>
                             </label>
                         </div>
@@ -797,7 +800,7 @@ function SearchContent() {
             {/* IndiaMart Style Breadcrumbs */}
             <nav className="w-full px-4 md:px-10 py-3 bg-white border-b border-gray-100">
                 <ol className="flex items-center gap-2 text-base font-medium text-slate-500">
-                    <li><Link href="/" className="hover:text-[#007367]">B2B Community</Link></li>
+                    <li><Link href="/" className="hover:text-[#164e33]">B2B Community</Link></li>
                     <li className="text-gray-300">/</li>
                     <li><span className="text-slate-800 uppercase ">{selectedCategoryName || 'All Categories'}</span></li>
                     <li className="text-gray-300">/</li>
@@ -828,9 +831,9 @@ function SearchContent() {
                     <div className="flex items-center gap-4 bg-white border border-gray-200 p-3 rounded-2xl shadow-sm">
                         <button
                             onClick={() => setIsExploreOpen(true)}
-                            className="whitespace-nowrap px-5 py-2.5 bg-[#007367]/5 hover:bg-[#007367]/10 text-[#007367] rounded-xl text-base font-semibold transition-all flex items-center gap-2 border border-[#007367]/10 uppercase "
+                            className="whitespace-nowrap px-6 py-3 shadow border border-[#164e33]/20 bg-gradient-to-r from-white to-gray-50 hover:to-white hover:border-[#164e33]/40 text-[#164e33] rounded-xl text-sm font-bold transition-all duration-300 flex items-center gap-2 uppercase tracking-wide group"
                         >
-                            <Filter className="w-4 h-4" /> Explore
+                            <Filter className="w-4 h-4 transition-transform group-hover:scale-110" /> Explore
                         </button>
 
                         <div className="w-px h-10 bg-gray-100 mx-1"></div>
@@ -839,15 +842,15 @@ function SearchContent() {
                         <div className="flex items-center gap-6 overflow-hidden">
                             <div className="flex items-center gap-4 min-w-[300px]">
                                 <form className="relative flex-1 group" onSubmit={(e) => { e.preventDefault(); updateURL({ city: locationQuery, page: 1 }); }}>
-                                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#007367] transition-colors" />
+                                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#164e33] transition-colors" />
                                     <input
                                         value={locationQuery}
                                         onChange={(e) => setLocationQuery(e.target.value)}
-                                        className="w-full pl-9 pr-4 py-2.5 bg-gray-50 border border-transparent focus:border-[#007367] focus:bg-white rounded-xl text-base font-semibold text-slate-900 outline-none transition-all placeholder:text-slate-500"
+                                        className="w-full pl-9 pr-4 py-2.5 bg-gray-50 border border-transparent focus:border-[#164e33] focus:bg-white rounded-xl text-base font-semibold text-slate-900 outline-none transition-all placeholder:text-slate-500"
                                         placeholder="Enter City (e.g. Indore)"
                                     />
                                     <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2">
-                                        <Search className="w-3.5 h-3.5 text-gray-300 hover:text-[#007367]" />
+                                        <Search className="w-3.5 h-3.5 text-gray-300 hover:text-[#164e33]" />
                                     </button>
                                 </form>
 
@@ -855,24 +858,24 @@ function SearchContent() {
                                     onClick={() => { setLocationQuery(''); updateURL({ city: '', page: 1 }); }}
                                     className={`flex items-center gap-2 cursor-pointer group whitespace-nowrap transition-all hover:scale-105 active:scale-95`}
                                 >
-                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${!currentCity ? 'bg-[#007367] text-white shadow-md' : 'bg-[#007367]/10 text-[#007367] group-hover:bg-[#007367] group-hover:text-white'}`}>
+                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${!currentCity ? 'bg-[#164e33] text-white shadow-md' : 'bg-[#164e33]/10 text-[#164e33] group-hover:bg-[#164e33] group-hover:text-white'}`}>
                                         <Globe className="w-4 h-4" />
                                     </div>
-                                    <span className={`text-base font-semibold  border-b-2 transition-all ${!currentCity ? 'text-[#007367] border-[#007367]' : 'text-[#007367] border-transparent group-hover:border-[#007367]'}`}>All India</span>
+                                    <span className={`text-base font-semibold  border-b-2 transition-all ${!currentCity ? 'text-[#164e33] border-[#164e33]' : 'text-[#164e33] border-transparent group-hover:border-[#164e33]'}`}>All India</span>
                                 </div>
 
                                 <div
                                     onClick={handleNearMe}
                                     className={`flex items-center gap-2 cursor-pointer group whitespace-nowrap transition-all ${locationLoading ? 'opacity-50' : 'hover:scale-105 active:scale-95'}`}
                                 >
-                                    <div className="w-8 h-8 rounded-full bg-[#007367]/10 flex items-center justify-center group-hover:bg-[#007367] transition-all">
+                                    <div className="w-8 h-8 rounded-full bg-[#164e33]/10 flex items-center justify-center group-hover:bg-[#164e33] transition-all">
                                         {locationLoading ? (
-                                            <Loader2 className="w-4 h-4 animate-spin text-[#007367] group-hover:text-white" />
+                                            <Loader2 className="w-4 h-4 animate-spin text-[#164e33] group-hover:text-white" />
                                         ) : (
-                                            <MapPin className="w-4 h-4 text-[#007367] group-hover:text-white" />
+                                            <MapPin className="w-4 h-4 text-[#164e33] group-hover:text-white" />
                                         )}
                                     </div>
-                                    <span className="text-base font-semibold text-[#007367]  border-b-2 border-transparent group-hover:border-[#007367]">Near Me</span>
+                                    <span className="text-base font-semibold text-[#164e33]  border-b-2 border-transparent group-hover:border-[#164e33]">Near Me</span>
                                 </div>
                             </div>
                         </div>
@@ -880,37 +883,37 @@ function SearchContent() {
                         <div className="w-px h-6 bg-gray-100 shrink-0"></div>
 
                         {/* Scrollable Popular Cities with Arrow */}
-                        <div className="flex-1 relative flex items-center gap-2 overflow-hidden group/city">
+                        <div className="flex-1 relative flex items-center gap-2 overflow-hidden group/city max-w-full">
                             {/* Scroll Buttons */}
-                            <div className="absolute left-0 top-1/2 -translate-y-1/2 bg-gradient-to-r from-white via-white to-transparent pr-8 pl-1 py-1 flex items-center z-10 opacity-0 group-hover/city:opacity-100 transition-opacity">
+                            <div className="absolute left-0 top-1/2 -translate-y-1/2 bg-gradient-to-r from-white via-white/90 to-transparent pr-10 pl-0 py-2 flex items-center z-10 opacity-0 group-hover/city:opacity-100 transition-opacity pointer-events-none">
                                 <button
                                     onClick={() => scrollCities('left')}
-                                    className="w-7 h-7 rounded-full bg-white border border-gray-200 shadow-sm flex items-center justify-center hover:bg-[#007367] hover:text-white transition-all active:scale-90"
+                                    className="w-8 h-8 rounded-full bg-white border border-gray-200 shadow-md flex items-center justify-center hover:bg-[#164e33] hover:text-white transition-all active:scale-90 pointer-events-auto shadow-[0_2px_10px_rgba(0,0,0,0.08)]"
                                 >
-                                    <ChevronLeft className="w-4 h-4" />
+                                    <ChevronLeft className="w-5 h-5" />
                                 </button>
                             </div>
 
                             <div
                                 ref={cityScrollRef}
-                                className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth pr-10"
+                                className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth px-10 w-full"
                             >
                                 {[
                                     ...(currentCity && !['Indore', 'Bhopal', 'Vadodara', 'Bengaluru', 'Delhi', 'Chennai', 'Pune', 'Ahmedabad', 'Coimbatore', 'Hyderabad', 'Mumbai'].includes(currentCity) ? [currentCity] : []),
                                     'Indore', 'Bhopal', 'Vadodara', 'Bengaluru', 'Delhi', 'Chennai', 'Pune', 'Ahmedabad', 'Coimbatore', 'Hyderabad', 'Mumbai'
                                 ].map(city => (
-                                    <div key={city} className="relative flex items-center">
+                                    <div key={city} className="relative flex items-center shrink-0">
                                         <button
                                             onClick={() => { setLocationQuery(city); updateURL({ city, page: 1 }); }}
-                                            className={`whitespace-nowrap px-4 py-2 border rounded-full text-base font-semibold transition-all flex items-center gap-2 ${currentCity === city ? 'bg-[#007367] text-white border-[#007367] shadow-sm pr-2' : 'bg-white text-slate-800 border-gray-200 hover:border-gray-400'}`}
+                                            className={`whitespace-nowrap px-4 py-2 border rounded-full text-base font-semibold transition-all flex items-center gap-2 ${currentCity === city ? 'bg-[#164e33] text-white border-[#164e33] shadow-md pr-2' : 'bg-white text-slate-800 border-gray-200 hover:border-gray-400'}`}
                                         >
                                             {city}
                                             {currentCity === city && (
                                                 <span
                                                     onClick={(e) => { e.stopPropagation(); updateURL({ city: '' }); setLocationQuery(''); }}
-                                                    className="hover:bg-black/10 rounded-full p-0.5 transition-colors"
+                                                    className="hover:bg-white/20 rounded-full p-1 transition-colors"
                                                 >
-                                                    <X className="w-3 h-3" />
+                                                    <X className="w-4 h-4" />
                                                 </span>
                                             )}
                                         </button>
@@ -919,12 +922,12 @@ function SearchContent() {
                             </div>
 
                             {/* Scroll Button Right */}
-                            <div className="absolute right-0 top-1/2 -translate-y-1/2 bg-gradient-to-l from-white via-white to-transparent pl-8 pr-1 py-1 flex items-center z-10 opacity-0 group-hover/city:opacity-100 transition-opacity">
+                            <div className="absolute right-0 top-1/2 -translate-y-1/2 bg-gradient-to-l from-white via-white/90 to-transparent pl-10 pr-0 py-2 flex items-center z-10 opacity-0 group-hover/city:opacity-100 transition-opacity pointer-events-none">
                                 <button
                                     onClick={() => scrollCities('right')}
-                                    className="w-7 h-7 rounded-full bg-white border border-gray-200 shadow-sm flex items-center justify-center hover:bg-[#007367] hover:text-white transition-all active:scale-90"
+                                    className="w-8 h-8 rounded-full bg-white border border-gray-200 shadow-md flex items-center justify-center hover:bg-[#164e33] hover:text-white transition-all active:scale-90 pointer-events-auto shadow-[0_2px_10px_rgba(0,0,0,0.08)]"
                                 >
-                                    <ChevronRight className="w-4 h-4" />
+                                    <ChevronRight className="w-5 h-5" />
                                 </button>
                             </div>
                         </div>
@@ -946,7 +949,7 @@ function SearchContent() {
                                 <button
                                     key={range}
                                     onClick={() => handlePriceFilter(range)}
-                                    className={`whitespace-nowrap px-4 py-2 border rounded-lg text-base font-semibold uppercase  transition-all shadow-sm flex items-center gap-2 ${currentPriceRange === range ? 'bg-[#007367] text-white border-[#007367]' : 'bg-white text-slate-700 border-gray-100 hover:border-[#007367] hover:text-[#007367]'}`}
+                                    className={`whitespace-nowrap px-4 py-2 border rounded-lg text-base font-semibold uppercase  transition-all shadow-sm flex items-center gap-2 ${currentPriceRange === range ? 'bg-[#164e33] text-white border-[#164e33]' : 'bg-white text-slate-700 border-gray-100 hover:border-[#164e33] hover:text-[#164e33]'}`}
                                 >
                                     {range}
                                     {currentPriceRange === range && <X className="w-3 h-3" />}
@@ -982,9 +985,9 @@ function SearchContent() {
                                                 name="offeringType"
                                                 checked={currentOfferingType === item.id}
                                                 onChange={() => updateURL({ offeringType: item.id, page: 1 })}
-                                                className="accent-[#007367] w-4 h-4 cursor-pointer"
+                                                className="accent-[#164e33] w-4 h-4 cursor-pointer"
                                             />
-                                            <span className={`text-base font-medium transition-colors ${currentOfferingType === item.id ? 'text-[#007367] font-semibold' : 'text-slate-800'}`}>{item.label}</span>
+                                            <span className={`text-base font-medium transition-colors ${currentOfferingType === item.id ? 'text-[#164e33] font-semibold' : 'text-slate-800'}`}>{item.label}</span>
                                         </label>
                                     ))}
                                 </div>
@@ -994,7 +997,7 @@ function SearchContent() {
                                 <div className="space-y-1 max-h-[500px] overflow-y-auto pr-2">
                                     <button
                                         onClick={() => updateURL({ category: "", page: 1 })}
-                                        className={`w-full text-left px-3 py-2 rounded-lg text-base transition-all ${!currentCategoryId ? 'bg-[#007367] text-white font-semibold' : 'text-slate-800 hover:bg-gray-50'}`}
+                                        className={`w-full text-left px-3 py-2 rounded-lg text-base transition-all ${!currentCategoryId ? 'bg-[#164e33] text-white font-semibold' : 'text-slate-800 hover:bg-gray-50'}`}
                                     >
                                         All Categories
                                     </button>
@@ -1002,7 +1005,7 @@ function SearchContent() {
                                         <button
                                             key={cat.id}
                                             onClick={() => updateURL({ category: cat.id, page: 1 })}
-                                            className={`w-full text-left px-3 py-2 rounded-lg text-base transition-all ${currentCategoryId === cat.id ? 'bg-[#007367] text-white font-semibold' : 'text-slate-800 hover:bg-gray-50'}`}
+                                            className={`w-full text-left px-3 py-2 rounded-lg text-base transition-all ${currentCategoryId === cat.id ? 'bg-[#164e33] text-white font-semibold' : 'text-slate-800 hover:bg-gray-50'}`}
                                         >
                                             {cat.name}
                                         </button>
@@ -1017,7 +1020,7 @@ function SearchContent() {
                                         type="checkbox"
                                         checked={isVerified}
                                         onChange={() => updateURL({ verified: !isVerified, page: 1 })}
-                                        className="w-5 h-5 accent-[#007367]"
+                                        className="w-5 h-5 accent-[#164e33]"
                                     />
                                 </label>
 
@@ -1025,7 +1028,7 @@ function SearchContent() {
                                     <p className="text-base font-semibold text-slate-500 uppercase ">Ratings</p>
                                     {[4.5, 4.0, 3.0].map(val => (
                                         <label key={val} className="flex items-center gap-2 cursor-pointer group">
-                                            <input type="radio" name="rating" className="accent-[#007367]" />
+                                            <input type="radio" name="rating" className="accent-[#164e33]" />
                                             <span className="text-base text-slate-800 font-medium">{val} Stars & up</span>
                                         </label>
                                     ))}
@@ -1075,7 +1078,7 @@ function SearchContent() {
                                 <button
                                     disabled={currentPage <= 1}
                                     onClick={() => updateURL({ page: currentPage - 1 })}
-                                    className="px-6 py-2 bg-white border border-gray-200 rounded-lg text-base font-semibold text-slate-800 disabled:opacity-50 hover:border-[#007367] hover:text-[#007367] transition-all"
+                                    className="px-6 py-2 bg-white border border-gray-200 rounded-lg text-base font-semibold text-slate-800 disabled:opacity-50 hover:border-[#164e33] hover:text-[#164e33] transition-all"
                                 >
                                     Previous
                                 </button>
@@ -1085,7 +1088,7 @@ function SearchContent() {
                                 <button
                                     disabled={currentPage >= pagination.totalPages}
                                     onClick={() => updateURL({ page: currentPage + 1 })}
-                                    className="px-6 py-2 bg-white border border-gray-200 rounded-lg text-base font-semibold text-slate-800 disabled:opacity-50 hover:border-[#007367] hover:text-[#007367] transition-all"
+                                    className="px-6 py-2 bg-white border border-gray-200 rounded-lg text-base font-semibold text-slate-800 disabled:opacity-50 hover:border-[#164e33] hover:text-[#164e33] transition-all"
                                 >
                                     Next
                                 </button>
@@ -1101,9 +1104,11 @@ function SearchContent() {
 export default function SearchPage() {
     return (
         <Suspense fallback={<div className="min-h-screen bg-[#f8fafc] flex items-center justify-center">
-            <div className="w-12 h-12 border-4 border-[#007367]/20 border-t-[#007367] rounded-full animate-spin"></div>
+            <div className="w-12 h-12 border-4 border-[#164e33]/20 border-t-[#164e33] rounded-full animate-spin"></div>
         </div>}>
             <SearchContent />
         </Suspense>
     );
 }
+
+

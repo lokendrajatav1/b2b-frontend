@@ -60,7 +60,7 @@ function SubscriptionGate({ vendorName }: { vendorName: string }) {
       </div>
 
       {/* What you get */}
-      <div className="bg-white border border-gray-200 rounded-none p-5 w-full max-w-md text-left shadow-sm space-y-3">
+      <div className="bg-white border border-gray-200 rounded-xl p-5 w-full max-w-md text-left shadow-sm space-y-3">
         <p className="text-base font-medium text-slate-800">What you get with a subscription:</p>
         {[
           'List your products & services on the marketplace',
@@ -383,7 +383,7 @@ export default function VendorProducts() {
         <button 
             onClick={handleUpdate}
             disabled={saving}
-            className="px-6 py-2.5 bg-[#007367] text-white rounded-none font-medium text-base flex items-center gap-2 disabled:opacity-50 hover:bg-[#005e54] transition-all shadow-sm"
+            className="px-6 py-2.5 bg-[#164e33] text-white rounded-xl font-medium text-base flex items-center gap-2 disabled:opacity-50 hover:bg-[#113f29] transition-all shadow-sm"
         >
             {saving ? <RefreshCcw className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
             Save Changes
@@ -393,7 +393,7 @@ export default function VendorProducts() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-6">
         {/* Main Catalog View */}
         <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white rounded-none border border-gray-100 p-6 shadow-sm">
+            <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
                 <div className="flex items-center justify-between border-b border-gray-50 pb-6 mb-6">
                     <div className="flex items-center gap-8">
                         <button 
@@ -401,14 +401,14 @@ export default function VendorProducts() {
                             className={`text-base font-semibold transition-all relative pb-2 ${activeTab === 'PRODUCT' ? 'text-slate-900' : 'text-slate-500 hover:text-slate-800'}`}
                         >
                             Products
-                            {activeTab === 'PRODUCT' && <motion.div layoutId="nav-line" className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#007367] rounded-full" />}
+                            {activeTab === 'PRODUCT' && <motion.div layoutId="nav-line" className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#164e33] rounded-full" />}
                         </button>
                         <button 
                             onClick={() => { setActiveTab('SERVICE'); setShowProductForm(false); }}
                             className={`text-base font-semibold transition-all relative pb-2 ${activeTab === 'SERVICE' ? 'text-slate-900' : 'text-slate-500 hover:text-slate-800'}`}
                         >
                             Services
-                            {activeTab === 'SERVICE' && <motion.div layoutId="nav-line" className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#007367] rounded-full" />}
+                            {activeTab === 'SERVICE' && <motion.div layoutId="nav-line" className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#164e33] rounded-full" />}
                         </button>
                     </div>
 
@@ -422,7 +422,7 @@ export default function VendorProducts() {
                                 }));
                                 setShowProductForm(true);
                             }}
-                            className="bg-[#007367]/5 text-[#007367] px-4 py-2 rounded-none flex items-center gap-2 hover:bg-blue-100 transition-all text-base font-semibold"
+                            className="bg-[#164e33]/5 text-[#164e33] px-4 py-2 rounded-xl flex items-center gap-2 hover:bg-blue-100 transition-all text-base font-semibold"
                         >
                             <Plus className="w-4 h-4" /> Add Item
                         </button>
@@ -435,7 +435,7 @@ export default function VendorProducts() {
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
-                            className="bg-gray-50 rounded-none border border-gray-100 mb-8 overflow-hidden"
+                            className="bg-gray-50 rounded-xl border border-gray-100 mb-8 overflow-hidden"
                         >
                             <div className="p-6 space-y-6 border-b border-gray-100">
                                 <div className="flex items-center justify-between">
@@ -461,14 +461,14 @@ export default function VendorProducts() {
                                             
                                             {newProduct.images.length < 5 && (
                                                 <div 
-                                                    className="aspect-video bg-white border-2 border-dashed border-gray-200 rounded-none flex flex-col items-center justify-center relative overflow-hidden group cursor-pointer hover:bg-gray-50 transition-colors" 
+                                                    className="aspect-video bg-white border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-center relative overflow-hidden group cursor-pointer hover:bg-gray-50 transition-colors" 
                                                     onClick={() => fileInputRef.current?.click()}
                                                 >
                                                     <div className="text-center space-y-1">
                                                        <Upload className="w-5 h-5 text-gray-300 mx-auto" />
                                                        <span className="text-base font-semibold text-slate-500">Add Image</span>
                                                     </div>
-                                                    {uploading && <div className="absolute inset-0 bg-white/80 flex items-center justify-center"><RefreshCcw className="w-4 h-4 animate-spin text-[#007367]" /></div>}
+                                                    {uploading && <div className="absolute inset-0 bg-white/80 flex items-center justify-center"><RefreshCcw className="w-4 h-4 animate-spin text-[#164e33]" /></div>}
                                                 </div>
                                             )}
                                         </div>
@@ -482,7 +482,7 @@ export default function VendorProducts() {
                                                 type="text" 
                                                 value={newProduct.name}
                                                 onChange={(e) => setNewProduct({...newProduct, name: e.target.value})}
-                                                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-none text-base font-medium outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
+                                                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-base font-medium outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
                                                 placeholder="Item name..."
                                             />
                                         </div>
@@ -492,7 +492,7 @@ export default function VendorProducts() {
                                                 type="number" 
                                                 value={newProduct.price}
                                                 onChange={(e) => setNewProduct({...newProduct, price: e.target.value})}
-                                                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-none text-base font-medium outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
+                                                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-base font-medium outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
                                                 placeholder="0.00"
                                             />
                                         </div>
@@ -501,7 +501,7 @@ export default function VendorProducts() {
                                             <select 
                                                 value={newProduct.category}
                                                 onChange={(e) => setNewProduct({...newProduct, category: e.target.value})}
-                                                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-none text-base font-medium outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
+                                                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-base font-medium outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
                                             >
                                                 <option value="">Select Category</option>
                                                 {categories.map(cat => (
@@ -518,7 +518,7 @@ export default function VendorProducts() {
                                       <textarea 
                                           value={newProduct.description}
                                           onChange={(e) => setNewProduct({...newProduct, description: e.target.value})}
-                                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-none text-base font-medium outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 min-h-[80px]"
+                                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-base font-medium outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 min-h-[80px]"
                                           placeholder="Detailed description..."
                                       />
                                    </div>
@@ -527,13 +527,13 @@ export default function VendorProducts() {
                                 <div className="flex justify-end gap-3 pt-2">
                                     <button 
                                       onClick={() => { setShowProductForm(false); setEditingId(null); }}
-                                      className="px-5 py-2.5 bg-white border border-gray-200 text-slate-800 rounded-none font-semibold text-base hover:bg-gray-50 transition-all"
+                                      className="px-5 py-2.5 bg-white border border-gray-200 text-slate-800 rounded-xl font-semibold text-base hover:bg-gray-50 transition-all"
                                     >
                                       Cancel
                                     </button>
                                     <button 
                                         onClick={saveProduct}
-                                        className="px-5 py-2.5 bg-[#007367] text-white rounded-none font-semibold text-base hover:bg-[#005e54] transition-all shadow-sm"
+                                        className="px-5 py-2.5 bg-[#164e33] text-white rounded-xl font-semibold text-base hover:bg-[#113f29] transition-all shadow-sm"
                                     >
                                         {editingId ? 'Update Item' : 'Save Item'}
                                     </button>
@@ -545,8 +545,8 @@ export default function VendorProducts() {
 
                 <div className="space-y-4">
                     {vendorData.products.filter((p: any) => (p.type || 'PRODUCT') === activeTab).map((p: any) => (
-                        <div key={p.id} className="group relative flex items-start gap-5 p-4 bg-white border border-gray-100 rounded-none hover:border-blue-200 hover:shadow-md transition-all">
-                             <div className="w-16 h-16 bg-gray-50 rounded-none overflow-hidden border border-gray-100 shrink-0">
+                        <div key={p.id} className="group relative flex items-start gap-5 p-4 bg-white border border-gray-100 rounded-xl hover:border-blue-200 hover:shadow-md transition-all">
+                             <div className="w-16 h-16 bg-gray-50 rounded-xl overflow-hidden border border-gray-100 shrink-0">
                                 {p.images && p.images.length > 0 ? (
                                     <img src={p.images[0]} className="w-full h-full object-cover" />
                                 ) : p.imageUrl || p.image ? (
@@ -565,13 +565,13 @@ export default function VendorProducts() {
                                         <p className="text-base font-medium text-slate-700 mt-0.5">₹{p.price || '--'}</p>
                                     </div>
                                     <div className="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <button onClick={() => startEdit(p)} className="p-2 bg-gray-50 text-slate-700 rounded-none hover:text-[#007367] hover:bg-[#007367]/5 transition-all"><Edit3 className="w-4 h-4" /></button>
-                                        <button onClick={() => removeProduct(p.id)} className="p-2 bg-gray-50 text-slate-700 rounded-none hover:text-red-600 hover:bg-red-50 transition-all"><Trash2 className="w-4 h-4" /></button>
+                                        <button onClick={() => startEdit(p)} className="p-2 bg-gray-50 text-slate-700 rounded-xl hover:text-[#164e33] hover:bg-[#164e33]/5 transition-all"><Edit3 className="w-4 h-4" /></button>
+                                        <button onClick={() => removeProduct(p.id)} className="p-2 bg-gray-50 text-slate-700 rounded-xl hover:text-red-600 hover:bg-red-50 transition-all"><Trash2 className="w-4 h-4" /></button>
                                     </div>
                                 </div>
 
                                 <div className="flex items-center gap-2 mt-2">
-                                    <span className="text-base font-semibold text-[#007367] bg-[#007367]/5 px-2 py-0.5 rounded-md">
+                                    <span className="text-base font-semibold text-[#164e33] bg-[#164e33]/5 px-2 py-0.5 rounded-md">
                                        {p.category || 'Uncategorized'}
                                     </span>
                                     <div className={`px-2 py-0.5 rounded-md text-base font-semibold ${p.status === 'APPROVED' ? 'bg-green-50 text-green-600' : 'bg-orange-50 text-orange-600'}`}>
@@ -599,13 +599,13 @@ export default function VendorProducts() {
         <div className="space-y-4">
 
             {/* Keywords Card */}
-            <div className="bg-white rounded-none border border-gray-200 shadow-sm">
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
                 {/* Header */}
                 <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                         <h3 className="text-base font-semibold text-slate-900">Keywords</h3>
                         {vendorData.keywords.length > 0 && (
-                            <span className="text-base bg-blue-100 text-[#007367] px-1.5 py-0.5 rounded-full font-medium">
+                            <span className="text-base bg-blue-100 text-[#164e33] px-1.5 py-0.5 rounded-full font-medium">
                                 {vendorData.keywords.length}
                             </span>
                         )}
@@ -621,12 +621,12 @@ export default function VendorProducts() {
                             onChange={(e) => setNewKeyword(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && addKeyword()}
                             placeholder="Add keyword..."
-                            className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-none text-base text-slate-800 placeholder:text-slate-500 outline-none focus:bg-white focus:border-blue-400 focus:ring-1 focus:ring-blue-100 transition-all"
+                            className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-base text-slate-800 placeholder:text-slate-500 outline-none focus:bg-white focus:border-blue-400 focus:ring-1 focus:ring-blue-100 transition-all"
                         />
                         <button
                             onClick={addKeyword}
                             disabled={!newKeyword.trim()}
-                            className="w-full py-2 bg-[#007367] text-white text-base font-medium rounded-none hover:bg-[#005e54] transition-all flex items-center justify-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
+                            className="w-full py-2 bg-[#164e33] text-white text-base font-medium rounded-xl hover:bg-[#113f29] transition-all flex items-center justify-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
                         >
                             <Plus className="w-3.5 h-3.5" /> Add Keyword
                         </button>
@@ -691,5 +691,6 @@ export default function VendorProducts() {
     </div>
   );
 }
+
 
 

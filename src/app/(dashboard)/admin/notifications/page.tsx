@@ -94,7 +94,7 @@ export default function AdminNotifications() {
         <div>
           <h1 className="text-2xl font-semibold text-slate-900  flex items-center gap-3">
             Team Announcements
-            <div className="p-1.5 bg-[#007367]/5 text-[#007367] rounded-none border border-[#007367]/10">
+            <div className="p-1.5 bg-[#164e33]/5 text-[#164e33] rounded-xl border border-[#164e33]/10">
               <Megaphone className="w-5 h-5" />
             </div>
           </h1>
@@ -104,13 +104,13 @@ export default function AdminNotifications() {
         <div className="flex p-1 bg-gray-100 rounded-xl">
            <button 
              onClick={() => setActiveTab('ALERTS')}
-             className={`px-5 py-2 rounded-lg text-base font-semibold uppercase  transition-all ${activeTab === 'ALERTS' ? 'bg-white text-[#007367] shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}
+             className={`px-5 py-2 rounded-lg text-base font-semibold uppercase  transition-all ${activeTab === 'ALERTS' ? 'bg-white text-[#164e33] shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}
            >
               System Alerts
            </button>
            <button 
              onClick={() => setActiveTab('BROADCAST')}
-             className={`px-5 py-2 rounded-lg text-base font-semibold uppercase  transition-all ${activeTab === 'BROADCAST' ? 'bg-white text-[#007367] shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}
+             className={`px-5 py-2 rounded-lg text-base font-semibold uppercase  transition-all ${activeTab === 'BROADCAST' ? 'bg-white text-[#164e33] shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}
            >
               Send Broadcast
            </button>
@@ -122,16 +122,16 @@ export default function AdminNotifications() {
            <div className="space-y-6">
               <div className="flex items-center justify-between">
                  <h2 className="text-base font-semibold text-slate-900 uppercase  flex items-center gap-2">
-                    <ShieldCheck className="w-4 h-4 text-[#007367]" /> Recent Activity
+                    <ShieldCheck className="w-4 h-4 text-[#164e33]" /> Recent Activity
                  </h2>
                  <div className="flex items-center gap-3">
                     <button 
                       onClick={markAllRead}
-                      className="text-base font-semibold text-[#007367] hover:text-[#005e54] transition-colors"
+                      className="text-base font-semibold text-[#164e33] hover:text-[#113f29] transition-colors"
                     >
                       Clear All Notifications
                     </button>
-                    <button onClick={fetchNotifications} className="p-2 bg-white border border-gray-200 rounded-none text-slate-500 hover:bg-gray-50 transition-all shadow-sm">
+                    <button onClick={fetchNotifications} className="p-2 bg-white border border-gray-200 rounded-xl text-slate-500 hover:bg-gray-50 transition-all shadow-sm">
                        <RefreshCcw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
                     </button>
                  </div>
@@ -139,7 +139,7 @@ export default function AdminNotifications() {
 
               <div className="space-y-4">
                  {loading && notifications.length === 0 ? (
-                   [1,2,3,4].map(i => <div key={i} className="h-24 bg-gray-50/50 rounded-none animate-pulse border border-gray-100"></div>)
+                   [1,2,3,4].map(i => <div key={i} className="h-24 bg-gray-50/50 rounded-xl animate-pulse border border-gray-100"></div>)
                  ) : notifications.length > 0 ? (
                    <AnimatePresence>
                      {notifications.map((n) => (
@@ -148,9 +148,9 @@ export default function AdminNotifications() {
                          initial={{ opacity: 0, y: 10 }}
                          animate={{ opacity: 1, y: 0 }}
                          exit={{ opacity: 0, y: -10 }}
-                         className={`group p-6 bg-white rounded-2xl border ${n.isRead ? 'border-gray-50 opacity-75' : 'border-gray-100 shadow-sm'} flex items-start gap-6 hover:border-[#007367]/20 transition-all`}
+                         className={`group p-6 bg-white rounded-2xl border ${n.isRead ? 'border-gray-50 opacity-75' : 'border-gray-100 shadow-sm'} flex items-start gap-6 hover:border-[#164e33]/20 transition-all`}
                        >
-                         <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${n.isRead ? 'bg-gray-50 text-slate-500' : 'bg-[#007367]/10 text-[#007367]'}`}>
+                         <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${n.isRead ? 'bg-gray-50 text-slate-500' : 'bg-[#164e33]/10 text-[#164e33]'}`}>
                            <Bell className="w-5 h-5" />
                          </div>
                          <div className="flex-1">
@@ -170,7 +170,7 @@ export default function AdminNotifications() {
                      ))}
                    </AnimatePresence>
                  ) : (
-                   <div className="py-20 text-center border-2 border-dashed border-gray-100 rounded-none opacity-50 bg-gray-50/30">
+                   <div className="py-20 text-center border-2 border-dashed border-gray-100 rounded-xl opacity-50 bg-gray-50/30">
                       <Bell className="w-12 h-12 mx-auto mb-4 text-gray-300" />
                       <p className="text-base font-semibold text-slate-500 uppercase ">No notifications found</p>
                    </div>
@@ -179,7 +179,7 @@ export default function AdminNotifications() {
            </div>
          ) : (
            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-              <div className="lg:col-span-7 bg-white rounded-none border border-gray-100 p-8 md:p-10 shadow-sm space-y-8">
+              <div className="lg:col-span-7 bg-white rounded-xl border border-gray-100 p-8 md:p-10 shadow-sm space-y-8">
                  <div className="space-y-1">
                     <h2 className="text-xl font-semibold text-slate-900 ">Hub Broadcast</h2>
                     <p className="text-base font-medium text-slate-700">Send a targeted message to vendors in your managed hub.</p>
@@ -192,7 +192,7 @@ export default function AdminNotifications() {
                          type="text" 
                          value={formData.title}
                          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                         className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-none text-base font-medium outline-none focus:border-[#007367] focus:bg-white transition-all text-slate-900"
+                         className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-base font-medium outline-none focus:border-[#164e33] focus:bg-white transition-all text-slate-900"
                          placeholder="e.g. Hub Update: New Verification Requirements"
                        />
                     </div>
@@ -203,7 +203,7 @@ export default function AdminNotifications() {
                           <select 
                             value={formData.type}
                             onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-                            className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-none text-base font-semibold text-slate-800 outline-none appearance-none hover:bg-gray-100 transition-colors"
+                            className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-base font-semibold text-slate-800 outline-none appearance-none hover:bg-gray-100 transition-colors"
                           >
                              <option value="INFO">Information</option>
                              <option value="WARNING">Warning</option>
@@ -216,7 +216,7 @@ export default function AdminNotifications() {
                           <select 
                             value={formData.target}
                             onChange={(e) => setFormData({ ...formData, target: e.target.value })}
-                            className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-none text-base font-semibold text-slate-800 outline-none appearance-none hover:bg-gray-100 transition-colors"
+                            className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-base font-semibold text-slate-800 outline-none appearance-none hover:bg-gray-100 transition-colors"
                           >
                              <option value="ALL_VENDORS">My Hub Vendors</option>
                              <option value="ALL_BUYERS">Regional Buyers</option>
@@ -231,7 +231,7 @@ export default function AdminNotifications() {
                           value={formData.message}
                           onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                           rows={6}
-                          className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-none text-base font-medium outline-none focus:border-[#007367] focus:bg-white transition-all resize-none text-slate-900"
+                          className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-base font-medium outline-none focus:border-[#164e33] focus:bg-white transition-all resize-none text-slate-900"
                           placeholder="Type your message here..."
                        />
                     </div>
@@ -239,7 +239,7 @@ export default function AdminNotifications() {
                     <button 
                       type="submit"
                       disabled={broadcasting || !formData.title || !formData.message}
-                      className="w-full py-4 bg-[#007367] text-white rounded-none font-semibold text-base flex items-center justify-center gap-3 shadow-lg shadow-[#007367]/10 hover:bg-[#005e54] transition-all disabled:opacity-50"
+                      className="w-full py-4 bg-[#164e33] text-white rounded-xl font-semibold text-base flex items-center justify-center gap-3 shadow-lg shadow-[#164e33]/10 hover:bg-[#113f29] transition-all disabled:opacity-50"
                     >
                        {broadcasting ? <RefreshCcw className="w-5 h-5 animate-spin" /> : <Megaphone className="w-5 h-5 text-emerald-400" />}
                        {broadcasting ? 'Broadcasting...' : 'Broadcast to Hub'}
@@ -248,9 +248,9 @@ export default function AdminNotifications() {
               </div>
 
               <div className="lg:col-span-5 space-y-6">
-                 <div className="bg-white rounded-none border border-gray-100 p-8 shadow-sm space-y-6">
+                 <div className="bg-white rounded-xl border border-gray-100 p-8 shadow-sm space-y-6">
                     <h3 className="text-base font-semibold text-slate-500 uppercase  flex items-center gap-2">
-                       <Info className="w-4 h-4 text-[#007367]" /> Broadcast Guidelines
+                       <Info className="w-4 h-4 text-[#164e33]" /> Broadcast Guidelines
                     </h3>
                     <div className="space-y-4">
                        <div className="p-5 bg-amber-50 rounded-2xl border border-amber-100 flex gap-4">
@@ -282,5 +282,6 @@ export default function AdminNotifications() {
     </div>
   );
 }
+
 
 

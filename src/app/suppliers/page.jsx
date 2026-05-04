@@ -113,14 +113,14 @@ function EnquiryModal({ isOpen, onClose, product, vendor, onCallNow }) {
             {/* Supplier Info */}
             <div className="border-t border-gray-100 pt-4 space-y-2">
               <div className="flex items-center gap-2">
-                <ExternalLink className="w-3.5 h-3.5 text-[#007367]" />
-                <Link href={`/supplier/${vendor.id}`} className="text-base font-semibold text-[#007367] hover:underline leading-tight" onClick={onClose}>
+                <ExternalLink className="w-3.5 h-3.5 text-[#164e33]" />
+                <Link href={`/supplier/${vendor.id}`} className="text-base font-semibold text-[#164e33] hover:underline leading-tight" onClick={onClose}>
                   {vendor.businessName}
                 </Link>
               </div>
               {vendor.phone && vendor.phone !== "**********" && (
                 <div className="flex items-center gap-2 text-base font-semibold text-slate-900">
-                  <Phone className="w-3.5 h-3.5 text-[#007367]" />
+                  <Phone className="w-3.5 h-3.5 text-[#164e33]" />
                   {vendor.phone}
                 </div>
               )}
@@ -183,13 +183,13 @@ function EnquiryModal({ isOpen, onClose, product, vendor, onCallNow }) {
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
                   placeholder="City or Pincode*"
-                  className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base font-medium text-slate-900 outline-none focus:border-[#007367] focus:ring-2 focus:ring-[#007367]/10 transition-all"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base font-medium text-slate-900 outline-none focus:border-[#164e33] focus:ring-2 focus:ring-[#164e33]/10 transition-all"
                 />
                 <div className="flex items-center justify-between mt-1.5 text-base">
                   <span className="text-slate-500">
                     Suggestions:{" "}
                     {popularCities.slice(0, 3).map((c, i) => (
-                      <button key={c} type="button" onClick={() => setCity(c)} className="text-[#007367] hover:underline font-semibold mr-1">
+                      <button key={c} type="button" onClick={() => setCity(c)} className="text-[#164e33] hover:underline font-semibold mr-1">
                         {c}
                       </button>
                     ))}
@@ -205,7 +205,7 @@ function EnquiryModal({ isOpen, onClose, product, vendor, onCallNow }) {
                         });
                       }
                     }}
-                    className="text-[#007367] hover:underline font-semibold"
+                    className="text-[#164e33] hover:underline font-semibold"
                   >
                     Detect My City
                   </button>
@@ -220,7 +220,7 @@ function EnquiryModal({ isOpen, onClose, product, vendor, onCallNow }) {
                   onChange={(e) => setQty(e.target.value)}
                   placeholder="e.g. 100 pieces"
                   min="1"
-                  className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base font-medium text-slate-900 outline-none focus:border-[#007367] focus:ring-2 focus:ring-[#007367]/10 transition-all"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base font-medium text-slate-900 outline-none focus:border-[#164e33] focus:ring-2 focus:ring-[#164e33]/10 transition-all"
                 />
               </div>
 
@@ -231,14 +231,14 @@ function EnquiryModal({ isOpen, onClose, product, vendor, onCallNow }) {
                   onChange={(e) => setMsg(e.target.value)}
                   rows={3}
                   placeholder="Describe your requirements..."
-                  className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base font-medium text-slate-900 outline-none focus:border-[#007367] focus:ring-2 focus:ring-[#007367]/10 transition-all resize-none"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base font-medium text-slate-900 outline-none focus:border-[#164e33] focus:ring-2 focus:ring-[#164e33]/10 transition-all resize-none"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={sending || !city}
-                className="w-full py-3.5 bg-[#007367] hover:bg-[#005e54] disabled:opacity-60 text-white rounded-xl font-semibold text-base flex items-center justify-center gap-2 transition-colors shadow-md"
+                className="w-full py-3.5 bg-[#164e33] hover:bg-[#113f29] disabled:opacity-60 text-white rounded-xl font-semibold text-base flex items-center justify-center gap-2 transition-colors shadow-md"
               >
                 {sending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
                 {sending ? "Sending..." : "Submit"}
@@ -263,7 +263,7 @@ function SupplierCard({ vendor, onEnquire, onCallNow }) {
     : null;
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 hover:border-[#007367]/20 hover:shadow-xl transition-all duration-300 overflow-hidden">
+    <div className="bg-white rounded-2xl border border-gray-100 hover:border-[#164e33]/20 hover:shadow-xl transition-all duration-300 overflow-hidden">
       {/* Supplier Header */}
       <div className="flex items-start gap-4 p-5 border-b border-gray-50">
         {/* Logo */}
@@ -279,11 +279,11 @@ function SupplierCard({ vendor, onEnquire, onCallNow }) {
           <div className="flex items-center gap-1.5 mb-0.5">
             <Link
               href={`/supplier/${vendor.id}`}
-              className="font-semibold text-slate-900 text-base hover:text-[#007367] transition-colors leading-snug"
+              className="font-semibold text-slate-900 text-base hover:text-[#164e33] transition-colors leading-snug"
             >
               {vendor.businessName}
             </Link>
-            {vendor.verified && <BadgeCheck className="w-4 h-4 text-[#007367] shrink-0" />}
+            {vendor.verified && <BadgeCheck className="w-4 h-4 text-[#164e33] shrink-0" />}
           </div>
           <div className="flex flex-wrap items-center gap-2 text-base text-slate-700">
             <span className="flex items-center gap-1">
@@ -298,7 +298,7 @@ function SupplierCard({ vendor, onEnquire, onCallNow }) {
               </span>
             )}
             {vendor.categories?.slice(0, 2).map((cat) => (
-              <span key={cat.id} className="px-2 py-0.5 bg-[#007367]/8 text-[#007367] rounded-full text-base font-semibold">
+              <span key={cat.id} className="px-2 py-0.5 bg-[#164e33]/8 text-[#164e33] rounded-full text-base font-semibold">
                 {cat.name}
               </span>
             ))}
@@ -312,7 +312,7 @@ function SupplierCard({ vendor, onEnquire, onCallNow }) {
         <div className="flex flex-col gap-2 shrink-0">
           <button
             onClick={() => onEnquire(null, vendor)}
-            className="px-4 py-2 bg-white border-2 border-[#007367] text-[#007367] hover:bg-[#007367] hover:text-white rounded-xl text-base font-semibold transition-all flex items-center gap-1.5 whitespace-nowrap"
+            className="px-4 py-2 bg-white border-2 border-[#164e33] text-[#164e33] hover:bg-[#164e33] hover:text-white rounded-xl text-base font-semibold transition-all flex items-center gap-1.5 whitespace-nowrap"
           >
             <Send className="w-3.5 h-3.5" /> Contact Supplier
           </button>
@@ -334,7 +334,7 @@ function SupplierCard({ vendor, onEnquire, onCallNow }) {
               <div
                 key={product.id}
                 onClick={() => onEnquire(product, vendor)}
-                className="group cursor-pointer border border-gray-100 rounded-xl overflow-hidden hover:border-[#007367]/30 hover:shadow-md transition-all"
+                className="group cursor-pointer border border-gray-100 rounded-xl overflow-hidden hover:border-[#164e33]/30 hover:shadow-md transition-all"
               >
                 {/* Product Image */}
                 <div className="w-full h-24 bg-gray-50 flex items-center justify-center overflow-hidden">
@@ -349,7 +349,7 @@ function SupplierCard({ vendor, onEnquire, onCallNow }) {
                   )}
                 </div>
                 <div className="p-2">
-                  <p className="text-base font-semibold text-slate-900 line-clamp-2 leading-tight group-hover:text-[#007367] transition-colors">
+                  <p className="text-base font-semibold text-slate-900 line-clamp-2 leading-tight group-hover:text-[#164e33] transition-colors">
                     {product.name}
                   </p>
                   {product.price > 0 && (
@@ -362,10 +362,10 @@ function SupplierCard({ vendor, onEnquire, onCallNow }) {
             {approvedProducts.length > 5 && (
               <Link
                 href={`/supplier/${vendor.id}`}
-                className="border border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-center h-full min-h-[120px] hover:border-[#007367] hover:bg-[#007367]/5 transition-all group"
+                className="border border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-center h-full min-h-[120px] hover:border-[#164e33] hover:bg-[#164e33]/5 transition-all group"
               >
-                <ArrowRight className="w-5 h-5 text-gray-300 group-hover:text-[#007367] mb-1" />
-                <span className="text-base font-semibold text-slate-500 group-hover:text-[#007367] text-center">
+                <ArrowRight className="w-5 h-5 text-gray-300 group-hover:text-[#164e33] mb-1" />
+                <span className="text-base font-semibold text-slate-500 group-hover:text-[#164e33] text-center">
                   +{approvedProducts.length - 5} more
                 </span>
               </Link>
@@ -379,7 +379,7 @@ function SupplierCard({ vendor, onEnquire, onCallNow }) {
           <p className="text-base text-slate-500 italic">No products listed yet.</p>
           <Link
             href={`/supplier/${vendor.id}`}
-            className="text-base font-semibold text-[#007367] hover:underline flex items-center gap-1"
+            className="text-base font-semibold text-[#164e33] hover:underline flex items-center gap-1"
           >
             View Profile <ArrowRight className="w-3 h-3" />
           </Link>
@@ -643,7 +643,7 @@ export default function SuppliersPage() {
                     </label>
                     <div className="relative group">
                       <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-2 border-r border-gray-200 pr-3">
-                        <img src="https://flagcdn.com/w20/in.png" alt="India" className="w-5 h-auto rounded-sm" />
+                        <img src="https://flagcdn.com/w20/in.png" alt="India" className="w-5 h-auto rounded-lg" />
                         <span className="text-base font-semibold text-slate-700">+91</span>
                       </div>
                       <input
@@ -653,7 +653,7 @@ export default function SuppliersPage() {
                         value={callPhone}
                         onChange={(e) => setCallPhone(e.target.value.replace(/[^0-9]/g, "").slice(0, 10))}
                         placeholder="10 digit mobile number"
-                        className="w-full border border-gray-300 rounded-xl pl-24 pr-4 py-4 text-lg font-semibold text-slate-900 outline-none focus:border-[#007367] focus:ring-4 focus:ring-[#007367]/10 transition-all"
+                        className="w-full border border-gray-300 rounded-xl pl-24 pr-4 py-4 text-lg font-semibold text-slate-900 outline-none focus:border-[#164e33] focus:ring-4 focus:ring-[#164e33]/10 transition-all"
                       />
                     </div>
                   </div>
@@ -681,7 +681,7 @@ export default function SuppliersPage() {
 
       {/* Hero Banner */}
       <div
-        style={{ background: "linear-gradient(135deg, #0d2e38 0%, #007367 50%, #17313b 100%)" }}
+        style={{ background: "linear-gradient(135deg, #113f29 0%, #164e33 50%, #0d3a26 100%)" }}
         className="relative py-14 px-4 overflow-hidden"
       >
         <div className="absolute top-0 right-0 w-72 h-72 rounded-full bg-white/5 -translate-y-1/2 translate-x-1/3 pointer-events-none" />
@@ -731,7 +731,7 @@ export default function SuppliersPage() {
                         key={city}
                         type="button"
                         onMouseDown={() => setSelectedCity(city)}
-                        className="w-full text-left px-4 py-2 text-base text-slate-800 hover:bg-[#007367]/10 hover:text-[#007367] flex items-center gap-2"
+                        className="w-full text-left px-4 py-2 text-base text-slate-800 hover:bg-[#164e33]/10 hover:text-[#164e33] flex items-center gap-2"
                       >
                         <MapPin className="w-3.5 h-3.5 opacity-40" />
                         {city}
@@ -742,7 +742,7 @@ export default function SuppliersPage() {
             </div>
             <button
               type="submit"
-              className="px-8 py-4 bg-[#4ecdc4] hover:bg-[#3ab5ad] text-[#0d2e38] font-semibold rounded-xl transition-all shadow-lg active:scale-95"
+              className="px-8 py-4 bg-[#4ecdc4] hover:bg-[#3ab5ad] text-[#113f29] font-semibold rounded-xl transition-all shadow-lg active:scale-95"
             >
               Search
             </button>
@@ -759,7 +759,7 @@ export default function SuppliersPage() {
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="w-full pl-9 pr-8 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-base font-medium text-slate-800 outline-none appearance-none cursor-pointer hover:border-[#007367] transition-colors"
+              className="w-full pl-9 pr-8 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-base font-medium text-slate-800 outline-none appearance-none cursor-pointer hover:border-[#164e33] transition-colors"
             >
               <option value="">All Categories</option>
               {categories.map((cat) => (
@@ -769,11 +769,11 @@ export default function SuppliersPage() {
             <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
           </div>
 
-          <label className="flex items-center gap-2 cursor-pointer select-none px-4 py-2.5 rounded-lg border border-gray-200 bg-gray-50 hover:border-[#007367] transition-colors">
-            <div className={`w-9 h-5 rounded-full relative transition-colors ${verifiedOnly ? "bg-[#007367]" : "bg-gray-300"}`}>
+          <label className="flex items-center gap-2 cursor-pointer select-none px-4 py-2.5 rounded-lg border border-gray-200 bg-gray-50 hover:border-[#164e33] transition-colors">
+            <div className={`w-9 h-5 rounded-full relative transition-colors ${verifiedOnly ? "bg-[#164e33]" : "bg-gray-300"}`}>
               <div className={`w-4 h-4 rounded-full bg-white absolute top-0.5 transition-all ${verifiedOnly ? "left-4" : "left-0.5"}`} />
             </div>
-            <BadgeCheck className={`w-4 h-4 ${verifiedOnly ? "text-[#007367]" : "text-slate-500"}`} />
+            <BadgeCheck className={`w-4 h-4 ${verifiedOnly ? "text-[#164e33]" : "text-slate-500"}`} />
             <span className="text-base font-semibold text-slate-800">Verified Only</span>
             <input type="checkbox" className="sr-only" checked={verifiedOnly} onChange={(e) => setVerifiedOnly(e.target.checked)} />
           </label>
@@ -819,7 +819,7 @@ export default function SuppliersPage() {
             </div>
             <h3 className="text-xl font-semibold text-slate-900 mb-2">No Suppliers Found</h3>
             <p className="text-slate-700 text-base mb-6">Try adjusting your search or filter criteria.</p>
-            <button onClick={clearFilters} className="px-6 py-2.5 bg-[#007367] text-white rounded-lg font-semibold text-base hover:bg-[#005e54] transition-colors">
+            <button onClick={clearFilters} className="px-6 py-2.5 bg-[#164e33] text-white rounded-lg font-semibold text-base hover:bg-[#113f29] transition-colors">
               Clear All Filters
             </button>
           </div>
@@ -842,7 +842,7 @@ export default function SuppliersPage() {
             <button
               disabled={currentPage === 1}
               onClick={() => fetchVendors(currentPage - 1)}
-              className="px-4 py-2 rounded-lg border border-gray-200 text-base font-semibold disabled:opacity-40 hover:border-[#007367] hover:text-[#007367] transition-colors"
+              className="px-4 py-2 rounded-lg border border-gray-200 text-base font-semibold disabled:opacity-40 hover:border-[#164e33] hover:text-[#164e33] transition-colors"
             >
               Previous
             </button>
@@ -852,7 +852,7 @@ export default function SuppliersPage() {
                 <button
                   key={page}
                   onClick={() => fetchVendors(page)}
-                  className={`w-10 h-10 rounded-lg text-base font-semibold transition-colors ${currentPage === page ? "bg-[#007367] text-white shadow-md" : "border border-gray-200 text-slate-800 hover:border-[#007367] hover:text-[#007367]"}`}
+                  className={`w-10 h-10 rounded-lg text-base font-semibold transition-colors ${currentPage === page ? "bg-[#164e33] text-white shadow-md" : "border border-gray-200 text-slate-800 hover:border-[#164e33] hover:text-[#164e33]"}`}
                 >
                   {page}
                 </button>
@@ -861,7 +861,7 @@ export default function SuppliersPage() {
             <button
               disabled={currentPage === totalPages}
               onClick={() => fetchVendors(currentPage + 1)}
-              className="px-4 py-2 rounded-lg border border-gray-200 text-base font-semibold disabled:opacity-40 hover:border-[#007367] hover:text-[#007367] transition-colors"
+              className="px-4 py-2 rounded-lg border border-gray-200 text-base font-semibold disabled:opacity-40 hover:border-[#164e33] hover:text-[#164e33] transition-colors"
             >
               Next
             </button>
@@ -871,3 +871,4 @@ export default function SuppliersPage() {
     </div>
   );
 }
+

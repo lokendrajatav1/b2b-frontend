@@ -33,7 +33,7 @@ const AdBanner = () => {
               />
               
               {/* Discount Badge */}
-              <div className="absolute top-1 left-1 bg-white/95 border border-[#c2185b] rounded-sm px-1 shadow-sm">
+              <div className="absolute top-1 left-1 bg-white/95 border border-[#c2185b] rounded-lg px-1 shadow-sm">
                 <span className="text-base font-semibold text-[#c2185b]">
                   {item.discount}
                 </span>

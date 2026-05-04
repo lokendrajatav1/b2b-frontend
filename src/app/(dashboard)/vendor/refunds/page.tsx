@@ -86,12 +86,12 @@ export default function VendorRefunds() {
         </div>
 
         <div className="flex items-center gap-3">
-           <button onClick={fetchRefunds} className="p-2.5 bg-white border border-gray-200 rounded-none text-slate-500 hover:text-[#007367] hover:bg-[#007367]/5 transition-all shadow-sm">
+           <button onClick={fetchRefunds} className="p-2.5 bg-white border border-gray-200 rounded-xl text-slate-500 hover:text-[#164e33] hover:bg-[#164e33]/5 transition-all shadow-sm">
               <RefreshCcw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
            </button>
            <button 
              onClick={() => setIsModalOpen(true)}
-             className="px-6 py-2.5 bg-[#007367] text-white rounded-none font-semibold text-base tracking-wide hover:bg-[#005e54] transition-all shadow-sm flex items-center gap-2"
+             className="px-6 py-2.5 bg-[#164e33] text-white rounded-xl font-semibold text-base tracking-wide hover:bg-[#113f29] transition-all shadow-sm flex items-center gap-2"
            >
               <Plus className="w-4 h-4" /> Request Refund
            </button>
@@ -99,7 +99,7 @@ export default function VendorRefunds() {
       </div>
 
       <div className="max-w-7xl mx-auto">
-         <div className="bg-white rounded-none border border-gray-200 overflow-hidden shadow-sm">
+         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
             <table className="w-full text-left">
                <thead>
                   <tr className="bg-gray-50/50 border-b border-gray-100">
@@ -124,7 +124,7 @@ export default function VendorRefunds() {
                              <Clock className="w-3.5 h-3.5" />
                              {new Date(refund.createdAt).toLocaleDateString()}
                            </td>
-                           <td className="px-6 py-4 text-base font-semibold text-[#007367]">
+                           <td className="px-6 py-4 text-base font-semibold text-[#164e33]">
                              {refund.transactionId.substring(0, 12)}...
                            </td>
                            <td className="px-6 py-4">
@@ -176,7 +176,7 @@ export default function VendorRefunds() {
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-white rounded-none shadow-2xl w-full max-w-lg overflow-hidden border border-gray-100"
+              className="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden border border-gray-100"
             >
               <div className="p-8 pb-6 border-b border-gray-50 flex justify-between items-center">
                  <h2 className="text-xl font-semibold text-slate-900">Request Refund</h2>
@@ -200,7 +200,7 @@ export default function VendorRefunds() {
                          type="text"
                          value={formData.transactionId}
                          onChange={(e) => setFormData({...formData, transactionId: e.target.value})}
-                         className="w-full mt-1.5 px-4 py-3 bg-gray-50 border border-gray-200 rounded-none outline-none focus:border-blue-500 focus:bg-white text-base font-medium transition-all"
+                         className="w-full mt-1.5 px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:border-blue-500 focus:bg-white text-base font-medium transition-all"
                          placeholder="Enter Txn ID"
                        />
                     </div>
@@ -212,7 +212,7 @@ export default function VendorRefunds() {
                          min="1"
                          value={formData.amount}
                          onChange={(e) => setFormData({...formData, amount: e.target.value})}
-                         className="w-full mt-1.5 px-4 py-3 bg-gray-50 border border-gray-200 rounded-none outline-none focus:border-blue-500 focus:bg-white text-base font-medium transition-all"
+                         className="w-full mt-1.5 px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:border-blue-500 focus:bg-white text-base font-medium transition-all"
                          placeholder="e.g. 5000"
                        />
                     </div>
@@ -223,7 +223,7 @@ export default function VendorRefunds() {
                          rows={4}
                          value={formData.reason}
                          onChange={(e) => setFormData({...formData, reason: e.target.value})}
-                         className="w-full mt-1.5 px-4 py-3 bg-gray-50 border border-gray-200 rounded-none outline-none focus:border-blue-500 focus:bg-white text-base font-medium transition-all resize-none"
+                         className="w-full mt-1.5 px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:border-blue-500 focus:bg-white text-base font-medium transition-all resize-none"
                          placeholder="Please explain why you are requesting a refund..."
                        />
                     </div>
@@ -240,7 +240,7 @@ export default function VendorRefunds() {
                     <button 
                       type="submit" 
                       disabled={submitting}
-                      className="px-8 py-3 bg-[#007367] hover:bg-[#005e54] text-white font-semibold tracking-wide rounded-none shadow-lg transition-all disabled:opacity-50 text-base"
+                      className="px-8 py-3 bg-[#164e33] hover:bg-[#113f29] text-white font-semibold tracking-wide rounded-xl shadow-lg transition-all disabled:opacity-50 text-base"
                     >
                       {submitting ? 'Submitting...' : 'Submit Request'}
                     </button>
@@ -253,5 +253,6 @@ export default function VendorRefunds() {
     </div>
   );
 }
+
 
 

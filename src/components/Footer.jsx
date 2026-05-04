@@ -25,7 +25,7 @@ const Footer = () => {
   }, []);
 
   return (
-    <footer className="bg-[#17313b] text-white pt-12 pb-8">
+    <footer className="bg-[#0d3a26] text-white pt-12 pb-8">
       <div className="container mx-auto px-6 md:px-12 lg:px-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
           {/* Brand & Description */}
@@ -33,7 +33,7 @@ const Footer = () => {
             <Link href="/" className="inline-block bg-white p-2.5 rounded-xl">
               <img src="/logo.png" alt={settings.websiteName} className="h-16 w-auto object-contain" />
             </Link>
-            <p className="text-slate-500 text-base leading-relaxed max-w-xs">
+            <p className="text-white/90 text-base leading-relaxed max-w-xs">
               Connect with leading business services and experts worldwide. India&apos;s largest B2B marketplace for trusted discovery.
             </p>
             <div className="flex items-center gap-4">
@@ -71,7 +71,7 @@ const Footer = () => {
             <ul className="space-y-2">
               {["Marketing Services", "IT & Development", "Advertising & PR", "Design & Creative", "Business Consultation"].map((link) => (
                 <li key={link}>
-                  <Link href="#" className="text-slate-500 text-base block">
+                  <Link href="#" className="text-white/90 text-base block hover:text-white transition-colors">
                     {link}
                   </Link>
                 </li>
@@ -91,7 +91,7 @@ const Footer = () => {
                 // { label: "Sell with us", href: "/sell" },
               ].map((item) => (
                 <li key={item.label}>
-                  <Link href={item.href} className="text-slate-500 text-base block hover:text-white transition-colors">
+                  <Link href={item.href} className="text-white/90 text-base block hover:text-white transition-colors">
                     {item.label}
                   </Link>
                 </li>
@@ -103,15 +103,15 @@ const Footer = () => {
           <div className="space-y-4">
             <h4 className="text-base font-semibold text-white uppercase ">Contact</h4>
             <ul className="space-y-3">
-              <li className="flex items-start gap-3 text-slate-500 text-base">
+              <li className="flex items-start gap-3 text-white/90 text-base">
                 <MapPin className="w-5 h-5 text-[#4ecdc4] shrink-0" />
                 <span>{settings.address}</span>
               </li>
-              <li className="flex items-center gap-3 text-slate-500 text-base">
+              <li className="flex items-center gap-3 text-white/90 text-base">
                 <Phone className="w-5 h-5 text-[#4ecdc4] shrink-0" />
                 <span>{settings.contactPhone}</span>
               </li>
-              <li className="flex items-center gap-3 text-slate-500 text-base">
+              <li className="flex items-center gap-3 text-white/90 text-base">
                 <Mail className="w-5 h-5 text-[#4ecdc4] shrink-0" />
                 <span>{settings.contactEmail}</span>
               </li>
@@ -120,13 +120,13 @@ const Footer = () => {
         </div>
 
         <div className="pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
-          <p className="text-slate-700 text-base">
+          <p className="text-white/60 text-base">
             © {new Date().getFullYear()} {settings.websiteName}. All rights reserved.
           </p>
           <div className="flex items-center gap-8">
-            <Link href="#" className="text-slate-700 text-base text-right">Industry Access</Link>
-            <Link href="#" className="text-slate-700 text-base">Privacy Policy</Link>
-            <Link href="#" className="text-slate-700 text-base">Terms of Service</Link>
+            <Link href="#" className="text-white/60 text-base text-right hover:text-white transition-colors">Industry Access</Link>
+            <Link href="#" className="text-white/60 text-base hover:text-white transition-colors">Privacy Policy</Link>
+            <Link href="#" className="text-white/60 text-base hover:text-white transition-colors">Terms of Service</Link>
           </div>
         </div>
       </div>

@@ -32,7 +32,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
         <Navbar />
       </React.Suspense>
       <main className="flex-1">
-        <React.Suspense fallback={<div className="flex items-center justify-center min-h-[50vh]"><div className="w-8 h-8 border-4 border-[#007367]/20 border-t-[#007367] rounded-full animate-spin" /></div>}>
+        <React.Suspense fallback={<div className="flex items-center justify-center min-h-[50vh]"><div className="w-8 h-8 border-4 border-[#164e33]/20 border-t-[#164e33] rounded-full animate-spin" /></div>}>
           {children}
         </React.Suspense>
       </main>
@@ -41,3 +41,4 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
     </div>
   );
 }
+

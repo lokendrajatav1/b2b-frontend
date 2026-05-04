@@ -160,7 +160,7 @@ export default function VendorBilling() {
     <>
       <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
 
-      <div className="max-w-5xl space-y-7 pb-20">
+      <div className="max-w-7xl mx-auto space-y-10 pb-20 px-4 lg:px-8">
 
         {/* ── page title ── */}
         <div>
@@ -186,7 +186,7 @@ export default function VendorBilling() {
         )}
 
         {/* ── current plan card ── */}
-        <div className="bg-white rounded-none border border-gray-200 shadow-sm overflow-hidden">
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
             <span className="text-base font-medium text-slate-800">Current Subscription</span>
             <span className={`text-base px-2.5 py-0.5 rounded-full font-medium ${
@@ -234,11 +234,11 @@ export default function VendorBilling() {
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-3 sm:w-52">
-                    <div className="bg-gray-50 rounded-none px-3 py-3 text-center border border-gray-100">
+                    <div className="bg-gray-50 rounded-xl px-3 py-3 text-center border border-gray-100">
                       <p className="text-base text-slate-500 mb-1">Monthly Leads</p>
                       <p className="text-base font-semibold text-slate-900">{currentPkg.monthlyLeads ?? currentPkg.leadLimit ?? '—'}</p>
                     </div>
-                    <div className="bg-gray-50 rounded-none px-3 py-3 text-center border border-gray-100">
+                    <div className="bg-gray-50 rounded-xl px-3 py-3 text-center border border-gray-100">
                       <p className="text-base text-slate-500 mb-1">Priority</p>
                       <p className="text-base font-semibold text-slate-900">{currentPkg.priority ?? '—'}</p>
                     </div>
@@ -265,109 +265,78 @@ export default function VendorBilling() {
               No plans available. Please contact admin.
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 pt-10">
               {packages.map((pkg: any, idx: number) => {
                 const isCurrent = vendor?.packageId === pkg.id;
-                const style     = getPlanStyle(pkg, idx);
+                const isPopular = pkg.priority >= 3 || idx === 1; 
 
                 return (
                   <motion.div
                     key={pkg.id}
-                    initial={{ opacity: 0, y: 8 }}
+                    initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: idx * 0.06 }}
-                    className={`bg-white rounded-2xl border shadow-sm overflow-hidden transition-all flex flex-col ${
-                      isCurrent
-                        ? 'ring-1'
-                        : 'border-gray-200 hover:border-gray-300 hover:shadow'
+                    transition={{ delay: idx * 0.1 }}
+                    className={`relative bg-white rounded-[2rem] border border-gray-100 transition-all duration-500 flex flex-col group hover:-translate-y-4 hover:shadow-2xl hover:shadow-[#164e33]/10 overflow-hidden ${
+                      isPopular ? 'scale-105 z-10 shadow-xl shadow-gray-100' : 'shadow-lg shadow-gray-50'
                     }`}
-                    style={isCurrent ? { borderColor: style.accentColor, boxShadow: `0 0 0 1px ${style.accentColor}30` } : {}}
                   >
-                    {/* color bar */}
-                    <div className="h-0.5 w-full" style={{ background: style.accentColor }} />
+                    {isPopular && (
+                      <div className="absolute top-4 -right-12 rotate-45 bg-[#f58220] text-white text-[10px] font-bold uppercase tracking-widest px-12 py-1.5 shadow-md z-20">
+                        Pro
+                      </div>
+                    )}
 
-                    <div className="p-6 space-y-4 flex flex-col flex-1">
-                      {/* top row: icon + name + active badge */}
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <div className="w-8 h-8 rounded-lg flex items-center justify-center"
-                            style={{ background: style.lightBg, color: style.accentColor }}>
-                            <span className="scale-90">{style.icon}</span>
+                    <div className="p-8 flex flex-col items-center text-center">
+                      {/* Plan Header */}
+                      <div className="mb-6">
+                        <h3 className="text-[26px] font-black text-[#164e33] uppercase tracking-tighter">{pkg.name}</h3>
+                        <p className="text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em] mt-1">Per Month</p>
+                      </div>
+
+                      {/* Price Ribbon */}
+                      <div className="relative w-[calc(100%+4rem)] -mx-8 mb-8">
+                         <div className="bg-gradient-to-r from-[#164e33] via-[#2d9d68] to-[#164e33] py-5 shadow-lg relative z-10">
+                            <span className="text-4xl font-bold text-white tracking-tight">₹{pkg.price?.toLocaleString()}</span>
+                         </div>
+                         {/* Ribbon Fold Effect */}
+                         <div className="absolute left-0 -bottom-2 w-2 h-2 bg-[#0d3120] rounded-bl-full z-0"></div>
+                         <div className="absolute right-0 -bottom-2 w-2 h-2 bg-[#0d3120] rounded-br-full z-0"></div>
+                      </div>
+
+                      {/* Features List */}
+                      <div className="w-full mb-10">
+                        <div className="flex flex-col items-start w-fit mx-auto space-y-4">
+                          <div className="flex items-center gap-3">
+                             <CheckCircle2 className="w-4.5 h-4.5 text-emerald-500 shrink-0" />
+                             <span className="text-[15px] font-semibold text-slate-700 tracking-tight">{pkg.monthlyLeads ?? 0} Monthly Leads</span>
                           </div>
-                          <p className="text-base font-semibold text-slate-900">{pkg.name}</p>
+                          <div className="flex items-center gap-3">
+                             <CheckCircle2 className="w-4.5 h-4.5 text-emerald-500 shrink-0" />
+                             <span className="text-[15px] font-semibold text-slate-700 tracking-tight">Priority Hub Access</span>
+                          </div>
+                          {Array.isArray(pkg.features) && pkg.features.slice(0, 3).map((f: string, i: number) => (
+                            <div key={i} className="flex items-center gap-3">
+                              <CheckCircle2 className="w-4.5 h-4.5 text-emerald-500 shrink-0" />
+                              <span className="text-[15px] font-semibold text-slate-700 tracking-tight truncate max-w-[200px]">{f}</span>
+                            </div>
+                          ))}
                         </div>
-                        {isCurrent && (
-                          <span className="text-base px-1.5 py-0.5 rounded-full font-medium"
-                            style={{ background: style.lightBg, color: style.accentColor }}>
-                            Active
-                          </span>
-                        )}
                       </div>
 
-                      {/* price */}
-                      <div>
-                        <div className="flex items-baseline gap-1">
-                          <span className="text-2xl font-semibold text-slate-900">₹{pkg.price?.toLocaleString()}</span>
-                          <span className="text-base text-slate-500">/month</span>
-                        </div>
-                        {pkg.description && (
-                          <p className="text-base text-slate-500 mt-1">{pkg.description}</p>
-                        )}
-                      </div>
-
-                      {/* plan details */}
-                      <div className="flex flex-col gap-2 flex-1">
-                        <p className="text-base font-semibold text-slate-500 uppercase ">Plan Details</p>
-                        <div className="flex items-center gap-2 text-base text-slate-800">
-                          <span className="w-1.5 h-1.5 rounded-full shrink-0 bg-[#007367]/50" />
-                          {pkg.monthlyLeads ?? 0} Monthly Leads
-                        </div>
-                        <div className="flex items-center gap-2 text-base text-slate-800">
-                          <span className="w-1.5 h-1.5 rounded-full shrink-0 bg-amber-500" />
-                          {pkg.leadLimit ?? 0} Lead Limit
-                        </div>
-                        <div className="flex items-center gap-2 text-base text-slate-800">
-                          <span className="w-1.5 h-1.5 rounded-full shrink-0 bg-[#007367]/50" />
-                          Priority: {pkg.priority ?? 1}
-                        </div>
-                        <div className="flex items-center gap-2 text-base text-slate-800">
-                          <span className="w-1.5 h-1.5 rounded-full shrink-0 bg-purple-500" />
-                          Ranking Weight: {pkg.rankingWeight ?? 0}
-                        </div>
-
-                        {/* features from DB */}
-                        {Array.isArray(pkg.features) && pkg.features.length > 0 && (
-                          <>
-                            <p className="text-base font-semibold text-slate-500 uppercase  mt-2">Features</p>
-                            {pkg.features.map((f: string) => (
-                              <div key={f} className="flex items-center gap-2 text-base text-slate-800">
-                                <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: style.accentColor }} />
-                                {f}
-                              </div>
-                            ))}
-                          </>
-                        )}
-                      </div>
-
-                      {/* CTA */}
+                      {/* CTA Button */}
                       <button
                         disabled={isCurrent || upgrading !== null}
                         onClick={() => handleSubscribe(pkg)}
-                        className="w-full py-2.5 rounded-xl text-base font-medium transition-all flex items-center justify-center gap-2 disabled:cursor-not-allowed"
-                        style={
+                        className={`px-10 py-3.5 rounded-full text-[11px] font-black uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2 group/btn ${
                           isCurrent || upgrading !== null
-                            ? { background: '#f3f4f6', color: '#9ca3af' }
-                            : { background: style.accentColor, color: '#fff' }
-                        }
+                            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                            : 'bg-gradient-to-r from-[#164e33] to-[#2d9d68] text-white shadow-lg shadow-[#164e33]/20 hover:shadow-xl hover:scale-105'
+                        }`}
                       >
                         {upgrading === pkg.id ? (
-                          <><RefreshCw className="w-4 h-4 animate-spin" /> Processing...</>
-                        ) : isCurrent ? (
-                          <><ShieldCheck className="w-4 h-4" /> Current Plan</>
-                        ) : !currentPkg ? (
-                          <>Get Started <ChevronRight className="w-4 h-4" /></>
+                          <RefreshCw className="w-4 h-4 animate-spin" />
                         ) : (
-                          <>Switch Plan <ChevronRight className="w-4 h-4" /></>
+                          <>Order Now <ChevronRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" /></>
                         )}
                       </button>
                     </div>
@@ -375,12 +344,15 @@ export default function VendorBilling() {
                 );
               })}
             </div>
+
+
+
           )}
         </div>
 
 
         {/* ── how it works ── */}
-        <div className="bg-white border border-gray-200 rounded-none shadow-sm p-5">
+        <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-5">
           <p className="text-base font-medium text-slate-800 mb-4">How It Works</p>
           <div className="flex flex-wrap gap-3">
             {[
@@ -392,7 +364,7 @@ export default function VendorBilling() {
             ].map((s, i) => (
               <div key={s.label} className="flex items-center gap-2">
                 {i > 0 && <ChevronRight className="w-3.5 h-3.5 text-gray-300" />}
-                <div className="flex items-center gap-1.5 bg-gray-50 border border-gray-100 rounded-none px-3 py-1.5">
+                <div className="flex items-center gap-1.5 bg-gray-50 border border-gray-100 rounded-xl px-3 py-1.5">
                   <span style={{ color: s.color }}>{s.icon}</span>
                   <span className="text-base text-slate-800">{s.label}</span>
                 </div>
@@ -409,5 +381,6 @@ export default function VendorBilling() {
     </>
   );
 }
+
 
 

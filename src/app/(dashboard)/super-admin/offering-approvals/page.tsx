@@ -96,7 +96,7 @@ export default function OfferingApprovals() {
         <div>
            <h1 className="text-2xl font-semibold text-slate-900  flex items-center gap-3">
              Catalogue Review
-             <div className="p-1.5 bg-[#007367]/5 text-[#007367] rounded-none border border-[#007367]/10">
+             <div className="p-1.5 bg-[#164e33]/5 text-[#164e33] rounded-xl border border-[#164e33]/10">
                 <Briefcase className="w-5 h-5" />
              </div>
            </h1>
@@ -112,7 +112,7 @@ export default function OfferingApprovals() {
                 placeholder="Search listing, vendor, category or city..." 
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-100 rounded-none text-base font-medium outline-none focus:bg-white focus:border-blue-500 focus:shadow-md transition-all"
+                className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-100 rounded-xl text-base font-medium outline-none focus:bg-white focus:border-blue-500 focus:shadow-md transition-all"
               />
            </div>
 
@@ -123,7 +123,7 @@ export default function OfferingApprovals() {
                 <select 
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
-                  className="pl-8 pr-6 py-2 bg-white border border-gray-200 rounded-none text-base font-semibold text-slate-800 outline-none focus:border-blue-500 appearance-none cursor-pointer hover:bg-gray-50 transition-all shadow-sm"
+                  className="pl-8 pr-6 py-2 bg-white border border-gray-200 rounded-xl text-base font-semibold text-slate-800 outline-none focus:border-blue-500 appearance-none cursor-pointer hover:bg-gray-50 transition-all shadow-sm"
                 >
                   <option value="ALL">Status</option>
                   <option value="PENDING">Pending</option>
@@ -135,14 +135,14 @@ export default function OfferingApprovals() {
               <select 
                 value={typeFilter}
                 onChange={(e) => setTypeFilter(e.target.value)}
-                className="px-3 py-2 bg-white border border-gray-200 rounded-none text-base font-semibold text-slate-800 outline-none focus:border-blue-500 appearance-none cursor-pointer hover:bg-gray-50 transition-all shadow-sm"
+                className="px-3 py-2 bg-white border border-gray-200 rounded-xl text-base font-semibold text-slate-800 outline-none focus:border-blue-500 appearance-none cursor-pointer hover:bg-gray-50 transition-all shadow-sm"
               >
                 <option value="ALL">Type</option>
                 <option value="PRODUCT">Products</option>
                 <option value="SERVICE">Services</option>
               </select>
 
-              <button onClick={fetchOfferings} className="p-2 bg-white border border-gray-200 rounded-none text-slate-500 hover:text-[#007367] hover:bg-[#007367]/5 transition-all shadow-sm">
+              <button onClick={fetchOfferings} className="p-2 bg-white border border-gray-200 rounded-xl text-slate-500 hover:text-[#164e33] hover:bg-[#164e33]/5 transition-all shadow-sm">
                 <RefreshCcw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
               </button>
            </div>
@@ -150,7 +150,7 @@ export default function OfferingApprovals() {
       </div>
 
       <div className="max-w-7xl mx-auto">
-         <div className="bg-white rounded-none border border-gray-200 shadow-sm relative w-full">
+         <div className="bg-white rounded-xl border border-gray-200 shadow-sm relative w-full">
             <div className="overflow-x-auto w-full no-scrollbar">
                <table className="w-full text-left whitespace-nowrap min-w-[800px]">
                   <thead>
@@ -186,7 +186,7 @@ export default function OfferingApprovals() {
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-none bg-[#007367]/5 flex items-center justify-center text-[#007367] border border-[#007367]/10 text-base font-semibold">
+                        <div className="w-8 h-8 rounded-xl bg-[#164e33]/5 flex items-center justify-center text-[#164e33] border border-[#164e33]/10 text-base font-semibold">
                            {offer.vendor?.businessName?.charAt(0) || 'V'}
                         </div>
                         <div>
@@ -220,7 +220,7 @@ export default function OfferingApprovals() {
                     <td className="px-4 sm:px-6 py-4 text-right">
                        <button 
                          onClick={() => { setSelectedOffering(offer); setIsModalOpen(true); }}
-                         className="p-2 text-slate-500 hover:text-[#007367] hover:bg-[#007367]/5 rounded-none transition-all inline-flex items-center gap-2 text-base font-semibold"
+                         className="p-2 text-slate-500 hover:text-[#164e33] hover:bg-[#164e33]/5 rounded-xl transition-all inline-flex items-center gap-2 text-base font-semibold"
                        >
                          Moderate Listing
                          <ChevronRight className="w-4 h-4" />
@@ -261,7 +261,7 @@ export default function OfferingApprovals() {
                     <h2 className="text-xl font-semibold text-slate-900 ">Review Listing</h2>
                     <p className="text-base font-semibold text-slate-500 uppercase  mt-0.5">Ref: {selectedOffering.id.slice(-8).toUpperCase()}</p>
                   </div>
-                  <button onClick={() => setIsModalOpen(false)} className="p-2.5 hover:bg-gray-50 rounded-none transition-colors text-slate-500 hover:text-slate-900 border border-transparent hover:border-gray-200">
+                  <button onClick={() => setIsModalOpen(false)} className="p-2.5 hover:bg-gray-50 rounded-xl transition-colors text-slate-500 hover:text-slate-900 border border-transparent hover:border-gray-200">
                      <AlertCircle className="w-5 h-5" />
                   </button>
                </div>
@@ -271,22 +271,22 @@ export default function OfferingApprovals() {
                   <div className="space-y-4">
                      <div className="flex items-center justify-between">
                          <h4 className="text-base font-semibold text-slate-500 uppercase  pl-1 border-b border-gray-50 pb-2 flex-1">Product Visuals</h4>
-                        <span className="px-3 py-1.5 bg-[#007367]/10 text-[#007367] rounded-lg text-base font-semibold uppercase  ml-4">{selectedOffering.type}</span>
+                        <span className="px-3 py-1.5 bg-[#164e33]/10 text-[#164e33] rounded-lg text-base font-semibold uppercase  ml-4">{selectedOffering.type}</span>
                      </div>
                      
                      <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2 snap-x">
                         {selectedOffering.images && selectedOffering.images.length > 0 ? (
                            selectedOffering.images.map((img: string, idx: number) => (
-                              <div key={idx} className="aspect-square w-[280px] shrink-0 bg-gray-50 rounded-none border border-gray-100 overflow-hidden shadow-sm snap-center">
+                              <div key={idx} className="aspect-square w-[280px] shrink-0 bg-gray-50 rounded-xl border border-gray-100 overflow-hidden shadow-sm snap-center">
                                  <img src={img} className="w-full h-full object-cover" alt={`${selectedOffering.name} ${idx + 1}`} />
                               </div>
                            ))
                         ) : selectedOffering.imageUrl ? (
-                           <div className="aspect-square w-full bg-gray-50 rounded-none border border-gray-100 overflow-hidden shadow-sm">
+                           <div className="aspect-square w-full bg-gray-50 rounded-xl border border-gray-100 overflow-hidden shadow-sm">
                               <img src={selectedOffering.imageUrl} className="w-full h-full object-cover" alt={selectedOffering.name} />
                            </div>
                         ) : (
-                           <div className="aspect-video w-full bg-gray-50 rounded-none border border-gray-100 flex flex-col items-center justify-center gap-3">
+                           <div className="aspect-video w-full bg-gray-50 rounded-xl border border-gray-100 flex flex-col items-center justify-center gap-3">
                               <Package className="w-12 h-12 text-gray-200" />
                               <span className="text-base font-semibold text-gray-300 uppercase ">No Visuals Provided</span>
                            </div>
@@ -296,14 +296,14 @@ export default function OfferingApprovals() {
 
                   {/* Header Info */}
                   <div className="space-y-3">
-                     <h3 className="text-3xl font-semibold text-[#007367] leading-tight ">{selectedOffering.name}</h3>
+                     <h3 className="text-3xl font-semibold text-[#164e33] leading-tight ">{selectedOffering.name}</h3>
                      <div className="flex items-center gap-3">
-                        <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-50 rounded-none border border-gray-100">
+                        <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-50 rounded-xl border border-gray-100">
                            <Tag className="w-4 h-4 text-slate-500" />
                            <span className="text-base font-semibold text-slate-800 uppercase ">{selectedOffering.category || 'General Listing'}</span>
                         </div>
-                        <div className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-base font-semibold uppercase  ${selectedOffering.status === 'APPROVED' ? 'bg-[#007367]/10 text-[#007367]' : 'bg-amber-50 text-amber-700'}`}>
-                           <div className={`w-1.5 h-1.5 rounded-full ${selectedOffering.status === 'APPROVED' ? 'bg-[#007367]' : 'bg-amber-500'}`}></div>
+                        <div className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-base font-semibold uppercase  ${selectedOffering.status === 'APPROVED' ? 'bg-[#164e33]/10 text-[#164e33]' : 'bg-amber-50 text-amber-700'}`}>
+                           <div className={`w-1.5 h-1.5 rounded-full ${selectedOffering.status === 'APPROVED' ? 'bg-[#164e33]' : 'bg-amber-500'}`}></div>
                            {selectedOffering.status}
                         </div>
                      </div>
@@ -311,15 +311,15 @@ export default function OfferingApprovals() {
 
                   {/* Core Metrics */}
                   <div className="grid grid-cols-2 gap-4">
-                     <div className="p-6 bg-gray-50/80 rounded-none border border-gray-100">
+                     <div className="p-6 bg-gray-50/80 rounded-xl border border-gray-100">
                         <p className="text-base font-semibold text-slate-700 uppercase  mb-3 flex items-center gap-2">
                            <Zap className="w-4 h-4 text-amber-500" /> List Price
                         </p>
                         <p className="text-2xl font-semibold text-slate-900">₹{selectedOffering.price?.toLocaleString() || 'N/A'}</p>
                      </div>
-                     <div className="p-6 bg-gray-50/80 rounded-none border border-gray-100">
+                     <div className="p-6 bg-gray-50/80 rounded-xl border border-gray-100">
                         <p className="text-base font-semibold text-slate-700 uppercase  mb-3 flex items-center gap-2">
-                           <CheckCheck className="w-4 h-4 text-[#007367]" /> Minimum Order
+                           <CheckCheck className="w-4 h-4 text-[#164e33]" /> Minimum Order
                         </p>
                         <p className="text-2xl font-semibold text-slate-900">{selectedOffering.moq || 1} <span className="text-base font-medium text-slate-700 ml-1">Units</span></p>
                      </div>
@@ -329,8 +329,8 @@ export default function OfferingApprovals() {
                   <div className="space-y-8">
                      <section className="space-y-4">
                         <h4 className="text-base font-semibold text-slate-500 uppercase  pl-1 border-b border-gray-50 pb-2">Business Context</h4>
-                        <div className="flex items-center gap-4 p-5 bg-white border border-gray-200 rounded-none shadow-sm">
-                           <div className="w-14 h-14 rounded-none bg-[#007367]/10 border border-[#007367]/20 flex items-center justify-center text-[#007367] text-xl font-semibold">
+                        <div className="flex items-center gap-4 p-5 bg-white border border-gray-200 rounded-xl shadow-sm">
+                           <div className="w-14 h-14 rounded-xl bg-[#164e33]/10 border border-[#164e33]/20 flex items-center justify-center text-[#164e33] text-xl font-semibold">
                               {selectedOffering.vendor?.businessName?.charAt(0)}
                            </div>
                            <div className="flex-1">
@@ -344,7 +344,7 @@ export default function OfferingApprovals() {
 
                      <section className="space-y-4">
                         <h4 className="text-base font-semibold text-slate-500 uppercase  pl-1 border-b border-gray-50 pb-2">Technical Description</h4>
-                        <div className="p-6 bg-gray-50/80 rounded-none border border-gray-100">
+                        <div className="p-6 bg-gray-50/80 rounded-xl border border-gray-100">
                            <p className="text-base text-slate-800 leading-relaxed font-medium">
                               {selectedOffering.description || 'Applicant provided no written summary.'}
                            </p>
@@ -354,7 +354,7 @@ export default function OfferingApprovals() {
                      {selectedOffering.specifications && (
                         <section className="space-y-4">
                            <h4 className="text-base font-semibold text-slate-500 uppercase  pl-1 border-b border-gray-50 pb-2">Product DNA</h4>
-                           <div className="p-6 bg-[#007367]/5 rounded-none border border-[#007367]/10">
+                           <div className="p-6 bg-[#164e33]/5 rounded-xl border border-[#164e33]/10">
                               <pre className="text-base text-slate-900 whitespace-pre-wrap font-medium font-sans">
                                  {selectedOffering.specifications}
                               </pre>
@@ -370,7 +370,7 @@ export default function OfferingApprovals() {
                      <button 
                         onClick={() => handleStatusUpdate(selectedOffering.id, 'APPROVED')}
                         disabled={!!processingId}
-                        className="flex-1 py-4 bg-[#007367] hover:bg-[#005e54] text-white rounded-none font-semibold text-base flex items-center justify-center gap-2 shadow-sm transition-all disabled:opacity-50"
+                        className="flex-1 py-4 bg-[#164e33] hover:bg-[#113f29] text-white rounded-xl font-semibold text-base flex items-center justify-center gap-2 shadow-sm transition-all disabled:opacity-50"
                      >
                         <ShieldCheck className="w-5 h-5" />
                         Approve Listing
@@ -378,7 +378,7 @@ export default function OfferingApprovals() {
                      <button 
                         onClick={() => handleStatusUpdate(selectedOffering.id, 'REJECTED')}
                         disabled={!!processingId}
-                        className="flex-1 py-4 bg-white border border-red-200 hover:bg-red-50 text-red-600 rounded-none font-semibold text-base flex items-center justify-center gap-2 transition-all disabled:opacity-50"
+                        className="flex-1 py-4 bg-white border border-red-200 hover:bg-red-50 text-red-600 rounded-xl font-semibold text-base flex items-center justify-center gap-2 transition-all disabled:opacity-50"
                      >
                         <XCircle className="w-5 h-5" />
                         Reject Listing
@@ -395,5 +395,6 @@ export default function OfferingApprovals() {
     </div>
   );
 }
+
 
 

@@ -89,7 +89,7 @@ export default function LoginPage() {
   const TabButton = ({ type, label, icon: Icon }: { type: 'PHONE' | 'EMAIL', label: string, icon: any }) => (
     <button 
         onClick={() => { setLoginMethod(type); setError(''); setOtpSent(false); }}
-        className={`flex-1 flex items-center justify-center gap-2 py-3.5 text-base font-semibold rounded-xl transition-all ${loginMethod === type ? 'bg-[#007367] text-white shadow-lg' : 'text-slate-500 hover:text-slate-800 hover:bg-gray-100'}`}
+        className={`flex-1 flex items-center justify-center gap-2 py-3.5 text-base font-semibold rounded-xl transition-all ${loginMethod === type ? 'bg-[#164e33] text-white shadow-lg' : 'text-slate-500 hover:text-slate-800 hover:bg-gray-100'}`}
     >
         <Icon className="w-4 h-4" />
         {label}
@@ -99,9 +99,9 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-[#f8fafc] flex flex-col items-center justify-center p-6 relative overflow-hidden">
       {/* Background Decor */}
-      <div className="absolute top-0 left-0 w-full h-1 bg-[#007367]" />
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#007367]/[0.02] rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#e88c30]/[0.02] rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl pointer-events-none" />
+      <div className="absolute top-0 left-0 w-full h-1 bg-[#164e33]" />
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#164e33]/[0.02] rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#f58220]/[0.02] rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl pointer-events-none" />
 
       <div className="w-full max-w-md relative z-10">
         <div className="text-center mb-10">
@@ -132,13 +132,13 @@ export default function LoginPage() {
                            <div className="space-y-2">
                               <label className="text-base font-semibold text-slate-500 uppercase  ml-1">Email Address</label>
                               <div className="relative group">
-                                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#007367] transition-colors" />
+                                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#164e33] transition-colors" />
                                  <input
                                     type="email"
                                     required
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full pl-11 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-[#007367] focus:bg-white text-base font-medium text-slate-800 transition-all placeholder:text-gray-300"
+                                    className="w-full pl-11 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-[#164e33] focus:bg-white text-base font-medium text-slate-800 transition-all placeholder:text-gray-300"
                                     placeholder="your@email.com"
                                  />
                               </div>
@@ -147,16 +147,16 @@ export default function LoginPage() {
                            <div className="space-y-2">
                               <div className="flex justify-between items-center ml-1 mr-1">
                                  <label className="text-base font-semibold text-slate-500 uppercase ">Password</label>
-                                 <Link href="#" className="text-base font-semibold text-[#007367] hover:underline uppercase ">Recover?</Link>
+                                 <Link href="#" className="text-base font-semibold text-[#164e33] hover:underline uppercase ">Recover?</Link>
                               </div>
                               <div className="relative group">
-                                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#007367] transition-colors" />
+                                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#164e33] transition-colors" />
                                  <input
                                     type={showPassword ? "text" : "password"}
                                     required
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full pl-11 pr-11 py-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-[#007367] focus:bg-white text-base font-medium text-slate-800 transition-all placeholder:text-gray-300"
+                                    className="w-full pl-11 pr-11 py-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-[#164e33] focus:bg-white text-base font-medium text-slate-800 transition-all placeholder:text-gray-300"
                                     placeholder="••••••••"
                                  />
                                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-300 hover:text-slate-800 p-1">
@@ -165,7 +165,7 @@ export default function LoginPage() {
                               </div>
                            </div>
 
-                           <button type="submit" disabled={loading} className="w-full py-4 bg-[#007367] text-white rounded-xl font-semibold text-base hover:bg-[#005e54] transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg shadow-[#007367]/10">
+                           <button type="submit" disabled={loading} className="w-full py-4 bg-[#164e33] text-white rounded-xl font-semibold text-base hover:bg-[#113f29] transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg shadow-[#164e33]/10">
                               {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Sign In to Dashboard'}
                               {!loading && <ArrowRight className="w-4 h-4" />}
                            </button>
@@ -175,14 +175,14 @@ export default function LoginPage() {
                            <div className="space-y-2">
                               <label className="text-base font-semibold text-slate-500 uppercase  ml-1">Phone Number</label>
                               <div className="relative group">
-                                 <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#007367] transition-colors" />
+                                 <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#164e33] transition-colors" />
                                  <input
                                     type="tel"
                                     required
                                     disabled={otpSent}
                                     value={phone}
                                     onChange={(e) => setPhone(e.target.value)}
-                                    className="w-full pl-11 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-[#007367] focus:bg-white text-base font-medium text-slate-800 transition-all placeholder:text-gray-300"
+                                    className="w-full pl-11 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-[#164e33] focus:bg-white text-base font-medium text-slate-800 transition-all placeholder:text-gray-300"
                                     placeholder="+91..."
                                  />
                               </div>
@@ -190,20 +190,20 @@ export default function LoginPage() {
 
                            {otpSent && (
                              <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="space-y-2 pt-2">
-                                 <label className="text-base font-semibold text-[#007367] uppercase  ml-1 text-center block">Enter 6-Digit OTP</label>
+                                 <label className="text-base font-semibold text-[#164e33] uppercase  ml-1 text-center block">Enter 6-Digit OTP</label>
                                  <div className="relative group">
-                                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#007367]" />
+                                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#164e33]" />
                                      <input
                                          type="text"
                                          maxLength={6}
                                          required
                                          value={otp}
                                          onChange={(e) => setOtp(e.target.value)}
-                                         className="w-full pl-11 pr-4 py-4 bg-[#007367]/5 border border-[#007367]/20 rounded-xl outline-none focus:bg-white focus:border-[#007367] text-lg font-semibold  text-center text-slate-800 transition-all"
+                                         className="w-full pl-11 pr-4 py-4 bg-[#164e33]/5 border border-[#164e33]/20 rounded-xl outline-none focus:bg-white focus:border-[#164e33] text-lg font-semibold  text-center text-slate-800 transition-all"
                                          placeholder="••••••"
                                      />
                                  </div>
-                                 <button type="button" onClick={handleRequestOTP} className="w-full text-base font-semibold text-slate-500 hover:text-[#007367] transition-colors pt-2 uppercase ">Resend Code</button>
+                                 <button type="button" onClick={handleRequestOTP} className="w-full text-base font-semibold text-slate-500 hover:text-[#164e33] transition-colors pt-2 uppercase ">Resend Code</button>
                              </motion.div>
                            )}
 
@@ -218,12 +218,12 @@ export default function LoginPage() {
 
             <div className="pt-10 text-center border-t border-gray-50 mt-4">
                <p className="text-base text-slate-500 mb-2 font-medium">New to the community?</p>
-               <Link href="/register" className="text-base font-semibold text-[#007367] hover:text-[#e88c30] transition-colors flex items-center justify-center gap-2 group">
+               <Link href="/register" className="text-base font-semibold text-[#164e33] hover:text-[#f58220] transition-colors flex items-center justify-center gap-2 group">
                   <Building2 className="w-4 h-4" />
                   Join as Verified Supplier 
                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                </Link>
-               <Link href="/register/admin" className="text-base font-semibold text-slate-500 hover:text-[#007367] transition-colors flex items-center justify-center gap-2 group mt-3 uppercase ">
+               <Link href="/register/admin" className="text-base font-semibold text-slate-500 hover:text-[#164e33] transition-colors flex items-center justify-center gap-2 group mt-3 uppercase ">
                   <ShieldCheck className="w-3.5 h-3.5" />
                   Apply for Admin Hub
                </Link>
@@ -231,11 +231,11 @@ export default function LoginPage() {
         </div>
 
         <div className="mt-10 flex items-center justify-center gap-6">
-            <Link href="/" className="text-base font-semibold text-slate-500 hover:text-[#007367] flex items-center gap-1.5 transition-colors uppercase ">
+            <Link href="/" className="text-base font-semibold text-slate-500 hover:text-[#164e33] flex items-center gap-1.5 transition-colors uppercase ">
                 <ArrowLeft className="w-3 h-3" /> Marketplace
             </Link>
             <span className="w-1 h-1 bg-gray-200 rounded-full"></span>
-            <Link href="#" className="text-base font-semibold text-slate-500 hover:text-[#007367] transition-colors uppercase ">Security Policy</Link>
+            <Link href="#" className="text-base font-semibold text-slate-500 hover:text-[#164e33] transition-colors uppercase ">Security Policy</Link>
         </div>
       </div>
     </div>
@@ -262,3 +262,5 @@ function AlertCircle(props: any) {
     </svg>
   );
 }
+
+

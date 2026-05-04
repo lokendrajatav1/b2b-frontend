@@ -97,18 +97,18 @@ export default function AdminApprovals() {
                     <button
                         key={user.id}
                         onClick={() => setSelectedVendor(user)}
-                        className={`w-full text-left p-4 rounded-xl flex items-center gap-4 border transition-colors ${ selectedVendor?.id === user.id ? 'bg-[#007367]/5 border-blue-200' : 'bg-white border-gray-100 hover:border-gray-200 hover:bg-gray-50' }`}
+                        className={`w-full text-left p-4 rounded-xl flex items-center gap-4 border transition-colors ${ selectedVendor?.id === user.id ? 'bg-[#164e33]/5 border-blue-200' : 'bg-white border-gray-100 hover:border-gray-200 hover:bg-gray-50' }`}
                     >
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center font-semibold text-base border shadow-sm ${ selectedVendor?.id === user.id ? 'bg-white text-[#007367] border-[#007367]/10' : 'bg-gray-50 text-slate-800 border-gray-200' }`}>
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center font-semibold text-base border shadow-sm ${ selectedVendor?.id === user.id ? 'bg-white text-[#164e33] border-[#164e33]/10' : 'bg-gray-50 text-slate-800 border-gray-200' }`}>
                             {user.vendor?.businessName.charAt(0).toUpperCase()}
                         </div>
                         <div className="flex-1 min-w-0">
                             <h4 className={`font-semibold text-base truncate leading-tight mb-0.5 ${selectedVendor?.id === user.id ? 'text-blue-900' : 'text-slate-900'}`}>{user.vendor?.businessName}</h4>
-                            <p className={`text-base font-medium capitalize truncate ${selectedVendor?.id === user.id ? 'text-[#007367]' : 'text-slate-700'}`}>{user.vendor?.city}</p>
+                            <p className={`text-base font-medium capitalize truncate ${selectedVendor?.id === user.id ? 'text-[#164e33]' : 'text-slate-700'}`}>{user.vendor?.city}</p>
                         </div>
                     </button>
                 )) : (
-                    <div className="p-8 text-center bg-gray-50 rounded-none border border-gray-100 border-dashed">
+                    <div className="p-8 text-center bg-gray-50 rounded-xl border border-gray-100 border-dashed">
                         <CheckCircle2 className="w-8 h-8 mx-auto mb-3 text-slate-500" />
                         <p className="font-semibold text-slate-800 text-base">No pending approvals</p>
                     </div>
@@ -125,21 +125,21 @@ export default function AdminApprovals() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
                         key={selectedVendor.id}
-                        className="bg-white rounded-none border border-gray-200 p-6 md:p-8 space-y-8 shadow-sm"
+                        className="bg-white rounded-xl border border-gray-200 p-6 md:p-8 space-y-8 shadow-sm"
                     >
                         <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 border-b border-gray-100 pb-8">
                             <div className="space-y-4">
                                 <h2 className="text-2xl font-semibold text-slate-900  capitalize leading-none">{selectedVendor.vendor.businessName}</h2>
                                 <div className="flex flex-wrap items-center gap-3">
-                                    <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 rounded-none border border-gray-200 text-base font-medium text-slate-800 capitalize">
+                                    <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 rounded-xl border border-gray-200 text-base font-medium text-slate-800 capitalize">
                                         <MapPin className="w-3.5 h-3.5 text-slate-500" />
                                         {selectedVendor.vendor.city}
                                     </div>
-                                    <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 rounded-none border border-gray-200 text-base font-medium text-slate-800">
+                                    <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 rounded-xl border border-gray-200 text-base font-medium text-slate-800">
                                         <Layers className="w-3.5 h-3.5 text-slate-500" />
                                         ID: {selectedVendor.vendor.id.slice(0, 8)}
                                     </div>
-                                    <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 rounded-none border border-gray-200 text-base font-medium text-slate-800">
+                                    <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 rounded-xl border border-gray-200 text-base font-medium text-slate-800">
                                         <Clock className="w-3.5 h-3.5 text-slate-500" />
                                         {new Date(selectedVendor.createdAt).toLocaleDateString()}
                                     </div>
@@ -149,14 +149,14 @@ export default function AdminApprovals() {
                             <div className="flex gap-3">
                                 <button 
                                     onClick={() => handleApprove(selectedVendor.vendor.id)}
-                                    className="px-5 py-2.5 bg-[#007367] text-white rounded-none font-semibold text-base hover:bg-[#005e54] transition-colors shadow-sm flex items-center gap-2"
+                                    className="px-5 py-2.5 bg-[#164e33] text-white rounded-xl font-semibold text-base hover:bg-[#113f29] transition-colors shadow-sm flex items-center gap-2"
                                 >
                                     <CheckCircle2 className="w-4 h-4" />
                                     Approve Vendor
                                 </button>
                                 <button 
                                    onClick={() => handleReject(selectedVendor.vendor.id)}
-                                   className="p-2.5 bg-white border border-gray-200 text-red-500 rounded-none hover:bg-red-50 transition-colors shadow-sm" title="Reject Vendor"
+                                   className="p-2.5 bg-white border border-gray-200 text-red-500 rounded-xl hover:bg-red-50 transition-colors shadow-sm" title="Reject Vendor"
                                 >
                                    <XCircle className="w-5 h-5" />
                                 </button>
@@ -164,7 +164,7 @@ export default function AdminApprovals() {
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="bg-gray-50 p-6 rounded-none border border-gray-200 space-y-5">
+                            <div className="bg-gray-50 p-6 rounded-xl border border-gray-200 space-y-5">
                                 <h4 className="text-base font-semibold text-slate-800 flex items-center gap-2">
                                      <FileText className="w-4 h-4 text-slate-600" />
                                      Contact Information
@@ -181,7 +181,7 @@ export default function AdminApprovals() {
                                 </div>
                             </div>
 
-                            <div className="bg-gray-50 p-6 rounded-none border border-gray-200 space-y-4">
+                            <div className="bg-gray-50 p-6 rounded-xl border border-gray-200 space-y-4">
                                 <h4 className="text-base font-semibold text-slate-800 flex items-center gap-2">
                                      <Activity className="w-4 h-4 text-slate-600" />
                                      Summary
@@ -201,7 +201,7 @@ export default function AdminApprovals() {
                                 </h4>
                                 <div className="flex flex-wrap gap-2">
                                     {selectedVendor.vendor.products?.map((p: any) => (
-                                        <span key={p.id} className="px-3 py-1.5 bg-white border border-gray-200 rounded-none text-base font-medium text-slate-800 shadow-sm">{p.name}</span>
+                                        <span key={p.id} className="px-3 py-1.5 bg-white border border-gray-200 rounded-xl text-base font-medium text-slate-800 shadow-sm">{p.name}</span>
                                     )) || <span className="text-base text-slate-700 italic">No products declared</span>}
                                 </div>
                             </div>
@@ -213,7 +213,7 @@ export default function AdminApprovals() {
                                 </h4>
                                 <div className="flex flex-wrap gap-2">
                                     {selectedVendor.vendor.keywords?.map((k: any) => (
-                                        <span key={k.id} className="px-3 py-1.5 bg-emerald-50 border border-emerald-200 rounded-none text-base font-medium text-emerald-700">#{k.name}</span>
+                                        <span key={k.id} className="px-3 py-1.5 bg-emerald-50 border border-emerald-200 rounded-xl text-base font-medium text-emerald-700">#{k.name}</span>
                                     )) || <span className="text-base text-slate-700 italic">No keywords declared</span>}
                                 </div>
                             </div>
@@ -227,7 +227,7 @@ export default function AdminApprovals() {
                         </div>
                     </motion.div>
                 ) : (
-                    <div className="bg-white rounded-none border border-gray-200 h-full min-h-[500px] flex flex-col items-center justify-center space-y-4 text-center">
+                    <div className="bg-white rounded-xl border border-gray-200 h-full min-h-[500px] flex flex-col items-center justify-center space-y-4 text-center">
                         <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center border border-gray-100 mb-2">
                             <ShieldAlert className="w-8 h-8 text-gray-300" />
                         </div>
@@ -243,5 +243,6 @@ export default function AdminApprovals() {
     </div>
   );
 }
+
 
 

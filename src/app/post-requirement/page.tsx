@@ -118,7 +118,7 @@ export default function PostRequirementPage() {
                            </div>
                            <Link 
                              href={`/supplier/${vendor.id}`}
-                             className="px-4 py-2 bg-white border border-slate-200 rounded-lg text-base font-semibold text-slate-700 hover:border-blue-500 hover:text-[#007367] transition-colors"
+                             className="px-4 py-2 bg-white border border-slate-200 rounded-lg text-base font-semibold text-slate-700 hover:border-blue-500 hover:text-[#164e33] transition-colors"
                            >
                              View Profile
                            </Link>
@@ -132,7 +132,7 @@ export default function PostRequirementPage() {
                 </div>
             )}
 
-            <Link href="/" className="w-full py-4 bg-[#007367] text-white rounded-xl font-semibold flex items-center justify-center gap-2 hover:bg-[#005e54] transition-all">
+            <Link href="/" className="w-full py-4 bg-[#164e33] text-white rounded-xl font-semibold flex items-center justify-center gap-2 hover:bg-[#113f29] transition-all">
                 Return to Dashboard <ArrowRight className="w-4 h-4" />
             </Link>
         </motion.div>
@@ -265,7 +265,7 @@ export default function PostRequirementPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 bg-[#007367] text-white rounded-xl font-semibold hover:bg-[#005e54] transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full py-4 bg-[#164e33] text-white rounded-xl font-semibold hover:bg-[#113f29] transition-all disabled:opacity-50 flex items-center justify-center gap-2"
             >
               {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Submit Requirement'}
               {!loading && <ArrowRight className="w-4 h-4" />}
@@ -284,3 +284,4 @@ export default function PostRequirementPage() {
     </div>
   );
 }
+

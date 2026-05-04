@@ -99,7 +99,7 @@ export default function ProfilePage() {
           {!isEditing ? (
             <button 
               onClick={() => setIsEditing(true)}
-              className="flex items-center gap-2 bg-[#1b5e20] text-white px-5 py-2.5 rounded-none text-base font-semibold hover:bg-[#145218] active:bg-[#0e3b12] transition-all shadow-md hover:shadow-lg focus:outline-none"
+              className="flex items-center gap-2 bg-[#1b5e20] text-white px-5 py-2.5 rounded-xl text-base font-semibold hover:bg-[#145218] active:bg-[#0e3b12] transition-all shadow-md hover:shadow-lg focus:outline-none"
             >
               <Edit3 className="w-4 h-4" /> Edit Profile
             </button>
@@ -108,14 +108,14 @@ export default function ProfilePage() {
               <button 
                 onClick={() => setIsEditing(false)}
                 disabled={saving}
-                className="flex items-center gap-2 bg-white border border-gray-200 text-slate-800 px-4 py-2.5 rounded-none text-base font-semibold hover:bg-gray-50 active:bg-gray-100 transition-all shadow-sm disabled:opacity-50"
+                className="flex items-center gap-2 bg-white border border-gray-200 text-slate-800 px-4 py-2.5 rounded-xl text-base font-semibold hover:bg-gray-50 active:bg-gray-100 transition-all shadow-sm disabled:opacity-50"
               >
                 <X className="w-4 h-4" /> Cancel
               </button>
               <button 
                 onClick={handleSave}
                 disabled={saving}
-                className="flex items-center gap-2 bg-[#1b5e20] text-white px-5 py-2.5 rounded-none text-base font-semibold hover:bg-[#145218] active:bg-[#0e3b12] transition-all shadow-md hover:shadow-lg disabled:opacity-50"
+                className="flex items-center gap-2 bg-[#1b5e20] text-white px-5 py-2.5 rounded-xl text-base font-semibold hover:bg-[#145218] active:bg-[#0e3b12] transition-all shadow-md hover:shadow-lg disabled:opacity-50"
               >
                 {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />} Save
               </button>
@@ -130,7 +130,7 @@ export default function ProfilePage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className={`p-5 rounded-none border flex items-center gap-4 text-base font-bold shadow-lg ${message.type === 'success' ? 'bg-emerald-50 text-emerald-700 border-emerald-100 shadow-emerald-500/10' : 'bg-red-50 text-red-700 border-red-100 shadow-red-500/10'}`}
+              className={`p-5 rounded-xl border flex items-center gap-4 text-base font-bold shadow-lg ${message.type === 'success' ? 'bg-emerald-50 text-emerald-700 border-emerald-100 shadow-emerald-500/10' : 'bg-red-50 text-red-700 border-red-100 shadow-red-500/10'}`}
             >
               {message.type === 'success' ? <CheckCircle2 className="w-6 h-6" /> : <AlertCircle className="w-6 h-6" />}
               {message.text}
@@ -142,13 +142,13 @@ export default function ProfilePage() {
         <motion.div 
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-none p-8 border border-emerald-100/60 shadow-sm relative z-10"
+          className="bg-white rounded-xl p-8 border border-emerald-100/60 shadow-sm relative z-10"
         >
           <div className="flex flex-col sm:flex-row items-center sm:items-start gap-8">
             {/* Avatar Section */}
             <div className="shrink-0 group">
               <div className="relative w-32 h-32">
-                <div className="w-full h-full rounded-none overflow-hidden border-4 border-gray-50 bg-gray-100 flex items-center justify-center shadow-inner relative group/img">
+                <div className="w-full h-full rounded-xl overflow-hidden border-4 border-gray-50 bg-gray-100 flex items-center justify-center shadow-inner relative group/img">
                   {user.avatar ? (
                     <img 
                       src={user.avatar} 
@@ -201,7 +201,7 @@ export default function ProfilePage() {
                       type="text" 
                       value={formData.name} 
                       onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-none text-base font-semibold text-slate-900 outline-none focus:border-[#1b5e20] transition-all"
+                      className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-base font-semibold text-slate-900 outline-none focus:border-[#1b5e20] transition-all"
                     />
                   </div>
                 ) : (
@@ -209,12 +209,12 @@ export default function ProfilePage() {
                 )}
                 
                 <div className="flex items-center justify-center sm:justify-start gap-2 mt-2">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-none bg-emerald-50 text-emerald-700 text-base font-bold uppercase  border border-emerald-100">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-50 text-emerald-700 text-base font-bold uppercase  border border-emerald-100">
                     <ShieldCheck className="w-3.5 h-3.5" />
                     {user.role}
                   </span>
                   {user.vendor?.verified && (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-none bg-emerald-50 text-emerald-700 text-base font-bold uppercase  border border-emerald-100">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-50 text-emerald-700 text-base font-bold uppercase  border border-emerald-100">
                       Verified Partner
                     </span>
                   )}
@@ -233,7 +233,7 @@ export default function ProfilePage() {
                       value={formData.email} 
                       onChange={(e) => setFormData({...formData, email: e.target.value})}
                       placeholder="Enter your email"
-                      className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-none text-base font-semibold text-slate-900 outline-none focus:border-[#1b5e20] transition-all mt-1"
+                      className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-base font-semibold text-slate-900 outline-none focus:border-[#1b5e20] transition-all mt-1"
                     />
                   ) : (
                     <p className="text-base font-bold text-slate-900 truncate" title={user.email}>
@@ -252,7 +252,7 @@ export default function ProfilePage() {
                       type="text" 
                       value={formData.phone} 
                       onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                      className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-none text-base font-semibold text-slate-900 outline-none focus:border-[#1b5e20] transition-all mt-1"
+                      className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-base font-semibold text-slate-900 outline-none focus:border-[#1b5e20] transition-all mt-1"
                     />
                   ) : (
                     <p className="text-base font-bold text-slate-900 truncate" title={user.phone}>{user.phone || 'Not provided'}</p>

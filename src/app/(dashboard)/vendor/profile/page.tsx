@@ -218,7 +218,7 @@ export default function SimpleVendorProfile() {
         <button 
             onClick={handleUpdate}
             disabled={saving}
-            className="px-5 py-2.5 bg-[#007367] text-white rounded-none font-semibold text-base flex items-center gap-2 hover:bg-[#005e54] transition-colors disabled:opacity-50 shadow-sm"
+            className="px-5 py-2.5 bg-[#164e33] text-white rounded-xl font-semibold text-base flex items-center gap-2 hover:bg-[#113f29] transition-colors disabled:opacity-50 shadow-sm"
         >
             {saving ? <RefreshCcw className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
             Save Profile
@@ -242,15 +242,15 @@ export default function SimpleVendorProfile() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
         
         {/* Section 1: Identity - Spans 2 Columns */}
-        <section className="bg-white p-6 md:p-8 rounded-none border border-gray-100 space-y-6 shadow-sm lg:col-span-2">
+        <section className="bg-white p-6 md:p-8 rounded-xl border border-gray-100 space-y-6 shadow-sm lg:col-span-2">
             <h3 className="text-base font-semibold text-slate-900 flex items-center gap-2 border-b border-gray-50 pb-4">
-                <Building2 className="w-4 h-4 text-[#007367]" /> Basic Information
+                <Building2 className="w-4 h-4 text-[#164e33]" /> Basic Information
             </h3>
 
             {/* Profile/Logo Upload Section */}
             <div className="flex flex-col md:flex-row items-center gap-6 pb-6 border-b border-gray-50">
                <div className="relative group">
-                  <div className="w-24 h-24 rounded-none bg-gray-50 border-2 border-dashed border-gray-200 flex items-center justify-center overflow-hidden relative transition-all group-hover:border-blue-300">
+                  <div className="w-24 h-24 rounded-xl bg-gray-50 border-2 border-dashed border-gray-200 flex items-center justify-center overflow-hidden relative transition-all group-hover:border-blue-300">
                     {vendorData.logoUrl ? (
                       <img src={vendorData.logoUrl} alt="Business Logo" className="w-full h-full object-cover" />
                     ) : (
@@ -262,14 +262,14 @@ export default function SimpleVendorProfile() {
                     
                     {uploadingLogo && (
                       <div className="absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center">
-                        <RefreshCcw className="w-5 h-5 text-[#007367] animate-spin" />
+                        <RefreshCcw className="w-5 h-5 text-[#164e33] animate-spin" />
                       </div>
                     )}
                   </div>
                   <button 
                     type="button"
                     onClick={() => logoInputRef.current?.click()}
-                    className="absolute -bottom-2 -right-2 bg-white shadow-lg border border-gray-100 p-2 rounded-none text-[#007367] hover:bg-[#007367]/5 transition-all hover:scale-110"
+                    className="absolute -bottom-2 -right-2 bg-white shadow-lg border border-gray-100 p-2 rounded-xl text-[#164e33] hover:bg-[#164e33]/5 transition-all hover:scale-110"
                   >
                     <Upload className="w-4 h-4" />
                   </button>
@@ -290,18 +290,18 @@ export default function SimpleVendorProfile() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div className="space-y-1.5 md:col-span-2">
                     <label className="text-base font-semibold text-slate-800 flex items-center gap-1.5 mb-1">
-                         <Building2 className="w-3.5 h-3.5 text-[#007367] opacity-60" /> Company Name
+                         <Building2 className="w-3.5 h-3.5 text-[#164e33] opacity-60" /> Company Name
                     </label>
                     <input 
                         type="text" 
                         value={vendorData.businessName}
                         onChange={(e) => setVendorData({...vendorData, businessName: e.target.value})}
-                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-none focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-base transition-all"
+                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-base transition-all"
                     />
                 </div>
                 <div className="md:col-span-2 space-y-2.5 relative" ref={dropdownRef}>
                     <label className="text-base font-semibold text-slate-800 flex items-center gap-2">
-                        <Tag className="w-3.5 h-3.5 text-[#007367]" /> Business Categories
+                        <Tag className="w-3.5 h-3.5 text-[#164e33]" /> Business Categories
                     </label>
                     
                     {/* Selected Tags Display */}
@@ -314,7 +314,7 @@ export default function SimpleVendorProfile() {
                                     initial={{ scale: 0.8, opacity: 0 }}
                                     animate={{ scale: 1, opacity: 1 }}
                                     key={id}
-                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#007367]/5 text-slate-800 border border-[#007367]/10 rounded-full text-base font-semibold"
+                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#164e33]/5 text-slate-800 border border-[#164e33]/10 rounded-full text-base font-semibold"
                                 >
                                     {cat.name}
                                     <button 
@@ -343,7 +343,7 @@ export default function SimpleVendorProfile() {
                                 setSearchTerm(e.target.value);
                                 setIsDropdownOpen(true);
                             }}
-                            className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-none focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-base transition-all"
+                            className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-base transition-all"
                         />
                         <button 
                            type="button"
@@ -360,7 +360,7 @@ export default function SimpleVendorProfile() {
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: 10 }}
-                                    className="absolute left-0 right-0 top-full mt-2 bg-white border border-gray-100 rounded-none shadow-xl z-50 max-h-60 overflow-y-auto p-2"
+                                    className="absolute left-0 right-0 top-full mt-2 bg-white border border-gray-100 rounded-xl shadow-xl z-50 max-h-60 overflow-y-auto p-2"
                                 >
                                     {categories
                                         .filter((c: any) => c.name.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -380,12 +380,12 @@ export default function SimpleVendorProfile() {
                                                     }}
                                                     className={`w-full px-4 py-2.5 rounded-xl text-left text-base font-semibold transition-all flex items-center justify-between group ${
                                                         isSelected 
-                                                        ? 'bg-[#007367]/5 text-slate-800' 
+                                                        ? 'bg-[#164e33]/5 text-slate-800' 
                                                         : 'hover:bg-gray-50 text-slate-800'
                                                     }`}
                                                 >
                                                     {c.name}
-                                                    {isSelected && <CheckCircle2 className="w-4 h-4 text-[#007367]" />}
+                                                    {isSelected && <CheckCircle2 className="w-4 h-4 text-[#164e33]" />}
                                                 </button>
                                             );
                                         })}
@@ -396,67 +396,67 @@ export default function SimpleVendorProfile() {
                 </div>
                 <div className="space-y-1.5">
                     <label className="text-base font-semibold text-slate-800 flex items-center gap-1.5 mb-1">
-                        <Mail className="w-3.5 h-3.5 text-[#007367] opacity-60" /> Business Email
+                        <Mail className="w-3.5 h-3.5 text-[#164e33] opacity-60" /> Business Email
                     </label>
                     <input 
                         type="email" 
                         value={vendorData.email}
                         onChange={(e) => setVendorData({...vendorData, email: e.target.value})}
-                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-none focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-base transition-all shadow-xs"
+                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-base transition-all shadow-xs"
                     />
                 </div>
                 <div className="space-y-1.5">
                     <label className="text-base font-semibold text-slate-800 flex items-center gap-1.5 mb-1">
-                         <Phone className="w-3.5 h-3.5 text-[#007367] opacity-60" /> Official Mobile
+                         <Phone className="w-3.5 h-3.5 text-[#164e33] opacity-60" /> Official Mobile
                     </label>
                     <input 
                         type="tel" 
                         value={vendorData.phone}
                         onChange={(e) => setVendorData({...vendorData, phone: e.target.value})}
-                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-none focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-base transition-all shadow-xs"
+                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-base transition-all shadow-xs"
                     />
                 </div>
                 
                 <div className="space-y-1.5">
                     <label className="text-base font-semibold text-slate-800 flex items-center gap-1.5 mb-1">
-                        <Tag className="w-3.5 h-3.5 text-[#007367] opacity-60" /> GST Number (Optional)
+                        <Tag className="w-3.5 h-3.5 text-[#164e33] opacity-60" /> GST Number (Optional)
                     </label>
                     <input 
                         type="text" 
                         value={vendorData.gstNumber}
                         onChange={(e) => setVendorData({...vendorData, gstNumber: e.target.value})}
-                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-none focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-base transition-all shadow-xs"
+                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-base transition-all shadow-xs"
                     />
                 </div>
                 
                 <div className="space-y-1.5">
                     <label className="text-base font-semibold text-slate-800 flex items-center gap-1.5 mb-1">
-                        <CreditCard className="w-3.5 h-3.5 text-[#007367] opacity-60" /> Aadhaar / ID Number
+                        <CreditCard className="w-3.5 h-3.5 text-[#164e33] opacity-60" /> Aadhaar / ID Number
                     </label>
                     <input 
                         type="text" 
                         value={vendorData.aadhaarNumber}
                         onChange={(e) => setVendorData({...vendorData, aadhaarNumber: e.target.value})}
                         maxLength={12}
-                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-none focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-base transition-all shadow-xs"
+                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-base transition-all shadow-xs"
                     />
                 </div>
             </div>
         </section>
 
         {/* Section 2: Verification Documents - Spans 1 Column */}
-        <section className="bg-white p-6 md:p-8 rounded-none border border-gray-100 space-y-6 shadow-sm">
+        <section className="bg-white p-6 md:p-8 rounded-xl border border-gray-100 space-y-6 shadow-sm">
             <h3 className="text-base font-semibold text-slate-900 flex items-center gap-2 border-b border-gray-50 pb-4">
-                <Box className="w-4 h-4 text-[#007367]" /> Verification Docs
+                <Box className="w-4 h-4 text-[#164e33]" /> Verification Docs
             </h3>
             
             <div className="space-y-5">
                 <div className="pt-2">
                     <label className="text-base font-semibold text-slate-800 flex items-center gap-1.5 mb-3">
-                         <Upload className="w-3.5 h-3.5 text-[#007367] opacity-60" /> JPG/PNG Proof
+                         <Upload className="w-3.5 h-3.5 text-[#164e33] opacity-60" /> JPG/PNG Proof
                     </label>
                     
-                    <div className="p-4 border border-dashed border-gray-200 rounded-none bg-gray-50/50 hover:bg-gray-50 transition-colors">
+                    <div className="p-4 border border-dashed border-gray-200 rounded-xl bg-gray-50/50 hover:bg-gray-50 transition-colors">
                         <input 
                             type="file" 
                             ref={fileInputRef}
@@ -467,22 +467,22 @@ export default function SimpleVendorProfile() {
                         <div className="flex flex-col items-center justify-center gap-3 text-center">
                             {!vendorData.verificationDocument ? (
                                 <>
-                                    <div className="p-2.5 bg-[#007367]/5 text-[#007367] rounded-full">
+                                    <div className="p-2.5 bg-[#164e33]/5 text-[#164e33] rounded-full">
                                         <Upload className="w-4 h-4" />
                                     </div>
                                     <button 
                                         type="button"
                                         onClick={() => fileInputRef.current?.click()}
                                         disabled={uploadingFile}
-                                        className="px-4 py-2 bg-[#007367] text-white rounded-lg text-base font-semibold uppercase  hover:bg-[#005e54] transition-all disabled:opacity-50"
+                                        className="px-4 py-2 bg-[#164e33] text-white rounded-lg text-base font-semibold uppercase  hover:bg-[#113f29] transition-all disabled:opacity-50"
                                     >
                                         {uploadingFile ? "Uploading..." : "Select File"}
                                     </button>
                                 </>
                             ) : (
                                 <div className="w-full space-y-3">
-                                    <div className="flex items-center justify-between p-2.5 bg-white border border-gray-100 rounded-none">
-                                        <FileText className="w-3.5 h-3.5 text-[#007367] shrink-0" />
+                                    <div className="flex items-center justify-between p-2.5 bg-white border border-gray-100 rounded-xl">
+                                        <FileText className="w-3.5 h-3.5 text-[#164e33] shrink-0" />
                                         <p className="text-base font-semibold text-slate-700 truncate ml-2">Verification_Proof</p>
                                         <button 
                                            onClick={() => setVendorData({ ...vendorData, verificationDocument: '' })}
@@ -495,7 +495,7 @@ export default function SimpleVendorProfile() {
                                         <button type="button" onClick={() => setIsPreviewOpen(true)} className="py-2 bg-gray-100 text-slate-800 rounded-lg text-base font-semibold uppercase flex items-center justify-center cursor-pointer hover:bg-gray-200 transition-colors">
                                             View
                                         </button>
-                                        <button type="button" onClick={() => fileInputRef.current?.click()} className="py-2 bg-[#007367]/5 text-[#007367] rounded-lg text-base font-semibold uppercase flex items-center justify-center hover:bg-blue-100 transition-colors">
+                                        <button type="button" onClick={() => fileInputRef.current?.click()} className="py-2 bg-[#164e33]/5 text-[#164e33] rounded-lg text-base font-semibold uppercase flex items-center justify-center hover:bg-blue-100 transition-colors">
                                             Edit
                                         </button>
                                     </div>
@@ -508,9 +508,9 @@ export default function SimpleVendorProfile() {
         </section>
 
         {/* Section 3: Connectivity - Full Width Below or Side? Spans 3 columns */}
-        <section className="bg-white p-6 md:p-8 rounded-none border border-gray-100 space-y-6 shadow-sm lg:col-span-3">
+        <section className="bg-white p-6 md:p-8 rounded-xl border border-gray-100 space-y-6 shadow-sm lg:col-span-3">
             <h3 className="text-base font-semibold text-slate-900 flex items-center gap-2 border-b border-gray-50 pb-4">
-                <Globe className="w-4 h-4 text-[#007367]" /> Professional Presence & Description
+                <Globe className="w-4 h-4 text-[#164e33]" /> Professional Presence & Description
             </h3>
             
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -525,7 +525,7 @@ export default function SimpleVendorProfile() {
                             ...vendorData, socialLinks: { ...vendorData.socialLinks, linkedin: e.target.value }
                         })}
                         placeholder="Profile URL"
-                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-none focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-base transition-all"
+                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-base transition-all"
                     />
                 </div>
                 <div className="space-y-1.5">
@@ -539,12 +539,12 @@ export default function SimpleVendorProfile() {
                             ...vendorData, socialLinks: { ...vendorData.socialLinks, instagram: e.target.value }
                         })}
                         placeholder="Profile URL"
-                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-none focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-base transition-all"
+                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-base transition-all"
                     />
                 </div>
                 <div className="space-y-1.5">
                     <label className="text-base font-semibold text-slate-800 flex items-center gap-1.5">
-                        <Facebook className="w-3.5 h-3.5 text-[#007367]" /> Facebook
+                        <Facebook className="w-3.5 h-3.5 text-[#164e33]" /> Facebook
                     </label>
                     <input 
                         type="text" 
@@ -553,7 +553,7 @@ export default function SimpleVendorProfile() {
                             ...vendorData, socialLinks: { ...vendorData.socialLinks, facebook: e.target.value }
                         })}
                         placeholder="Page URL"
-                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-none focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-base transition-all"
+                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-base transition-all"
                     />
                 </div>
                 <div className="space-y-1.5">
@@ -565,7 +565,7 @@ export default function SimpleVendorProfile() {
                         value={vendorData.googleBusinessLink || ''}
                         onChange={(e) => setVendorData({ ...vendorData, googleBusinessLink: e.target.value })}
                         placeholder="Map Link"
-                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-none focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-base transition-all shadow-xs"
+                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-base transition-all shadow-xs"
                     />
                 </div>
             </div>
@@ -581,7 +581,7 @@ export default function SimpleVendorProfile() {
                                 type="text" 
                                 value={vendorData.city}
                                 onChange={(e) => setVendorData({...vendorData, city: e.target.value})}
-                                className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-none focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-base transition-all"
+                                className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-base transition-all"
                             />
                         </div>
                         <div className="space-y-1.5">
@@ -593,7 +593,7 @@ export default function SimpleVendorProfile() {
                                 value={vendorData.workingHours}
                                 onChange={(e) => setVendorData({...vendorData, workingHours: e.target.value})}
                                 placeholder="e.g. 9:00 AM - 6:00 PM"
-                                className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-none focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-base transition-all"
+                                className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-base transition-all"
                             />
                         </div>
                     </div>
@@ -606,7 +606,7 @@ export default function SimpleVendorProfile() {
                             onChange={(e) => setVendorData({...vendorData, address: e.target.value})}
                             rows={3}
                             placeholder="Enter your full business/office address..."
-                            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-none focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-base transition-all resize-none shadow-xs"
+                            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-base transition-all resize-none shadow-xs"
                         />
                     </div>
                 </div>
@@ -618,7 +618,7 @@ export default function SimpleVendorProfile() {
                             onChange={(e) => setVendorData({...vendorData, description: e.target.value})}
                             rows={6}
                             placeholder="Tell buyers about your marketplace expertise..."
-                            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-none focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-base transition-all resize-none shadow-xs"
+                            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-base transition-all resize-none shadow-xs"
                         />
                     </div>
                 </div>
@@ -639,12 +639,12 @@ export default function SimpleVendorProfile() {
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="relative w-full max-w-4xl max-h-[90vh] bg-white rounded-none shadow-2xl overflow-hidden flex flex-col"
+              className="relative w-full max-w-4xl max-h-[90vh] bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col"
               onClick={e => e.stopPropagation()}
             >
               <div className="flex items-center justify-between p-4 border-b border-gray-100">
                 <h3 className="font-semibold text-slate-900 flex items-center gap-2">
-                  <FileText className="w-4 h-4 text-[#007367]" />
+                  <FileText className="w-4 h-4 text-[#164e33]" />
                   Document Verification Proof
                 </h3>
                 <button 
@@ -669,5 +669,6 @@ export default function SimpleVendorProfile() {
     </div>
   );
 }
+
 
 

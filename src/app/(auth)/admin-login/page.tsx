@@ -56,17 +56,17 @@ export default function AdminLoginPage() {
   return (
     <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center p-6 relative overflow-hidden">
       {/* Background Decor for Admin Portal */}
-      <div className="absolute top-0 left-0 w-full h-1 bg-[#007367]" />
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#007367]/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl pointer-events-none" />
+      <div className="absolute top-0 left-0 w-full h-1 bg-[#164e33]" />
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#164e33]/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl pointer-events-none" />
       
       <div className="w-full max-w-md relative z-10">
         <div className="text-center mb-10">
             <Link href="/" className="inline-flex mb-6 opacity-80 hover:opacity-100 transition-all">
               <img src="/logo.png" alt="India B2B" className="h-14 w-auto object-contain brightness-0 invert" />
             </Link>
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#007367]/20 border border-[#007367]/30 rounded-lg mb-4">
-               <ShieldCheck className="w-4 h-4 text-[#007367]" />
-               <span className="text-base font-semibold text-[#007367] uppercase ">Secure Admin Gateway</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#164e33]/20 border border-[#164e33]/30 rounded-lg mb-4">
+               <ShieldCheck className="w-4 h-4 text-[#164e33]" />
+               <span className="text-base font-semibold text-[#164e33] uppercase ">Secure Admin Gateway</span>
             </div>
             <h2 className="text-2xl font-semibold text-white ">Administrative Access</h2>
             <p className="text-slate-700 text-base font-medium mt-1">Super Admin & Admin Authentication Portal</p>
@@ -85,13 +85,13 @@ export default function AdminLoginPage() {
                        <div className="space-y-2">
                           <label className="text-base font-semibold text-slate-500 uppercase  ml-1">Admin Identity (Email)</label>
                           <div className="relative group">
-                             <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#007367] transition-colors" />
+                             <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#164e33] transition-colors" />
                              <input
                                 type="email"
                                 required
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="w-full pl-11 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-[#007367] focus:bg-white text-base font-medium text-slate-800 transition-all"
+                                className="w-full pl-11 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-[#164e33] focus:bg-white text-base font-medium text-slate-800 transition-all"
                                 placeholder="admin@indiab2b.com"
                              />
                           </div>
@@ -102,13 +102,13 @@ export default function AdminLoginPage() {
                              <label className="text-base font-semibold text-slate-500 uppercase ">Secret Key (Password)</label>
                           </div>
                           <div className="relative group">
-                             <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#007367] transition-colors" />
+                             <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#164e33] transition-colors" />
                              <input
                                 type={showPassword ? "text" : "password"}
                                 required
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="w-full pl-11 pr-11 py-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-[#007367] focus:bg-white text-base font-medium text-slate-800 transition-all"
+                                className="w-full pl-11 pr-11 py-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-[#164e33] focus:bg-white text-base font-medium text-slate-800 transition-all"
                                 placeholder="••••••••"
                              />
                              <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-300 hover:text-slate-800 p-1">
@@ -140,3 +140,4 @@ export default function AdminLoginPage() {
     </div>
   );
 }
+

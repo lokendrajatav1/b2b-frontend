@@ -61,7 +61,7 @@ export default function VendorNotificationsPage() {
         <div>
           <h1 className="text-2xl font-semibold text-slate-900  flex items-center gap-3">
              Notifications
-            <div className="p-1.5 bg-gray-50 text-slate-700 rounded-none border border-gray-100">
+            <div className="p-1.5 bg-gray-50 text-slate-700 rounded-xl border border-gray-100">
               <Bell className="w-4 h-4" />
             </div>
           </h1>
@@ -72,14 +72,14 @@ export default function VendorNotificationsPage() {
           <button 
             onClick={markAllRead}
             disabled={!notifications.some(n => !n.isRead)}
-            className="px-4 py-2 bg-white border border-gray-200 rounded-none text-slate-800 font-semibold text-base flex items-center gap-2 hover:bg-gray-50 disabled:opacity-50 transition-all shadow-sm"
+            className="px-4 py-2 bg-white border border-gray-200 rounded-xl text-slate-800 font-semibold text-base flex items-center gap-2 hover:bg-gray-50 disabled:opacity-50 transition-all shadow-sm"
           >
             <CheckCheck className="w-4 h-4" />
             Mark all read
           </button>
           <button 
             onClick={fetchNotifications}
-            className="px-4 py-2 bg-[#007367] text-white rounded-none font-semibold text-base flex items-center gap-2 shadow-sm transition-all hover:bg-[#005e54]"
+            className="px-4 py-2 bg-[#164e33] text-white rounded-xl font-semibold text-base flex items-center gap-2 shadow-sm transition-all hover:bg-[#113f29]"
           >
             <RefreshCcw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
             Refresh
@@ -96,9 +96,9 @@ export default function VendorNotificationsPage() {
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 10 }}
-                className={`p-6 bg-white rounded-2xl border ${n.isRead ? 'border-gray-100' : 'border-blue-200 bg-[#007367]/5/30'} flex gap-5 group hover:border-blue-300 transition-all shadow-sm`}
+                className={`p-6 bg-white rounded-2xl border ${n.isRead ? 'border-gray-100' : 'border-blue-200 bg-[#164e33]/5/30'} flex gap-5 group hover:border-blue-300 transition-all shadow-sm`}
               >
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border ${n.isRead ? 'bg-gray-50 text-slate-500 border-gray-100' : 'bg-white text-[#007367] border-[#007367]/10'}`}>
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border ${n.isRead ? 'bg-gray-50 text-slate-500 border-gray-100' : 'bg-white text-[#164e33] border-[#164e33]/10'}`}>
                   {n.title.includes('Approved') || n.title.includes('Success') ? <CheckCircle2 className="w-5 h-5 cursor-default" /> : <Bell className="w-5 h-5 cursor-default" />}
                 </div>
                 
@@ -126,7 +126,7 @@ export default function VendorNotificationsPage() {
             ))}
           </AnimatePresence>
         ) : (
-          <div className="py-20 text-center border-2 border-dashed border-gray-200 rounded-none bg-gray-50/50">
+          <div className="py-20 text-center border-2 border-dashed border-gray-200 rounded-xl bg-gray-50/50">
             <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 text-slate-500 border border-gray-100 shadow-sm">
                 <Bell className="w-8 h-8" />
             </div>
@@ -138,5 +138,6 @@ export default function VendorNotificationsPage() {
     </div>
   );
 }
+
 
 

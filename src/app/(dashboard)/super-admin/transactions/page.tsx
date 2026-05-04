@@ -72,7 +72,7 @@ export default function AdminTransactions() {
         <div>
           <h1 className="text-2xl font-semibold text-slate-900  flex items-center gap-3">
             Transactions
-            <div className="p-1.5 bg-[#007367]/5 text-[#007367] rounded-none border border-[#007367]/10">
+            <div className="p-1.5 bg-[#164e33]/5 text-[#164e33] rounded-xl border border-[#164e33]/10">
               <CreditCard className="w-5 h-5" />
             </div>
           </h1>
@@ -87,11 +87,11 @@ export default function AdminTransactions() {
                 placeholder="Search by vendor..."
                 value={searchVendor}
                 onChange={(e) => setSearchVendor(e.target.value)}
-                className="pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-none text-base font-medium w-64 outline-none focus:border-blue-500 focus:bg-white transition-all focus:ring-2 focus:ring-blue-100"
+                className="pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-base font-medium w-64 outline-none focus:border-blue-500 focus:bg-white transition-all focus:ring-2 focus:ring-blue-100"
               />
            </div>
            
-           <button onClick={fetchTransactions} className="p-2 bg-white border border-gray-200 rounded-none text-slate-500 hover:text-slate-800 hover:bg-gray-50 transition-all shadow-sm">
+           <button onClick={fetchTransactions} className="p-2 bg-white border border-gray-200 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-gray-50 transition-all shadow-sm">
              <RefreshCcw className={`w-5 h-5 ${loading ? 'animate-spin' : ''}`} />
            </button>
         </div>
@@ -100,11 +100,11 @@ export default function AdminTransactions() {
       {/* Analytics Summary */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-7xl mx-auto">
          {[
-           { label: 'Total Volume', value: `₹${stats.totalRev.toLocaleString()}`, icon: Wallet, bg: 'bg-[#007367]/5', text: 'text-[#007367]' },
-           { label: 'Total Transactions', value: stats.count, icon: CreditCard, bg: 'bg-[#007367]/5', text: 'text-[#007367]' },
+           { label: 'Total Volume', value: `₹${stats.totalRev.toLocaleString()}`, icon: Wallet, bg: 'bg-[#164e33]/5', text: 'text-[#164e33]' },
+           { label: 'Total Transactions', value: stats.count, icon: CreditCard, bg: 'bg-[#164e33]/5', text: 'text-[#164e33]' },
            { label: 'Pending Settlement', value: stats.pending, icon: Clock, bg: 'bg-amber-50', text: 'text-amber-600' }
          ].map((s, i) => (
-           <div key={i} className="bg-white p-6 rounded-none border border-gray-200 shadow-sm flex items-center justify-between">
+           <div key={i} className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
               <div>
                  <p className="text-base font-semibold text-slate-700 uppercase  mb-1">{s.label}</p>
                  <h2 className="text-2xl font-semibold text-slate-900 ">{s.value}</h2>
@@ -118,7 +118,7 @@ export default function AdminTransactions() {
 
       {/* Ledger Table */}
       <div className="max-w-7xl mx-auto">
-        <div className="bg-white rounded-none border border-gray-200 overflow-hidden shadow-sm">
+        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
            <div className="overflow-x-auto">
               <table className="w-full text-left whitespace-nowrap min-w-[800px]">
                  <thead>
@@ -190,5 +190,6 @@ export default function AdminTransactions() {
     </div>
   );
 }
+
 
 

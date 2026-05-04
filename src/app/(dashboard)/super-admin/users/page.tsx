@@ -142,7 +142,7 @@ export default function AdminUsers() {
         <div>
            <h1 className="text-2xl font-semibold text-slate-900  flex items-center gap-3">
              Platform Members
-             <div className="p-1.5 bg-[#007367]/5 text-[#007367] rounded-none border border-[#007367]/10">
+             <div className="p-1.5 bg-[#164e33]/5 text-[#164e33] rounded-xl border border-[#164e33]/10">
                 <Users className="w-5 h-5" />
              </div>
            </h1>
@@ -150,7 +150,7 @@ export default function AdminUsers() {
         </div>
 
         <div className="flex items-center gap-3">
-           <div className="flex bg-white border border-gray-200 rounded-none overflow-hidden shadow-sm">
+           <div className="flex bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
               <div className="px-3 py-2 flex items-center justify-center bg-gray-50 border-r border-gray-200">
                  <Filter className="w-4 h-4 text-slate-700" />
               </div>
@@ -174,14 +174,14 @@ export default function AdminUsers() {
                 placeholder="Search by name or email..." 
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-none text-base font-medium outline-none focus:border-blue-500 transition-all w-64 shadow-sm"
+                className="pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl text-base font-medium outline-none focus:border-blue-500 transition-all w-64 shadow-sm"
               />
            </div>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto">
-        <div className="bg-white rounded-none border border-gray-200 shadow-sm h-[calc(100vh-240px)] flex flex-col">
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm h-[calc(100vh-240px)] flex flex-col">
           <div className="overflow-y-auto overflow-x-auto flex-1 custom-scrollbar">
             <table className="w-full text-left border-collapse relative min-w-[800px]">
               <thead className="sticky top-0 z-20 bg-gray-50/95 backdrop-blur-md">
@@ -207,7 +207,7 @@ export default function AdminUsers() {
                     <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
                           {user.avatar && (
-                            <div className="w-8 h-8 rounded-none overflow-hidden border border-gray-100 shrink-0">
+                            <div className="w-8 h-8 rounded-xl overflow-hidden border border-gray-100 shrink-0">
                                <img src={user.avatar} alt="" className="w-full h-full object-cover" />
                             </div>
                           )}
@@ -239,8 +239,8 @@ export default function AdminUsers() {
                     <td className="px-6 py-4">
                        <div className="flex items-center gap-4">
                          <div className={`px-2.5 py-1 rounded-lg text-base font-semibold  uppercase border ${
-                            user.role === 'SUPERADMIN' ? 'bg-[#007367]/5 text-indigo-700 border-[#007367]/10' : 
-                            user.role === 'VENDOR' ? 'bg-[#007367]/5 text-slate-800 border-[#007367]/10' : 
+                            user.role === 'SUPERADMIN' ? 'bg-[#164e33]/5 text-indigo-700 border-[#164e33]/10' : 
+                            user.role === 'VENDOR' ? 'bg-[#164e33]/5 text-slate-800 border-[#164e33]/10' : 
                             user.role === 'ADMIN' ? 'bg-purple-50 text-purple-700 border-purple-100' : 
                             'bg-gray-50 text-slate-700 border-gray-100'
                          }`}>
@@ -273,7 +273,7 @@ export default function AdminUsers() {
                          <button 
                            onClick={() => { setSelectedUser({...user}); setIsModalOpen(true); }}
                            title="Edit Access"
-                           className="p-2 text-slate-500 hover:text-[#007367] hover:bg-[#007367]/5 rounded-none transition-all duration-300"
+                           className="p-2 text-slate-500 hover:text-[#164e33] hover:bg-[#164e33]/5 rounded-xl transition-all duration-300"
                          >
                            <Edit2 className="w-4 h-4" />
                          </button>
@@ -315,7 +315,7 @@ export default function AdminUsers() {
               initial={{ opacity: 0, scale: 0.95, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              className="relative bg-white rounded-none shadow-2xl w-full max-w-md overflow-hidden border border-gray-100"
+              className="relative bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden border border-gray-100"
             >
               <div className="px-6 py-5 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
                 <h3 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
@@ -330,7 +330,7 @@ export default function AdminUsers() {
               <form onSubmit={handleUpdateUser} className="p-6 space-y-5">
                 <div>
                   <label className="block text-base font-semibold text-slate-500 uppercase  mb-1.5">Member Name</label>
-                  <input type="text" disabled value={(selectedUser.name && !selectedUser.name.includes('_') ? selectedUser.name : selectedUser.phone) || 'Anonymous User'} className="w-full bg-gray-50 border border-gray-200 rounded-none px-4 py-2.5 text-base font-semibold text-slate-700 cursor-not-allowed" />
+                  <input type="text" disabled value={(selectedUser.name && !selectedUser.name.includes('_') ? selectedUser.name : selectedUser.phone) || 'Anonymous User'} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-base font-semibold text-slate-700 cursor-not-allowed" />
                 </div>
                 
                 <div>
@@ -338,7 +338,7 @@ export default function AdminUsers() {
                   <select 
                     value={selectedUser.role}
                     onChange={(e) => setSelectedUser({...selectedUser, role: e.target.value})}
-                    className="w-full bg-white border border-gray-200 rounded-none px-4 py-2.5 text-base font-semibold text-slate-800 outline-none focus:border-blue-500 transition-all uppercase "
+                    className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-base font-semibold text-slate-800 outline-none focus:border-blue-500 transition-all uppercase "
                   >
                     <option value="BUYER">Buyer (Standard User)</option>
                     <option value="VENDOR">Vendor</option>
@@ -347,7 +347,7 @@ export default function AdminUsers() {
                   </select>
                 </div>
 
-                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-none border border-gray-200">
+                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-200">
                   <div>
                     <h4 className="text-base font-semibold text-slate-900">Account Access</h4>
                     <p className="text-base font-medium text-slate-700 mt-0.5">Allow login and platform usage</p>
@@ -365,7 +365,7 @@ export default function AdminUsers() {
                   <button type="button" onClick={() => setIsModalOpen(false)} className="px-5 py-2.5 text-base font-semibold text-slate-700 hover:text-slate-800 hover:bg-gray-100 rounded-xl transition-colors">
                     Cancel
                   </button>
-                  <button type="submit" disabled={updatingId === 'modal'} className="px-5 py-2.5 bg-[#007367] text-white text-base font-semibold rounded-none shadow-lg shadow-blue-500/30 hover:bg-[#005e54] hover:shadow-blue-500/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+                  <button type="submit" disabled={updatingId === 'modal'} className="px-5 py-2.5 bg-[#164e33] text-white text-base font-semibold rounded-xl shadow-lg shadow-blue-500/30 hover:bg-[#113f29] hover:shadow-blue-500/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
                     {updatingId === 'modal' ? <RefreshCcw className="w-4 h-4 animate-spin" /> : <ShieldCheck className="w-4 h-4" />}
                     Save Changes
                   </button>
@@ -389,7 +389,7 @@ export default function AdminUsers() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 30 }}
               transition={{ type: 'spring', damping: 20, stiffness: 300 }}
-              className="relative bg-white/95 backdrop-blur-xl rounded-none shadow-[0_20px_50px_rgba(0,0,0,0.15)] w-full max-w-md overflow-hidden border border-white/50"
+              className="relative bg-white/95 backdrop-blur-xl rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] w-full max-w-md overflow-hidden border border-white/50"
             >
               <div className={`px-8 py-7 relative overflow-hidden transition-colors duration-500 ${
                 parseFloat(boostConfig.score) <= 0 ? 'bg-gray-100 text-slate-900' : 
@@ -400,7 +400,7 @@ export default function AdminUsers() {
                 <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl" />
                 <div className="flex items-center justify-between relative z-10">
                   <div className="flex items-center gap-3">
-                    <div className="p-2.5 bg-white/20 backdrop-blur-md rounded-none border border-white/30">
+                    <div className="p-2.5 bg-white/20 backdrop-blur-md rounded-xl border border-white/30">
                       {parseFloat(boostConfig.score) >= 25 ? <Sparkles className="w-6 h-6" /> : 
                        parseFloat(boostConfig.score) >= 10 ? <Trophy className="w-6 h-6" /> : 
                        <TrendingUp className="w-6 h-6" />}
@@ -439,7 +439,7 @@ export default function AdminUsers() {
                   </div>
                 </div>
 
-                <div className="bg-gray-50 rounded-none p-5 border border-gray-100">
+                <div className="bg-gray-50 rounded-xl p-5 border border-gray-100">
                   <div className="flex items-center gap-3 mb-2">
                     <Target className={`w-4 h-4 ${parseFloat(boostConfig.score) > 0 ? 'text-amber-500' : 'text-slate-500'}`} />
                     <span className="text-base font-semibold text-slate-900">Experience Impact Preview</span>
@@ -473,7 +473,7 @@ export default function AdminUsers() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative bg-white rounded-none shadow-2xl w-full max-w-sm overflow-hidden border border-gray-100"
+              className="relative bg-white rounded-xl shadow-2xl w-full max-w-sm overflow-hidden border border-gray-100"
             >
                <div className="p-8 text-center">
                   <div className="w-20 h-20 bg-red-50 text-red-600 rounded-[24px] flex items-center justify-center mx-auto mb-6 shadow-sm border border-red-100">
@@ -510,5 +510,6 @@ export default function AdminUsers() {
     </div>
   );
 }
+
 
 

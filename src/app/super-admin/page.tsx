@@ -83,9 +83,9 @@ export default function AdminLoginPage() {
   return (
     <div className="min-h-screen bg-[#f8fafc] flex flex-col items-center justify-center p-6 relative overflow-hidden">
       {/* Background Decor */}
-      <div className="absolute top-0 left-0 w-full h-1 bg-[#007367]" />
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#007367]/[0.02] rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#e88c30]/[0.02] rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl pointer-events-none" />
+      <div className="absolute top-0 left-0 w-full h-1 bg-[#164e33]" />
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#164e33]/[0.02] rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#f58220]/[0.02] rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl pointer-events-none" />
 
       <div className="w-full max-w-md relative z-10">
         <div className="text-center mb-10">
@@ -97,7 +97,7 @@ export default function AdminLoginPage() {
         </div>
 
         <div className="bg-white rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.04)] border border-gray-100 p-8 sm:p-10">
-            <div className="flex items-center justify-center gap-2 text-base font-semibold text-[#007367] uppercase  bg-[#007367]/5 px-4 py-2 rounded-xl border border-[#007367]/10 mb-8 mx-auto w-max">
+            <div className="flex items-center justify-center gap-2 text-base font-semibold text-[#164e33] uppercase  bg-[#164e33]/5 px-4 py-2 rounded-xl border border-[#164e33]/10 mb-8 mx-auto w-max">
                 <ShieldCheck className="w-4 h-4" /> Super Admin Access
             </div>
 
@@ -114,13 +114,13 @@ export default function AdminLoginPage() {
                          <div className="space-y-2">
                             <label className="text-base font-semibold text-slate-500 uppercase  ml-1">Email Address</label>
                             <div className="relative group">
-                               <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#007367] transition-colors" />
+                               <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#164e33] transition-colors" />
                                <input
                                   type="email"
                                   required
                                   value={email}
                                   onChange={(e) => setEmail(e.target.value)}
-                                  className="w-full pl-11 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-[#007367] focus:bg-white text-base font-medium text-slate-800 transition-all placeholder:text-gray-300"
+                                  className="w-full pl-11 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-[#164e33] focus:bg-white text-base font-medium text-slate-800 transition-all placeholder:text-gray-300"
                                   placeholder="admin@platform.com"
                                />
                             </div>
@@ -131,13 +131,13 @@ export default function AdminLoginPage() {
                                <label className="text-base font-semibold text-slate-500 uppercase ">Password</label>
                             </div>
                             <div className="relative group">
-                               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#007367] transition-colors" />
+                               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#164e33] transition-colors" />
                                <input
                                   type={showPassword ? "text" : "password"}
                                   required
                                   value={password}
                                   onChange={(e) => setPassword(e.target.value)}
-                                  className="w-full pl-11 pr-11 py-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-[#007367] focus:bg-white text-base font-medium text-slate-800 transition-all placeholder:text-gray-300"
+                                  className="w-full pl-11 pr-11 py-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-[#164e33] focus:bg-white text-base font-medium text-slate-800 transition-all placeholder:text-gray-300"
                                   placeholder="••••••••"
                                />
                                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-300 hover:text-slate-800 p-1">
@@ -146,7 +146,7 @@ export default function AdminLoginPage() {
                             </div>
                          </div>
 
-                         <button type="submit" disabled={loading} className="w-full py-4 bg-[#007367] text-white rounded-xl font-semibold text-base hover:bg-[#005e54] transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg shadow-[#007367]/10">
+                         <button type="submit" disabled={loading} className="w-full py-4 bg-[#164e33] text-white rounded-xl font-semibold text-base hover:bg-[#113f29] transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg shadow-[#164e33]/10">
                             {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Secure Login'}
                             {!loading && <ArrowRight className="w-4 h-4" />}
                          </button>
@@ -156,13 +156,15 @@ export default function AdminLoginPage() {
         </div>
 
         <div className="mt-10 flex items-center justify-center gap-6">
-            <Link href="/" className="text-base font-semibold text-slate-500 hover:text-[#007367] flex items-center gap-1.5 transition-colors uppercase ">
+            <Link href="/" className="text-base font-semibold text-slate-500 hover:text-[#164e33] flex items-center gap-1.5 transition-colors uppercase ">
                 <ArrowLeft className="w-3 h-3" /> Main Site
             </Link>
             <span className="w-1 h-1 bg-gray-200 rounded-full"></span>
-            <Link href="/admin" className="text-base font-semibold text-slate-500 hover:text-[#007367] transition-colors uppercase ">Admin Portal</Link>
+            <Link href="/admin" className="text-base font-semibold text-slate-500 hover:text-[#164e33] transition-colors uppercase ">Admin Portal</Link>
         </div>
       </div>
     </div>
   );
 }
+
+

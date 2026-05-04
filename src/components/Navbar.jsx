@@ -99,7 +99,7 @@ const Navbar = () => {
             </Link>
 
             {/* Desktop IndiaMart Style Search Bar */}
-            <form onSubmit={handleSearch} className="hidden lg:flex relative w-[600px] h-11 items-center bg-white border border-[#d0d0d0] rounded-[4px] shadow-sm focus-within:border-[#007367] focus-within:shadow-md transition-all divide-x divide-gray-200">
+            <form onSubmit={handleSearch} className="hidden lg:flex relative w-[600px] h-11 items-center bg-white border border-[#d0d0d0] rounded-xl shadow-sm focus-within:border-[#164e33] focus-within:shadow-md transition-all divide-x divide-gray-200">
               {/* City Selection */}
               <div className="w-[160px] h-full relative flex items-center px-2 hover:bg-gray-50 transition-colors cursor-pointer city-dropdown-container">
                 <MapPin className="w-4 h-4 text-[#e43737] mr-1.5 shrink-0" />
@@ -122,7 +122,7 @@ const Navbar = () => {
                                 key={city}
                                 type="button"
                                 onClick={() => handleCitySelect(city)}
-                                className="w-full text-left px-4 py-2.5 text-base font-semibold text-slate-800 hover:bg-[#007367]/5 hover:text-[#007367] transition-all flex items-center gap-2"
+                                className="w-full text-left px-4 py-2.5 text-base font-semibold text-slate-800 hover:bg-[#164e33]/5 hover:text-[#164e33] transition-all flex items-center gap-2"
                             >
                                 <MapPin className="w-3.5 h-3.5 opacity-40" />
                                 {city}
@@ -146,7 +146,7 @@ const Navbar = () => {
                 />
                 
                 {/* Image Search / Lens Mockup */}
-                {/* <button type="button" className="p-2 text-slate-500 hover:text-[#007367] transition-colors rounded-full hover:bg-white">
+                {/* <button type="button" className="p-2 text-slate-500 hover:text-[#164e33] transition-colors rounded-full hover:bg-white">
                   <Camera className="w-5 h-5 stroke-[1.5]" />
                 </button> */}
               </div>
@@ -154,7 +154,7 @@ const Navbar = () => {
               {/* Search Button */}
               <button 
                 type="submit" 
-                className="h-full px-8 bg-[#007367] hover:bg-[#005e54] text-white font-semibold text-base transition-all flex items-center gap-2"
+                className="h-full px-8 bg-[#164e33] hover:bg-[#113f29] text-white font-semibold text-base transition-all flex items-center gap-2"
               >
                 <Search className="w-4 h-4" />
                 Search
@@ -178,10 +178,10 @@ const Navbar = () => {
                   />
                 </div>
                 <div className="flex items-center gap-1">
-                  <span className="text-base font-semibold text-[#05252e]">
+                  <span className="text-base font-semibold text-[#164e33]">
                     {user ? `Hi, ${user.name?.split(' ')[0]}` : 'Account'}
                   </span>
-                  <ChevronDown className={`w-3.5 h-3.5 text-slate-500 group-hover:text-[#007367] transition-transform ${isUserDropdownOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown className={`w-3.5 h-3.5 text-slate-500 group-hover:text-[#164e33] transition-transform ${isUserDropdownOpen ? 'rotate-180' : ''}`} />
                 </div>
               </button>
 
@@ -196,19 +196,19 @@ const Navbar = () => {
                       </div>
                       
                       <div className="p-2">
-                        <Link href="/profile" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-semibold text-slate-800 hover:bg-[#007367]/5 hover:text-[#007367] transition-all">
+                        <Link href="/profile" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-semibold text-slate-800 hover:bg-[#164e33]/5 hover:text-[#164e33] transition-all">
                           <UserCircle className="w-4 h-4" /> My Profile
                         </Link>
                         {user.role !== 'BUYER' && (
                           <Link 
                             href={user.role === 'SUPERADMIN' ? '/super-admin/dashboard' : user.role === 'ADMIN' ? '/admin/dashboard' : '/vendor/dashboard'}
-                            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-semibold text-slate-800 hover:bg-[#007367]/5 hover:text-[#007367] transition-all mt-1"
+                            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-semibold text-slate-800 hover:bg-[#164e33]/5 hover:text-[#164e33] transition-all mt-1"
                           >
                             <LayoutDashboard className="w-4 h-4" /> Dashboard
                           </Link>
                         )}
                         <div className="h-px bg-gray-50 my-2 mx-2"></div>
-                        <Link href="/post-requirement" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-semibold text-slate-800 hover:bg-[#007367]/5 hover:text-[#007367] transition-all">
+                        <Link href="/post-requirement" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-semibold text-slate-800 hover:bg-[#164e33]/5 hover:text-[#164e33] transition-all">
                           <MessageSquare className="w-4 h-4" /> Post a Requirement
                         </Link>
                         <div className="h-px bg-gray-50 my-2 mx-2"></div>
@@ -226,22 +226,22 @@ const Navbar = () => {
                         <p className="text-base text-slate-700 mb-3 font-medium">Access your account or grow your business</p>
                         <Link 
                           href="/login" 
-                          className="block w-full py-2.5 bg-[#007367] text-white rounded-xl font-semibold text-base hover:bg-[#005e54] shadow-md active:scale-95 transition-all mb-2"
+                          className="block w-full py-2.5 bg-[#164e33] text-white rounded-xl font-semibold text-base hover:bg-[#113f29] shadow-md active:scale-95 transition-all mb-2"
                         >
                           Sign In
                         </Link>
                         <Link 
                           href="/register" 
-                          className="block w-full py-2.5 border border-gray-200 text-[#05252e] rounded-xl font-semibold text-base hover:bg-gray-50 transition-all"
+                          className="block w-full py-2.5 border border-gray-200 text-[#164e33] rounded-xl font-semibold text-base hover:bg-gray-50 transition-all"
                         >
                           Join for Free
                         </Link>
                       </div>
                       <div className="p-2 text-center sm:text-left">
-                        <Link href="/post-requirement" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-semibold text-slate-800 hover:bg-[#007367]/5 hover:text-[#007367] transition-all">
+                        <Link href="/post-requirement" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-semibold text-slate-800 hover:bg-[#164e33]/5 hover:text-[#164e33] transition-all">
                           <MessageSquare className="w-4 h-4 text-blue-500" /> Post a Requirement
                         </Link>
-                        <Link href="/suppliers" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-semibold text-slate-800 hover:bg-[#007367]/5 hover:text-[#007367] transition-all">
+                        <Link href="/suppliers" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-semibold text-slate-800 hover:bg-[#164e33]/5 hover:text-[#164e33] transition-all">
                           <Search className="w-4 h-4 text-emerald-500" /> Find Suppliers
                         </Link>
 
@@ -259,7 +259,7 @@ const Navbar = () => {
 
           {/* Mobile Menu Toggle */}
           <button
-            className="lg:hidden text-[#05252e] p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="lg:hidden text-[#164e33] p-2 hover:bg-gray-100 rounded-lg transition-colors"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X size={28} /> : <Search size={28} />}
@@ -273,7 +273,7 @@ const Navbar = () => {
           <div className="flex items-center justify-between border-b pb-4 mb-6">
             <img src="/logo.png" alt="Logo" className="h-16 w-auto object-contain" />
             <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 hover:bg-gray-100 rounded-full">
-              <X size={28} className="text-[#05252e]" />
+              <X size={28} className="text-[#164e33]" />
             </button>
           </div>
 
@@ -287,7 +287,7 @@ const Navbar = () => {
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="Enter product / service to search"
-                      className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 focus:border-[#007367] rounded-lg outline-none text-base font-medium text-slate-800 transition-all placeholder:text-slate-500"
+                      className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 focus:border-[#164e33] rounded-lg outline-none text-base font-medium text-slate-800 transition-all placeholder:text-slate-500"
                     />
                 </div>
                 <div className="relative">
@@ -297,10 +297,10 @@ const Navbar = () => {
                       value={cityQuery}
                       onChange={(e) => setCityQuery(e.target.value)}
                       placeholder="Enter city"
-                      className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 focus:border-[#007367] rounded-lg outline-none text-base font-medium text-slate-800 transition-all placeholder:text-slate-500"
+                      className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 focus:border-[#164e33] rounded-lg outline-none text-base font-medium text-slate-800 transition-all placeholder:text-slate-500"
                     />
                 </div>
-                <button type="submit" className="w-full py-3.5 bg-[#007367] hover:bg-[#005e54] text-white rounded-lg font-semibold flex items-center justify-center gap-2 transition-colors shadow-md">
+                <button type="submit" className="w-full py-3.5 bg-[#164e33] hover:bg-[#113f29] text-white rounded-lg font-semibold flex items-center justify-center gap-2 transition-colors shadow-md">
                   <Search className="w-4 h-4" /> Search
                 </button>
              </form>
@@ -308,7 +308,7 @@ const Navbar = () => {
              {(!user || user.role !== 'BUYER') && (
                <Link
                   href="/post-requirement"
-                  className="block text-2xl font-semibold text-[#007367]  hover:text-slate-900 transition-colors"
+                  className="block text-2xl font-semibold text-[#164e33]  hover:text-slate-900 transition-colors"
                   onClick={() => setIsMobileMenuOpen(false)}
                >
                   Post a Requirement
@@ -316,7 +316,7 @@ const Navbar = () => {
              )}
              <Link
                href="/suppliers"
-               className="block text-2xl font-semibold text-[#007367]  hover:text-slate-900 transition-colors"
+               className="block text-2xl font-semibold text-[#164e33]  hover:text-slate-900 transition-colors"
                onClick={() => setIsMobileMenuOpen(false)}
              >
                Find Suppliers
@@ -342,7 +342,7 @@ const Navbar = () => {
                   </div>
                   <div>
                     <p className="text-base font-semibold text-slate-500 uppercase  leading-none mb-1">Welcome Back</p>
-                    <h3 className="text-2xl font-semibold text-[#05252e]">Hi, {user.name?.split(' ')[0]}</h3>
+                    <h3 className="text-2xl font-semibold text-[#164e33]">Hi, {user.name?.split(' ')[0]}</h3>
                   </div>
                 </div>
             )}
@@ -350,7 +350,7 @@ const Navbar = () => {
                <>
                   <Link 
                     href={user.role === 'SUPERADMIN' ? '/super-admin/dashboard' : user.role === 'ADMIN' ? '/admin/dashboard' : user.role === 'VENDOR' ? '/vendor/dashboard' : '/post-requirement'}
-                    className="bg-[#007367] text-white px-6 py-4 rounded-full font-semibold text-center flex items-center justify-center gap-2"
+                    className="bg-[#164e33] text-white px-6 py-4 rounded-full font-semibold text-center flex items-center justify-center gap-2"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     <LayoutDashboard className="w-5 h-5" />
@@ -367,14 +367,14 @@ const Navbar = () => {
                <>
                   <Link 
                     href="/register" 
-                    className="bg-[#007367] text-white px-6 py-4 rounded-full font-semibold tracking-wide text-center uppercase"
+                    className="bg-[#164e33] text-white px-6 py-4 rounded-full font-semibold tracking-wide text-center uppercase"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Join Network
                   </Link>
                   <Link 
                     href="/login" 
-                    className="text-center text-[#05252e] font-semibold py-2"
+                    className="text-center text-[#164e33] font-semibold py-2"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Sign In
@@ -389,3 +389,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

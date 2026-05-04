@@ -131,7 +131,7 @@ export default function AdminManagement() {
         <div>
            <h1 className="text-2xl font-semibold text-slate-900  flex items-center gap-3">
              Admin Management
-             <div className="p-1.5 bg-[#007367]/10 text-[#007367] rounded-none border border-[#007367]/10">
+             <div className="p-1.5 bg-[#164e33]/10 text-[#164e33] rounded-xl border border-[#164e33]/10">
                 <ShieldCheck className="w-5 h-5" />
              </div>
            </h1>
@@ -139,12 +139,12 @@ export default function AdminManagement() {
         </div>
 
         <div className="flex items-center gap-3">
-           <button onClick={fetchAdmins} className="p-2.5 bg-white border border-gray-200 rounded-none text-slate-500 hover:text-[#007367] hover:bg-[#007367]/5 transition-all shadow-sm">
+           <button onClick={fetchAdmins} className="p-2.5 bg-white border border-gray-200 rounded-xl text-slate-500 hover:text-[#164e33] hover:bg-[#164e33]/5 transition-all shadow-sm">
               <RefreshCcw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
            </button>
            <button 
              onClick={() => setIsModalOpen(true)}
-             className="px-6 py-2.5 bg-[#007367] text-white rounded-none font-semibold text-base tracking-wide hover:bg-[#005e54] transition-all shadow-md flex items-center gap-2"
+             className="px-6 py-2.5 bg-[#164e33] text-white rounded-xl font-semibold text-base tracking-wide hover:bg-[#113f29] transition-all shadow-md flex items-center gap-2"
            >
               <Plus className="w-4 h-4" /> Create New Admin
            </button>
@@ -154,15 +154,15 @@ export default function AdminManagement() {
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {loading ? (
              [1,2,3].map(i => (
-                <div key={i} className="animate-pulse bg-white border border-gray-200 rounded-none h-64 shadow-sm"></div>
+                <div key={i} className="animate-pulse bg-white border border-gray-200 rounded-xl h-64 shadow-sm"></div>
              ))
           ) : admins.length > 0 ? (
              admins.map(admin => (
-                  <div key={admin.id} className="bg-white border border-gray-100 rounded-none p-8 shadow-sm hover:border-[#007367]/20 transition-all group relative flex flex-col h-full">
+                  <div key={admin.id} className="bg-white border border-gray-100 rounded-xl p-8 shadow-sm hover:border-[#164e33]/20 transition-all group relative flex flex-col h-full">
                      <div className="absolute top-6 right-6 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all">
                         <button 
                            onClick={() => handleEdit(admin)}
-                           className="p-2 text-slate-500 hover:text-[#007367] hover:bg-[#007367]/5 rounded-none transition-all"
+                           className="p-2 text-slate-500 hover:text-[#164e33] hover:bg-[#164e33]/5 rounded-xl transition-all"
                            title="Edit Admin"
                         >
                            <UserCircle className="w-5 h-5" />
@@ -176,7 +176,7 @@ export default function AdminManagement() {
                         </button>
                      </div>
                      <div className="flex items-center gap-4 mb-6">
-                       <div className="w-14 h-14 bg-[#007367]/10 text-[#007367] rounded-none flex items-center justify-center font-semibold text-xl border border-[#007367]/10">
+                       <div className="w-14 h-14 bg-[#164e33]/10 text-[#164e33] rounded-xl flex items-center justify-center font-semibold text-xl border border-[#164e33]/10">
                           {admin.name.charAt(0)}
                        </div>
                         <div>
@@ -202,7 +202,7 @@ export default function AdminManagement() {
                           <div className="flex flex-wrap gap-2">
                              {admin.permissions && admin.permissions.length > 0 ? (
                                admin.permissions.map((p: string) => (
-                                 <span key={p} className="px-2.5 py-1 bg-[#007367]/5 text-[#007367] text-base font-semibold rounded-none border border-[#007367]/10 uppercase ">
+                                 <span key={p} className="px-2.5 py-1 bg-[#164e33]/5 text-[#164e33] text-base font-semibold rounded-xl border border-[#164e33]/10 uppercase ">
                                    {p.replace('_', ' ')}
                                  </span>
                                ))
@@ -212,7 +212,7 @@ export default function AdminManagement() {
                           </div>
                        </div>
 
-                       <div className="p-4 bg-gray-50/50 rounded-none border border-gray-100">
+                       <div className="p-4 bg-gray-50/50 rounded-xl border border-gray-100">
                            <div className="flex items-center gap-3 text-base font-medium text-slate-800">
                              <Mail className="w-4 h-4 text-slate-500" />
                              <span className="truncate">{admin.email}</span>
@@ -222,7 +222,7 @@ export default function AdminManagement() {
                   </div>
              ))
           ) : (
-             <div className="col-span-full py-24 text-center border-2 border-dashed border-gray-200 rounded-none bg-gray-50/50">
+             <div className="col-span-full py-24 text-center border-2 border-dashed border-gray-200 rounded-xl bg-gray-50/50">
                  <Users className="w-12 h-12 text-gray-300 mx-auto mb-4" />
                  <h3 className="text-lg font-semibold text-slate-900">No admins found</h3>
                  <p className="text-base font-medium text-slate-700 mt-1">Create your first administrative user to help manage the platform.</p>
@@ -243,7 +243,7 @@ export default function AdminManagement() {
                initial={{ scale: 0.95, opacity: 0 }}
                animate={{ scale: 1, opacity: 1 }}
                exit={{ scale: 0.95, opacity: 0 }}
-               className="bg-white rounded-none shadow-2xl w-full max-w-lg overflow-hidden border border-gray-100"
+               className="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden border border-gray-100"
              >
                <div className="px-8 py-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
                   <h2 className="text-lg font-semibold text-slate-900">{editingId ? 'Edit Admin Account' : 'Register New Admin'}</h2>
@@ -269,7 +269,7 @@ export default function AdminManagement() {
                             type="text"
                             value={formData.name}
                             onChange={(e) => setFormData({...formData, name: e.target.value})}
-                            className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-none outline-none focus:bg-white focus:border-[#007367] text-base font-medium transition-all disabled:opacity-50"
+                            className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:bg-white focus:border-[#164e33] text-base font-medium transition-all disabled:opacity-50"
                             placeholder="e.g. Rahul Singh"
                           />
                         </div>
@@ -281,7 +281,7 @@ export default function AdminManagement() {
                             type="email"
                             value={formData.email}
                             onChange={(e) => setFormData({...formData, email: e.target.value})}
-                            className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-none outline-none focus:bg-white focus:border-[#007367] text-base font-medium transition-all disabled:opacity-50"
+                            className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:bg-white focus:border-[#164e33] text-base font-medium transition-all disabled:opacity-50"
                             placeholder="admin@company.com"
                           />
                         </div>
@@ -296,7 +296,7 @@ export default function AdminManagement() {
                               type="password"
                               value={formData.password}
                               onChange={(e) => setFormData({...formData, password: e.target.value})}
-                              className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-none outline-none focus:bg-white focus:border-[#007367] text-base font-medium transition-all"
+                              className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:bg-white focus:border-[#164e33] text-base font-medium transition-all"
                               placeholder="Min. 6 chars"
                             />
                           </div>
@@ -308,7 +308,7 @@ export default function AdminManagement() {
                               required
                               value={formData.department}
                               onChange={(e) => setFormData({...formData, department: e.target.value})}
-                              className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-none outline-none focus:bg-white focus:border-[#007367] text-base font-medium transition-all appearance-none cursor-pointer pr-10"
+                              className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:bg-white focus:border-[#164e33] text-base font-medium transition-all appearance-none cursor-pointer pr-10"
                             >
                                <option value="GENERAL">General Administration</option>
                                <option value="DATA_ENTRY">Operations Control</option>
@@ -326,15 +326,15 @@ export default function AdminManagement() {
                            {availablePermissions.map(perm => (
                              <label
                                 key={perm.id}
-                                className={`flex items-center gap-3 p-4 rounded-xl border cursor-pointer transition-all ${formData.permissions.includes(perm.id) ? 'bg-[#007367]/5 border-[#007367]/20 ring-1 ring-[#007367]/10' : 'bg-gray-50 border-gray-100 hover:bg-gray-100'}`}
+                                className={`flex items-center gap-3 p-4 rounded-xl border cursor-pointer transition-all ${formData.permissions.includes(perm.id) ? 'bg-[#164e33]/5 border-[#164e33]/20 ring-1 ring-[#164e33]/10' : 'bg-gray-50 border-gray-100 hover:bg-gray-100'}`}
                              >
                                 <input 
                                    type="checkbox"
                                    checked={formData.permissions.includes(perm.id)}
                                    onChange={() => handlePermissionChange(perm.id)}
-                                   className="w-4 h-4 rounded-md text-[#007367] border-gray-300 focus:ring-[#007367]"
+                                   className="w-4 h-4 rounded-md text-[#164e33] border-gray-300 focus:ring-[#164e33]"
                                 />
-                                <span className={`text-base font-semibold ${formData.permissions.includes(perm.id) ? 'text-[#007367]' : 'text-slate-800'}`}>{perm.label}</span>
+                                <span className={`text-base font-semibold ${formData.permissions.includes(perm.id) ? 'text-[#164e33]' : 'text-slate-800'}`}>{perm.label}</span>
                              </label>
                            ))}
                         </div>
@@ -352,7 +352,7 @@ export default function AdminManagement() {
                      <button 
                        type="submit" 
                        disabled={submitting}
-                       className="px-8 py-2.5 bg-[#007367] hover:bg-[#005e54] text-white font-semibold text-base rounded-none shadow-lg shadow-[#007367]/10 transition-all disabled:opacity-50 active:scale-95 flex items-center gap-2"
+                       className="px-8 py-2.5 bg-[#164e33] hover:bg-[#113f29] text-white font-semibold text-base rounded-xl shadow-lg shadow-[#164e33]/10 transition-all disabled:opacity-50 active:scale-95 flex items-center gap-2"
                      >
                        {submitting ? <RefreshCcw className="w-4 h-4 animate-spin" /> : editingId ? 'Update Admin' : 'Authorize Admin'}
                      </button>
@@ -365,5 +365,6 @@ export default function AdminManagement() {
     </div>
   );
 }
+
 
 

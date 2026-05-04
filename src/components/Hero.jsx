@@ -79,7 +79,7 @@ const Hero = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 w-full relative z-20">
         <div className="max-w-2xl w-full">
           {/* Headline */}
-          <h2 className="text-[35px] md:text-[56px] lg:text-[60px] leading-[1.1] mt-10 md:mt-0 font-semibold text-[#05252e] mb-10 ">
+          <h2 className="text-[35px] md:text-[56px] lg:text-[60px] leading-[1.1] mt-10 md:mt-0 font-semibold text-[#164e33] mb-10 ">
             Find trusted partners to grow your business.
           </h2>
 
@@ -87,7 +87,7 @@ const Hero = () => {
           <div className="relative inline-flex items-center bg-gray-100/80 backdrop-blur-sm p-1.5 rounded-full mb-10 w-fit">
             {/* Sliding Background */}
             <div
-              className={`absolute top-1.5 bottom-1.5 rounded-full bg-[#05252e] transition-all duration-300 ease-out shadow-sm ${
+              className={`absolute top-1.5 bottom-1.5 rounded-full bg-[#164e33] transition-all duration-300 ease-out shadow-sm ${
                 activeTab === "match" ? "left-1.5 w-[150px]" : "left-[156px] w-[165px]"
               }`}
             />
@@ -127,7 +127,7 @@ const Hero = () => {
                   transition={{ duration: 0.2, ease: "easeOut" }}
                   className="hero-search-container flex flex-col md:flex-row gap-4 mb-3"
                 >
-                  <div className="relative flex-[1.5] flex items-center px-8 bg-white border border-gray-200 rounded-2xl outline-none shadow-sm focus-within:border-[#007367]/60 focus-within:ring-4 focus-within:ring-[#007367]/5 transition-all duration-300">
+                  <div className="relative flex-[1.5] flex items-center px-8 bg-white border border-gray-200 rounded-2xl outline-none shadow-sm focus-within:border-[#164e33]/60 focus-within:ring-4 focus-within:ring-[#164e33]/5 transition-all duration-300">
                     <Search className="w-5 h-5 text-slate-500 mr-3 shrink-0" />
                     <input
                       type="text"
@@ -135,10 +135,10 @@ const Hero = () => {
                       onChange={(e) => setSearchQuery(e.target.value)}
                       onKeyDown={handleKeyDown}
                       placeholder="What product or service do you need?"
-                      className="w-full h-[62px] bg-transparent outline-none text-lg font-medium text-[#05252e] placeholder:text-slate-500"
+                      className="w-full h-[62px] bg-transparent outline-none text-lg font-medium text-[#164e33] placeholder:text-slate-500"
                     />
                   </div>
-                  <div className="relative flex-1 flex items-center px-8 bg-white border border-gray-200 rounded-2xl outline-none shadow-sm focus-within:border-[#007367]/60 focus-within:ring-4 focus-within:ring-[#007367]/5 transition-all duration-300">
+                  <div className="relative flex-1 flex items-center px-8 bg-white border border-gray-200 rounded-2xl outline-none shadow-sm focus-within:border-[#164e33]/60 focus-within:ring-4 focus-within:ring-[#164e33]/5 transition-all duration-300">
                     <MapPin className="w-5 h-5 text-slate-500 mr-3 shrink-0" />
                     <input
                       type="text"
@@ -146,12 +146,12 @@ const Hero = () => {
                       onChange={(e) => setLocationQuery(e.target.value)}
                       onKeyDown={handleKeyDown}
                       placeholder="Your City..."
-                      className="w-full h-[62px] bg-transparent outline-none text-lg font-medium text-[#05252e] placeholder:text-slate-500"
+                      className="w-full h-[62px] bg-transparent outline-none text-lg font-medium text-[#164e33] placeholder:text-slate-500"
                     />
                   </div>
                   <button 
                     onClick={handleSearch}
-                    className="hero-btn-match h-[62px] bg-[#007367] hover:bg-[#005e54] text-white px-10 rounded-2xl font-semibold text-base uppercase  whitespace-nowrap shadow-lg hover:shadow-[#007367]/10 active:scale-95 transition-all duration-300"
+                    className="hero-btn-match h-[62px] bg-[#164e33] hover:bg-[#113f29] text-white px-10 rounded-2xl font-semibold text-base uppercase  whitespace-nowrap shadow-lg hover:shadow-[#164e33]/10 active:scale-95 transition-all duration-300"
                   >
                     Get Matched
                   </button>
@@ -166,7 +166,7 @@ const Hero = () => {
                   className="relative mb-3"
                 >
                   <div className="hero-browse-container flex flex-col md:flex-row items-stretch gap-3 relative z-20">
-                      <div className="relative flex-[1.5] flex items-center px-5 py-4 md:py-0 bg-white rounded-2xl border border-gray-200 shadow-sm focus-within:border-[#007367]/60 focus-within:ring-4 focus-within:ring-[#007367]/5 transition-all duration-300">
+                      <div className="relative flex-[1.5] flex items-center px-5 py-4 md:py-0 bg-white rounded-2xl border border-gray-200 shadow-sm focus-within:border-[#164e33]/60 focus-within:ring-4 focus-within:ring-[#164e33]/5 transition-all duration-300">
                         <Search className="w-5 h-5 text-slate-500 mr-3 shrink-0" />
                         <input
                           type="text"
@@ -174,10 +174,10 @@ const Hero = () => {
                           onChange={(e) => setSearchQuery(e.target.value)}
                           onKeyDown={handleKeyDown}
                           placeholder="Search for products, services, or companies..."
-                          className="w-full h-[58px] bg-transparent outline-none text-base font-medium text-[#05252e] placeholder:text-slate-500"
+                          className="w-full h-[58px] bg-transparent outline-none text-base font-medium text-[#164e33] placeholder:text-slate-500"
                         />
                       </div>
-                      <div className="relative flex-1 flex items-center px-5 py-4 md:py-0 bg-white rounded-2xl border border-gray-200 shadow-sm focus-within:border-[#007367]/60 focus-within:ring-4 focus-within:ring-[#007367]/5 transition-all duration-300">
+                      <div className="relative flex-1 flex items-center px-5 py-4 md:py-0 bg-white rounded-2xl border border-gray-200 shadow-sm focus-within:border-[#164e33]/60 focus-within:ring-4 focus-within:ring-[#164e33]/5 transition-all duration-300">
                         <MapPin className="w-5 h-5 text-slate-500 mr-3 shrink-0" />
                         <input
                           type="text"
@@ -185,12 +185,12 @@ const Hero = () => {
                           onChange={(e) => setLocationQuery(e.target.value)}
                           onKeyDown={handleKeyDown}
                           placeholder="Location..."
-                          className="w-full h-[58px] bg-transparent outline-none text-base font-medium text-[#05252e] placeholder:text-slate-500"
+                          className="w-full h-[58px] bg-transparent outline-none text-base font-medium text-[#164e33] placeholder:text-slate-500"
                         />
                       </div>
                       <button 
                         onClick={handleSearch}
-                        className="bg-[#007367] hover:bg-[#005e54] transition-all duration-300 text-white px-9 py-3.5 rounded-2xl font-semibold text-base uppercase  whitespace-nowrap shadow-lg hover:shadow-[#007367]/10 active:scale-95 flex items-center justify-center"
+                        className="bg-[#164e33] hover:bg-[#113f29] transition-all duration-300 text-white px-9 py-3.5 rounded-2xl font-semibold text-base uppercase  whitespace-nowrap shadow-lg hover:shadow-[#164e33]/10 active:scale-95 flex items-center justify-center"
                       >
                         Search
                       </button>
@@ -219,7 +219,7 @@ const Hero = () => {
                              <div className="p-2 max-h-[400px] overflow-y-auto w-full">
                                  {isSearching ? (
                                     <div className="py-12 flex justify-center w-full">
-                                        <div className="w-8 h-8 border-4 border-[#007367]/20 border-t-[#007367] rounded-full animate-spin"></div>
+                                        <div className="w-8 h-8 border-4 border-[#164e33]/20 border-t-[#164e33] rounded-full animate-spin"></div>
                                     </div>
                                  ) : searchResults.length > 0 ? (
                                      <div className="space-y-1 w-full">
@@ -238,8 +238,8 @@ const Hero = () => {
                                                 </div>
                                                 <div className="flex-1 min-w-0">
                                                     <div className="flex items-center gap-2 mb-1">
-                                                        <h5 className="font-semibold text-slate-900 truncate group-hover:text-[#007367] transition-colors">{vendor.businessName}</h5>
-                                                        {vendor.verified && <ShieldCheck className="w-3.5 h-3.5 text-[#007367]" />}
+                                                        <h5 className="font-semibold text-slate-900 truncate group-hover:text-[#164e33] transition-colors">{vendor.businessName}</h5>
+                                                        {vendor.verified && <ShieldCheck className="w-3.5 h-3.5 text-[#164e33]" />}
                                                     </div>
                                                     <div className="flex items-center gap-3 text-base text-slate-700 font-medium">
                                                         <span className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5" /> {vendor.city}</span>
@@ -247,7 +247,7 @@ const Hero = () => {
                                                         <span className="truncate">{vendor.category?.name || 'Business'}</span>
                                                     </div>
                                                 </div>
-                                                <ArrowRight className="w-5 h-5 text-gray-300 group-hover:text-[#007367] transform group-hover:translate-x-1 transition-all ml-4 shrink-0" />
+                                                <ArrowRight className="w-5 h-5 text-gray-300 group-hover:text-[#164e33] transform group-hover:translate-x-1 transition-all ml-4 shrink-0" />
                                              </Link>
                                          ))}
                                      </div>
@@ -265,7 +265,7 @@ const Hero = () => {
                                  <Link 
                                     href={`/search?q=${encodeURIComponent(searchQuery)}&city=${encodeURIComponent(locationQuery)}`}
                                     onClick={() => setShowDropdown(false)}
-                                    className="w-full py-4 bg-gray-50 hover:bg-gray-100 text-[#007367] font-semibold text-base text-center transition-colors border-t border-gray-100 block"
+                                    className="w-full py-4 bg-gray-50 hover:bg-gray-100 text-[#164e33] font-semibold text-base text-center transition-colors border-t border-gray-100 block"
                                  >
                                      See all matching results
                                  </Link>
@@ -306,9 +306,9 @@ const Hero = () => {
                         }
                     }, 0);
                   }}
-                  className="group flex items-center px-4 py-2.5 bg-white hover:bg-white border border-gray-200 hover:border-[#007367] hover:shadow-xl hover:shadow-[#007367]/5 hover:-translate-y-0.5 rounded-xl text-base font-semibold text-slate-800 hover:text-[#007367] transition-all duration-300 cursor-pointer"
+                  className="group flex items-center px-4 py-2.5 bg-white hover:bg-white border border-gray-200 hover:border-[#164e33] hover:shadow-xl hover:shadow-[#164e33]/5 hover:-translate-y-0.5 rounded-xl text-base font-semibold text-slate-800 hover:text-[#164e33] transition-all duration-300 cursor-pointer"
                 >
-                  <Search className="w-3.5 h-3.5 mr-2.5 text-gray-300 group-hover:text-[#007367] transition-colors" />
+                  <Search className="w-3.5 h-3.5 mr-2.5 text-gray-300 group-hover:text-[#164e33] transition-colors" />
                   {tag}
                 </button>
               ))}
@@ -321,3 +321,4 @@ const Hero = () => {
 };
 
 export default Hero;
+

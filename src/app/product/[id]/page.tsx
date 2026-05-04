@@ -251,14 +251,14 @@ export default function ProductDetailPage() {
 
   if (loading) return (
     <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center pt-24">
-      <div className="w-12 h-12 border-4 border-[#007367]/20 border-t-[#007367] rounded-full animate-spin" />
+      <div className="w-12 h-12 border-4 border-[#164e33]/20 border-t-[#164e33] rounded-full animate-spin" />
     </div>
   );
 
   if (!product) return (
     <div className="min-h-screen bg-[#f8fafc] flex flex-col items-center justify-center gap-4 pt-24">
       <h2 className="text-2xl font-semibold text-gray-800">Product not found</h2>
-      <button onClick={() => router.back()} className="flex items-center gap-2 text-[#007367] font-medium hover:underline">
+      <button onClick={() => router.back()} className="flex items-center gap-2 text-[#164e33] font-medium hover:underline">
         <ArrowLeft className="w-4 h-4" /> Go Back
       </button>
     </div>
@@ -331,7 +331,7 @@ export default function ProductDetailPage() {
                   </div>
                   {vendor.phone && vendor.phone !== '**********' && (
                     <div className="flex items-center gap-2 text-sm font-bold text-gray-900">
-                      <Phone className="w-3.5 h-3.5 text-[#007367]" /> {vendor.phone}
+                      <Phone className="w-3.5 h-3.5 text-[#164e33]" /> {vendor.phone}
                     </div>
                   )}
                   <div className="flex items-center gap-2 text-xs text-gray-500">
@@ -389,7 +389,7 @@ export default function ProductDetailPage() {
                       value={enquiryCity}
                       onChange={(e) => setEnquiryCity(e.target.value)}
                       placeholder="City or Pincode*"
-                      className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm font-medium text-gray-900 outline-none focus:border-[#007367] focus:ring-2 focus:ring-[#007367]/10 transition-all"
+                      className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm font-medium text-gray-900 outline-none focus:border-[#164e33] focus:ring-2 focus:ring-[#164e33]/10 transition-all"
                     />
                     <div className="flex items-center justify-between mt-1.5 text-xs">
                       <span className="text-gray-400">
@@ -423,7 +423,7 @@ export default function ProductDetailPage() {
                       onChange={(e) => setEnquiryQty(e.target.value)}
                       placeholder="e.g. 100 pieces"
                       min="1"
-                      className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm font-medium text-gray-900 outline-none focus:border-[#007367] transition-all"
+                      className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm font-medium text-gray-900 outline-none focus:border-[#164e33] transition-all"
                     />
                   </div>
                   <div>
@@ -433,13 +433,13 @@ export default function ProductDetailPage() {
                       onChange={(e) => setEnquiryMsg(e.target.value)}
                       rows={3}
                       placeholder="Describe your requirements..."
-                      className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm font-medium text-gray-900 outline-none focus:border-[#007367] transition-all resize-none"
+                      className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm font-medium text-gray-900 outline-none focus:border-[#164e33] transition-all resize-none"
                     />
                   </div>
                   <button
                     type="submit"
                     disabled={enquirySending || !enquiryCity}
-                    className="w-full py-3.5 bg-[#007367] hover:bg-[#005e54] disabled:opacity-60 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-colors shadow-md"
+                    className="w-full py-3.5 bg-[#164e33] hover:bg-[#113f29] disabled:opacity-60 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-colors shadow-md"
                   >
                     {enquirySending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
                     {enquirySending ? 'Sending...' : 'Submit'}
@@ -542,7 +542,7 @@ export default function ProductDetailPage() {
                     </label>
                     <div className="relative group">
                       <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-2 border-r border-gray-200 pr-3">
-                        <img src="https://flagcdn.com/w20/in.png" alt="India" className="w-5 h-auto rounded-sm" />
+                        <img src="https://flagcdn.com/w20/in.png" alt="India" className="w-5 h-auto rounded-lg" />
                         <span className="text-sm font-bold text-gray-500">+91</span>
                       </div>
                       <input
@@ -552,7 +552,7 @@ export default function ProductDetailPage() {
                         value={callPhone}
                         onChange={(e) => setCallPhone(e.target.value.replace(/[^0-9]/g, '').slice(0, 10))}
                         placeholder="10 digit mobile number"
-                        className="w-full border border-gray-300 rounded-xl pl-24 pr-4 py-4 text-lg font-bold text-gray-900 outline-none focus:border-[#007367] focus:ring-4 focus:ring-[#007367]/10 transition-all"
+                        className="w-full border border-gray-300 rounded-xl pl-24 pr-4 py-4 text-lg font-bold text-gray-900 outline-none focus:border-[#164e33] focus:ring-4 focus:ring-[#164e33]/10 transition-all"
                       />
                     </div>
                     <p className="text-[10px] text-gray-400 font-medium">Supplier will call you back on this number if busy.</p>

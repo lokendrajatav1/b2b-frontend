@@ -63,13 +63,13 @@ export default function AdminRefunds() {
            <p className="text-slate-700 font-medium mt-1 text-base">Review, approve, or reject vendor refund requests globally.</p>
         </div>
 
-        <button onClick={fetchRefunds} className="p-2.5 bg-white border border-gray-200 rounded-none text-slate-500 hover:text-[#007367] hover:bg-[#007367]/5 transition-all shadow-sm">
+        <button onClick={fetchRefunds} className="p-2.5 bg-white border border-gray-200 rounded-xl text-slate-500 hover:text-[#164e33] hover:bg-[#164e33]/5 transition-all shadow-sm">
            <RefreshCcw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
         </button>
       </div>
 
       <div className="max-w-7xl mx-auto">
-         <div className="bg-white rounded-none border border-gray-200 shadow-sm relative w-full">
+         <div className="bg-white rounded-xl border border-gray-200 shadow-sm relative w-full">
             <div className="overflow-x-auto w-full no-scrollbar">
                <table className="w-full text-left whitespace-nowrap min-w-[800px]">
                <thead>
@@ -102,7 +102,7 @@ export default function AdminRefunds() {
                                </span>
                              </div>
                            </td>
-                           <td className="px-6 py-4 text-base font-semibold text-[#007367]">
+                           <td className="px-6 py-4 text-base font-semibold text-[#164e33]">
                              {refund.transactionId}
                            </td>
                            <td className="px-6 py-4">
@@ -133,7 +133,7 @@ export default function AdminRefunds() {
                                         <button 
                                           title="Approve Refund"
                                           onClick={() => handleUpdateStatus(refund.id, 'APPROVED')}
-                                          className="p-1.5 bg-emerald-50 text-emerald-600 hover:bg-emerald-500 hover:text-white rounded-none border border-emerald-100 transition-colors"
+                                          className="p-1.5 bg-emerald-50 text-emerald-600 hover:bg-emerald-500 hover:text-white rounded-xl border border-emerald-100 transition-colors"
                                         >
                                            <CheckCircle2 className="w-4 h-4" />
                                         </button>
@@ -166,5 +166,6 @@ export default function AdminRefunds() {
     </div>
   );
 }
+
 
 

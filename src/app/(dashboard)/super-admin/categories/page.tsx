@@ -84,7 +84,7 @@ export default function AdminCategories() {
         <div>
           <h1 className="text-2xl font-semibold text-slate-900  flex items-center gap-3">
             Marketplace Categories
-            <div className="p-1.5 bg-[#007367]/5 text-[#007367] rounded-none border border-[#007367]/10">
+            <div className="p-1.5 bg-[#164e33]/5 text-[#164e33] rounded-xl border border-[#164e33]/10">
               <Layers className="w-5 h-5" />
             </div>
           </h1>
@@ -100,13 +100,13 @@ export default function AdminCategories() {
                 placeholder="Search categories..." 
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3.5 bg-white border border-gray-200 rounded-none text-base font-semibold outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-50 transition-all shadow-sm"
+                className="w-full pl-10 pr-4 py-3.5 bg-white border border-gray-200 rounded-xl text-base font-semibold outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-50 transition-all shadow-sm"
               />
            </div>
 
            <button 
               onClick={() => setIsAddModalOpen(true)}
-              className="px-6 py-3.5 bg-[#007367] hover:bg-[#005e54] text-white rounded-none font-semibold flex items-center gap-2 shadow-lg shadow-blue-50 transition-all active:scale-95 whitespace-nowrap"
+              className="px-6 py-3.5 bg-[#164e33] hover:bg-[#113f29] text-white rounded-xl font-semibold flex items-center gap-2 shadow-lg shadow-blue-50 transition-all active:scale-95 whitespace-nowrap"
            >
              <Plus className="w-5 h-5" />
              Add New Category
@@ -128,9 +128,9 @@ export default function AdminCategories() {
                 initial={{ scale: 0.95, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.95, opacity: 0 }}
-                className="relative bg-white rounded-none p-8 max-w-sm w-full shadow-2xl border border-gray-100"
+                className="relative bg-white rounded-xl p-8 max-w-sm w-full shadow-2xl border border-gray-100"
               >
-                <div className="w-12 h-12 bg-[#007367]/5 text-[#007367] rounded-xl flex items-center justify-center mb-5">
+                <div className="w-12 h-12 bg-[#164e33]/5 text-[#164e33] rounded-xl flex items-center justify-center mb-5">
                   <Plus className="w-6 h-6" />
                 </div>
                 <h3 className="text-xl font-semibold text-slate-900 mb-6">Create New Category</h3>
@@ -144,7 +144,7 @@ export default function AdminCategories() {
                       required
                       autoFocus
                       onChange={(e) => setNewCatName(e.target.value)}
-                      className="w-full px-5 py-3.5 bg-gray-50 border border-transparent rounded-none text-base font-semibold focus:bg-white focus:border-blue-200 transition-all outline-none"
+                      className="w-full px-5 py-3.5 bg-gray-50 border border-transparent rounded-xl text-base font-semibold focus:bg-white focus:border-blue-200 transition-all outline-none"
                     />
                     
                     <div className="flex gap-3 pt-4">
@@ -158,7 +158,7 @@ export default function AdminCategories() {
                       <button 
                         type="submit"
                         disabled={adding || !newCatName.trim()}
-                        className="flex-1 py-3.5 bg-[#007367] hover:bg-[#005e54] text-white rounded-none font-semibold shadow-lg shadow-blue-50 transition-all disabled:opacity-50"
+                        className="flex-1 py-3.5 bg-[#164e33] hover:bg-[#113f29] text-white rounded-xl font-semibold shadow-lg shadow-blue-50 transition-all disabled:opacity-50"
                       >
                         {adding ? "Creating..." : "Create"}
                       </button>
@@ -186,7 +186,7 @@ export default function AdminCategories() {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {loading ? (
-            [1,2,3,4,5,6].map(i => <div key={i} className="h-24 bg-gray-50 border border-gray-100 rounded-none animate-pulse"></div>)
+            [1,2,3,4,5,6].map(i => <div key={i} className="h-24 bg-gray-50 border border-gray-100 rounded-xl animate-pulse"></div>)
           ) : categories.filter(c => c.name.toLowerCase().includes(searchTerm.toLowerCase())).length > 0 ? (
             categories
               .filter(c => c.name.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -196,7 +196,7 @@ export default function AdminCategories() {
                 layout
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="group bg-white p-5 rounded-none border border-gray-200 hover:border-blue-200 hover:shadow-md transition-all flex items-center justify-between"
+                className="group bg-white p-5 rounded-xl border border-gray-200 hover:border-blue-200 hover:shadow-md transition-all flex items-center justify-between"
               >
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-linear-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg">
@@ -222,7 +222,7 @@ export default function AdminCategories() {
                </motion.div>
              ))
            ) : (
-             <div className="col-span-full py-20 text-center border-2 border-dashed border-gray-100 rounded-none bg-gray-50/50">
+             <div className="col-span-full py-20 text-center border-2 border-dashed border-gray-100 rounded-xl bg-gray-50/50">
                 <LayoutGrid className="w-12 h-12 text-gray-300 mx-auto mb-4" />
                 <p className="text-base font-semibold text-slate-500 uppercase ">No categories defined yet</p>
              </div>
@@ -246,7 +246,7 @@ export default function AdminCategories() {
                initial={{ scale: 0.95, opacity: 0 }}
                animate={{ scale: 1, opacity: 1 }}
                exit={{ scale: 0.95, opacity: 0 }}
-               className="relative bg-white rounded-none p-8 max-w-sm w-full shadow-2xl border border-gray-100"
+               className="relative bg-white rounded-xl p-8 max-w-sm w-full shadow-2xl border border-gray-100"
              >
                <div className="w-16 h-16 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center mb-6 border border-red-100">
                  <AlertCircle className="w-8 h-8" />
@@ -271,7 +271,7 @@ export default function AdminCategories() {
                      setIsDeleteConfirmOpen(false);
                      setSelectedCatId(null);
                    }}
-                   className="w-full py-4 bg-white border border-gray-200 text-slate-800 rounded-none font-semibold hover:bg-gray-50 transition-all"
+                   className="w-full py-4 bg-white border border-gray-200 text-slate-800 rounded-xl font-semibold hover:bg-gray-50 transition-all"
                  >
                    Cancel
                  </button>
@@ -283,5 +283,6 @@ export default function AdminCategories() {
     </div>
   );
 }
+
 
 

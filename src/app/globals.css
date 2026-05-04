@@ -3,8 +3,8 @@
 :root {
   --background: #f8f9fa;
   --foreground: #1e293b;
-  --primary: #007367;
-  --secondary: #e88c30;
+  --primary: #164e33;
+  --secondary: #f58220;
   --border-light: #f1f5f9;
 }
 
@@ -86,3 +86,5 @@ body {
 * {
   transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
+
+

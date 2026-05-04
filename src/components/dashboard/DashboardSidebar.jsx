@@ -93,13 +93,6 @@ export default function DashboardSidebar({ isCollapsed, onToggle, mobileOpen, se
       { label: 'Users', icon: Users, href: '/admin/users' },
       { label: 'Categories', icon: Layers, href: '/admin/categories' },
       { label: 'Leads', icon: Target, href: '/admin/leads' },
-    ]},
-    { section: 'Business', items: [
-      { label: 'Admins', icon: Users, href: '/super-admin/subadmins' },
-      { label: 'Packages', icon: Package, href: '/super-admin/packages' },
-      { label: 'Ledger', icon: CreditCard, href: '/super-admin/transactions' },
-      { label: 'Refunds', icon: Briefcase, href: '/super-admin/refunds' },
-      { label: 'Settings', icon: Settings, href: '/super-admin/settings' },
     ]}
   ];
 
@@ -109,24 +102,38 @@ export default function DashboardSidebar({ isCollapsed, onToggle, mobileOpen, se
     <>
 
       {/* Main Sidebar */}
-      <aside className={`fixed left-0 top-0 h-screen bg-[#f8f9fa] border-r border-gray-100 flex flex-col transition-all duration-300 z-40 ${mobileOpen ? 'translate-x-0 w-64 shadow-2xl' : '-translate-x-full lg:translate-x-0'} ${isCollapsed ? 'lg:w-20' : 'lg:w-64'}`}>
-        {/* Brand Header */}
-        <div className={`py-4 px-4 border-b border-gray-100 flex items-center justify-center ${isCollapsed ? 'h-16' : 'h-[72px]'}`}>
-           {!isCollapsed ? (
-             <Link href="/" className="flex items-center justify-center">
-                <img src="/logo.png" alt="India B2B" className="h-10 w-auto object-contain" />
-             </Link>
-           ) : (
-              <img src="/logo.png" alt="Logo" className="w-8 h-8 object-contain" />
-           )}
+      <aside className={`fixed left-0 top-0 h-screen bg-[#164e33] border-r border-[#164e33] flex flex-col transition-all duration-300 z-40 ${mobileOpen ? 'translate-x-0 w-64 shadow-2xl' : '-translate-x-full lg:translate-x-0'} ${isCollapsed ? 'lg:w-[72px]' : 'lg:w-64'}`}>
+        {/* Brand Header & Toggle */}
+        <div className={`relative flex items-center justify-between border-b border-[#ffffff]/10 ${isCollapsed ? 'h-20 flex-col py-4' : 'h-[80px] px-4'}`}>
+           <Link href="/" className={`flex items-center gap-3 group ${isCollapsed ? 'justify-center' : ''}`} title="Dashboard">
+              {isCollapsed ? (
+                <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center text-white font-bold text-sm">
+                  {userRole === 'SUPERADMIN' ? 'SA' : (userRole === 'ADMIN' ? 'AD' : 'VP')}
+                </div>
+              ) : (
+                <span className="text-white font-bold text-lg tracking-widest uppercase truncate">
+                   {userRole === 'SUPERADMIN' ? 'SUPERADMIN' : (userRole === 'ADMIN' ? 'ADMIN PANEL' : 'VENDOR PANEL')}
+                </span>
+              )}
+           </Link>
+
+           {/* Desktop Toggle Button - Inside Sidebar */}
+           <button
+             onClick={onToggle}
+             className={`hidden lg:flex items-center justify-center p-1.5 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-all border border-white/10 ${isCollapsed ? 'mt-2' : ''}`}
+             title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+           >
+             {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <Menu className="w-5 h-5" />}
+           </button>
         </div>
 
+
         {/* Navigation Core */}
-        <nav className="flex-1 px-4 py-4 overflow-y-auto space-y-8 custom-scrollbar">
+        <nav className="flex-1 px-3 py-2 overflow-y-auto space-y-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
            {currentNav.map((section) => (
-             <div key={section.section} className="space-y-1.5">
+             <div key={section.section} className={`${isCollapsed ? 'space-y-3 pt-4' : 'space-y-1 pt-2'}`}>
                 {!isCollapsed && (
-                  <p className="px-4 text-base font-bold text-slate-500 uppercase  mb-4 mt-8">
+                  <p className="px-3 text-xs font-semibold text-[#8ebfb5] uppercase tracking-wider mb-2 mt-4 hidden">
                     {section.section}
                   </p>
                 )}
@@ -138,12 +145,12 @@ export default function DashboardSidebar({ isCollapsed, onToggle, mobileOpen, se
                       href={item.href}
                       onClick={() => setMobileOpen(false)}
                       title={isCollapsed ? item.label : ''}
-                      className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all group relative border border-transparent ${isActive ? 'bg-[#f37021]/10 text-[#f37021]' : 'text-slate-600 hover:bg-[#f37021]/5 hover:text-[#f37021] font-medium'}`}
+                      className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group relative border border-transparent ${isActive ? 'bg-[#186a5a] text-white' : 'text-[#8ebfb5] hover:bg-[#186a5a] hover:text-white font-medium'}`}
                     >
-                      <div className={`transition-all ${isActive ? 'text-[#f37021]' : 'text-slate-400 group-hover:text-[#f37021]'}`}>
-                        <item.icon className="w-5 h-5" />
+                      <div className={`transition-all ${isActive ? 'text-white' : 'text-[#8ebfb5] group-hover:text-white'}`}>
+                        <item.icon className="w-5 h-5 stroke-[2]" />
                       </div>
-                      {!isCollapsed && <span className={`text-base ${isActive ? 'font-semibold' : ''}`}>{item.label}</span>}
+                      {!isCollapsed && <span className={`text-[15px] ${isActive ? 'font-medium' : ''}`}>{item.label}</span>}
                     </Link>
                   );
                 })}

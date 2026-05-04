@@ -53,7 +53,7 @@ const AboutSection = () => {
 
               <div className="grid grid-cols-3 gap-4 pt-4">
                 <div className="flex flex-col items-center text-center space-y-3">
-                  <div className="w-10 md:w-14 h-10 md:h-14 rounded-full border-2 border-blue-200 flex items-center justify-center bg-[#007367]/5/30">
+                  <div className="w-10 md:w-14 h-10 md:h-14 rounded-full border-2 border-blue-200 flex items-center justify-center bg-[#164e33]/5/30">
                     <Star className="w-7 h-7 text-blue-500" />
                   </div>
                   <span className="font-semibold text-[#333333] text-base leading-tight">
@@ -64,7 +64,7 @@ const AboutSection = () => {
                 </div>
 
                 <div className="flex flex-col items-center text-center space-y-3">
-                  <div className="w-10 md:w-14 h-10 md:h-14 rounded-full border-2 border-blue-200 flex items-center justify-center bg-[#007367]/5/30">
+                  <div className="w-10 md:w-14 h-10 md:h-14 rounded-full border-2 border-blue-200 flex items-center justify-center bg-[#164e33]/5/30">
                     <ShieldCheck className="w-7 h-7 text-blue-500" />
                   </div>
                   <span className="font-semibold text-[#333333] text-base leading-tight">
@@ -74,7 +74,7 @@ const AboutSection = () => {
                 </div>
 
                 <div className="flex flex-col items-center text-center space-y-3">
-                  <div className="w-10 md:w-14 h-10 md:h-14 rounded-full border-2 border-blue-200 flex items-center justify-center bg-[#007367]/5/30">
+                  <div className="w-10 md:w-14 h-10 md:h-14 rounded-full border-2 border-blue-200 flex items-center justify-center bg-[#164e33]/5/30">
                     <MessageCircle className="w-7 h-7 text-blue-500" />
                   </div>
                   <span className="font-semibold text-[#333333] text-base leading-tight">
@@ -152,7 +152,7 @@ const AboutSection = () => {
       </section>
 
       {/* B2B Seller Section */}
-      <section className="b2b-seller-section py-24 bg-[#0d2e38] relative">
+      <section className="b2b-seller-section py-24 bg-[#113f29] relative">
         {/* Hexagonal Background Patterns (Simplified SVG) */}
 
         <div className="container mx-auto px-6 md:px-12 lg:px-20 relative z-10">
@@ -188,7 +188,7 @@ const AboutSection = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row items-start gap-6 pt-4">
-                <button className="px-10 py-3 md:py-4 rounded-xl border-2 border-white text-white font-semibold text-lg hover:bg-white hover:text-[#0d2e38] transition-all transform hover:scale-105 active:scale-95 cursor-pointer">
+                <button className="px-10 py-3 md:py-4 rounded-xl border-2 border-white text-white font-semibold text-lg hover:bg-white hover:text-[#113f29] transition-all transform hover:scale-105 active:scale-95 cursor-pointer">
                   Create a Profile
                 </button>
               </div>
@@ -340,7 +340,7 @@ const AboutSection = () => {
                   return (
                     <div
                       key={faqIndex}
-                      className="bg-[#f9f9f9] rounded-sm overflow-hidden"
+                      className="bg-[#f9f9f9] rounded-lg overflow-hidden"
                     >
                       <button
                         onClick={() =>
@@ -386,3 +386,4 @@ const AboutSection = () => {
 };
 
 export default AboutSection;
+
