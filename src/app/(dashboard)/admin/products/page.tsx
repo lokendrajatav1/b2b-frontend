@@ -91,7 +91,7 @@ export default function AdminProducts() {
       {/* Header Section */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-gray-100 max-w-7xl mx-auto">
         <div className="space-y-1">
-           <div className="flex items-center gap-2 text-[#f58220] font-semibold uppercase  text-base mb-1">
+           <div className="flex items-center gap-2 text-[#f58220] font-semibold uppercase  text-sm mb-1">
               <Sparkles className="w-3 h-3" /> HUB QUALITY CONTROL
            </div>
            <h1 className="text-2xl font-semibold text-slate-900  flex items-center gap-3">
@@ -100,7 +100,7 @@ export default function AdminProducts() {
                 <Briefcase className="w-5 h-5" />
              </div>
            </h1>
-           <p className="text-slate-700 font-medium text-base">Verify and approve product listings from your hub's vendors.</p>
+           <p className="text-slate-700 font-medium text-sm">Verify and approve product listings from your hub's vendors.</p>
         </div>
 
         <div className="flex flex-wrap items-center gap-4">
@@ -109,30 +109,30 @@ export default function AdminProducts() {
                     <button 
                       key={status}
                       onClick={() => setStatusFilter(status)}
-                      className={`px-4 py-2 text-base font-semibold uppercase  transition-all rounded-lg ${statusFilter === status ? 'bg-white text-[#164e33] shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}
+                      className={`px-4 py-2 text-sm font-semibold uppercase  transition-all rounded-lg ${statusFilter === status ? 'bg-white text-[#164e33] ' : 'text-slate-700 hover:text-slate-800'}`}
                     >
                         {status}
                     </button>
                 ))}
             </div>
 
-           <button onClick={fetchOfferings} className="p-2.5 bg-white border border-gray-200 rounded-xl text-slate-500 hover:text-[#164e33] hover:bg-[#164e33]/5 transition-all shadow-sm group">
+           <button onClick={fetchOfferings} className="p-2.5 bg-white border border-gray-200 rounded-xl text-slate-700 hover:text-[#164e33] hover:bg-[#164e33]/5 transition-all  group">
               <RefreshCcw className={`w-4 h-4 ${loading ? 'animate-spin' : 'group-hover:rotate-180 transition-transform duration-500'}`} />
            </button>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto">
-         <div className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm">
+         <div className="bg-white rounded-xl border border-gray-100 overflow-hidden ">
             <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                 <thead>
                     <tr className="bg-gray-50/50">
-                        <th className="px-8 py-5 text-base font-semibold text-slate-500 uppercase ">Product Information</th>
-                        <th className="px-8 py-5 text-base font-semibold text-slate-500 uppercase ">Supplier Hub</th>
-                        <th className="px-8 py-5 text-base font-semibold text-slate-500 uppercase  text-center">Market Visibility</th>
-                        <th className="px-8 py-5 text-base font-semibold text-slate-500 uppercase ">Listing Date</th>
-                        <th className="px-8 py-5 text-base font-semibold text-slate-500 uppercase  text-right">Review</th>
+                        <th className="px-8 py-5 text-sm font-semibold text-slate-700 uppercase ">Product Information</th>
+                        <th className="px-8 py-5 text-sm font-semibold text-slate-700 uppercase ">Supplier Hub</th>
+                        <th className="px-8 py-5 text-sm font-semibold text-slate-700 uppercase  text-center">Market Visibility</th>
+                        <th className="px-8 py-5 text-sm font-semibold text-slate-700 uppercase ">Listing Date</th>
+                        <th className="px-8 py-5 text-sm font-semibold text-slate-700 uppercase  text-right">Review</th>
                     </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-50">
@@ -148,29 +148,29 @@ export default function AdminProducts() {
                             <td className="px-8 py-5">
                                 <div className="flex items-center gap-5">
 <div>
-                                        <p className="text-base font-semibold text-slate-900  group-hover:text-[#164e33] transition-colors leading-tight">{offer.name}</p>
+                                        <p className="text-sm font-semibold text-slate-900  group-hover:text-[#164e33] transition-colors leading-tight">{offer.name}</p>
                                         <div className="flex items-center gap-1.5 mt-2">
                                             <Tag className="w-3.5 h-3.5 text-[#f58220]" />
-                                            <span className="text-base font-semibold text-slate-500 uppercase ">{offer.category || 'Unclassified'}</span>
+                                            <span className="text-sm font-semibold text-slate-700 uppercase ">{offer.category || 'Unclassified'}</span>
                                         </div>
                                     </div>
                                 </div>
                             </td>
                             <td className="px-8 py-5">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-9 h-9 rounded-xl bg-[#164e33]/5 flex items-center justify-center text-[#164e33] border border-[#164e33]/10 text-base font-semibold">
+                                    <div className="w-9 h-9 rounded-xl bg-[#164e33]/5 flex items-center justify-center text-[#164e33] border border-[#164e33]/10 text-sm font-semibold">
                                         {offer.vendor?.businessName?.charAt(0) || 'V'}
                                     </div>
                                     <div>
-                                        <p className="text-base font-semibold text-slate-900 leading-none capitalize">{offer.vendor?.businessName}</p>
-                                        <p className="text-base font-semibold text-slate-500 uppercase  mt-1.5">{offer.vendor?.city}</p>
+                                        <p className="text-sm font-semibold text-slate-900 leading-none capitalize">{offer.vendor?.businessName}</p>
+                                        <p className="text-sm font-semibold text-slate-700 uppercase  mt-1.5">{offer.vendor?.city}</p>
                                     </div>
                                 </div>
                             </td>
                             <td className="px-8 py-5 text-center">
-                                <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-base font-semibold uppercase  border transition-all ${
+                                <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold uppercase  border transition-all ${
                                     offer.status === 'PENDING' ? 'bg-amber-50 text-amber-600 border-amber-100' :
-                                    offer.status === 'APPROVED' ? 'bg-emerald-50 text-emerald-600 border-emerald-100 shadow-sm' :
+                                    offer.status === 'APPROVED' ? 'bg-emerald-50 text-emerald-600 border-emerald-100 ' :
                                     'bg-red-50 text-red-600 border-red-100'
                                 }`}>
                                     <div className={`w-1.5 h-1.5 rounded-full ${
@@ -180,13 +180,13 @@ export default function AdminProducts() {
                                     {offer.status === 'PENDING' ? 'Reviewing' : offer.status === 'APPROVED' ? 'Market Live' : 'Hidden'}
                                 </div>
                             </td>
-                            <td className="px-8 py-5 text-base font-semibold text-slate-700">
+                            <td className="px-8 py-5 text-sm font-semibold text-slate-700">
                                 {new Date(offer.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })}
                             </td>
                             <td className="px-8 py-5 text-right">
                                 <button 
                                     onClick={() => { setSelectedOffering(offer); setIsModalOpen(true); }}
-                                    className="px-5 py-2.5 bg-white border border-gray-100 text-[#164e33] rounded-xl font-semibold text-base uppercase  hover:bg-[#164e33] hover:text-white transition-all shadow-sm flex items-center gap-2 ml-auto"
+                                    className="px-5 py-2.5 bg-white border border-gray-100 text-[#164e33] rounded-xl font-semibold text-sm uppercase  hover:bg-[#164e33] hover:text-white transition-all  flex items-center gap-2 ml-auto"
                                 >
                                     Review
                                     <ChevronRight className="w-3.5 h-3.5" />
@@ -198,8 +198,8 @@ export default function AdminProducts() {
                         <tr>
                             <td colSpan={5} className="py-32 text-center bg-gray-50/20">
                             <CheckCheck className="w-20 h-20 text-gray-200 mx-auto mb-6" />
-                            <h3 className="text-xl font-semibold text-slate-500 ">Queue Cleared</h3>
-                            <p className="text-base font-medium text-gray-300 max-w-xs mx-auto mt-2">All listing requests in your hub have been processed.</p>
+                            <h3 className="text-lg font-semibold text-slate-700 ">Queue Cleared</h3>
+                            <p className="text-sm font-medium text-gray-500 max-w-xs mx-auto mt-2">All listing requests in your hub have been processed.</p>
                             </td>
                         </tr>
                     )}
@@ -224,7 +224,7 @@ export default function AdminProducts() {
                animate={{ x: 0 }} 
                exit={{ x: '100%' }}
                transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-               className="fixed right-0 top-0 h-screen w-full max-w-2xl bg-white shadow-2xl z-[110] p-12 overflow-y-auto"
+               className="fixed right-0 top-0 h-screen w-full max-w-2xl bg-white  z-[110] p-12 overflow-y-auto"
             >
                <div className="flex items-center justify-between mb-12">
                   <div className="flex items-center gap-3">
@@ -232,68 +232,68 @@ export default function AdminProducts() {
                      <h2 className="text-2xl font-semibold text-slate-900  uppercase">Listing Verification</h2>
                   </div>
                   <button onClick={() => setIsModalOpen(false)} className="p-3 bg-gray-50 hover:bg-gray-100 rounded-xl transition-all">
-                     <X className="w-6 h-6 text-slate-500" />
+                     <X className="w-6 h-6 text-slate-700" />
                   </button>
                </div>
 
                <div className="space-y-12 pb-10">
                   <div className="flex gap-10 items-start bg-gray-50/50 p-8 rounded-xl border border-gray-100">
-                     <div className="w-48 h-48 bg-white rounded-xl border border-gray-100 overflow-hidden shadow-2xl shrink-0 flex items-center justify-center relative group/img">
+                     <div className="w-48 h-48 bg-white rounded-xl border border-gray-100 overflow-hidden  shrink-0 flex items-center justify-center relative group/img">
                         {selectedOffering.images && selectedOffering.images.length > 0 ? (
                            <img src={selectedOffering.images[0]} className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-110" />
                         ) : (
                            <Package className="w-16 h-16 text-gray-200" />
                         )}
-                        <div className="absolute top-4 right-4 p-2 bg-white/90 backdrop-blur shadow-sm rounded-xl">
+                        <div className="absolute top-4 right-4 p-2 bg-white/90 backdrop-blur  rounded-xl">
                             <Sparkles className="w-4 h-4 text-[#f58220]" />
                         </div>
                      </div>
                      <div className="space-y-6 pt-2">
                         <div>
                            <h3 className="text-3xl font-semibold text-slate-900 leading-tight">{selectedOffering.name}</h3>
-                           <p className="text-base font-semibold text-slate-500 uppercase  mt-3 flex items-center gap-2">
+                           <p className="text-sm font-semibold text-slate-700 uppercase  mt-3 flex items-center gap-2">
                              <div className="w-1.5 h-1.5 bg-[#f58220] rounded-full" />
                              UID: {selectedOffering.id.split('-')[0].toUpperCase()}
                            </p>
                         </div>
                         <div className="flex flex-wrap gap-3">
-                           <span className="px-4 py-2 bg-[#164e33]/5 border border-[#164e33]/10 rounded-xl text-base font-semibold text-[#164e33] uppercase ">{selectedOffering.type}</span>
-                           <span className="px-4 py-2 bg-[#164e33]/5 border border-[#164e33]/10 rounded-xl text-base font-semibold text-[#164e33] uppercase ">{selectedOffering.category || 'Industry Asset'}</span>
+                           <span className="px-4 py-2 bg-[#164e33]/5 border border-[#164e33]/10 rounded-xl text-sm font-semibold text-[#164e33] uppercase ">{selectedOffering.type}</span>
+                           <span className="px-4 py-2 bg-[#164e33]/5 border border-[#164e33]/10 rounded-xl text-sm font-semibold text-[#164e33] uppercase ">{selectedOffering.category || 'Industry Asset'}</span>
                         </div>
                      </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                       <div className="space-y-6">
-                         <h4 className="text-base font-semibold text-slate-500 uppercase  flex items-center gap-2">
+                         <h4 className="text-sm font-semibold text-slate-700 uppercase  flex items-center gap-2">
                              <IndianRupee className="w-4 h-4 text-[#f58220]" /> Commercial Structure
                          </h4>
-                         <div className="p-8 bg-white rounded-xl border border-gray-100 shadow-sm space-y-5">
+                         <div className="p-8 bg-white rounded-xl border border-gray-100  space-y-5">
                             <div className="flex justify-between items-center border-b border-gray-50 pb-4">
-                               <span className="text-base font-semibold text-slate-500 uppercase ">Market Price</span>
-                               <span className="text-xl font-semibold text-slate-900">₹{selectedOffering.price?.toLocaleString() || 'Quote'}</span>
+                               <span className="text-sm font-semibold text-slate-700 uppercase ">Market Price</span>
+                               <span className="text-lg font-semibold text-slate-900">₹{selectedOffering.price?.toLocaleString() || 'Quote'}</span>
                             </div>
                             <div className="flex justify-between items-center">
-                               <span className="text-base font-semibold text-slate-500 uppercase ">Minimum Order</span>
-                               <span className="text-base font-semibold text-slate-900 bg-gray-50 px-4 py-1.5 rounded-xl border border-gray-100">{selectedOffering.moq || 1} Units</span>
+                               <span className="text-sm font-semibold text-slate-700 uppercase ">Minimum Order</span>
+                               <span className="text-sm font-semibold text-slate-900 bg-gray-50 px-4 py-1.5 rounded-xl border border-gray-100">{selectedOffering.moq || 1} Units</span>
                             </div>
                          </div>
                       </div>
                       <div className="space-y-6">
-                         <h4 className="text-base font-semibold text-slate-500 uppercase  flex items-center gap-2">
+                         <h4 className="text-sm font-semibold text-slate-700 uppercase  flex items-center gap-2">
                              <Warehouse className="w-4 h-4 text-[#164e33]" /> Source Entity
                          </h4>
-                         <div className="p-8 bg-white rounded-xl border border-gray-100 shadow-sm space-y-5">
+                         <div className="p-8 bg-white rounded-xl border border-gray-100  space-y-5">
                             <div className="flex items-center gap-4">
-                               <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center text-slate-500 font-semibold border border-gray-100">
+                               <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center text-slate-700 font-semibold border border-gray-100">
                                   {selectedOffering.vendor?.businessName?.charAt(0)}
                                </div>
                                <div>
-                                  <p className="text-base font-semibold text-slate-900 leading-none">{selectedOffering.vendor?.businessName}</p>
-                                  <p className="text-base font-semibold text-[#f58220] uppercase  mt-1.5">{selectedOffering.vendor?.city}</p>
+                                  <p className="text-sm font-semibold text-slate-900 leading-none">{selectedOffering.vendor?.businessName}</p>
+                                  <p className="text-sm font-semibold text-[#f58220] uppercase  mt-1.5">{selectedOffering.vendor?.city}</p>
                                </div>
                             </div>
-                            <button className="w-full py-3 bg-gray-50 hover:bg-[#164e33]/5 text-slate-700 hover:text-[#164e33] rounded-xl text-base font-semibold uppercase  transition-all flex items-center justify-center gap-2">
+                            <button className="w-full py-3 bg-gray-50 hover:bg-[#164e33]/5 text-slate-700 hover:text-[#164e33] rounded-xl text-sm font-semibold uppercase  transition-all flex items-center justify-center gap-2">
                                <ExternalLink className="w-3.5 h-3.5" />
                                View Profile
                             </button>
@@ -302,14 +302,14 @@ export default function AdminProducts() {
                    </div>
 
                    <div className="space-y-6">
-                      <h4 className="text-base font-semibold text-slate-500 uppercase  flex items-center gap-2 pl-1">
+                      <h4 className="text-sm font-semibold text-slate-700 uppercase  flex items-center gap-2 pl-1">
                           <AlertCircle className="w-4 h-4 text-[#f58220]" /> Product Intelligence
                       </h4>
-                      <div className="p-8 bg-gray-50/50 border border-gray-100 rounded-xl shadow-inner relative overflow-hidden group">
+                      <div className="p-8 bg-gray-50/50 border border-gray-100 rounded-xl  relative overflow-hidden group">
                         <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:scale-110 transition-transform">
                             <Package className="w-32 h-32" />
                         </div>
-                        <p className="text-base text-slate-800 font-semibold leading-relaxed relative z-10 border-l-4 border-[#164e33] pl-8 py-2">
+                        <p className="text-sm text-slate-800 font-semibold leading-relaxed relative z-10 border-l-4 border-[#164e33] pl-8 py-2">
                            "{selectedOffering.description || 'No detailed technical specifications or description provided for this listing.'}"
                         </p>
                       </div>
@@ -320,7 +320,7 @@ export default function AdminProducts() {
                         <button 
                             onClick={() => handleStatusUpdate(selectedOffering.id, 'APPROVED')}
                             disabled={processingId === selectedOffering.id}
-                            className="py-5 bg-[#164e33] hover:bg-[#113f29] text-white rounded-xl font-semibold flex items-center justify-center gap-3 shadow-xl shadow-[#164e33]/20 transition-all disabled:opacity-50 active:scale-95"
+                            className="py-5 bg-[#164e33] hover:bg-[#113f29] text-white rounded-xl font-semibold flex items-center justify-center gap-3  -[#164e33]/20 transition-all disabled:opacity-50 active:scale-95"
                         >
                             {processingId === selectedOffering.id ? <RefreshCcw className="w-5 h-5 animate-spin" /> : <ShieldCheck className="w-6 h-6 text-emerald-400" />}
                             Approve for Market

@@ -20,9 +20,13 @@ const cities = [
 
 const CityIcon = ({ city }) => {
   const Icon = city.Fallback;
+  const router = require('next/navigation').useRouter();
 
   return (
-    <div className="flex flex-col items-center group cursor-pointer transition-all duration-300">
+    <div 
+      onClick={() => router.push(`/search?city=${city.name}`)}
+      className="flex flex-col items-center group cursor-pointer transition-all duration-300"
+    >
       <div className="w-20 h-20 sm:w-24 sm:h-24 bg-slate-50 border border-slate-200 rounded-3xl flex items-center justify-center mb-4 transition-all duration-500 group-hover:border-[#164e33]/30 group-hover:bg-white group-hover:shadow-[0_20px_40px_-15px_rgba(0,118,168,0.12)] group-hover:-translate-y-1 relative overflow-hidden">
         
         {/* Animated Background Ring */}
@@ -46,7 +50,7 @@ const CitySuppliers = () => {
   return (
     <section className="w-full max-w-7xl mx-auto py-12 px-4 sm:px-6 bg-white border-t border-gray-100">
       <h2 className="text-xl md:text-2xl font-semibold text-slate-900 mb-8">
-        Explore Suppliers by City
+        Explore Vendors by City
       </h2>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-y-10 gap-x-4">

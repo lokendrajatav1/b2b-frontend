@@ -33,7 +33,7 @@ const Footer = () => {
             <Link href="/" className="inline-block bg-white p-2.5 rounded-xl">
               <img src="/logo.png" alt={settings.websiteName} className="h-16 w-auto object-contain" />
             </Link>
-            <p className="text-white/90 text-base leading-relaxed max-w-xs">
+            <p className="text-white text-base leading-relaxed max-w-xs">
               Connect with leading business services and experts worldwide. India&apos;s largest B2B marketplace for trusted discovery.
             </p>
             <div className="flex items-center gap-4">
@@ -103,16 +103,16 @@ const Footer = () => {
           <div className="space-y-4">
             <h4 className="text-base font-semibold text-white uppercase ">Contact</h4>
             <ul className="space-y-3">
-              <li className="flex items-start gap-3 text-white/90 text-base">
-                <MapPin className="w-5 h-5 text-[#4ecdc4] shrink-0" />
+              <li className="flex items-start gap-3 text-white text-base">
+                <MapPin className="w-5 h-5 text-white shrink-0" />
                 <span>{settings.address}</span>
               </li>
-              <li className="flex items-center gap-3 text-white/90 text-base">
-                <Phone className="w-5 h-5 text-[#4ecdc4] shrink-0" />
+              <li className="flex items-center gap-3 text-white text-base">
+                <Phone className="w-5 h-5 text-white shrink-0" />
                 <span>{settings.contactPhone}</span>
               </li>
-              <li className="flex items-center gap-3 text-white/90 text-base">
-                <Mail className="w-5 h-5 text-[#4ecdc4] shrink-0" />
+              <li className="flex items-center gap-3 text-white text-base">
+                <Mail className="w-5 h-5 text-white shrink-0" />
                 <span>{settings.contactEmail}</span>
               </li>
             </ul>
@@ -124,9 +124,9 @@ const Footer = () => {
             © {new Date().getFullYear()} {settings.websiteName}. All rights reserved.
           </p>
           <div className="flex items-center gap-8">
-            <Link href="#" className="text-white/60 text-base text-right hover:text-white transition-colors">Industry Access</Link>
-            <Link href="#" className="text-white/60 text-base hover:text-white transition-colors">Privacy Policy</Link>
-            <Link href="#" className="text-white/60 text-base hover:text-white transition-colors">Terms of Service</Link>
+            <Link href="/industry-access" className="text-white/60 text-base text-right hover:text-white transition-colors">Industry Access</Link>
+            <Link href="/privacy-policy" className="text-white/60 text-base hover:text-white transition-colors">Privacy Policy</Link>
+            <Link href="/terms-of-service" className="text-white/60 text-base hover:text-white transition-colors">Terms of Service</Link>
           </div>
         </div>
       </div>

@@ -84,25 +84,25 @@ export default function VendorLeads() {
               My Leads
               <div className="flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 border border-emerald-100 rounded-full">
                 <Activity className="w-3.5 h-3.5 text-emerald-600" />
-                <span className="text-base font-semibold text-emerald-600">Receiving Leads</span>
+                <span className="text-sm font-semibold text-emerald-600">Receiving Leads</span>
               </div>
             </h1>
-            <p className="text-slate-700 font-medium mt-1 text-base">Review and respond to inquiries from potential buyers.</p>
+            <p className="text-slate-700 font-medium mt-1 text-sm">Review and respond to inquiries from potential buyers.</p>
         </div>
         
         <div className="flex items-center gap-3">
-            <button className="px-4 py-2 bg-white border border-gray-200 rounded-xl text-slate-800 font-semibold text-base hover:bg-gray-50 transition-all flex items-center gap-2">
+            <button className="px-4 py-2 bg-white border border-gray-200 rounded-xl text-slate-800 font-semibold text-sm hover:bg-gray-50 transition-all flex items-center gap-2">
                 Export Leads
             </button>
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center gap-2 mb-6 bg-white p-2 rounded-2xl shadow-sm border border-gray-100 inline-flex">
+      <div className="flex flex-wrap items-center gap-2 mb-6 bg-white p-2 rounded-2xl  border border-gray-100 inline-flex">
            {['ALL', 'DISTRIBUTED', 'CLOSED', 'EXPIRED'].map(st => (
                 <button 
                     key={st}
                     onClick={() => setFilter(st)}
-                    className={`px-6 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 ${ filter === st ? 'bg-[#164e33] text-white shadow-md' : 'bg-transparent text-slate-600 hover:text-slate-900 hover:bg-gray-100' }`}
+                    className={`px-6 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 ${ filter === st ? 'bg-[#164e33] text-white ' : 'bg-transparent text-slate-600 hover:text-slate-900 hover:bg-gray-100' }`}
                 >
                     {st === 'ALL' ? 'All Leads' : st === 'DISTRIBUTED' ? 'Active' : st === 'CLOSED' ? 'Won' : 'Expired'}
                 </button>
@@ -116,26 +116,26 @@ export default function VendorLeads() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.05 }}
             key={lead.id} 
-            className="group bg-white rounded-2xl border border-gray-200 overflow-hidden hover:border-[#164e33]/30 transition-all duration-300 shadow-sm hover:shadow-xl"
+            className="group bg-white rounded-2xl border border-gray-200 overflow-hidden hover:border-[#164e33]/30 transition-all duration-300  hover:"
           >
             <div className="flex flex-col md:flex-row">
                 {/* Status Column */}
                 <div className="md:w-40 shrink-0 p-6 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-gray-100 bg-gradient-to-b from-gray-50/50 to-transparent relative">
                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#164e33]/20 to-[#f58220]/20 hidden md:block"></div>
-                    <div className={`w-14 h-14 rounded-full flex items-center justify-center mb-3 shadow-inner ${
+                    <div className={`w-14 h-14 rounded-full flex items-center justify-center mb-3  ${
                       lead.status === 'DISTRIBUTED' ? 'bg-[#164e33]/10 text-[#164e33]' : 
-                      lead.status === 'CLOSED' ? 'bg-[#f58220]/10 text-[#f58220]' : 'bg-gray-100 text-gray-400'
+                      lead.status === 'CLOSED' ? 'bg-[#f58220]/10 text-[#f58220]' : 'bg-gray-100 text-gray-600'
                     }`}>
                         {lead.status === 'CLOSED' ? <ShieldCheck className="w-6 h-6" /> : <Users className="w-6 h-6" />}
                     </div>
                     <div className="text-center">
-                        <p className={`text-base font-bold uppercase tracking-wide mb-1 ${
+                        <p className={`text-sm font-bold uppercase  mb-1 ${
                           lead.status === 'DISTRIBUTED' ? 'text-[#164e33]' : 
-                          lead.status === 'CLOSED' ? 'text-[#f58220]' : 'text-slate-400'
+                          lead.status === 'CLOSED' ? 'text-[#f58220]' : 'text-slate-600'
                         }`}>
                            {lead.status === 'DISTRIBUTED' ? 'New Lead' : lead.status === 'CLOSED' ? 'Won' : lead.status}
                         </p>
-                        <p className="text-sm font-semibold text-slate-500 flex items-center justify-center gap-1.5">
+                        <p className="text-sm font-semibold text-slate-700 flex items-center justify-center gap-1.5">
                            <Calendar className="w-3.5 h-3.5" />
                            {new Date(lead.createdAt).toLocaleDateString()}
                         </p>
@@ -147,12 +147,12 @@ export default function VendorLeads() {
                     <div className="space-y-5 flex-1">
                         <div className="space-y-2.5">
                              <div className="flex flex-wrap items-center gap-3">
-                                 <h3 className="text-xl md:text-2xl font-bold text-slate-900">{lead.buyerName}</h3>
-                                 <span className="text-xs font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-md">ID #{lead.id.slice(0,8)}</span>
+                                 <h3 className="text-lg md:text-2xl font-bold text-slate-900">{lead.buyerName}</h3>
+                                 <span className="text-xs font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md">ID #{lead.id.slice(0,8)}</span>
                              </div>
                              <div className="flex flex-wrap items-center gap-4">
                                 <div className="flex items-center gap-1.5 text-sm font-semibold text-slate-600 bg-gray-50 px-3 py-1 rounded-full border border-gray-200">
-                                    <MapPin className="w-4 h-4 text-slate-400" />
+                                    <MapPin className="w-4 h-4 text-slate-600" />
                                     {lead.city}
                                 </div>
                                 <div className="flex items-center gap-1.5 text-sm font-semibold text-[#164e33] bg-[#164e33]/5 px-3 py-1 rounded-full border border-[#164e33]/20">
@@ -166,11 +166,11 @@ export default function VendorLeads() {
                              </div>
                         </div>
 
-                        <div className="p-5 bg-gradient-to-r from-emerald-50/50 to-white rounded-2xl border border-emerald-100/60 shadow-sm relative overflow-hidden group">
+                        <div className="p-5 bg-gradient-to-r from-emerald-50/50 to-white rounded-2xl border border-emerald-100/60  relative overflow-hidden group">
                             <div className="absolute top-0 left-0 w-1.5 h-full bg-[#164e33]/20 group-hover:bg-[#164e33]/80 transition-all duration-300 rounded-l-2xl"></div>
                             <div className="flex gap-3">
                                 <MessageSquare className="w-5 h-5 text-[#164e33]/40 shrink-0 mt-0.5" />
-                                <p className="text-[15px] text-slate-700 font-medium leading-relaxed italic">
+                                <p className="text-base text-slate-700 font-medium leading-relaxed italic">
                                    "{lead.message || (lead.searchKeyword ? `Buyer was searching for '${lead.searchKeyword}' and your business matched their criteria.` : `Buyer submitted a request for ${lead.category?.name} in ${lead.city}.`)}"
                                 </p>
                             </div>
@@ -182,7 +182,7 @@ export default function VendorLeads() {
                         <div className="grid grid-cols-2 gap-3">
                             <a 
                                 href={`tel:${lead.phone}`}
-                                className="h-11 bg-white border border-gray-200 text-slate-800 rounded-xl font-bold text-sm uppercase tracking-wide flex items-center justify-center gap-2 hover:bg-gray-50 hover:border-gray-300 transition-all shadow-sm hover:shadow group/btn"
+                                className="h-11 bg-white border border-gray-200 text-slate-800 rounded-xl font-bold text-sm uppercase  flex items-center justify-center gap-2 hover:bg-gray-50 hover:border-gray-300 transition-all  hover: group/btn"
                             >
                                 <Phone className="w-4 h-4 text-emerald-500 transition-transform group-hover/btn:scale-110" />
                                 Call
@@ -191,7 +191,7 @@ export default function VendorLeads() {
                                 href={`https://wa.me/${lead.phone?.replace(/[^0-9]/g, '')}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="h-11 bg-white border border-emerald-200 text-[#164e33] rounded-xl font-bold text-sm uppercase tracking-wide flex items-center justify-center gap-2 hover:bg-emerald-50  transition-all shadow-sm hover:shadow group/btn"
+                                className="h-11 bg-white border border-emerald-200 text-[#164e33] rounded-xl font-bold text-sm uppercase  flex items-center justify-center gap-2 hover:bg-emerald-50  transition-all  hover: group/btn"
                             >
                                 <MessageSquare className="w-4 h-4 text-[#164e33] transition-transform group-hover/btn:scale-110" />
                                 Chat
@@ -203,7 +203,7 @@ export default function VendorLeads() {
                                 <>
                                 <button 
                                     onClick={() => handleUpdateStatus(lead.id, 'CLOSED')}
-                                    className="flex-1 h-12 bg-gradient-to-r from-[#164e33] to-[#147a67] text-white rounded-xl font-bold text-sm uppercase tracking-wider hover:shadow-lg hover:-translate-y-0.5 transition-all w-full flex items-center justify-center gap-2"
+                                    className="flex-1 h-12 bg-gradient-to-r from-[#164e33] to-[#147a67] text-white rounded-xl font-bold text-sm uppercase  hover: hover:-translate-y-0.5 transition-all w-full flex items-center justify-center gap-2"
                                 >
                                     <CheckCircle className="w-4 h-4" />
                                     Mark as Won
@@ -217,7 +217,7 @@ export default function VendorLeads() {
                                 </>
                            )}
                            {lead.status === 'CLOSED' && (
-                               <div className="w-full h-12 bg-gradient-to-r from-emerald-50 to-white text-emerald-700 border border-emerald-200 rounded-xl font-bold text-sm uppercase tracking-wide flex items-center justify-center gap-2 shadow-sm">
+                               <div className="w-full h-12 bg-gradient-to-r from-emerald-50 to-white text-emerald-700 border border-emerald-200 rounded-xl font-bold text-sm uppercase  flex items-center justify-center gap-2 ">
                                    <ShieldCheck className="w-5 h-5" />
                                    Deal Successfully Closed
                                 </div>
@@ -228,12 +228,12 @@ export default function VendorLeads() {
             </div>
           </motion.div>
         )) : (
-          <div className="text-center py-16 bg-white rounded-xl border border-gray-100 space-y-3 shadow-sm">
+          <div className="text-center py-16 bg-white rounded-xl border border-gray-100 space-y-3 ">
               <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center mx-auto border border-gray-100">
-                 <History className="w-6 h-6 text-gray-300" />
+                 <History className="w-6 h-6 text-gray-500" />
               </div>
-              <h3 className="text-lg font-semibold text-slate-900">No leads found</h3>
-              <p className="text-slate-700 font-medium text-base">When buyers reach out to you, their inquiries will appear here.</p>
+              <h3 className="text-base font-semibold text-slate-900">No leads found</h3>
+              <p className="text-slate-700 font-medium text-sm">When buyers reach out to you, their inquiries will appear here.</p>
           </div>
         )}
       </div>

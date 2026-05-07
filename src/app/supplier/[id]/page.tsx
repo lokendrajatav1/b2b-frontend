@@ -137,7 +137,7 @@ export default function VendorPublicProfile() {
       {/* Profile Header */}
       <div className="bg-[#164e33] pt-24 pb-32 relative overflow-hidden">
         <div className="w-full px-4 md:px-12 relative z-10">
-            <button onClick={() => router.back()} className="mb-8 flex items-center gap-2 text-gray-400 hover:text-white transition-colors font-medium text-xs uppercase tracking-widest w-fit">
+            <button onClick={() => router.back()} className="mb-8 flex items-center gap-2 text-gray-400 hover:text-white transition-colors font-medium text-xs uppercase  w-fit">
                 <ArrowLeft className="w-4 h-4" /> Back to Search Results
             </button>
 
@@ -157,11 +157,11 @@ export default function VendorPublicProfile() {
 
                         <div className="flex-1 text-center md:text-left space-y-4">
                             <div className="flex flex-wrap items-center justify-center md:justify-start gap-3">
-                                <span className="px-3 py-1 bg-[#164e33]/20 border border-[#164e33]/30 rounded-lg text-[#4ecdc4] text-[10px] font-bold uppercase tracking-widest">
+                                <span className="px-3 py-1 bg-[#164e33]/20 border border-[#164e33]/30 rounded-lg text-[#4ecdc4] text-[10px] font-bold uppercase ">
                                 {vendor.category?.name || 'Authorized Partner'}
                                 </span>
                                 {vendor.verified && (
-                                    <div className="flex items-center gap-1.5 px-3 py-1 bg-[#164e33] rounded-lg text-[10px] font-bold uppercase tracking-widest text-white">
+                                    <div className="flex items-center gap-1.5 px-3 py-1 bg-[#164e33] rounded-lg text-[10px] font-bold uppercase  text-white">
                                         <ShieldCheck className="w-3.5 h-3.5" /> Verified Business
                                     </div>
                                 )}
@@ -176,7 +176,7 @@ export default function VendorPublicProfile() {
                         <div className="flex items-center gap-3">
                             <MapPin className="w-5 h-5 text-[#164e33]" />
                             <div>
-                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Base Operations</p>
+                                <p className="text-[10px] font-bold text-gray-400 uppercase ">Base Operations</p>
                                 <p className="text-sm font-medium text-white">{vendor.city}</p>
                             </div>
                         </div>
@@ -186,7 +186,7 @@ export default function VendorPublicProfile() {
                                     <div className="flex items-center gap-3">
                                         <Phone className="w-5 h-5 text-[#164e33]" />
                                         <div>
-                                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Phone & Hotline</p>
+                                            <p className="text-[10px] font-bold text-gray-400 uppercase ">Phone & Hotline</p>
                                             <p className="text-sm font-medium text-white">{vendor.phone}</p>
                                         </div>
                                     </div>
@@ -195,7 +195,7 @@ export default function VendorPublicProfile() {
                                     <div className="flex items-center gap-3">
                                         <Mail className="w-5 h-5 text-[#164e33]" />
                                         <div>
-                                            <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Official Email</p>
+                                            <p className="text-[10px] font-bold text-gray-500 uppercase ">Official Email</p>
                                             <p className="text-sm font-medium text-white">{vendor.email}</p>
                                         </div>
                                     </div>
@@ -205,7 +205,7 @@ export default function VendorPublicProfile() {
                         <div className="flex items-center gap-3">
                             <Star className="w-5 h-5 text-amber-500 fill-amber-500" />
                             <div>
-                                <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Marketplace Rating</p>
+                                <p className="text-[10px] font-bold text-gray-500 uppercase ">Marketplace Rating</p>
                                 <p className="text-sm font-medium text-white">{avgRating} / 5.0</p>
                             </div>
                         </div>
@@ -216,7 +216,7 @@ export default function VendorPublicProfile() {
                     {!user ? (
                         <button 
                             onClick={() => setLoginModalOpen(true)}
-                            className="w-full lg:w-auto px-10 py-4 bg-white hover:bg-gray-100 text-[#164e33] rounded-xl font-bold text-xs uppercase tracking-widest transition-all"
+                            className="w-full lg:w-auto px-10 py-4 bg-white hover:bg-gray-100 text-[#164e33] rounded-xl font-bold text-xs uppercase  transition-all"
                         >
                             Authorize to Connect
                         </button>
@@ -224,7 +224,7 @@ export default function VendorPublicProfile() {
                         <div className="flex gap-4 w-full">
                             <button 
                                 onClick={() => handleDirectAction('CALL')}
-                                className="flex-1 lg:flex-none px-10 py-4 bg-[#164e33] hover:bg-[#113f29] text-white rounded-xl font-bold text-xs uppercase tracking-widest transition-all shadow-lg shadow-[#164e33]/20"
+                                className="flex-1 lg:flex-none px-10 py-4 bg-[#164e33] hover:bg-[#113f29] text-white rounded-xl font-bold text-xs uppercase  transition-all shadow-lg shadow-[#164e33]/20"
                             >
                                 Contact Partner
                             </button>
@@ -286,14 +286,14 @@ export default function VendorPublicProfile() {
                                                 {p.type === 'SERVICE'
                                                     ? <Layers className="w-10 h-10 text-gray-200" />
                                                     : <Box className="w-10 h-10 text-gray-200" />}
-                                                <span className="text-[10px] text-gray-300 font-medium uppercase tracking-widest">No Image</span>
+                                                <span className="text-[10px] text-gray-300 font-medium uppercase ">No Image</span>
                                             </div>
                                         )}
                                         {/* Gradient Overlay */}
                                         <div className="absolute inset-0 bg-linear-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                                         {/* Type Badge */}
                                         <div className="absolute top-3 left-3">
-                                            <span className={`px-2.5 py-1 text-[10px] font-semibold uppercase tracking-widest rounded-full ${
+                                            <span className={`px-2.5 py-1 text-[10px] font-semibold uppercase  rounded-full ${
                                                 p.type === 'SERVICE'
                                                     ? 'bg-blue-50 text-blue-600 border border-blue-100'
                                                     : 'bg-emerald-50 text-emerald-700 border border-emerald-100'
@@ -434,7 +434,7 @@ export default function VendorPublicProfile() {
                     ) : (
                         <div className="py-16 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center text-center">
                             <Star className="w-12 h-12 text-gray-200 mb-4" />
-                            <p className="text-sm font-semibold text-gray-500 uppercase tracking-widest">No Client Testimonials Yet</p>
+                            <p className="text-sm font-semibold text-gray-500 uppercase ">No Client Testimonials Yet</p>
                             <p className="text-xs text-gray-400 mt-2">Become the first to verify this merchant's performance.</p>
                         </div>
                     )}
@@ -451,7 +451,7 @@ export default function VendorPublicProfile() {
 
                     <form onSubmit={handleInquiry} className="space-y-6">
                         <div className="space-y-3">
-                            <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Requirement Payload</label>
+                            <label className="text-[10px] font-bold text-gray-400 uppercase ">Requirement Payload</label>
                             <textarea 
                                 value={inquiry.message}
                                 onChange={(e) => setInquiry({ message: e.target.value })}
@@ -464,7 +464,7 @@ export default function VendorPublicProfile() {
                         <button 
                             disabled={sending || success}
                             type="submit"
-                            className={`w-full py-4 rounded-xl font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-3 transition-all ${
+                            className={`w-full py-4 rounded-xl font-bold text-xs uppercase  flex items-center justify-center gap-3 transition-all ${
                                 success 
                                   ? 'bg-emerald-500 text-white' 
                                   : 'bg-[#164e33] hover:bg-[#113f29] text-white shadow-lg shadow-[#164e33]/20'
@@ -484,13 +484,13 @@ export default function VendorPublicProfile() {
 
                     <div className="pt-10 border-t border-gray-50 space-y-6">
                         <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3 text-gray-400 text-[10px] font-semibold uppercase tracking-widest">
+                            <div className="flex items-center gap-3 text-gray-400 text-[10px] font-semibold uppercase ">
                                 <Clock className="w-4 h-4" /> Response Speed
                             </div>
                             <span className="text-xs font-bold text-[#164e33] uppercase tracking-wider">~45 Mins</span>
                         </div>
                         <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3 text-gray-400 text-[10px] font-semibold uppercase tracking-widest">
+                            <div className="flex items-center gap-3 text-gray-400 text-[10px] font-semibold uppercase ">
                                 <Globe className="w-4 h-4" /> Active Hub
                             </div>
                             <span className="text-xs font-medium text-gray-900 tracking-wider">{vendor.city}</span>

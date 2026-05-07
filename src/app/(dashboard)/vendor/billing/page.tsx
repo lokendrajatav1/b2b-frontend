@@ -151,8 +151,8 @@ export default function VendorBilling() {
       <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center">
         <CheckCircle2 className="w-10 h-10 text-green-600" />
       </div>
-      <h2 className="text-xl font-semibold text-slate-900">Payment Successful!</h2>
-      <p className="text-slate-700 text-base">Your subscription is now active. Reloading...</p>
+      <h2 className="text-lg font-semibold text-slate-900">Payment Successful!</h2>
+      <p className="text-slate-700 text-sm">Your subscription is now active. Reloading...</p>
     </div>
   );
 
@@ -164,16 +164,16 @@ export default function VendorBilling() {
 
         {/* ── page title ── */}
         <div>
-          <h1 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
+          <h1 className="text-base font-semibold text-slate-900 flex items-center gap-2">
             <CreditCard className="w-5 h-5 text-slate-700" />
             Billing
           </h1>
-          <p className="text-base text-slate-500 mt-0.5">Manage your subscription plan</p>
+          <p className="text-sm text-slate-700 mt-0.5">Manage your subscription plan</p>
         </div>
 
         {/* ── expiry alert ── */}
         {(isExpired || isSoon) && (
-          <div className={`flex items-center gap-3 px-4 py-3 rounded-xl border text-base ${
+          <div className={`flex items-center gap-3 px-4 py-3 rounded-xl border text-sm ${
             isExpired
               ? 'bg-red-50 border-red-200 text-red-600'
               : 'bg-amber-50 border-amber-200 text-amber-600'
@@ -186,10 +186,10 @@ export default function VendorBilling() {
         )}
 
         {/* ── current plan card ── */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+        <div className="bg-white rounded-xl border border-gray-200  overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-            <span className="text-base font-medium text-slate-800">Current Subscription</span>
-            <span className={`text-base px-2.5 py-0.5 rounded-full font-medium ${
+            <span className="text-sm font-medium text-slate-800">Current Subscription</span>
+            <span className={`text-sm px-2.5 py-0.5 rounded-full font-medium ${
               isExpired ? 'bg-red-100 text-red-600'
               : isSoon  ? 'bg-amber-100 text-amber-600'
               : currentPkg ? 'bg-green-100 text-green-700'
@@ -211,12 +211,12 @@ export default function VendorBilling() {
                         {style.icon}
                       </div>
                       <div>
-                        <p className="text-base font-semibold text-slate-900">{currentPkg.name} Plan</p>
-                        <p className="text-base text-slate-500">₹{currentPkg.price?.toLocaleString()}/month</p>
+                        <p className="text-sm font-semibold text-slate-900">{currentPkg.name} Plan</p>
+                        <p className="text-sm text-slate-700">₹{currentPkg.price?.toLocaleString()}/month</p>
                       </div>
                     </div>
                     <div className="space-y-1.5">
-                      <div className="flex justify-between text-base text-slate-500">
+                      <div className="flex justify-between text-sm text-slate-700">
                         <span className="flex items-center gap-1">
                           <Clock className="w-3 h-3" />
                           {vendor?.planExpiry
@@ -235,18 +235,18 @@ export default function VendorBilling() {
                   </div>
                   <div className="grid grid-cols-2 gap-3 sm:w-52">
                     <div className="bg-gray-50 rounded-xl px-3 py-3 text-center border border-gray-100">
-                      <p className="text-base text-slate-500 mb-1">Monthly Leads</p>
-                      <p className="text-base font-semibold text-slate-900">{currentPkg.monthlyLeads ?? currentPkg.leadLimit ?? '—'}</p>
+                      <p className="text-sm text-slate-700 mb-1">Monthly Leads</p>
+                      <p className="text-sm font-semibold text-slate-900">{currentPkg.monthlyLeads ?? currentPkg.leadLimit ?? '—'}</p>
                     </div>
                     <div className="bg-gray-50 rounded-xl px-3 py-3 text-center border border-gray-100">
-                      <p className="text-base text-slate-500 mb-1">Priority</p>
-                      <p className="text-base font-semibold text-slate-900">{currentPkg.priority ?? '—'}</p>
+                      <p className="text-sm text-slate-700 mb-1">Priority</p>
+                      <p className="text-sm font-semibold text-slate-900">{currentPkg.priority ?? '—'}</p>
                     </div>
                   </div>
                 </div>
               );
             })() : (
-              <div className="flex items-center gap-3 text-slate-500 text-base py-2">
+              <div className="flex items-center gap-3 text-slate-700 text-sm py-2">
                 <Package2 className="w-5 h-5 opacity-40" />
                 No active subscription. Choose a plan below to get started.
               </div>
@@ -256,12 +256,12 @@ export default function VendorBilling() {
 
         {/* ── available plans ── */}
         <div>
-          <h2 className="text-base font-medium text-slate-700 mb-3 uppercase tracking-wide">
+          <h2 className="text-sm font-medium text-slate-700 mb-3 uppercase ">
             Available Plans
           </h2>
 
           {packages.length === 0 ? (
-            <div className="text-center py-10 border border-dashed border-gray-200 rounded-2xl text-slate-500 text-base">
+            <div className="text-center py-10 border border-dashed border-gray-200 rounded-2xl text-slate-700 text-sm">
               No plans available. Please contact admin.
             </div>
           ) : (
@@ -276,12 +276,12 @@ export default function VendorBilling() {
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.1 }}
-                    className={`relative bg-white rounded-[2rem] border border-gray-100 transition-all duration-500 flex flex-col group hover:-translate-y-4 hover:shadow-2xl hover:shadow-[#164e33]/10 overflow-hidden ${
-                      isPopular ? 'scale-105 z-10 shadow-xl shadow-gray-100' : 'shadow-lg shadow-gray-50'
+                    className={`relative bg-white rounded-[2rem] border border-gray-100 transition-all duration-500 flex flex-col group hover:-translate-y-4 hover: hover:-[#164e33]/10 overflow-hidden ${
+                      isPopular ? 'scale-105 z-10  ' : ' '
                     }`}
                   >
                     {isPopular && (
-                      <div className="absolute top-4 -right-12 rotate-45 bg-[#f58220] text-white text-[10px] font-bold uppercase tracking-widest px-12 py-1.5 shadow-md z-20">
+                      <div className="absolute top-4 -right-12 rotate-45 bg-[#f58220] text-white text-xs font-bold uppercase  px-12 py-1.5  z-20">
                         Pro
                       </div>
                     )}
@@ -290,12 +290,12 @@ export default function VendorBilling() {
                       {/* Plan Header */}
                       <div className="mb-6">
                         <h3 className="text-[26px] font-black text-[#164e33] uppercase tracking-tighter">{pkg.name}</h3>
-                        <p className="text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em] mt-1">Per Month</p>
+                        <p className="text-xs font-bold text-slate-600 uppercase tracking-[0.2em] mt-1">Per Month</p>
                       </div>
 
                       {/* Price Ribbon */}
                       <div className="relative w-[calc(100%+4rem)] -mx-8 mb-8">
-                         <div className="bg-gradient-to-r from-[#164e33] via-[#2d9d68] to-[#164e33] py-5 shadow-lg relative z-10">
+                         <div className="bg-gradient-to-r from-[#164e33] via-[#2d9d68] to-[#164e33] py-5  relative z-10">
                             <span className="text-4xl font-bold text-white tracking-tight">₹{pkg.price?.toLocaleString()}</span>
                          </div>
                          {/* Ribbon Fold Effect */}
@@ -308,16 +308,16 @@ export default function VendorBilling() {
                         <div className="flex flex-col items-start w-fit mx-auto space-y-4">
                           <div className="flex items-center gap-3">
                              <CheckCircle2 className="w-4.5 h-4.5 text-emerald-500 shrink-0" />
-                             <span className="text-[15px] font-semibold text-slate-700 tracking-tight">{pkg.monthlyLeads ?? 0} Monthly Leads</span>
+                             <span className="text-base font-semibold text-slate-700 tracking-tight">{pkg.monthlyLeads ?? 0} Monthly Leads</span>
                           </div>
                           <div className="flex items-center gap-3">
                              <CheckCircle2 className="w-4.5 h-4.5 text-emerald-500 shrink-0" />
-                             <span className="text-[15px] font-semibold text-slate-700 tracking-tight">Priority Hub Access</span>
+                             <span className="text-base font-semibold text-slate-700 tracking-tight">Priority Hub Access</span>
                           </div>
                           {Array.isArray(pkg.features) && pkg.features.slice(0, 3).map((f: string, i: number) => (
                             <div key={i} className="flex items-center gap-3">
                               <CheckCircle2 className="w-4.5 h-4.5 text-emerald-500 shrink-0" />
-                              <span className="text-[15px] font-semibold text-slate-700 tracking-tight truncate max-w-[200px]">{f}</span>
+                              <span className="text-base font-semibold text-slate-700 tracking-tight truncate max-w-[200px]">{f}</span>
                             </div>
                           ))}
                         </div>
@@ -327,10 +327,10 @@ export default function VendorBilling() {
                       <button
                         disabled={isCurrent || upgrading !== null}
                         onClick={() => handleSubscribe(pkg)}
-                        className={`px-10 py-3.5 rounded-full text-[11px] font-black uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2 group/btn ${
+                        className={`px-10 py-3.5 rounded-full text-xs font-black uppercase  transition-all duration-300 flex items-center justify-center gap-2 group/btn ${
                           isCurrent || upgrading !== null
-                            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                            : 'bg-gradient-to-r from-[#164e33] to-[#2d9d68] text-white shadow-lg shadow-[#164e33]/20 hover:shadow-xl hover:scale-105'
+                            ? 'bg-gray-100 text-gray-600 cursor-not-allowed'
+                            : 'bg-gradient-to-r from-[#164e33] to-[#2d9d68] text-white  -[#164e33]/20 hover: hover:scale-105'
                         }`}
                       >
                         {upgrading === pkg.id ? (
@@ -352,8 +352,8 @@ export default function VendorBilling() {
 
 
         {/* ── how it works ── */}
-        <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-5">
-          <p className="text-base font-medium text-slate-800 mb-4">How It Works</p>
+        <div className="bg-white border border-gray-200 rounded-xl  p-5">
+          <p className="text-sm font-medium text-slate-800 mb-4">How It Works</p>
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Select Plan',               color: '#2e7d32', icon: <Package2 className="w-4 h-4" /> },
@@ -363,15 +363,15 @@ export default function VendorBilling() {
               { label: 'Email & WhatsApp Alert',     color: '#00695c', icon: <BadgeCheck className="w-4 h-4" /> },
             ].map((s, i) => (
               <div key={s.label} className="flex items-center gap-2">
-                {i > 0 && <ChevronRight className="w-3.5 h-3.5 text-gray-300" />}
+                {i > 0 && <ChevronRight className="w-3.5 h-3.5 text-gray-500" />}
                 <div className="flex items-center gap-1.5 bg-gray-50 border border-gray-100 rounded-xl px-3 py-1.5">
                   <span style={{ color: s.color }}>{s.icon}</span>
-                  <span className="text-base text-slate-800">{s.label}</span>
+                  <span className="text-sm text-slate-800">{s.label}</span>
                 </div>
               </div>
             ))}
           </div>
-          <p className="text-base text-slate-500 mt-4 flex items-center gap-1.5">
+          <p className="text-sm text-slate-700 mt-4 flex items-center gap-1.5">
             <Lock className="w-3 h-3" />
             All transactions secured and encrypted by Razorpay
           </p>

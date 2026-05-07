@@ -16,51 +16,63 @@
 
 body {
   background: var(--background);
-  color: var(--foreground);
+  color: #0f172a; /* Near Black for maximum clarity */
   font-family: var(--font-open-sans), sans-serif;
   -webkit-font-smoothing: antialiased;
-  letter-spacing: -0.025em; /* Closer spacing as requested */
+  letter-spacing: 0;
 }
 
 @layer base {
-  /* Soft UI Typography */
+  /* High-Contrast Typography */
   h1, h2, h3, h4, h5, h6 {
-    font-weight: 600;
-    color: #1e293b;
-    letter-spacing: -0.025em;
+    font-weight: 700;
+    color: #000000; /* Pure black for headings */
+    letter-spacing: 0;
   }
 
   p, span, div, label, input, button {
-    font-weight: 500; 
-    font-size: 1rem; 
-    letter-spacing: -0.025em;
+    font-weight: 600; 
+    font-size: 15px; /* Slightly larger as requested */
+    letter-spacing: 0;
+    color: #0f172a;
   }
 
   strong, .font-semibold {
-    font-weight: 600;
+    font-weight: 700;
   }
 }
 
-/* Soft UI Card (from image) */
+/* Professional UI Card - Flat with borders */
 .simple-card, .bg-white.rounded-2xl, .bg-white.rounded-3xl {
   background: white;
-  border: none !important;
-  border-radius: 1rem;
-  box-shadow: 0 20px 27px 0 rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-light);
+  box-shadow: none !important;
   transition: all 0.3s ease;
+  border-radius: 2.5rem !important; /* Standardized high radius as per image 5 */
 }
 
-.simple-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 20px 27px 0 rgba(0, 0, 0, 0.08);
+.simple-card:hover, .bg-white.rounded-2xl:hover {
+  transform: translateY(-1px);
+}
+
+/* Dark Section Typography Fix */
+[class*="bg-[#164e33]"] p, [class*="bg-[#164e33]"] span, [class*="bg-[#164e33]"] h1, [class*="bg-[#164e33]"] h2, [class*="bg-[#164e33]"] h3, [class*="bg-[#164e33]"] h4,
+[class*="bg-[#062d1d]"] p, [class*="bg-[#062d1d]"] span, [class*="bg-[#062d1d]"] h1, [class*="bg-[#062d1d]"] h2, [class*="bg-[#062d1d]"] h3, [class*="bg-[#062d1d]"] h4,
+[class*="bg-[#0d3a26]"] p, [class*="bg-[#0d3a26]"] span, [class*="bg-[#0d3a26]"] h1, [class*="bg-[#0d3a26]"] h2, [class*="bg-[#0d3a26]"] h3, [class*="bg-[#0d3a26]"] h4 {
+  color: white !important;
+}
+
+[class*="bg-[#164e33]"] *, [class*="bg-[#062d1d]"] *, [class*="bg-[#0d3a26]"] * {
+  border-color: rgba(255, 255, 255, 0.1) !important;
 }
 
 /* Sidebar Specific */
 .sidebar-active-link {
   background: white;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--border-light);
   color: #344767;
   font-weight: 600;
+  box-shadow: none !important;
 }
 
 /* Animation: Minimal fade */

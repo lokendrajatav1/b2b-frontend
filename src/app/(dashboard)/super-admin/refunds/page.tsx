@@ -60,25 +60,25 @@ export default function AdminRefunds() {
                 <Briefcase className="w-5 h-5" />
              </div>
            </h1>
-           <p className="text-slate-700 font-medium mt-1 text-base">Review, approve, or reject vendor refund requests globally.</p>
+           <p className="text-slate-700 font-medium mt-1 text-sm">Review, approve, or reject vendor refund requests globally.</p>
         </div>
 
-        <button onClick={fetchRefunds} className="p-2.5 bg-white border border-gray-200 rounded-xl text-slate-500 hover:text-[#164e33] hover:bg-[#164e33]/5 transition-all shadow-sm">
+        <button onClick={fetchRefunds} className="p-2.5 bg-white border border-gray-200 rounded-xl text-slate-700 hover:text-[#164e33] hover:bg-[#164e33]/5 transition-all ">
            <RefreshCcw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
         </button>
       </div>
 
       <div className="max-w-7xl mx-auto">
-         <div className="bg-white rounded-xl border border-gray-200 shadow-sm relative w-full">
+         <div className="bg-white rounded-xl border border-gray-200  relative w-full">
             <div className="overflow-x-auto w-full no-scrollbar">
                <table className="w-full text-left whitespace-nowrap min-w-[800px]">
                <thead>
                   <tr className="bg-gray-50/50 border-b border-gray-100">
-                     <th className="px-6 py-4 text-base font-semibold text-slate-500 uppercase ">Date / Vendor</th>
-                     <th className="px-6 py-4 text-base font-semibold text-slate-500 uppercase ">Transaction ID</th>
-                     <th className="px-6 py-4 text-base font-semibold text-slate-500 uppercase ">Amount</th>
-                     <th className="px-6 py-4 text-base font-semibold text-slate-500 uppercase ">Reason</th>
-                     <th className="px-6 py-4 text-base font-semibold text-slate-500 uppercase ">Status / Action</th>
+                     <th className="px-6 py-4 text-sm font-semibold text-slate-700 uppercase ">Date / Vendor</th>
+                     <th className="px-6 py-4 text-sm font-semibold text-slate-700 uppercase ">Transaction ID</th>
+                     <th className="px-6 py-4 text-sm font-semibold text-slate-700 uppercase ">Amount</th>
+                     <th className="px-6 py-4 text-sm font-semibold text-slate-700 uppercase ">Reason</th>
+                     <th className="px-6 py-4 text-sm font-semibold text-slate-700 uppercase ">Status / Action</th>
                   </tr>
                </thead>
                <tbody className="divide-y divide-gray-50">
@@ -93,30 +93,30 @@ export default function AdminRefunds() {
                         <tr key={refund.id} className="group hover:bg-gray-50/50 transition-colors">
                            <td className="px-6 py-4">
                              <div className="flex flex-col gap-1">
-                               <span className="text-base font-semibold text-slate-800 flex items-center gap-1.5">
-                                 <Clock className="w-3 h-3 text-slate-500" />
+                               <span className="text-sm font-semibold text-slate-800 flex items-center gap-1.5">
+                                 <Clock className="w-3 h-3 text-slate-700" />
                                  {new Date(refund.createdAt).toLocaleDateString()}
                                </span>
-                               <span className="text-base font-semibold uppercase  text-slate-400">
+                               <span className="text-sm font-semibold uppercase  text-slate-600">
                                  Vendor: {refund.vendorId}
                                </span>
                              </div>
                            </td>
-                           <td className="px-6 py-4 text-base font-semibold text-[#164e33]">
+                           <td className="px-6 py-4 text-sm font-semibold text-[#164e33]">
                              {refund.transactionId}
                            </td>
                            <td className="px-6 py-4">
-                              <span className="flex items-center gap-1 text-base font-semibold text-slate-900">
-                                <IndianRupee className="w-3.5 h-3.5 text-slate-500" />
+                              <span className="flex items-center gap-1 text-sm font-semibold text-slate-900">
+                                <IndianRupee className="w-3.5 h-3.5 text-slate-700" />
                                 {refund.amount.toLocaleString()}
                               </span>
                            </td>
-                           <td className="px-6 py-4 text-base font-medium text-slate-700 max-w-[250px]">
+                           <td className="px-6 py-4 text-sm font-medium text-slate-700 max-w-[250px]">
                              {refund.reason}
                            </td>
                            <td className="px-6 py-4">
                               <div className="flex items-center justify-between gap-4">
-                                 <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-base font-semibold uppercase  ${
+                                 <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-sm font-semibold uppercase  ${
                                     refund.status === 'PENDING' ? 'bg-amber-50 text-amber-700 border border-amber-100' :
                                     refund.status === 'APPROVED' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' :
                                     'bg-rose-50 text-rose-700 border border-rose-100'
@@ -154,7 +154,7 @@ export default function AdminRefunds() {
                      <tr>
                         <td colSpan={5} className="py-24 text-center">
                            <Briefcase className="w-16 h-16 text-gray-200 mx-auto mb-4" />
-                           <p className="text-base font-semibold text-slate-500">No pending refunds.</p>
+                           <p className="text-sm font-semibold text-slate-700">No pending refunds.</p>
                         </td>
                      </tr>
                   )}

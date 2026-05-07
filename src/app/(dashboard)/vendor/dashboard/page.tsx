@@ -143,7 +143,7 @@ export default function VendorDashboard() {
              {/* Center Spinner for Visual Feedback */}
              <div className="flex flex-col items-center gap-4 z-10">
                 <div className="w-12 h-12 border-4 border-[#164e33]/10 border-t-[#164e33] rounded-full animate-spin"></div>
-                <p className="text-[#164e33] font-semibold text-sm uppercase tracking-widest animate-pulse">Synchronizing Data...</p>
+                <p className="text-[#164e33] font-semibold text-sm uppercase  animate-pulse">Synchronizing Data...</p>
              </div>
              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-50/30 to-transparent animate-shimmer"></div>
           </div>
@@ -169,7 +169,7 @@ export default function VendorDashboard() {
                 <ShieldCheck className="w-4 h-4" />
               </div>
             </h1>
-            <p className="text-slate-700 font-medium text-base">
+            <p className="text-slate-700 font-medium text-sm">
               {profile?.verified 
                 ? "Your business is visible to thousands of buyers right now." 
                 : "We're reviewing your profile to get you verified and ready."}
@@ -179,14 +179,14 @@ export default function VendorDashboard() {
         <div className="flex flex-wrap items-center gap-4">
             <Link 
               href="/vendor/products" 
-              className="px-5 py-2.5 bg-[#164e33] text-white rounded-2xl font-semibold text-base flex items-center gap-2 hover:bg-[#113f29] transition-all shadow-sm"
+              className="px-5 py-2.5 bg-[#164e33] text-white rounded-2xl font-semibold text-sm flex items-center gap-2 hover:bg-[#113f29] transition-all "
             >
                 <PlusCircle className="w-4 h-4" />
                 Add New Listing
             </Link>
             <Link 
               href="/vendor/profile" 
-              className="px-5 py-2.5 bg-white border border-gray-200 text-slate-800 rounded-2xl font-semibold text-base hover:bg-gray-50 transition-all"
+              className="px-5 py-2.5 bg-white border border-gray-200 text-slate-800 rounded-2xl font-semibold text-sm hover:bg-gray-50 transition-all"
             >
                 Update Profile
             </Link>
@@ -201,7 +201,7 @@ export default function VendorDashboard() {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: i * 0.1 }}
-            className="bg-white p-6 rounded-2xl border border-gray-100 group hover:border-blue-200 hover:shadow-md transition-all duration-300"
+            className="bg-white p-6 rounded-2xl border border-gray-100 group hover:border-blue-200 hover: transition-all duration-300"
           >
             <div className={`w-10 h-10 ${
               stat.color === 'blue' ? 'bg-[#164e33]/10 text-[#164e33] border-[#164e33]/20' :
@@ -211,9 +211,9 @@ export default function VendorDashboard() {
             } rounded-xl flex items-center justify-center mb-4 border group-hover:scale-110 transition-transform`}>
               <stat.icon className="w-5 h-5" />
             </div>
-            <p className="text-base font-semibold text-slate-700 mb-1">{stat.label}</p>
+            <p className="text-sm font-semibold text-slate-700 mb-1">{stat.label}</p>
             <h3 className="text-2xl font-semibold text-slate-900">{stat.value}</h3>
-            <p className="text-base font-medium text-slate-500 mt-1">{stat.desc}</p>
+            <p className="text-sm font-medium text-slate-700 mt-1">{stat.desc}</p>
           </motion.div>
         ))}
       </div>
@@ -223,28 +223,28 @@ export default function VendorDashboard() {
         {/* Recent Activity Feed */}
         <div className="lg:col-span-2 space-y-6">
           <div className="flex items-center justify-between">
-            <h3 className="text-base font-semibold text-slate-900 flex items-center gap-2">
+            <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
                <Activity className="w-4 h-4 text-[#164e33]" />
                Recent Activity
             </h3>
-            <Link href="/vendor/leads" className="text-base font-semibold text-[#164e33] hover:text-[#113f29] transition-colors">See All Leads</Link>
+            <Link href="/vendor/leads" className="text-sm font-semibold text-[#164e33] hover:text-[#113f29] transition-colors">See All Leads</Link>
           </div>
           
-          <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
+          <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden ">
             {leads.length > 0 ? leads.map((lead: any, idx) => (
               <div key={lead.id} className={`p-6 ${idx !== leads.length - 1 ? 'border-b border-gray-50' : ''} hover:bg-gray-50/50 transition-all group`}>
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-gray-100 rounded-2xl flex items-center justify-center font-semibold text-lg text-slate-700 border border-gray-200 group-hover:bg-[#164e33]/10 group-hover:text-[#164e33] group-hover:border-[#164e33]/20 transition-all">
+                    <div className="w-12 h-12 bg-gray-100 rounded-2xl flex items-center justify-center font-semibold text-base text-slate-700 border border-gray-200 group-hover:bg-[#164e33]/10 group-hover:text-[#164e33] group-hover:border-[#164e33]/20 transition-all">
                       {lead.buyerName.charAt(0)}
                     </div>
                     <div className="space-y-1">
-                      <h4 className="text-base font-semibold text-slate-900">{lead.buyerName}</h4>
+                      <h4 className="text-sm font-semibold text-slate-900">{lead.buyerName}</h4>
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="text-base font-medium text-slate-700 flex items-center gap-1">
+                        <span className="text-sm font-medium text-slate-700 flex items-center gap-1">
                           <MapPin className="w-3 h-3" /> {lead.city}
                         </span>
-                        <div className="px-2 py-0.5 bg-[#164e33]/10 text-[#164e33] rounded-2xl text-base font-semibold border border-[#164e33]/20">
+                        <div className="px-2 py-0.5 bg-[#164e33]/10 text-[#164e33] rounded-2xl text-sm font-semibold border border-[#164e33]/20">
                           {lead.category?.name}
                         </div>
                       </div>
@@ -253,12 +253,12 @@ export default function VendorDashboard() {
 
                   <div className="flex items-center gap-4">
                     <div className="text-right hidden md:block">
-                       <p className="text-base font-medium text-slate-500">Received</p>
-                       <p className="text-base font-semibold text-slate-800">{new Date(lead.createdAt).toLocaleDateString()}</p>
+                       <p className="text-sm font-medium text-slate-700">Received</p>
+                       <p className="text-sm font-semibold text-slate-800">{new Date(lead.createdAt).toLocaleDateString()}</p>
                     </div>
                     <Link 
                       href={`/vendor/leads?id=${lead.id}`}
-                      className="px-4 py-2 bg-white border border-gray-200 rounded-2xl text-base font-semibold text-slate-800 hover:bg-gray-50 hover:text-slate-900 transition-all flex items-center gap-1.5"
+                      className="px-4 py-2 bg-white border border-gray-200 rounded-2xl text-sm font-semibold text-slate-800 hover:bg-gray-50 hover:text-slate-900 transition-all flex items-center gap-1.5"
                     >
                       Reply to Lead
                     </Link>
@@ -268,21 +268,21 @@ export default function VendorDashboard() {
             )) : (
               <div className="p-16 text-center space-y-3">
                 <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center mx-auto border border-gray-100">
-                  <LayoutGrid className="w-6 h-6 text-gray-300" />
+                  <LayoutGrid className="w-6 h-6 text-gray-500" />
                 </div>
-                <p className="text-base font-semibold text-slate-700">You don't have any leads yet.</p>
+                <p className="text-sm font-semibold text-slate-700">You don't have any leads yet.</p>
               </div>
             )}
           </div>
 
           {/* Lead Analytics Chart */}
-          <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm group">
+          <div className="bg-white rounded-2xl border border-gray-100 p-6  group">
              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-base font-semibold text-slate-900 flex items-center gap-2">
+                <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
                    <BarChart3 className="w-5 h-5 text-[#164e33]" />
                    Lead Performance Analytics
                 </h3>
-                <span className="text-sm font-medium text-slate-500">Last 6 Months</span>
+                <span className="text-sm font-medium text-slate-700">Last 6 Months</span>
              </div>
              
              <div className="h-72 w-full">
@@ -315,11 +315,11 @@ export default function VendorDashboard() {
           </div>
 
           {/* Business Insights Snapshot - Refined */}
-          <div className="bg-[#164e33] rounded-2xl p-6 relative overflow-hidden group shadow-md mt-6">
+          <div className="bg-[#164e33] rounded-2xl p-6 relative overflow-hidden group  mt-6">
              <div className="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-white opacity-5 rounded-full blur-2xl group-hover:bg-[#ffca28] transition-all duration-700"></div>
              <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div className="space-y-3">
-                    <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+                    <h3 className="text-base font-semibold text-white flex items-center gap-2">
                       <Zap className="w-5 h-5 text-[#ffca28]" />
                       Category Ranking: {analytics?.categoryRank || '#--'}
                     </h3>
@@ -330,13 +330,13 @@ export default function VendorDashboard() {
                 </div>
                 <div className="flex items-center gap-6 bg-[#113f29] p-4 rounded-2xl border border-emerald-600/50">
                     <div className="text-center">
-                        <p className="text-xs font-semibold text-emerald-200 uppercase tracking-wider mb-1">Your Score</p>
-                        <p className="text-xl font-bold text-white">{stats.rankingScore.toFixed(1)}</p>
+                        <p className="text-xs font-semibold text-emerald-200 uppercase  mb-1">Your Score</p>
+                        <p className="text-lg font-bold text-white">{stats.rankingScore.toFixed(1)}</p>
                     </div>
                     <div className="w-px h-8 bg-emerald-600/50"></div>
                     <div className="text-center">
-                        <p className="text-xs font-semibold text-emerald-200 uppercase tracking-wider mb-1">Category Avg</p>
-                        <p className="text-xl font-bold text-emerald-100">{(analytics?.categoryBenchmark || 0).toFixed(1)}</p>
+                        <p className="text-xs font-semibold text-emerald-200 uppercase  mb-1">Category Avg</p>
+                        <p className="text-lg font-bold text-emerald-100">{(analytics?.categoryBenchmark || 0).toFixed(1)}</p>
                     </div>
                 </div>
              </div>
@@ -346,10 +346,10 @@ export default function VendorDashboard() {
         {/* Sidebar Context */}
         <div className="space-y-6">
            {/* Profile Connectivity */}
-           <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-6">
+           <div className="bg-white rounded-2xl border border-gray-100 p-6  space-y-6">
               <div className="flex items-center justify-between">
-                 <h3 className="text-base font-semibold text-slate-900">Social Links</h3>
-                 <Globe className="w-4 h-4 text-slate-500" />
+                 <h3 className="text-sm font-semibold text-slate-900">Social Links</h3>
+                 <Globe className="w-4 h-4 text-slate-700" />
               </div>
               
               <div className="space-y-3">
@@ -361,9 +361,9 @@ export default function VendorDashboard() {
                     <div key={social.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-2xl border border-gray-100 hover:border-[#164e33]/30 transition-all">
                        <div className="flex items-center gap-2.5 shrink-0">
                           <social.icon className={`w-4 h-4 ${social.color}`} />
-                          <span className="text-base font-semibold text-slate-800 capitalize">{social.id}</span>
+                          <span className="text-sm font-semibold text-slate-800 capitalize">{social.id}</span>
                        </div>
-                       <span className="text-base font-medium text-slate-700 truncate ml-2 text-right">
+                       <span className="text-sm font-medium text-slate-700 truncate ml-2 text-right">
                           {profile?.socialLinks?.[social.id] ? `@${profile.socialLinks[social.id]}` : 'Not Linked'}
                        </span>
                     </div>
@@ -371,11 +371,11 @@ export default function VendorDashboard() {
               </div>
 
               <div className="pt-4 border-t border-gray-50 space-y-2">
-                 <div className="flex items-center justify-between text-base font-semibold text-slate-700">
+                 <div className="flex items-center justify-between text-sm font-semibold text-slate-700">
                    <span>Business Location</span>
                    <MapPin className="w-3 h-3" />
                  </div>
-                 <p className="text-base font-medium text-slate-800">
+                 <p className="text-sm font-medium text-slate-800">
                    {profile?.address || "Address not provided"}
                    {profile?.city && <><br /><span className="text-slate-900 font-semibold">{profile.city}</span></>}
                  </p>
@@ -384,16 +384,16 @@ export default function VendorDashboard() {
 
            {/* Quick Support / Feedback */}
            <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100 space-y-4">
-              <div className="w-10 h-10 bg-white rounded-2xl flex items-center justify-center text-slate-800 shadow-sm border border-gray-100">
+              <div className="w-10 h-10 bg-white rounded-2xl flex items-center justify-center text-slate-800  border border-gray-100">
                  <MessageSquare className="w-5 h-5" />
               </div>
               <div>
-                 <h4 className="text-base font-semibold text-slate-900 mb-1">Need some help?</h4>
-                 <p className="text-base font-medium text-slate-800">
+                 <h4 className="text-sm font-semibold text-slate-900 mb-1">Need some help?</h4>
+                 <p className="text-sm font-medium text-slate-800">
                    Our support team is always here to help you get the most out of your profile.
                  </p>
               </div>
-              <button className="w-full py-2.5 bg-white border border-gray-200 rounded-2xl text-base font-semibold text-slate-800 hover:bg-gray-100 hover:text-slate-900 transition-all">
+              <button className="w-full py-2.5 bg-white border border-gray-200 rounded-2xl text-sm font-semibold text-slate-800 hover:bg-gray-100 hover:text-slate-900 transition-all">
                 Contact Support
               </button>
            </div>

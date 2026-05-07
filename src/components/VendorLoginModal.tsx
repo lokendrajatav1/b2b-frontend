@@ -5,17 +5,16 @@ import { useAuth } from '@/context/AuthContext';
 import { apiFetch } from '@/lib/api';
 import { 
   X, 
-  MapPin, 
   ShieldCheck, 
-  FileText,
-  Clock,
+  MapPin, 
+  Star, 
+  Shield, 
+  Lock, 
+  ArrowRight, 
+  Zap,
   Loader2,
-  ArrowRight,
   CheckCircle2,
-  Phone,
-  Building2,
-  Star,
-  Shield
+  Building2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -75,7 +74,6 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
     setLoading(true);
     setError('');
     try {
-      // Authenticate
       const data = await apiFetch('/auth/verify-otp', {
         method: 'POST',
         body: JSON.stringify({ phone, otp }),
@@ -92,113 +90,125 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-gray-900/70 backdrop-blur-sm">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-gray-900/70 backdrop-blur-sm font-sans">
       <motion.div 
         initial={{ opacity: 0, scale: 0.95, y: 10 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 10 }}
-        className="w-full max-w-2xl bg-white rounded-[2rem] shadow-2xl overflow-hidden relative flex flex-col md:flex-row"
+        className="max-w-4xl w-full bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row border border-gray-100 relative"
       >
+        {/* Close Button */}
         <button 
-            onClick={onClose} 
-            className="absolute top-4 right-4 p-2 text-slate-500 hover:text-slate-900 hover:bg-gray-100 rounded-full transition-colors z-[60]"
+          onClick={onClose}
+          className="absolute right-6 top-6 text-gray-400 hover:text-gray-600 transition-colors z-50 p-2 hover:bg-gray-50 rounded-full"
         >
-            <X className="w-5 h-5" />
+          <X size={24} />
         </button>
 
-        {/* Left Section: Vendor Branding & Details */}
-        <div className="md:w-[280px] shrink-0 bg-[#f8fafc] border-r border-gray-100 flex flex-col overflow-hidden">
-            <div className="w-full h-48 bg-white border-b border-gray-100 flex items-center justify-center overflow-hidden relative">
-                {vendor.logoUrl ? (
-                    <img
-                        src={vendor.logoUrl}
-                        alt={vendor.businessName}
-                        className="w-full h-full object-cover"
-                    />
-                ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-[#164e33]/10 to-[#164e33]/5 flex items-center justify-center">
-                        <Building2 className="w-20 h-20 text-[#164e33]/20" />
-                        <span className="absolute text-5xl font-bold text-[#164e33] opacity-20">{vendor.businessName.charAt(0)}</span>
-                    </div>
-                )}
-                <div className="absolute top-3 left-3">
-                    <span className="bg-[#1b5e20] text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm flex items-center gap-1.5">
-                        <ShieldCheck className="w-3.5 h-3.5" /> Supplier
-                    </span>
+        {/* Left Side: Business Info */}
+        <div className="w-full md:w-5/12 p-8 bg-white relative border-r border-gray-50">
+          {/* Top Badge */}
+          <div className="inline-flex items-center gap-1 bg-[#006d3c] text-white px-3 py-1 rounded-lg text-sm font-semibold mb-6">
+            <ShieldCheck size={16} />
+            <span>Supplier</span>
+          </div>
+
+          {/* Business Logo Placeholder */}
+          <div className="w-24 h-24 bg-[#f0f9f4] border border-[#e0f2e9] rounded-2xl flex items-center justify-center mb-8 overflow-hidden shadow-sm">
+            {vendor.logoUrl ? (
+                <img src={vendor.logoUrl} alt={vendor.businessName} className="w-full h-full object-cover" />
+            ) : (
+                <div className="text-[#89b39d] opacity-50">
+                    <Building2 size={48} strokeWidth={1.5} />
                 </div>
+            )}
+          </div>
+
+          <div className="space-y-4">
+            <p className="text-[#006d3c] font-bold text-xs uppercase tracking-wider">{vendor.category?.name || 'Business Service'}</p>
+            <h1 className="text-3xl font-extrabold text-[#1a2b3c] leading-tight">
+              {vendor.businessName}
+            </h1>
+            
+            <div className="flex items-center gap-1 text-gray-600">
+              <MapPin size={18} className="text-gray-400" />
+              <span className="text-sm font-medium">{vendor.city}, India</span>
             </div>
 
-            <div className="p-6 md:p-8 flex flex-col gap-5">
+            <div className="flex flex-wrap gap-2 pt-2">
+              <span className="flex items-center gap-1 bg-[#f0fdf4] text-[#166534] border border-[#bbf7d0] px-3 py-1 rounded-md text-xs font-semibold">
+                <Shield size={14} /> GST Registered
+              </span>
+              <span className="flex items-center gap-1 bg-[#f0fdf4] text-[#166534] border border-[#bbf7d0] px-3 py-1 rounded-md text-xs font-semibold">
+                <ShieldCheck size={14} fill="currentColor" className="text-[#166534]" /> VERIFIED
+              </span>
+            </div>
+
+            <div className="inline-block bg-[#eff6ff] text-[#1e40af] border border-[#dbeafe] px-3 py-1 rounded-md text-xs font-semibold">
+              <span className="mr-1">🕒</span> 11+ Years in Business
+            </div>
+
+            <div className="flex items-center gap-8 py-4">
+              <div className="flex items-center gap-2">
+                <Star size={24} fill="#fbbf24" className="text-[#fbbf24]" />
                 <div>
-                    <span className="text-[#164e33] text-sm font-bold uppercase block mb-1.5">
-                        {vendor.category?.name || 'Business Service'}
-                    </span>
-                    <h3 className="text-xl font-bold text-slate-900 leading-tight mb-2.5">
-                        {vendor.businessName}
-                    </h3>
-                    <div className="flex items-center text-base font-semibold text-slate-600">
-                        <MapPin className="w-4.5 h-4.5 mr-1.5 text-[#164e33]" /> {vendor.city}
-                    </div>
+                  <div className="text-xl font-bold">4.5</div>
+                  <div className="text-[10px] text-gray-500">(24 reviews)</div>
                 </div>
-
-                <div className="flex flex-wrap items-center gap-2 pt-2">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gray-50 text-slate-700 text-sm font-bold rounded border border-gray-100 uppercase">
-                        <FileText className="w-3.5 h-3.5" /> GST
-                    </span>
-                    {vendor.verified && (
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-green-50 text-green-700 text-sm font-bold rounded border border-green-100 uppercase">
-                            <ShieldCheck className="w-3.5 h-3.5" /> Verified
-                        </span>
-                    )}
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-blue-50 text-blue-700 text-sm font-bold rounded border border-blue-100 uppercase">
-                        <Clock className="w-3.5 h-3.5" /> 11 yrs
-                    </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <ShieldCheck size={24} className="text-[#006d3c]" />
+                <div>
+                  <div className="text-[10px] font-bold text-[#006d3c] uppercase tracking-tighter">Trustseal</div>
+                  <div className="text-[10px] text-gray-500 font-medium">Verified Business</div>
                 </div>
-
-                <div className="mt-6 pt-6 border-t border-gray-100">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-1.5">
-                            <Star className="w-4.5 h-4.5 fill-amber-400 text-amber-400" />
-                            <span className="text-base font-bold text-slate-900">4.5</span>
-                            <span className="text-sm text-slate-400 font-medium">(24)</span>
-                        </div>
-                        <div className="flex items-center gap-1.5 text-[#164e33]">
-                            <Shield className="w-4 h-4" />
-                            <span className="text-sm font-bold uppercase">TrustSeal</span>
-                        </div>
-                    </div>
-                </div>
+              </div>
             </div>
+
+            <div className="bg-gray-50 p-3 rounded-xl border border-gray-100 flex items-center gap-3">
+              <div className="bg-white p-2 rounded-full shadow-sm">
+                <ShieldCheck size={20} className="text-gray-700" />
+              </div>
+              <p className="text-[11px] text-gray-600 leading-tight">
+                Your information is secure<br /><span className="font-semibold">and encrypted</span>
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* Right Section: Verification Form */}
-        <div className="flex-1 p-8 md:p-12 flex flex-col justify-center bg-white relative">
-            <div className="mb-10">
-                <h3 className="text-3xl font-bold text-slate-900 mb-3 leading-tight">Connect with this Supplier</h3>
-                <p className="text-lg font-medium text-slate-600">We just need to verify your mobile number to get started.</p>
-            </div>
+        {/* Right Side: Form */}
+        <div className="w-full md:w-7/12 p-10 bg-white flex flex-col justify-center">
+          <div className="mt-4">
+            <h2 className="text-[40px] font-bold text-[#111827] leading-[1.1] mb-2">
+              Connect with this<br />Supplier
+            </h2>
+            <div className="w-12 h-1 bg-[#006d3c] mb-6 mt-4"></div>
+            
+            <p className="text-gray-500 text-lg mb-8 leading-relaxed">
+              {otpSent ? `Enter the 6-digit code sent to +91 ${phone}` : 'We just need to verify your mobile number to get started.'}
+            </p>
 
             {error && (
-                <motion.div 
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mb-8 p-4.5 bg-red-50 text-red-600 text-base font-bold border border-red-100 rounded-2xl flex items-center gap-3"
-                >
-                    <div className="w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse" />
-                    {error}
-                </motion.div>
+                <div className="mb-6 p-4 bg-red-50 text-red-600 text-sm font-bold border border-red-100 rounded-xl flex items-center gap-2 animate-shake">
+                    <X size={16} /> {error}
+                </div>
             )}
 
-            <form onSubmit={otpSent ? handleVerifyOTP : handleRequestOTP} className="space-y-8">
+            <form onSubmit={otpSent ? handleVerifyOTP : handleRequestOTP}>
                 {!otpSent ? (
-                    <div className="space-y-5">
-                        <div className="relative group">
-                            <div className="absolute left-5 top-1/2 -translate-y-1/2 flex items-center gap-3 border-r border-gray-200 pr-4 z-10">
-                                <img src="https://flagcdn.com/w20/in.png" alt="India" className="w-6 h-auto rounded-lg" />
-                                <span className="text-lg font-bold text-slate-700">+91</span>
+                    <>
+                        <div className="flex items-stretch border-2 border-gray-200 rounded-xl overflow-hidden focus-within:border-[#006d3c] transition-all mb-8 bg-white shadow-sm">
+                            <div className="flex items-center gap-2 px-4 py-4 bg-gray-50 border-r border-gray-200 cursor-pointer">
+                                <img 
+                                src="https://flagcdn.com/w40/in.png" 
+                                alt="India Flag" 
+                                className="w-6 h-4 object-cover rounded-sm"
+                                />
+                                <span className="font-bold text-gray-700">+91</span>
+                                <span className="text-gray-400 text-xs mt-1">▼</span>
                             </div>
-                            <input
-                                type="tel"
+                            <input 
+                                type="tel" 
                                 required
                                 pattern="[0-9]{10}"
                                 value={phone}
@@ -206,69 +216,73 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
                                     const val = e.target.value.replace(/[^0-9]/g, '');
                                     if (val.length <= 10) setPhone(val);
                                 }}
-                                className="w-full pl-28 pr-6 py-5 bg-gray-50 border border-gray-200 rounded-2xl outline-none focus:border-[#164e33] focus:bg-white focus:ring-4 focus:ring-[#164e33]/5 text-xl font-bold text-slate-900 transition-all placeholder:text-slate-400 placeholder:font-medium"
-                                placeholder="Enter your Mobile"
+                                placeholder="Enter your mobile number" 
+                                className="w-full px-4 py-4 text-lg focus:outline-none placeholder:text-gray-300 font-bold"
                             />
                         </div>
-                        <p className="text-base text-slate-600 font-semibold flex items-center gap-2 px-1">
-                            <CheckCircle2 className="w-4.5 h-4.5 text-emerald-500" /> Verified suppliers get your requirement instantly.
-                        </p>
-                    </div>
-                ) : (
-                    <motion.div 
-                        initial={{ opacity: 0, scale: 0.98 }} 
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="space-y-6"
-                    >
-                        <div className="bg-emerald-50 rounded-2xl p-5 flex items-center justify-between border border-emerald-100 shadow-sm">
-                           <div className="flex flex-col">
-                             <span className="text-sm text-emerald-800 font-bold uppercase mb-1">OTP sent to +91 {phone}</span>
-                             <span className="text-emerald-950 font-bold text-base">Enter the code below</span>
-                           </div>
-                           <button type="button" onClick={() => setOtpSent(false)} className="text-emerald-700 hover:text-emerald-900 text-sm font-bold underline decoration-2 underline-offset-4 transition-all">Edit Number</button>
+
+                        <div className="flex items-start gap-4 mb-10">
+                            <div className="mt-1 bg-[#f0fdf4] p-2 rounded-full">
+                                <Zap size={20} className="text-[#22c55e]" fill="#22c55e" />
+                            </div>
+                            <div className="space-y-1">
+                                <p className="font-bold text-[#111827] text-sm">
+                                Verified suppliers get your requirement instantly.
+                                </p>
+                                <p className="text-xs text-gray-400 leading-relaxed font-medium">
+                                Your number will only be used for verification and will not be shared.
+                                </p>
+                            </div>
                         </div>
-                        <input
-                            type="text"
-                            maxLength={6}
-                            required
-                            autoFocus
-                            value={otp}
-                            onChange={(e) => setOtp(e.target.value.replace(/[^0-9]/g, ''))}
-                            className="w-full px-6 py-5 bg-white border-2 border-emerald-100 rounded-2xl outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 text-center text-4xl font-black text-slate-900 transition-all tracking-[0.5em] shadow-inner"
-                            placeholder="••••••"
-                        />
-                    </motion.div>
+                    </>
+                ) : (
+                    <div className="mb-8">
+                        <div className="relative group">
+                            <input
+                                type="text"
+                                maxLength={6}
+                                required
+                                autoFocus
+                                value={otp}
+                                onChange={(e) => setOtp(e.target.value.replace(/[^0-9]/g, ''))}
+                                className="w-full px-6 py-5 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-[#006d3c] text-center text-4xl font-black text-slate-900 transition-all tracking-[0.5em] shadow-inner"
+                                placeholder="••••••"
+                            />
+                        </div>
+                        <button 
+                            type="button" 
+                            onClick={() => setOtpSent(false)} 
+                            className="mt-4 text-[#006d3c] text-sm font-bold hover:underline"
+                        >
+                            Change Phone Number
+                        </button>
+                    </div>
                 )}
 
-                <button
+                <button 
                     type="submit"
                     disabled={loading || (!otpSent && phone.length !== 10) || (otpSent && otp.length !== 6)}
-                    className={`w-full py-5 rounded-2xl font-bold text-white transition-all shadow-lg hover:shadow-xl active:scale-[0.98] flex items-center justify-center gap-3 text-lg ${
-                        otpSent 
-                            ? 'bg-emerald-600 hover:bg-emerald-700' 
-                            : 'bg-[#164e33] hover:bg-[#113f29]'
-                    } disabled:opacity-50 disabled:shadow-none disabled:active:scale-100`}
+                    className="w-full bg-[#0d824d] hover:bg-[#0a6b3f] text-white py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-3 shadow-lg shadow-green-100 transition-all active:scale-[0.98] disabled:opacity-50"
                 >
                     {loading ? (
-                        <Loader2 className="w-7 h-7 animate-spin" />
+                        <Loader2 className="w-6 h-6 animate-spin" />
                     ) : (
-                        otpSent ? (
-                            <>Verify & Connect <CheckCircle2 className="w-6 h-6" /></>
-                        ) : (
-                            <>Continue <ArrowRight className="w-6 h-6" /></>
-                        )
+                        <>
+                            {otpSent ? <CheckCircle2 size={20} /> : <Lock size={20} />}
+                            {otpSent ? 'Verify & Connect' : 'Continue'}
+                            <ArrowRight size={20} />
+                        </>
                     )}
                 </button>
             </form>
 
-            <div className="mt-12 pt-8 border-t border-gray-50">
-                <p className="text-center text-base text-slate-500 font-bold leading-relaxed">
-                    By logging in, you agree to our <a href="#" className="text-slate-800 hover:underline">Terms of Service</a> and <a href="#" className="text-slate-800 hover:underline">Privacy Policy</a>.
-                </p>
-            </div>
+            <p className="mt-8 text-center text-[11px] text-gray-500 font-medium">
+              By logging in, you agree to our <br />
+              <a href="#" className="text-[#0d824d] font-bold underline">Terms of Service</a> and <a href="#" className="text-[#0d824d] font-bold underline">Privacy Policy.</a>
+            </p>
+          </div>
         </div>
       </motion.div>
     </div>
   );
 }
-

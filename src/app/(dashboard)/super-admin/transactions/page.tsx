@@ -57,7 +57,7 @@ export default function AdminTransactions() {
       case 'SUCCESS': return 'bg-emerald-50 text-emerald-600 border-emerald-100';
       case 'PENDING': return 'bg-amber-50 text-amber-600 border-amber-100';
       case 'FAILED': return 'bg-red-50 text-red-600 border-red-100';
-      default: return 'bg-slate-50 text-slate-500 border-slate-100';
+      default: return 'bg-slate-50 text-slate-700 border-slate-100';
     }
   };
 
@@ -76,22 +76,22 @@ export default function AdminTransactions() {
               <CreditCard className="w-5 h-5" />
             </div>
           </h1>
-          <p className="text-slate-700 font-medium mt-1 text-base">Audit platform revenue and vendor subscriptions.</p>
+          <p className="text-slate-700 font-medium mt-1 text-sm">Audit platform revenue and vendor subscriptions.</p>
         </div>
         
         <div className="flex items-center gap-3">
            <div className="relative">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-700" />
               <input 
                 type="text" 
                 placeholder="Search by vendor..."
                 value={searchVendor}
                 onChange={(e) => setSearchVendor(e.target.value)}
-                className="pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-base font-medium w-64 outline-none focus:border-blue-500 focus:bg-white transition-all focus:ring-2 focus:ring-blue-100"
+                className="pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium w-64 outline-none focus:border-blue-500 focus:bg-white transition-all focus:ring-2 focus:ring-blue-100"
               />
            </div>
            
-           <button onClick={fetchTransactions} className="p-2 bg-white border border-gray-200 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-gray-50 transition-all shadow-sm">
+           <button onClick={fetchTransactions} className="p-2 bg-white border border-gray-200 rounded-xl text-slate-700 hover:text-slate-800 hover:bg-gray-50 transition-all ">
              <RefreshCcw className={`w-5 h-5 ${loading ? 'animate-spin' : ''}`} />
            </button>
         </div>
@@ -104,9 +104,9 @@ export default function AdminTransactions() {
            { label: 'Total Transactions', value: stats.count, icon: CreditCard, bg: 'bg-[#164e33]/5', text: 'text-[#164e33]' },
            { label: 'Pending Settlement', value: stats.pending, icon: Clock, bg: 'bg-amber-50', text: 'text-amber-600' }
          ].map((s, i) => (
-           <div key={i} className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
+           <div key={i} className="bg-white p-6 rounded-xl border border-gray-200  flex items-center justify-between">
               <div>
-                 <p className="text-base font-semibold text-slate-700 uppercase  mb-1">{s.label}</p>
+                 <p className="text-sm font-semibold text-slate-700 uppercase  mb-1">{s.label}</p>
                  <h2 className="text-2xl font-semibold text-slate-900 ">{s.value}</h2>
               </div>
               <div className={`p-3 rounded-xl ${s.bg} ${s.text}`}>
@@ -118,16 +118,16 @@ export default function AdminTransactions() {
 
       {/* Ledger Table */}
       <div className="max-w-7xl mx-auto">
-        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden ">
            <div className="overflow-x-auto">
               <table className="w-full text-left whitespace-nowrap min-w-[800px]">
                  <thead>
                     <tr className="bg-gray-50/80 border-b border-gray-100">
-                       <th className="px-6 py-4 text-base font-semibold text-slate-700 uppercase ">Transaction ID</th>
-                       <th className="px-6 py-4 text-base font-semibold text-slate-700 uppercase ">Vendor</th>
-                       <th className="px-6 py-4 text-base font-semibold text-slate-700 uppercase ">Date & Method</th>
-                       <th className="px-6 py-4 text-base font-semibold text-slate-700 uppercase ">Amount</th>
-                       <th className="px-6 py-4 text-base font-semibold text-slate-700 uppercase ">Status</th>
+                       <th className="px-6 py-4 text-sm font-semibold text-slate-700 uppercase ">Transaction ID</th>
+                       <th className="px-6 py-4 text-sm font-semibold text-slate-700 uppercase ">Vendor</th>
+                       <th className="px-6 py-4 text-sm font-semibold text-slate-700 uppercase ">Date & Method</th>
+                       <th className="px-6 py-4 text-sm font-semibold text-slate-700 uppercase ">Amount</th>
+                       <th className="px-6 py-4 text-sm font-semibold text-slate-700 uppercase ">Status</th>
                     </tr>
                  </thead>
                  <tbody className="divide-y divide-gray-100">
@@ -142,30 +142,30 @@ export default function AdminTransactions() {
                     ) : filteredTransactions.map((t) => (
                       <tr key={t.id} className="hover:bg-gray-50 transition-colors group">
                          <td className="px-6 py-4">
-                            <code className="text-base font-medium text-slate-800 bg-gray-100 px-2.5 py-1 rounded inline-block">
+                            <code className="text-sm font-medium text-slate-800 bg-gray-100 px-2.5 py-1 rounded inline-block">
                               {t.razorpayPaymentId || t.id.slice(0, 12)}
                             </code>
                          </td>
                          <td className="px-6 py-4">
                             <div>
-                               <p className="text-base font-semibold text-slate-900">{t.vendor?.businessName || 'Anonymous'}</p>
-                               <p className="text-base font-medium text-slate-700">{t.vendor?.ownerName}</p>
+                               <p className="text-sm font-semibold text-slate-900">{t.vendor?.businessName || 'Anonymous'}</p>
+                               <p className="text-sm font-medium text-slate-700">{t.vendor?.ownerName}</p>
                             </div>
                          </td>
                          <td className="px-6 py-4">
                             <div className="flex flex-col">
-                               <span className="text-base font-medium text-slate-800 flex items-center gap-1.5">
-                                  <Calendar className="w-3.5 h-3.5 text-slate-500" />
+                               <span className="text-sm font-medium text-slate-800 flex items-center gap-1.5">
+                                  <Calendar className="w-3.5 h-3.5 text-slate-700" />
                                   {new Date(t.createdAt).toLocaleDateString()}
                                </span>
-                               <span className="text-base font-medium text-slate-500 ml-5 mt-0.5">Razorpay</span>
+                               <span className="text-sm font-medium text-slate-700 ml-5 mt-0.5">Razorpay</span>
                             </div>
                          </td>
                          <td className="px-6 py-4">
-                            <span className="text-base font-semibold text-slate-900">₹{t.amount}</span>
+                            <span className="text-sm font-semibold text-slate-900">₹{t.amount}</span>
                          </td>
                          <td className="px-6 py-4">
-                            <span className={`px-2.5 py-1 rounded-md text-base font-semibold uppercase  border ${getStatusColor(t.status)}`}>
+                            <span className={`px-2.5 py-1 rounded-md text-sm font-semibold uppercase  border ${getStatusColor(t.status)}`}>
                                {t.status}
                             </span>
                          </td>
@@ -176,9 +176,9 @@ export default function AdminTransactions() {
                       <tr>
                          <td colSpan={5} className="py-16 text-center text-slate-700">
                             <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-3 border border-gray-100">
-                              <CreditCard className="w-8 h-8 text-gray-300" />
+                              <CreditCard className="w-8 h-8 text-gray-500" />
                             </div>
-                            <p className="text-base font-semibold text-slate-900">No transactions found</p>
+                            <p className="text-sm font-semibold text-slate-900">No transactions found</p>
                          </td>
                       </tr>
                     )}

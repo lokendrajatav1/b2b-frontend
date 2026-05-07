@@ -95,13 +95,13 @@ export default function VendorSettings() {
                   <Settings className="w-4 h-4" />
                </div>
             </h1>
-            <p className="text-slate-700 font-medium text-base">Manage your profile, security, and notification preferences.</p>
+            <p className="text-slate-700 font-medium text-sm">Manage your profile, security, and notification preferences.</p>
         </div>
         
         <button 
             onClick={handleUpdate}
             disabled={saving}
-            className="px-5 py-2.5 bg-[#164e33] text-white rounded-xl font-semibold text-base disabled:opacity-50 flex items-center gap-2 shadow-sm hover:bg-[#113f29] transition-colors"
+            className="px-5 py-2.5 bg-[#164e33] text-white rounded-xl font-semibold text-sm disabled:opacity-50 flex items-center gap-2  hover:bg-[#113f29] transition-colors"
         >
             {saving ? <RefreshCcw className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
             Save Changes
@@ -121,10 +121,10 @@ export default function VendorSettings() {
                     onClick={() => setActiveTab(tab.id as any)}
                     className={`w-full px-4 py-3 rounded-xl text-left flex items-center gap-3 transition-colors ${ activeTab === tab.id ? 'bg-[#164e33]/5 text-slate-800 font-semibold' : 'text-slate-800 hover:bg-gray-50' }`}
                 >
-                    <tab.icon className={`w-4 h-4 ${activeTab === tab.id ? 'text-[#164e33]' : 'text-slate-500 '}`} />
+                    <tab.icon className={`w-4 h-4 ${activeTab === tab.id ? 'text-[#164e33]' : 'text-slate-700 '}`} />
                     <div className="flex flex-col">
-                        <span className="text-base font-semibold">{tab.label}</span>
-                        <span className={`text-base font-medium ${activeTab === tab.id ? 'text-slate-600' : 'text-slate-500'}`}>{tab.desc}</span>
+                        <span className="text-sm font-semibold">{tab.label}</span>
+                        <span className={`text-sm font-medium ${activeTab === tab.id ? 'text-slate-600' : 'text-slate-700'}`}>{tab.desc}</span>
                     </div>
                 </button>
             ))}
@@ -138,10 +138,10 @@ export default function VendorSettings() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    className="bg-white rounded-xl border border-gray-100 p-6 md:p-8 relative overflow-hidden shadow-sm"
+                    className="bg-white rounded-xl border border-gray-100 p-6 md:p-8 relative overflow-hidden "
                 >
                     {message && (
-                        <div className={`mb-6 p-4 rounded-xl border text-base font-semibold flex items-center gap-2 ${ message.includes('success') ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-red-50 text-red-700 border-red-100' }`}>
+                        <div className={`mb-6 p-4 rounded-xl border text-sm font-semibold flex items-center gap-2 ${ message.includes('success') ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-red-50 text-red-700 border-red-100' }`}>
                            {message.includes('success') ? <CheckCircle className="w-4 h-4" /> : <XCircle className="w-4 h-4" />}
                            {message}
                         </div>
@@ -152,15 +152,15 @@ export default function VendorSettings() {
                             <div className="flex items-center gap-6 border-b border-gray-50 pb-8">
                                 <div className="relative group/avatar">
                                     <div className="w-20 h-20 bg-gray-50 rounded-xl border border-gray-100 flex items-center justify-center overflow-hidden">
-                                        {vendor?.logo ? <img src={vendor.logo} alt="Logo" className="w-full h-full object-cover" /> : <Building className="w-8 h-8 text-gray-300" />}
+                                        {vendor?.logo ? <img src={vendor.logo} alt="Logo" className="w-full h-full object-cover" /> : <Building className="w-8 h-8 text-gray-500" />}
                                     </div>
-                                    <button className="absolute -bottom-2 -right-2 w-8 h-8 bg-[#164e33] text-white rounded-full flex items-center justify-center border-2 border-white shadow-sm hover:bg-[#113f29] transition-colors">
+                                    <button className="absolute -bottom-2 -right-2 w-8 h-8 bg-[#164e33] text-white rounded-full flex items-center justify-center border-2 border-white  hover:bg-[#113f29] transition-colors">
                                         {/* <Camera className="w-4 h-4" /> */}
                                     </button>
                                 </div>
                                 <div className="space-y-1">
-                                    <h3 className="text-lg font-semibold text-slate-900">{vendor?.businessName || 'Your Business'}</h3>
-                                    <p className="text-base font-medium text-slate-700 flex items-center gap-1.5">
+                                    <h3 className="text-base font-semibold text-slate-900">{vendor?.businessName || 'Your Business'}</h3>
+                                    <p className="text-sm font-medium text-slate-700 flex items-center gap-1.5">
                                         <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
                                         Verified Business
                                     </p>
@@ -169,52 +169,52 @@ export default function VendorSettings() {
 
                             <form className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <div className="space-y-1.5">
-                                    <label className="text-base font-semibold text-slate-800">Business Name</label>
+                                    <label className="text-sm font-semibold text-slate-800">Business Name</label>
                                     <input 
                                         type="text" 
                                         value={vendor?.businessName} 
                                         onChange={(e) => setVendor({...vendor, businessName: e.target.value})}
-                                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:border-blue-500 focus:bg-white outline-none font-medium text-slate-900 text-base transition-all"
+                                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:border-blue-500 focus:bg-white outline-none font-medium text-slate-900 text-sm transition-all"
                                     />
                                 </div>
 
                                 <div className="space-y-1.5">
-                                    <label className="text-base font-semibold text-slate-800">Vendor ID</label>
+                                    <label className="text-sm font-semibold text-slate-800">Vendor ID</label>
                                     <input 
                                         type="text" 
                                         value={vendor?.id?.slice(0, 12)} 
                                         disabled
-                                        className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-100 rounded-xl outline-none font-medium text-slate-500 cursor-not-allowed text-base"
+                                        className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-100 rounded-xl outline-none font-medium text-slate-700 cursor-not-allowed text-sm"
                                     />
                                 </div>
 
                                 <div className="space-y-1.5">
-                                    <label className="text-base font-semibold text-slate-800">Phone Number</label>
+                                    <label className="text-sm font-semibold text-slate-800">Phone Number</label>
                                     <input 
                                         type="text" 
                                         value={vendor?.phone} 
                                         onChange={(e) => setVendor({...vendor, phone: e.target.value})}
-                                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:border-blue-500 focus:bg-white outline-none font-medium text-slate-900 text-base transition-all"
+                                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:border-blue-500 focus:bg-white outline-none font-medium text-slate-900 text-sm transition-all"
                                     />
                                 </div>
 
                                 <div className="space-y-1.5">
-                                    <label className="text-base font-semibold text-slate-800">City</label>
+                                    <label className="text-sm font-semibold text-slate-800">City</label>
                                     <input 
                                         type="text" 
                                         value={vendor?.city} 
                                         onChange={(e) => setVendor({...vendor, city: e.target.value})}
-                                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:border-blue-500 focus:bg-white outline-none font-medium text-slate-900 text-base transition-all"
+                                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:border-blue-500 focus:bg-white outline-none font-medium text-slate-900 text-sm transition-all"
                                     />
                                 </div>
 
                                 <div className="md:col-span-2 space-y-1.5 pt-2">
-                                    <label className="text-base font-semibold text-slate-800">About Business</label>
+                                    <label className="text-sm font-semibold text-slate-800">About Business</label>
                                     <textarea 
                                         rows={4}
                                         value={vendor?.description} 
                                         onChange={(e) => setVendor({...vendor, description: e.target.value})}
-                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:border-blue-500 focus:bg-white outline-none font-medium text-slate-900 text-base resize-none transition-all"
+                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:border-blue-500 focus:bg-white outline-none font-medium text-slate-900 text-sm resize-none transition-all"
                                         placeholder="Tell buyers about your products and services..."
                                     />
                                 </div>
@@ -227,11 +227,11 @@ export default function VendorSettings() {
                            <div className="p-6 bg-white rounded-xl border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
                                <div className="flex items-center gap-4">
 <div>
-                                       <h4 className="text-base font-semibold text-slate-900 mb-0.5">Change Password</h4>
-                                       <p className="text-base font-medium text-slate-700">Update your account password</p>
+                                       <h4 className="text-sm font-semibold text-slate-900 mb-0.5">Change Password</h4>
+                                       <p className="text-sm font-medium text-slate-700">Update your account password</p>
                                    </div>
                                </div>
-                               <button className="px-5 py-2 bg-white border border-gray-200 rounded-xl text-base font-semibold text-slate-800 hover:bg-gray-50 transition-colors shadow-sm">
+                               <button className="px-5 py-2 bg-white border border-gray-200 rounded-xl text-sm font-semibold text-slate-800 hover:bg-gray-50 transition-colors ">
                                   Update
                                </button>
                            </div>
@@ -239,11 +239,11 @@ export default function VendorSettings() {
                            <div className="p-6 bg-white rounded-xl border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
                                <div className="flex items-center gap-4">
 <div>
-                                       <h4 className="text-base font-semibold text-slate-900 mb-0.5">Active Devices</h4>
-                                       <p className="text-base font-medium text-slate-700">Manage where you're logged in</p>
+                                       <h4 className="text-sm font-semibold text-slate-900 mb-0.5">Active Devices</h4>
+                                       <p className="text-sm font-medium text-slate-700">Manage where you're logged in</p>
                                    </div>
                                </div>
-                               <div className="text-base font-semibold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-100 w-fit">
+                               <div className="text-sm font-semibold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-100 w-fit">
                                    Secure
                                </div>
                            </div>
@@ -253,8 +253,8 @@ export default function VendorSettings() {
                     {activeTab === 'notifications' && (
                         <div className="space-y-4">
                            <div className="mb-6 border-b border-gray-50 pb-4">
-                               <h3 className="text-base font-semibold text-slate-900">Email Notifications</h3>
-                               <p className="text-base font-medium text-slate-700 mt-1">Choose what we email you about.</p>
+                               <h3 className="text-sm font-semibold text-slate-900">Email Notifications</h3>
+                               <p className="text-sm font-medium text-slate-700 mt-1">Choose what we email you about.</p>
                            </div>
                            
                            {[
@@ -265,12 +265,12 @@ export default function VendorSettings() {
                                <div key={n.title} className="p-4 bg-white rounded-xl border border-gray-100 flex items-center justify-between hover:border-gray-200 transition-colors">
                                    <div className="flex items-center gap-4">
 <div className="space-y-0.5">
-                                            <h4 className="text-base font-semibold text-slate-900">{n.title}</h4>
-                                            <p className="text-base font-medium text-slate-700">{n.desc}</p>
+                                            <h4 className="text-sm font-semibold text-slate-900">{n.title}</h4>
+                                            <p className="text-sm font-medium text-slate-700">{n.desc}</p>
                                        </div>
                                    </div>
-                                   <div className="relative w-11 h-6 bg-[#164e33] rounded-full cursor-pointer transition-colors shadow-inner flex items-center px-0.5">
-                                       <div className="w-5 h-5 bg-white rounded-full shadow-sm transform translate-x-5 transition-transform"></div>
+                                   <div className="relative w-11 h-6 bg-[#164e33] rounded-full cursor-pointer transition-colors  flex items-center px-0.5">
+                                       <div className="w-5 h-5 bg-white rounded-full  transform translate-x-5 transition-transform"></div>
                                    </div>
                                </div>
                            ))}

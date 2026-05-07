@@ -53,15 +53,15 @@ function SubscriptionGate({ vendorName }: { vendorName: string }) {
 
       {/* Heading */}
       <div className="space-y-2 max-w-md">
-        <h2 className="text-xl font-semibold text-slate-900">Subscription Required</h2>
-        <p className="text-base text-slate-700">
+        <h2 className="text-lg font-semibold text-slate-900">Subscription Required</h2>
+        <p className="text-sm text-slate-700">
           Hi <span className="font-medium text-slate-800">{vendorName || 'there'}</span>, you need an active subscription to list and manage your products.
         </p>
       </div>
 
       {/* What you get */}
-      <div className="bg-white border border-gray-200 rounded-xl p-5 w-full max-w-md text-left shadow-sm space-y-3">
-        <p className="text-base font-medium text-slate-800">What you get with a subscription:</p>
+      <div className="bg-white border border-gray-200 rounded-xl p-5 w-full max-w-md text-left  space-y-3">
+        <p className="text-sm font-medium text-slate-800">What you get with a subscription:</p>
         {[
           'List your products & services on the marketplace',
           'Get verified badge & trust signals',
@@ -69,7 +69,7 @@ function SubscriptionGate({ vendorName }: { vendorName: string }) {
           'Appear in search results with ranking boost',
           'Email & WhatsApp lead notifications',
         ].map(f => (
-          <div key={f} className="flex items-center gap-2 text-base text-slate-800">
+          <div key={f} className="flex items-center gap-2 text-sm text-slate-800">
             <CheckCircle2 className="w-4 h-4 text-[#2e7d32] shrink-0" />{f}
           </div>
         ))}
@@ -78,14 +78,14 @@ function SubscriptionGate({ vendorName }: { vendorName: string }) {
       {/* CTA */}
       <button
         onClick={() => router.push('/vendor/billing')}
-        className="flex items-center gap-2 bg-[#2e7d32] text-white px-7 py-3 rounded-xl text-base font-medium hover:bg-[#1b5e20] transition-all shadow-sm"
+        className="flex items-center gap-2 bg-[#2e7d32] text-white px-7 py-3 rounded-xl text-sm font-medium hover:bg-[#1b5e20] transition-all "
       >
         <CreditCard className="w-4 h-4" />
         View Plans & Subscribe
         <ChevronRight className="w-4 h-4" />
       </button>
 
-      <p className="text-base text-slate-500">
+      <p className="text-sm text-slate-700">
         After subscribing, come back here to manage your products.
       </p>
     </div>
@@ -377,13 +377,13 @@ export default function VendorProducts() {
             <h1 className="text-2xl font-semibold text-slate-900 flex items-center gap-2">
                Products & Services
             </h1>
-            <p className="text-slate-700 font-medium text-base">Manage your catalog items and visibility settings</p>
+            <p className="text-slate-700 font-medium text-sm">Manage your catalog items and visibility settings</p>
         </div>
         
         <button 
             onClick={handleUpdate}
             disabled={saving}
-            className="px-6 py-2.5 bg-[#164e33] text-white rounded-xl font-medium text-base flex items-center gap-2 disabled:opacity-50 hover:bg-[#113f29] transition-all shadow-sm"
+            className="px-6 py-2.5 bg-[#164e33] text-white rounded-xl font-medium text-sm flex items-center gap-2 disabled:opacity-50 hover:bg-[#113f29] transition-all "
         >
             {saving ? <RefreshCcw className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
             Save Changes
@@ -393,19 +393,19 @@ export default function VendorProducts() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-6">
         {/* Main Catalog View */}
         <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
+            <div className="bg-white rounded-xl border border-gray-100 p-6 ">
                 <div className="flex items-center justify-between border-b border-gray-50 pb-6 mb-6">
                     <div className="flex items-center gap-8">
                         <button 
                             onClick={() => { setActiveTab('PRODUCT'); setShowProductForm(false); }}
-                            className={`text-base font-semibold transition-all relative pb-2 ${activeTab === 'PRODUCT' ? 'text-slate-900' : 'text-slate-500 hover:text-slate-800'}`}
+                            className={`text-sm font-semibold transition-all relative pb-2 ${activeTab === 'PRODUCT' ? 'text-slate-900' : 'text-slate-700 hover:text-slate-800'}`}
                         >
                             Products
                             {activeTab === 'PRODUCT' && <motion.div layoutId="nav-line" className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#164e33] rounded-full" />}
                         </button>
                         <button 
                             onClick={() => { setActiveTab('SERVICE'); setShowProductForm(false); }}
-                            className={`text-base font-semibold transition-all relative pb-2 ${activeTab === 'SERVICE' ? 'text-slate-900' : 'text-slate-500 hover:text-slate-800'}`}
+                            className={`text-sm font-semibold transition-all relative pb-2 ${activeTab === 'SERVICE' ? 'text-slate-900' : 'text-slate-700 hover:text-slate-800'}`}
                         >
                             Services
                             {activeTab === 'SERVICE' && <motion.div layoutId="nav-line" className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#164e33] rounded-full" />}
@@ -422,7 +422,7 @@ export default function VendorProducts() {
                                 }));
                                 setShowProductForm(true);
                             }}
-                            className="bg-[#164e33]/5 text-[#164e33] px-4 py-2 rounded-xl flex items-center gap-2 hover:bg-blue-100 transition-all text-base font-semibold"
+                            className="bg-[#164e33]/5 text-[#164e33] px-4 py-2 rounded-xl flex items-center gap-2 hover:bg-blue-100 transition-all text-sm font-semibold"
                         >
                             <Plus className="w-4 h-4" /> Add Item
                         </button>
@@ -439,13 +439,13 @@ export default function VendorProducts() {
                         >
                             <div className="p-6 space-y-6 border-b border-gray-100">
                                 <div className="flex items-center justify-between">
-                                   <h3 className="text-base font-semibold text-slate-800">Add New {activeTab === 'PRODUCT' ? 'Product' : 'Service'}</h3>
-                                   <button onClick={() => { setShowProductForm(false); setEditingId(null); }} className="p-2 text-slate-500 hover:text-red-500 rounded-lg hover:bg-red-50"><X className="w-4 h-4" /></button>
+                                   <h3 className="text-sm font-semibold text-slate-800">Add New {activeTab === 'PRODUCT' ? 'Product' : 'Service'}</h3>
+                                   <button onClick={() => { setShowProductForm(false); setEditingId(null); }} className="p-2 text-slate-700 hover:text-red-500 rounded-lg hover:bg-red-50"><X className="w-4 h-4" /></button>
                                 </div>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div className="space-y-4">
-                                        <label className="text-base font-semibold text-slate-700">Images ({newProduct.images.length}/5)</label>
+                                        <label className="text-sm font-semibold text-slate-700">Images ({newProduct.images.length}/5)</label>
                                         <div className="grid grid-cols-2 gap-3">
                                             {newProduct.images.map((img, idx) => (
                                                 <div key={idx} className="relative aspect-video rounded-xl overflow-hidden border border-gray-100 group">
@@ -465,8 +465,8 @@ export default function VendorProducts() {
                                                     onClick={() => fileInputRef.current?.click()}
                                                 >
                                                     <div className="text-center space-y-1">
-                                                       <Upload className="w-5 h-5 text-gray-300 mx-auto" />
-                                                       <span className="text-base font-semibold text-slate-500">Add Image</span>
+                                                       <Upload className="w-5 h-5 text-gray-500 mx-auto" />
+                                                       <span className="text-sm font-semibold text-slate-700">Add Image</span>
                                                     </div>
                                                     {uploading && <div className="absolute inset-0 bg-white/80 flex items-center justify-center"><RefreshCcw className="w-4 h-4 animate-spin text-[#164e33]" /></div>}
                                                 </div>
@@ -477,31 +477,31 @@ export default function VendorProducts() {
 
                                     <div className="space-y-4">
                                         <div className="space-y-2">
-                                            <label className="text-base font-semibold text-slate-700">Name</label>
+                                            <label className="text-sm font-semibold text-slate-700">Name</label>
                                             <input 
                                                 type="text" 
                                                 value={newProduct.name}
                                                 onChange={(e) => setNewProduct({...newProduct, name: e.target.value})}
-                                                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-base font-medium outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
+                                                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-medium outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
                                                 placeholder="Item name..."
                                             />
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="text-base font-semibold text-slate-700">Price (INR)</label>
+                                            <label className="text-sm font-semibold text-slate-700">Price (INR)</label>
                                             <input 
                                                 type="number" 
                                                 value={newProduct.price}
                                                 onChange={(e) => setNewProduct({...newProduct, price: e.target.value})}
-                                                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-base font-medium outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
+                                                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-medium outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
                                                 placeholder="0.00"
                                             />
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="text-base font-semibold text-slate-700">Category</label>
+                                            <label className="text-sm font-semibold text-slate-700">Category</label>
                                             <select 
                                                 value={newProduct.category}
                                                 onChange={(e) => setNewProduct({...newProduct, category: e.target.value})}
-                                                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-base font-medium outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
+                                                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-medium outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
                                             >
                                                 <option value="">Select Category</option>
                                                 {categories.map(cat => (
@@ -514,11 +514,11 @@ export default function VendorProducts() {
 
                                 <div className="space-y-4">
                                    <div className="space-y-2">
-                                      <label className="text-base font-semibold text-slate-700">Description</label>
+                                      <label className="text-sm font-semibold text-slate-700">Description</label>
                                       <textarea 
                                           value={newProduct.description}
                                           onChange={(e) => setNewProduct({...newProduct, description: e.target.value})}
-                                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-base font-medium outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 min-h-[80px]"
+                                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm font-medium outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 min-h-[80px]"
                                           placeholder="Detailed description..."
                                       />
                                    </div>
@@ -527,13 +527,13 @@ export default function VendorProducts() {
                                 <div className="flex justify-end gap-3 pt-2">
                                     <button 
                                       onClick={() => { setShowProductForm(false); setEditingId(null); }}
-                                      className="px-5 py-2.5 bg-white border border-gray-200 text-slate-800 rounded-xl font-semibold text-base hover:bg-gray-50 transition-all"
+                                      className="px-5 py-2.5 bg-white border border-gray-200 text-slate-800 rounded-xl font-semibold text-sm hover:bg-gray-50 transition-all"
                                     >
                                       Cancel
                                     </button>
                                     <button 
                                         onClick={saveProduct}
-                                        className="px-5 py-2.5 bg-[#164e33] text-white rounded-xl font-semibold text-base hover:bg-[#113f29] transition-all shadow-sm"
+                                        className="px-5 py-2.5 bg-[#164e33] text-white rounded-xl font-semibold text-sm hover:bg-[#113f29] transition-all "
                                     >
                                         {editingId ? 'Update Item' : 'Save Item'}
                                     </button>
@@ -545,14 +545,14 @@ export default function VendorProducts() {
 
                 <div className="space-y-4">
                     {vendorData.products.filter((p: any) => (p.type || 'PRODUCT') === activeTab).map((p: any) => (
-                        <div key={p.id} className="group relative flex items-start gap-5 p-4 bg-white border border-gray-100 rounded-xl hover:border-blue-200 hover:shadow-md transition-all">
+                        <div key={p.id} className="group relative flex items-start gap-5 p-4 bg-white border border-gray-100 rounded-xl hover:border-blue-200 hover: transition-all">
                              <div className="w-16 h-16 bg-gray-50 rounded-xl overflow-hidden border border-gray-100 shrink-0">
                                 {p.images && p.images.length > 0 ? (
                                     <img src={p.images[0]} className="w-full h-full object-cover" />
                                 ) : p.imageUrl || p.image ? (
                                     <img src={p.imageUrl || p.image} className="w-full h-full object-cover" />
                                 ) : (
-                                    <div className="w-full h-full flex items-center justify-center text-gray-300 bg-gray-50">
+                                    <div className="w-full h-full flex items-center justify-center text-gray-500 bg-gray-50">
                                        {activeTab === 'PRODUCT' ? <Box className="w-6 h-6" /> : <Layers className="w-6 h-6" />}
                                     </div>
                                 )}
@@ -561,8 +561,8 @@ export default function VendorProducts() {
                              <div className="flex-1 min-w-0">
                                 <div className="flex items-start justify-between gap-4">
                                     <div>
-                                        <h4 className="text-base font-semibold text-slate-900 truncate">{p.name}</h4>
-                                        <p className="text-base font-medium text-slate-700 mt-0.5">₹{p.price || '--'}</p>
+                                        <h4 className="text-sm font-semibold text-slate-900 truncate">{p.name}</h4>
+                                        <p className="text-sm font-medium text-slate-700 mt-0.5">₹{p.price || '--'}</p>
                                     </div>
                                     <div className="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
                                         <button onClick={() => startEdit(p)} className="p-2 bg-gray-50 text-slate-700 rounded-xl hover:text-[#164e33] hover:bg-[#164e33]/5 transition-all"><Edit3 className="w-4 h-4" /></button>
@@ -571,10 +571,10 @@ export default function VendorProducts() {
                                 </div>
 
                                 <div className="flex items-center gap-2 mt-2">
-                                    <span className="text-base font-semibold text-[#164e33] bg-[#164e33]/5 px-2 py-0.5 rounded-md">
+                                    <span className="text-sm font-semibold text-[#164e33] bg-[#164e33]/5 px-2 py-0.5 rounded-md">
                                        {p.category || 'Uncategorized'}
                                     </span>
-                                    <div className={`px-2 py-0.5 rounded-md text-base font-semibold ${p.status === 'APPROVED' ? 'bg-green-50 text-green-600' : 'bg-orange-50 text-orange-600'}`}>
+                                    <div className={`px-2 py-0.5 rounded-md text-sm font-semibold ${p.status === 'APPROVED' ? 'bg-green-50 text-green-600' : 'bg-orange-50 text-orange-600'}`}>
                                        {p.status || 'PENDING'}
                                     </div>
                                 </div>
@@ -585,10 +585,10 @@ export default function VendorProducts() {
                     {vendorData.products.filter((p: any) => (p.type || 'PRODUCT') === activeTab).length === 0 && !showProductForm && (
                         <div className="py-16 text-center">
                            <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-100">
-                             {activeTab === 'PRODUCT' ? <Box className="w-6 h-6 text-gray-300" /> : <Layers className="w-6 h-6 text-gray-300" />}
+                             {activeTab === 'PRODUCT' ? <Box className="w-6 h-6 text-gray-500" /> : <Layers className="w-6 h-6 text-gray-500" />}
                            </div>
-                           <h4 className="text-base font-semibold text-slate-900 mb-1">No items found</h4>
-                           <p className="text-base font-medium text-slate-700">Click "Add Item" to start building your catalog.</p>
+                           <h4 className="text-sm font-semibold text-slate-900 mb-1">No items found</h4>
+                           <p className="text-sm font-medium text-slate-700">Click "Add Item" to start building your catalog.</p>
                         </div>
                     )}
                 </div>
@@ -599,13 +599,13 @@ export default function VendorProducts() {
         <div className="space-y-4">
 
             {/* Keywords Card */}
-            <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
+            <div className="bg-white rounded-xl border border-gray-200 ">
                 {/* Header */}
                 <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                        <h3 className="text-base font-semibold text-slate-900">Keywords</h3>
+                        <h3 className="text-sm font-semibold text-slate-900">Keywords</h3>
                         {vendorData.keywords.length > 0 && (
-                            <span className="text-base bg-blue-100 text-[#164e33] px-1.5 py-0.5 rounded-full font-medium">
+                            <span className="text-sm bg-blue-100 text-[#164e33] px-1.5 py-0.5 rounded-full font-medium">
                                 {vendorData.keywords.length}
                             </span>
                         )}
@@ -621,12 +621,12 @@ export default function VendorProducts() {
                             onChange={(e) => setNewKeyword(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && addKeyword()}
                             placeholder="Add keyword..."
-                            className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-base text-slate-800 placeholder:text-slate-500 outline-none focus:bg-white focus:border-blue-400 focus:ring-1 focus:ring-blue-100 transition-all"
+                            className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm text-slate-800 placeholder:text-slate-700 outline-none focus:bg-white focus:border-blue-400 focus:ring-1 focus:ring-blue-100 transition-all"
                         />
                         <button
                             onClick={addKeyword}
                             disabled={!newKeyword.trim()}
-                            className="w-full py-2 bg-[#164e33] text-white text-base font-medium rounded-xl hover:bg-[#113f29] transition-all flex items-center justify-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
+                            className="w-full py-2 bg-[#164e33] text-white text-sm font-medium rounded-xl hover:bg-[#113f29] transition-all flex items-center justify-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
                         >
                             <Plus className="w-3.5 h-3.5" /> Add Keyword
                         </button>
@@ -636,16 +636,16 @@ export default function VendorProducts() {
                     {vendorData.keywords.length > 0 ? (
                         <div className="flex flex-wrap gap-1.5 pt-1 border-t border-gray-100">
                             {vendorData.keywords.map((k: any) => (
-                                <div key={k.id} className="flex items-center gap-1 px-2 py-0.5 bg-gray-100 text-slate-800 rounded-md text-base">
+                                <div key={k.id} className="flex items-center gap-1 px-2 py-0.5 bg-gray-100 text-slate-800 rounded-md text-sm">
                                     <span>#{typeof k === 'string' ? k : k.name}</span>
-                                    <button onClick={() => removeKeyword(k.id)} className="text-slate-500 hover:text-red-500 transition-colors">
+                                    <button onClick={() => removeKeyword(k.id)} className="text-slate-700 hover:text-red-500 transition-colors">
                                         <X className="w-3 h-3" />
                                     </button>
                                 </div>
                             ))}
                         </div>
                     ) : (
-                        <p className="text-base text-slate-500 text-center py-1">No keywords yet. Add some to improve visibility.</p>
+                        <p className="text-sm text-slate-700 text-center py-1">No keywords yet. Add some to improve visibility.</p>
                     )}
                 </div>
             </div>
@@ -654,7 +654,7 @@ export default function VendorProducts() {
             <div className="bg-green-50 rounded-2xl border border-green-100 p-4">
                 <div className="flex items-center gap-2 mb-2.5">
                     <Info className="w-4 h-4 text-green-600 shrink-0" />
-                    <h4 className="text-base font-semibold text-green-800">Visibility Tips</h4>
+                    <h4 className="text-sm font-semibold text-green-800">Visibility Tips</h4>
                 </div>
                 <div className="space-y-1.5">
                     {[
@@ -662,7 +662,7 @@ export default function VendorProducts() {
                         'Use buyer search terms as keywords',
                         'Write detailed descriptions',
                     ].map(tip => (
-                        <div key={tip} className="flex items-start gap-1.5 text-base text-green-700">
+                        <div key={tip} className="flex items-start gap-1.5 text-sm text-green-700">
                             <span className="w-1 h-1 rounded-full bg-green-400 mt-1.5 shrink-0" />
                             {tip}
                         </div>
@@ -681,10 +681,10 @@ export default function VendorProducts() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 20 }}
-                className={`fixed bottom-6 right-6 p-4 rounded-xl border z-[100] flex items-center gap-3 shadow-lg ${ message.type === 'success' ? 'bg-white text-green-700 border-green-200' : 'bg-white text-red-700 border-red-200' }`}
+                className={`fixed bottom-6 right-6 p-4 rounded-xl border z-[100] flex items-center gap-3  ${ message.type === 'success' ? 'bg-white text-green-700 border-green-200' : 'bg-white text-red-700 border-red-200' }`}
             >
                 {message.type === 'success' ? <CheckCircle2 className="w-5 h-5 text-green-500" /> : <AlertCircle className="w-5 h-5 text-red-500" />}
-                <p className="text-base font-semibold">{message.text}</p>
+                <p className="text-sm font-semibold">{message.text}</p>
             </motion.div>
         )}
       </AnimatePresence>

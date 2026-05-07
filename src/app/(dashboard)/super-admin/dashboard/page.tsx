@@ -2,82 +2,81 @@
 
 import React, { useState, useEffect } from 'react';
 import { apiFetch } from '@/lib/api';
-import { useRouter } from 'next/navigation';
 import { 
-  BarChart3, 
   Users, 
-  Target, 
-  Briefcase, 
-  Zap, 
-  ArrowUpRight, 
-  Clock, 
-  Activity,
-  CheckCircle2,
-  AlertCircle,
-  Megaphone,
-  ShieldAlert,
-  ArrowRight,
-  RefreshCcw,
-  Send,
-  Database,
-  CreditCard
+  Store, 
+  Box, 
+  Send, 
+  ShieldCheck, 
+  Calendar, 
+  ChevronDown, 
+  CheckCircle2, 
+  TrendingUp,
+  BarChart2,
+  Clock,
+  Bell,
+  Layers,
+  UserCheck,
+  Package,
+  BookOpen,
+  Undo2,
+  Settings,
+  Headset,
+  ArrowUpRight,
+  RefreshCcw
 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
-
+import { 
+  LineChart, 
+  Line, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  BarChart,
+  Bar
+} from 'recharts';
 
 export default function SuperAdminDashboard() {
-  const router = useRouter();
-  const [stats, setStats] = useState<any>(null);
+  const [dashboardData, setDashboardData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [timeRange, setTimeRange] = useState('all');
-  const [revenueData, setRevenueData] = useState<any>([]);
-  const [trendData, setTrendData] = useState([{ name: 'Open', value: 10 }]);
-  const [pieData, setPieData] = useState([{ name: 'New', value: 1, color: '#e5e7eb' }]);
+  const [timeRange, setTimeRange] = useState('monthly');
+  const [customRange, setCustomRange] = useState({ start: '', end: '' });
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [categories, setCategories] = useState<any[]>([]);
+  const [lastUpdated, setLastUpdated] = useState('07:10 PM');
 
   useEffect(() => {
     fetchDashboardStats();
-  }, [timeRange]);
+    fetchCategories();
+    const now = new Date();
+    setLastUpdated(now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+  }, [timeRange, selectedCategory]);
+
+  const fetchCategories = async () => {
+    try {
+      const data = await apiFetch('/vendors/categories');
+      setCategories(data.success ? data.data : []);
+    } catch (error) {
+      console.error('Failed to fetch categories:', error);
+    }
+  };
 
   const fetchDashboardStats = async () => {
     try {
       setLoading(true);
-      const url = timeRange === 'all' ? '/admin/analytics' : `/admin/analytics?timeRange=${timeRange}`;
+      let url = `/admin/analytics?timeRange=${timeRange}`;
+      if (timeRange === 'custom' && customRange.start && customRange.end) {
+        url += `&startDate=${customRange.start}&endDate=${customRange.end}`;
+      }
+      if (selectedCategory !== 'All') {
+        url += `&category=${selectedCategory}`;
+      }
       const data = await apiFetch(url);
-      const summary = data.data?.summary || {};
-      setStats({
-        users: summary.totalUsers || 0,
-        vendors: summary.totalVendors || 0,
-        products: summary.totalProducts || 0,
-        leads: summary.totalLeads || 0,
-        revenue: summary.totalRevenue || 0,
-        pendingVendors: summary.pendingVendors || 0,
-        pendingOfferings: summary.pendingOfferings || 0,
-        activeSubscribers: summary.activeSubscribers || 0,
-        recentLeads: data.data?.recentLeads || []
-      });
-
-      if (data.data?.trends?.revenueTrends) {
-        setRevenueData(data.data.trends.revenueTrends);
-      }
-
-      const topLocations = data.data?.trends?.topLocations;
-      if (topLocations && topLocations.length > 0) {
-         setTrendData(topLocations.map((item: any) => ({
-            name: item.city || item.name,
-            value: item.count || item.queries
-         })));
-      }
-
-      const statusMap = summary.leadsByStatus;
-       if (statusMap && statusMap.length > 0) {
-         const colors = ['#164e33', '#f58220', '#10b981', '#3b82f6'];
-         setPieData(statusMap.map((item: any, idx: number) => ({
-            name: item.status,
-            value: item._count.id,
-            color: colors[idx % colors.length]
-         })));
-      }
+      setDashboardData(data.data || {});
     } catch (error) {
       console.error('Failed to fetch dashboard stats:', error);
     } finally {
@@ -85,254 +84,357 @@ export default function SuperAdminDashboard() {
     }
   };
 
-  const dashboardCards = [
-    { label: 'Platform Users', value: stats?.users || 0, icon: Users, color: 'blue', growth: 'Registered Users' },
-    { label: 'Verified Vendors', value: stats?.vendors || 0, icon: Briefcase, color: 'emerald', growth: `${stats?.pendingVendors || 0} waiting review` },
-    { label: 'Vendor Products', value: stats?.products || 0, icon: Database, color: 'amber', growth: 'Total Offerings' },
-    { label: 'Market Inquiries', value: stats?.leads || 0, icon: Target, color: 'indigo', growth: 'Total Demand' }
-  ];
-
   return (
-    <div className="max-w-7xl mx-auto space-y-12 animate-simple-fade pb-24 px-4 lg:px-8">
-      {/* Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-10 pb-8 border-b border-gray-100">
-        <div className="space-y-3">
-           <h1 className="text-4xl font-bold text-slate-900 flex items-center gap-4">
-             Super Admin Control Hub
-             <div className="p-2 bg-gray-50 text-slate-500 rounded-2xl border border-gray-200">
-                <ShieldAlert className="w-7 h-7" />
-             </div>
-           </h1>
-           <p className="text-slate-600 font-medium text-lg leading-relaxed max-w-3xl">Oversee platform health, verify new applications, and monitor marketplace signals in real-time.</p>
+    <div className="space-y-8 animate-fade-in pb-20">
+      
+      {/* Title and Date Filter */}
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+        <div>
+          <div className="flex items-center gap-1.5 mb-0.5">
+            <h2 className="text-base font-bold text-[#111827] leading-none">Super Admin Control Hub</h2>
+            <ShieldCheck size={16} className="text-green-500" />
+          </div>
+          <p className="text-xs text-gray-900 font-bold">
+            Monitor platform health, verify applications, and track marketplace performance.
+          </p>
         </div>
+        
+        <div className="flex flex-wrap items-center gap-4">
+          <div className="flex items-center gap-2 bg-white border border-gray-300 rounded-xl px-3 py-1.5 shadow-sm">
+            <Calendar size={14} className="text-gray-500" />
+            <select 
+              value={timeRange}
+              onChange={(e) => setTimeRange(e.target.value)}
+              className="text-xs font-bold text-gray-900 outline-none bg-transparent cursor-pointer"
+            >
+              <option value="today">Today</option>
+              <option value="yesterday">Yesterday</option>
+              <option value="weekly">Last 7 Days</option>
+              <option value="monthly">Last 30 Days</option>
+              <option value="yearly">Last 12 Months</option>
+              <option value="custom">Custom Range</option>
+            </select>
+          </div>
 
-        <div className="flex items-center gap-4">
-           <select 
-             value={timeRange} 
-             onChange={(e) => setTimeRange(e.target.value)}
-             className="px-6 py-3 bg-white border border-gray-200 rounded-xl text-base font-bold text-slate-800 outline-none focus:border-[#164e33] cursor-pointer shadow-sm"
-           >
-             <option value="all">All Time</option>
-             <option value="yearly">This Year</option>
-             <option value="monthly">This Month</option>
-             <option value="weekly">This Week</option>
-           </select>
-           <div className="bg-emerald-50 px-5 py-3 rounded-xl border border-emerald-100 flex items-center gap-3">
-              <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></div>
-              <span className="text-sm font-bold text-emerald-700 uppercase tracking-wider hidden sm:inline-block">System Operational</span>
-           </div>
-        </div>
-      </div>
+          {timeRange === 'custom' && (
+            <div className="flex items-center gap-2">
+              <input 
+                type="date" 
+                className="bg-white border border-gray-300 rounded-lg px-2 py-1 text-xs font-bold"
+                onChange={(e) => setCustomRange(prev => ({ ...prev, start: e.target.value }))}
+              />
+              <span className="text-xs font-bold text-gray-500">to</span>
+              <input 
+                type="date" 
+                className="bg-white border border-gray-300 rounded-lg px-2 py-1 text-xs font-bold"
+                onChange={(e) => setCustomRange(prev => ({ ...prev, end: e.target.value }))}
+              />
+            </div>
+          )}
 
-      {/* Main Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-        {dashboardCards.map((card, idx) => (
-          <motion.div 
-            key={card.label}
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: idx * 0.1 }}
-            className="group bg-white p-7 rounded-[2rem] border border-gray-100 hover:border-[#164e33]/20 transition-all hover:shadow-xl shadow-sm flex flex-col justify-between"
+          <button 
+            onClick={fetchDashboardStats}
+            className="p-2.5 bg-white border border-gray-300 rounded-xl text-black hover:text-[#0D824D] hover:border-[#0D824D] transition-all shadow-sm"
+            title="Refresh Data"
           >
-            <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <div className={`p-3.5 rounded-2xl ${
-                  card.color === 'blue' ? 'bg-[#164e33]/5 text-[#164e33]' :
-                  card.color === 'emerald' ? 'bg-[#f58220]/5 text-[#f58220]' :
-                  card.color === 'amber' ? 'bg-amber-50 text-amber-600' : 'bg-[#164e33]/5 text-[#164e33]'
-                }`}>
-                  <card.icon className="w-6 h-6" />
-                </div>
-              </div>
-              
-              <div className="space-y-1.5">
-                <p className="text-sm font-semibold text-slate-500 uppercase tracking-wider">{card.label}</p>
-                <h3 className="text-4xl font-bold text-slate-800 tabular-nums">{loading ? '...' : card.value}</h3>
-              </div>
-            </div>
-
-            <div className="mt-8 pt-5 border-t border-gray-50 flex items-center">
-               <span className={`text-[11px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider ${
-                card.color === 'blue' ? 'bg-[#164e33]/10 text-[#164e33]' :
-                card.color === 'emerald' ? 'bg-[#f58220]/10 text-[#f58220]' :
-                card.color === 'amber' ? 'bg-amber-50 text-amber-700' : 'bg-[#164e33]/5 text-[#164e33]'
-              }`}>{card.growth}</span>
-            </div>
-          </motion.div>
-        ))}
+            <RefreshCcw size={18} className={loading ? 'animate-spin' : ''} />
+          </button>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 max-w-7xl mx-auto">
-         {/* System Infrastructure Insights */}
-         <div className="lg:col-span-8 bg-white rounded-2xl border border-gray-100 p-10 shadow-sm">
-            <div className="flex items-center justify-between mb-0 pb-6 border-b border-gray-50">
-               <div className="flex items-center gap-4">
-                  <div>
-                    <h3 className="text-2xl font-bold text-slate-900 leading-none">Platform Revenue Growth</h3>
-                    <p className="text-base font-medium text-slate-500 mt-2">Monthly subscription and listing revenues.</p>
-                  </div>
-               </div>
-               <button onClick={fetchDashboardStats} className="p-2.5 text-slate-400 hover:text-[#164e33] hover:bg-[#164e33]/5 rounded-xl transition-all">
-                  <RefreshCcw className={`w-6 h-6 ${loading ? 'animate-spin' : ''}`} />
-               </button>
-            </div>
+      {/* Stats Cards Row */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <StatCard 
+          label="PLATFORM USERS" 
+          value={dashboardData?.summary?.totalUsers || '0'} 
+          growth="+12.5%" 
+          color="#0D824D" 
+          icon={<Users size={24} />} 
+          bg="#F0FDF4"
+          delay={0}
+        />
+        <StatCard 
+          label="VERIFIED VENDORS" 
+          value={dashboardData?.summary?.totalVendors || '0'} 
+          growth="+8.2%" 
+          color="#EA580C" 
+          icon={<Store size={24} />} 
+          bg="#FFF7ED"
+          delay={0.1}
+        />
+        <StatCard 
+          label="VENDOR PRODUCTS" 
+          value={dashboardData?.summary?.totalProducts || '0'} 
+          growth="+15.3%" 
+          color="#2563EB" 
+          icon={<Box size={24} />} 
+          bg="#EFF6FF"
+          delay={0.2}
+        />
+        <StatCard 
+          label="MARKET INQUIRIES" 
+          value={dashboardData?.summary?.totalLeads || '0'} 
+          growth="+9.7%" 
+          color="#9333EA" 
+          icon={<Send size={24} />} 
+          bg="#FAF5FF"
+          delay={0.3}
+        />
+      </div>
 
-            {/* Super Admin Chart Addition */}
-            <div className="pt-8 pb-8 border-b border-gray-50">
-               <div className="h-72 w-full">
-                  <ResponsiveContainer width="100%" height="100%">
-                     <AreaChart data={revenueData} margin={{ top: 10, right: 0, left: -10, bottom: 0 }}>
-                        <defs>
-                          <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#164e33" stopOpacity={0.15}/>
-                            <stop offset="95%" stopColor="#164e33" stopOpacity={0}/>
-                          </linearGradient>
-                        </defs>
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 14, fontWeight: 600 }} />
-                        <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 14, fontWeight: 600 }} tickFormatter={(val) => `₹${val/1000}k`} />
-                        <Tooltip 
-                           cursor={{ stroke: '#cbd5e1', strokeWidth: 1, strokeDasharray: '4 4' }}
-                           contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)' }}
-                           formatter={(value) => [`₹${value}`, 'Revenue']}
-                        />
-                        <Area type="monotone" dataKey="revenue" stroke="#164e33" strokeWidth={4} fillOpacity={1} fill="url(#colorRevenue)" />
-                     </AreaChart>
-                  </ResponsiveContainer>
-               </div>
+      {/* Main Grid: Revenue & Activity */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Revenue Chart Placeholder */}
+        <div className="lg:col-span-8 bg-white rounded-2xl border border-gray-100 p-6 ">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="font-bold text-sm text-gray-900 mb-0.5">Platform Revenue Growth</h3>
+              <p className="text-xs text-gray-900 font-bold">Monthly subscription and listing revenues.</p>
             </div>
+            <select className="bg-gray-50 border border-gray-200 text-xs font-bold rounded-lg px-2 py-1.5 outline-none">
+              <option>Monthly View</option>
+            </select>
+          </div>
+          
+          <div className="flex flex-col md:flex-row gap-10">
+            {/* Fake Graph Area */}
+            <div className="flex-1 h-64 relative flex items-end justify-between px-2">
+              <div className="absolute inset-0 border-b border-gray-200 flex flex-col justify-between text-sm text-black font-bold">
+                <span>₹20L</span><span>₹15L</span><span>₹10L</span><span>₹5L</span><span>₹0</span>
+              </div>
+              <svg className="absolute bottom-0 left-0 w-full h-full" preserveAspectRatio="none">
+                <path d="M0,200 L100,150 L200,140 L300,135 L400,100 L500,50 L600,60" fill="none" stroke="#0D824D" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+                <circle cx="600" cy="60" r="6" fill="#0D824D" />
+                <circle cx="600" cy="60" r="10" stroke="#0D824D" strokeWidth="2" fill="none" className="animate-ping" />
+              </svg>
+              {['Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'].map(m => <span key={m} className="text-sm font-bold text-black mt-6">{m}</span>)}
+            </div>
+            
+            {/* Revenue Stats */}
+            <div className="w-full md:w-56 space-y-4 border-l border-gray-200 pl-6">
+              <div>
+                <p className="text-xs font-bold text-black uppercase mb-0.5">Total Revenue</p>
+                <p className="text-base font-bold text-black leading-none mb-1">₹{dashboardData?.summary?.totalRevenue?.toLocaleString() || '0'}</p>
+                <p className="text-xs text-green-700 font-bold flex items-center gap-1">+16.4% <span className="text-gray-950 font-bold">vs last month</span></p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-black uppercase mb-0.5">Subscription Revenue</p>
+                <p className="text-sm font-bold text-black leading-none mb-1">₹11,20,430</p>
+                <p className="text-xs text-green-700 font-bold">+12.6%</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-black uppercase mb-0.5">Listing Revenue</p>
+                <p className="text-sm font-bold text-black leading-none mb-1">₹7,55,000</p>
+                <p className="text-xs text-green-700 font-bold">+21.3%</p>
+              </div>
+            </div>
+          </div>
+        </div>
 
-            <div className="flex items-center justify-between mb-6 mt-10">
-               <h3 className="text-xl font-bold text-slate-900 leading-none">Marketplace Hub Activity</h3>
-            </div>
+        {/* Activity Feed */}
+        <div className="lg:col-span-4 bg-white rounded-2xl border border-gray-100 p-6  flex flex-col">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="font-bold text-sm text-gray-900">Platform Activity</h3>
+            <button className="text-xs font-bold bg-gray-50 border border-gray-200 px-2.5 py-1 rounded-lg">View All</button>
+          </div>
+          <div className="space-y-6 flex-1 overflow-y-auto max-h-[400px] no-scrollbar">
+            {dashboardData?.recentLeads?.length > 0 ? dashboardData.recentLeads.slice(0,5).map((lead: any, i: number) => (
+              <ActivityItem 
+                key={i}
+                title={`New inquiry for ${lead.productName || 'Product'}`} 
+                sub={lead.buyerName || 'Unknown Buyer'} 
+                time={new Date(lead.createdAt).toLocaleDateString()} 
+              />
+            )) : (
+              <p className="text-xs text-black font-bold">No recent activity found.</p>
+            )}
+          </div>
+          <button className="w-full mt-6 py-2.5 border border-dashed border-gray-300 rounded-xl text-xs font-bold text-black">
+             Generate Activity Report
+          </button>
+        </div>
+      </div>
 
-            <div className="space-y-4">
-                {stats?.recentLeads?.length > 0 ? stats.recentLeads.map((lead: any) => (
-                  <div key={lead.id} className="flex items-center justify-between p-6 bg-gray-50/50 rounded-2xl border border-gray-100 hover:bg-white hover:shadow-md transition-all group">
-                    <div className="flex items-center gap-5">
-                      <div>
-                        <p className="text-lg font-bold text-slate-900 leading-none">
-                           {lead.searchKeyword ? `Demand for "${lead.searchKeyword}"` : `Requirement from ${lead.buyerName}`}
-                        </p>
-                        <p className="text-base font-semibold text-slate-500 mt-2 flex items-center gap-2">
-                          <CheckCircle2 className="w-5 h-5 text-emerald-500" /> 
-                          {lead.vendor?.businessName ? `Assigned to ${lead.vendor.businessName}` : 'Global Distribution'}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                       <p className="text-lg font-bold text-slate-900">{lead.city}</p>
-                       <p className="text-sm font-bold text-slate-400 uppercase mt-1">{new Date(lead.createdAt).toLocaleDateString()}</p>
-                    </div>
-                  </div>
-                )) : (
-                  <div className="py-24 text-center space-y-6 bg-gray-50/50 rounded-2xl border border-dashed border-gray-200">
-                     <Target className="w-16 h-16 text-gray-200 mx-auto" />
-                     <p className="text-lg font-bold text-slate-500">Waiting for live marketplace signals...</p>
-                  </div>
-                )}
-            </div>
-         </div>
+      {/* Footer Row Widgets */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+        <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 min-h-[400px] flex flex-col">
+          <div className="flex items-center justify-between mb-6">
+            <h4 className="font-bold text-[14px] text-gray-900 uppercase">Top Cities by Vendors</h4>
+            <BarChart2 size={18} className="text-gray-400" />
+          </div>
+          <div className="flex-1 w-full">
+            <ResponsiveContainer width="100%" height={250}>
+              <LineChart data={dashboardData?.trends?.topLocations || []}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 700, fill: '#64748b' }} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 700, fill: '#64748b' }} />
+                <Tooltip 
+                  contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                  labelStyle={{ fontWeight: 800, color: '#1e293b' }}
+                />
+                <Line type="monotone" dataKey="count" stroke="#EA580C" strokeWidth={3} dot={{ r: 4, fill: '#EA580C' }} activeDot={{ r: 6 }} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
 
-         {/* Shortcuts / Quick Actions */}
-         <div className="lg:col-span-4 space-y-8">
-            <div className="bg-[#f0f9f8] border border-[#164e33]/10 rounded-[2.5rem] p-10 relative overflow-hidden shadow-sm group">
-               <div className="absolute top-0 right-0 p-12 opacity-[0.03] text-[#164e33] transform translate-x-4 -translate-y-4 transition-transform group-hover:translate-x-2 group-hover:-translate-y-2">
-                  <Megaphone className="w-32 h-32" />
-               </div>
-               <div className="relative z-10 space-y-6">
-                  <h3 className="text-2xl font-bold text-[#164e33] leading-tight pr-12">Broadcast platform updates instantly.</h3>
-                  <p className="text-base text-[#164e33]/70 leading-relaxed font-semibold">Reach every vendor and buyer in the ecosystem with one click.</p>
-                  <button className="flex items-center gap-3 px-6 py-3.5 bg-[#164e33] hover:bg-[#113f29] text-white rounded-xl font-bold text-sm uppercase shadow-lg shadow-[#164e33]/20 transition-all group/btn">
-                    Go to Broadcast Hub
-                    <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
-                  </button>
-               </div>
+        <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 min-h-[400px] flex flex-col">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex flex-col gap-1">
+              <h4 className="font-bold text-[14px] text-gray-900 uppercase">Category Performance</h4>
+              <select 
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                className="text-[10px] font-bold text-gray-500 bg-gray-50 border-none outline-none rounded-md px-2 py-0.5"
+              >
+                <option value="All">All Categories</option>
+                {categories.map(cat => <option key={cat.id} value={cat.name}>{cat.name}</option>)}
+              </select>
             </div>
+            <TrendingUp size={18} className="text-gray-400" />
+          </div>
+          <div className="flex-1 w-full">
+            <ResponsiveContainer width="100%" height={250}>
+              <AreaChart data={dashboardData?.trends?.revenueTrends || []}>
+                <defs>
+                  <linearGradient id="colorRev" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#0D824D" stopOpacity={0.1}/>
+                    <stop offset="95%" stopColor="#0D824D" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 700, fill: '#64748b' }} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 700, fill: '#64748b' }} />
+                <Tooltip 
+                  contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                  labelStyle={{ fontWeight: 800, color: '#1e293b' }}
+                />
+                <Area type="monotone" dataKey="revenue" stroke="#0D824D" strokeWidth={3} fillOpacity={1} fill="url(#colorRev)" />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+        
+        <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 ">
+          <h4 className="font-bold text-[14px] text-gray-900 uppercase mb-6">Verification Overview</h4>
+          <div className="flex items-center gap-6">
+             <div className="w-20 h-20 rounded-full border-[10px] border-green-500 border-r-orange-400 relative rotate-45 "></div>
+             <div className="text-sm space-y-2">
+               <div className="flex items-center gap-2 font-bold text-slate-700"><span className="w-3 h-3 bg-green-500 rounded-sm"></span> Verified ({dashboardData?.summary?.totalVendors || 0})</div>
+               <div className="flex items-center gap-2 font-bold text-slate-700"><span className="w-3 h-3 bg-orange-400 rounded-sm"></span> Pending ({dashboardData?.summary?.pendingVendors || 0})</div>
+             </div>
+          </div>
+        </div>
 
-            <div className="bg-white rounded-[2.5rem] border border-gray-100 p-8 shadow-sm">
-               <h3 className="text-sm font-bold text-slate-400 uppercase mb-8 flex items-center justify-between gap-2">
-                 <div className="flex items-center gap-2">
-                   <ShieldAlert className="w-5 h-5 text-amber-500" /> Administrative To-Do
-                 </div>
-                 <span className="px-2 py-1 bg-gray-50 text-slate-400 text-[10px] font-bold rounded uppercase">Action Required</span>
-               </h3>
-               <div className="space-y-4">
-                  {[
-                    { label: `Verify ${stats?.pendingVendors || 0} new vendors`, urgency: 'High', count: stats?.pendingVendors, href: '/super-admin/vendor-approvals' },
-                    { label: `Moderate ${stats?.pendingOfferings || 0} catalogue items`, urgency: 'High', count: stats?.pendingOfferings, href: '/super-admin/offering-approvals' },
-                    { label: 'Platform performance audit', urgency: 'Medium', count: 1, href: '/super-admin/analytics' }
-                  ].filter(t => (t.count && t.count > 0) || t.urgency === 'Medium').map((todo, idx) => (
-                    <div 
-                      key={idx}
-                      onClick={() => router.push(todo.href)}
-                      className="flex items-center justify-between p-4 rounded-2xl border border-gray-50 hover:border-[#164e33]/20 hover:bg-[#164e33]/5 transition-all cursor-pointer group"
-                    >
-                      <div className="flex items-center gap-4">
-                        <div className="w-6 h-6 rounded-lg border-2 border-gray-100 group-hover:border-[#164e33] group-hover:bg-[#164e33]/10 transition-all flex items-center justify-center shrink-0">
-                           <ArrowRight className="w-3.5 h-3.5 text-transparent group-hover:text-[#164e33] transition-all" />
-                        </div>
-                        <span className="text-base font-bold text-slate-700 leading-tight">{todo.label}</span>
-                      </div>
-                      <div className="flex items-center gap-3 shrink-0">
-                        <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider border ${todo.urgency === 'High' ? 'bg-red-50 text-red-600 border-red-100' : 'bg-amber-50 text-amber-600 border-amber-100'} ${todo.urgency === 'High' ? 'bg-red-50 text-red-600' : 'bg-amber-50 text-amber-600'}`}>
-                          {todo.urgency}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-               </div>
-            </div>
-
-            {/* Shifted Charts block */}
-            <div className="bg-white rounded-2xl border border-gray-100 p-10 shadow-sm space-y-10">
-               <div className="h-64 w-full">
-                  <h4 className="text-xs font-bold text-slate-400 mb-6 uppercase">Top Regions (Demand)</h4>
-                  <ResponsiveContainer width="100%" height="100%">
-                     <BarChart data={trendData} margin={{ top: 10, right: 0, left: -20, bottom: 0 }}>
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 13, fill: '#94a3b8', fontWeight: 600 }} />
-                        <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 13, fill: '#94a3b8', fontWeight: 600 }} />
-                        <Tooltip cursor={{ fill: 'transparent' }} />
-                        <Bar dataKey="value" fill="#f58220" barSize={36} radius={[6, 6, 0, 0]} />
-                     </BarChart>
-                  </ResponsiveContainer>
-               </div>
-               
-               <div className="h-80 w-full relative flex flex-col items-center pt-10 border-t border-gray-50 mt-4">
-                  <h4 className="text-xs font-bold self-start text-slate-400 mb-4 uppercase w-full">Leads by Status</h4>
-                  <div className="flex-1 w-full min-h-[180px]">
-                     <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                           <Pie
-                             data={pieData}
-                             cx="50%"
-                             cy="50%"
-                             innerRadius={50}
-                             outerRadius={75}
-                             paddingAngle={3}
-                             dataKey="value"
-                           >
-                             {pieData.map((entry: any, index: number) => (
-                               <Cell key={`cell-${index}`} fill={entry.color} />
-                             ))}
-                           </Pie>
-                           <Tooltip />
-                        </PieChart>
-                     </ResponsiveContainer>
-                  </div>
-                  <div className="flex flex-wrap items-center justify-center gap-4 mt-6">
-                     {pieData.map((item: any) => (
-                       <div key={item.name} className="flex items-center gap-2">
-                         <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
-                         <span className="text-xs font-bold text-slate-500">{item.name}</span>
-                       </div>
-                     ))}
-                   </div>
-               </div>
-            </div>
-         </div>
+        <div className="bg-white p-5 rounded-2xl border border-gray-100  flex flex-col justify-center">
+          <div className="flex justify-between mb-3">
+             <h4 className="font-bold text-xs text-gray-900 uppercase">System Health</h4>
+             <span className="text-xs font-bold text-[#0D824D] cursor-pointer hover:underline">Details</span>
+          </div>
+          <div className="space-y-3">
+            <HealthBar label="Server API" percent="100%" color="bg-green-500" />
+            <HealthBar label="Database Cluster" percent="100%" color="bg-green-500" />
+          </div>
+        </div>
       </div>
     </div>
   );
 }
+
+// --- HELPER COMPONENTS ---
+
+const StatCard = ({ label, value, growth, color, icon, bg, delay }: any) => (
+  <motion.div 
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay }}
+    className="bg-white p-8 rounded-[2.5rem] border border-gray-100  relative overflow-hidden group hover: transition-all"
+  >
+    <div className="flex items-center justify-between mb-3">
+      <div style={{ backgroundColor: bg }} className="p-2.5 rounded-xl">
+        {React.cloneElement(icon as React.ReactElement<any>, { size: 16, style: { color } })}
+      </div>
+      <div className="text-right">
+        <p className="text-xs font-bold text-black uppercase mb-0.5">{label}</p>
+        <p className="text-base font-bold text-black leading-none">{value}</p>
+      </div>
+    </div>
+    <div className="flex items-center gap-1.5">
+      <span style={{ color: color }} className="text-xs font-bold">{growth}</span>
+      <span className="text-xs text-black font-bold uppercase tracking-tighter">vs last 30d</span>
+    </div>
+    {/* Animated Sparkline Style SVG */}
+    <div className="mt-6 h-12 w-full overflow-hidden opacity-20">
+        <svg viewBox="0 0 100 20" className="w-full h-full" preserveAspectRatio="none">
+            <motion.path 
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 1.5, delay: delay + 0.5 }}
+                d="M0,15 Q15,5 30,12 T60,10 T100,5" 
+                fill="none" 
+                stroke={color} 
+                strokeWidth="3" 
+                strokeLinecap="round"
+            />
+        </svg>
+    </div>
+  </motion.div>
+);
+
+const ActivityItem = ({ title, sub, time }: any) => (
+  <div className="flex items-start gap-4 group cursor-pointer border-b border-gray-50 pb-4 last:border-0 last:pb-0">
+    <div className="flex-1">
+      <p className="text-sm font-bold text-black leading-tight mb-1 group-hover:text-[#0D824D] transition-colors">{title}</p>
+      <div className="flex items-center gap-2">
+        <p className="text-xs text-gray-500 font-bold">{sub}</p>
+        <span className="w-1 h-1 rounded-full bg-gray-300" />
+        <span className="text-xs text-gray-400 font-bold uppercase">{time}</span>
+      </div>
+    </div>
+  </div>
+);
+
+const FooterWidget = ({ title, value, subtitle, color }: any) => (
+  <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100  hover: transition-all">
+    <div className="flex justify-between mb-6">
+        <h4 className="font-bold text-[14px] text-gray-900 uppercase leading-tight pr-4">{title}</h4>
+        <ArrowUpRight size={18} className="text-gray-500 cursor-pointer hover:text-blue-500 transition-colors" />
+    </div>
+    <div className="flex items-center gap-3">
+        <div className="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center">
+             <TrendingUp size={20} className="text-gray-500" />
+        </div>
+        <div className="flex-1">
+            <div className="flex justify-between items-center mb-1">
+               <span className="text-xs font-bold text-gray-600 truncate max-w-[100px]">{subtitle || "Monthly Avg"}</span>
+               <span className="text-xs font-bold text-gray-800">{value}</span>
+            </div>
+            <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+                <motion.div 
+                   initial={{ width: 0 }}
+                   animate={{ width: `75%` }}
+                   transition={{ duration: 1, delay: 0.5 }}
+                   className={`h-full ${color}`} 
+                />
+            </div>
+        </div>
+    </div>
+  </div>
+);
+
+const HealthBar = ({ label, percent, color }: any) => (
+  <div>
+    <div className="flex justify-between text-xs font-bold text-slate-600 mb-1.5">
+      <span>{label}</span>
+      <span className="text-[#0D824D]">{percent}</span>
+    </div>
+    <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+      <motion.div 
+         initial={{ width: 0 }}
+         animate={{ width: percent }}
+         transition={{ duration: 1, delay: 0.8 }}
+         className={`h-full ${color}`} 
+      />
+    </div>
+  </div>
+);

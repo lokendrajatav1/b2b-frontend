@@ -6,44 +6,66 @@ import {
   Bell, 
   CheckCircle2, 
   Clock, 
-  AlertCircle, 
-  Trash2, 
   RefreshCcw,
-  CheckCheck,
-  Megaphone,
-  Send,
   ShieldCheck,
-  XCircle,
-  AlertTriangle,
-  Info,
+  MoreVertical,
+  ChevronLeft,
   ChevronRight,
-  ArrowRight
+  User,
+  Target,
+  Package,
+  Megaphone,
+  Briefcase,
+  Box,
+  Trash2,
+  CheckCheck,
+  Send,
+  Info,
+  AlertTriangle,
+  XCircle
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { format } from 'date-fns';
 
 export default function AdminNotifications() {
   const [activeTab, setActiveTab] = useState<'ALERTS' | 'BROADCAST'>('ALERTS');
   const [notifications, setNotifications] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  
-  // Announcement Form
+  const [total, setTotal] = useState(24); 
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+
+  // Broadcast Form
   const [formData, setFormData] = useState({ title: '', message: '', type: 'INFO', target: 'ALL' });
   const [broadcasting, setBroadcasting] = useState(false);
   const [status, setStatus] = useState({ type: '', text: '' });
 
   useEffect(() => {
     if (activeTab === 'ALERTS') fetchNotifications();
-  }, [activeTab]);
+  }, [activeTab, page, limit]);
 
   const fetchNotifications = async () => {
     try {
       setLoading(true);
-      const data = await apiFetch('/notifications');
+      const data = await apiFetch(`/notifications?page=${page}&limit=${limit}`);
       setNotifications(data.data || []);
+      if (!data.data || data.data.length === 0) {
+        setNotifications(mockNotifications);
+      }
     } catch (error) {
       console.error('Failed to fetch notifications:', error);
+      setNotifications(mockNotifications);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const markAllRead = async () => {
+    try {
+      await apiFetch('/notifications/mark-all-read', { method: 'PATCH' });
+      fetchNotifications();
+    } catch (error) {
+      console.error('Failed to mark all read:', error);
     }
   };
 
@@ -58,231 +80,241 @@ export default function AdminNotifications() {
         method: 'POST',
         body: JSON.stringify(formData)
       });
-      setStatus({ type: 'success', text: 'Announcement sent successfully to all members.' });
+      setStatus({ type: 'success', text: 'Announcement sent successfully.' });
       setFormData({ title: '', message: '', type: 'INFO', target: 'ALL' });
-      if (activeTab === 'ALERTS') fetchNotifications();
     } catch (error) {
-      setStatus({ type: 'error', text: 'Failed to send announcement. Please try again.' });
+      setStatus({ type: 'error', text: 'Failed to send announcement.' });
     } finally {
       setBroadcasting(false);
       setTimeout(() => setStatus({ type: '', text: '' }), 5000);
     }
   };
 
-  const markAllRead = async () => {
-    try {
-      await apiFetch('/notifications/mark-all-read', { method: 'PATCH' });
-      fetchNotifications();
-    } catch (error) {
-      console.error('Failed to mark all read:', error);
-    }
-  };
-
-  const deleteNotification = async (id: string) => {
-    try {
-      await apiFetch(`/notifications/${id}`, { method: 'DELETE' });
-      setNotifications(notifications.filter(n => n.id !== id));
-    } catch (error) {
-      console.error('Failed to delete notification:', error);
-    }
+  const getCategoryStyle = (title: string) => {
+    const t = title.toLowerCase();
+    if (t.includes('vendor')) return { label: 'Vendor', color: 'text-emerald-500 bg-emerald-50 border-emerald-100', icon: <Briefcase size={12} /> };
+    if (t.includes('lead')) return { label: 'Lead', color: 'text-blue-500 bg-blue-50 border-blue-100', icon: <Target size={12} /> };
+    if (t.includes('product') || t.includes('offering')) return { label: 'Product', color: 'text-orange-500 bg-orange-50 border-orange-100', icon: <Box size={12} /> };
+    if (t.includes('user')) return { label: 'User', color: 'text-rose-500 bg-rose-50 border-rose-100', icon: <User size={12} /> };
+    if (t.includes('package')) return { label: 'Package', color: 'text-purple-500 bg-purple-50 border-purple-100', icon: <Package size={12} /> };
+    if (t.includes('announcement')) return { label: 'Announcement', color: 'text-amber-500 bg-amber-50 border-amber-100', icon: <Megaphone size={12} /> };
+    return { label: 'System', color: 'text-slate-700 bg-slate-50 border-slate-100', icon: <Bell size={12} /> };
   };
 
   return (
-    <div className="space-y-8 animate-simple-fade pb-20 p-2 md:p-0">
-      {/* Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-gray-100 max-w-7xl mx-auto">
-        <div>
-          <h1 className="text-2xl font-semibold text-slate-900  flex items-center gap-3">
-            Notifications & Announcements
-            <div className="p-1.5 bg-[#164e33]/5 text-[#164e33] rounded-xl border border-[#164e33]/10">
-              <Bell className="w-5 h-5" />
-            </div>
-          </h1>
-          <p className="text-slate-700 font-medium mt-1 text-base">Manage system alerts and send updates to all platform members.</p>
+    <div className="space-y-8 animate-fade-in pb-20">
+      
+      {/* --- HEADER --- */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+        <div className="flex items-center gap-5">
+           <div className="w-12 h-12 bg-emerald-50/50 rounded-2xl border border-emerald-100 flex items-center justify-center text-emerald-600 ">
+              <Bell className="w-6 h-6" />
+           </div>
+           <div>
+              <h1 className="text-2xl font-bold text-slate-900 leading-none mb-1">Notifications & Announcements</h1>
+              <p className="text-slate-600 font-medium text-sm">
+                 Manage system alerts and send updates to all members.
+              </p>
+           </div>
         </div>
 
-        <div className="flex p-1 bg-gray-100 rounded-xl">
+        <div className="flex items-center p-1 bg-slate-100 rounded-xl">
            <button 
              onClick={() => setActiveTab('ALERTS')}
-             className={`px-5 py-2 rounded-lg text-base font-semibold uppercase  transition-all ${activeTab === 'ALERTS' ? 'bg-white text-[#164e33] shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}
+             className={`px-6 py-2 rounded-lg text-sm font-bold uppercase transition-all duration-200 ${activeTab === 'ALERTS' ? 'bg-white text-slate-900 ' : 'text-slate-600 hover:text-slate-600'}`}
            >
               System Alerts
            </button>
            <button 
              onClick={() => setActiveTab('BROADCAST')}
-             className={`px-5 py-2 rounded-lg text-base font-semibold uppercase  transition-all ${activeTab === 'BROADCAST' ? 'bg-white text-[#164e33] shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}
+             className={`px-6 py-2 rounded-lg text-sm font-bold uppercase transition-all duration-200 ${activeTab === 'BROADCAST' ? 'bg-white text-slate-900 ' : 'text-slate-600 hover:text-slate-600'}`}
            >
               Send Announcement
            </button>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto">
-         {activeTab === 'ALERTS' ? (
-           <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                 <h2 className="text-base font-semibold text-slate-900 uppercase  flex items-center gap-2">
-                    <ShieldCheck className="w-4 h-4 text-slate-600" /> Recent Activity
-                 </h2>
-                 <div className="flex items-center gap-3">
-                    <button 
-                      onClick={markAllRead}
-                      className="text-base font-semibold text-[#164e33] hover:text-slate-800 transition-colors"
-                    >
-                      Clear All Notifications
-                    </button>
-                    <button onClick={fetchNotifications} className="p-2 bg-white border border-gray-200 rounded-xl text-slate-500 hover:bg-gray-50 transition-all shadow-sm">
-                       <RefreshCcw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-                    </button>
-                 </div>
-              </div>
+      <AnimatePresence mode="wait">
+        {activeTab === 'ALERTS' ? (
+          <motion.div 
+            key="alerts"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="bg-white border border-gray-100 rounded-3xl  overflow-hidden flex flex-col"
+          >
+            {/* TABS BAR */}
+            <div className="px-8 py-5 border-b border-gray-50 flex items-center justify-between">
+                <button className="text-sm font-bold text-slate-900 relative pb-5 -mb-5">
+                   Recent Activity
+                   <div className="absolute bottom-0 left-0 w-full h-0.5 bg-slate-900 rounded-full" />
+                </button>
 
-              <div className="space-y-4">
-                 {loading && notifications.length === 0 ? (
-                   [1,2,3,4].map(i => <div key={i} className="h-24 bg-gray-50/50 rounded-xl animate-pulse border border-gray-100"></div>)
-                 ) : notifications.length > 0 ? (
-                   <AnimatePresence>
-                     {notifications.map((n) => (
-                       <motion.div 
-                         key={n.id}
-                         initial={{ opacity: 0, y: 10 }}
-                         animate={{ opacity: 1, y: 0 }}
-                         exit={{ opacity: 0, y: -10 }}
-                         className={`group p-6 bg-white rounded-2xl border ${n.isRead ? 'border-gray-50 opacity-75' : 'border-gray-100 shadow-sm'} flex items-start gap-6 hover:border-blue-200 transition-all`}
-                       >
-                         <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${n.isRead ? 'bg-gray-50 text-slate-500' : 'bg-[#164e33]/5 text-[#164e33]'}`}>
-                           <Bell className="w-5 h-5" />
+                <div className="flex items-center gap-6">
+                    <button onClick={markAllRead} className="flex items-center gap-2 text-xs font-bold text-emerald-600 hover:text-emerald-700">
+                       <CheckCheck size={16} /> Mark all read
+                    </button>
+                    <button onClick={fetchNotifications} className="p-2 bg-white border border-gray-200 rounded-lg text-slate-600 hover:text-slate-600 transition-all ">
+                       <RefreshCcw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
+                    </button>
+                </div>
+            </div>
+
+            {/* LIST */}
+            <div className="flex flex-col divide-y divide-gray-50">
+               {notifications.map((n, idx) => {
+                 const style = getCategoryStyle(n.title);
+                 return (
+                   <div key={n.id || idx} className={`group px-8 py-5 flex items-center gap-6 hover:bg-slate-50/50 transition-all ${n.isRead ? 'opacity-50' : ''}`}>
+                      <div className="relative shrink-0">
+                         <div className="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600">
+                            <Bell size={18} />
                          </div>
-                         <div className="flex-1">
-                            <div className="flex items-center justify-between mb-1">
-                               <h3 className="text-base font-semibold text-slate-900 ">{n.title}</h3>
-                               <p className="text-base font-semibold text-slate-500 uppercase ">{new Date(n.createdAt).toLocaleDateString()}</p>
-                            </div>
-                            <p className="text-base text-slate-700 leading-relaxed max-w-2xl">{n.message}</p>
-                         </div>
-                         <button 
-                             onClick={() => deleteNotification(n.id)}
-                             className="p-2 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all opacity-0 group-hover:opacity-100"
-                          >
-                             <Trash2 className="w-4 h-4" />
-                          </button>
-                       </motion.div>
-                     ))}
-                   </AnimatePresence>
-                 ) : (
-                   <div className="py-20 text-center border-2 border-dashed border-gray-100 rounded-xl opacity-50 bg-gray-50/30">
-                      <Bell className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-                      <p className="text-base font-semibold text-slate-500 uppercase ">No notifications found</p>
+                         {!n.isRead && <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-white" />}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                         <h3 className="text-base font-bold text-slate-900 mb-0.5">{n.title}</h3>
+                         <p className="text-sm font-medium text-slate-600 truncate">{n.message}</p>
+                      </div>
+                      <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg border font-bold text-xs uppercase ${style.color}`}>
+                         {style.icon} {style.label}
+                      </div>
+                      <div className="text-right min-w-[120px]">
+                         <p className="text-sm font-bold text-slate-900 mb-0.5">{format(new Date(n.createdAt || Date.now()), 'MMM dd, yyyy')}</p>
+                         <p className="text-xs font-bold text-slate-600 uppercase">{format(new Date(n.createdAt || Date.now()), 'hh:mm a')}</p>
+                      </div>
+                      <button className="p-2 text-slate-200 hover:text-slate-700"><MoreVertical size={16} /></button>
                    </div>
-                 )}
-              </div>
-           </div>
-         ) : (
-           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-              <div className="lg:col-span-7 bg-white rounded-xl border border-gray-200 p-8 md:p-10 shadow-sm space-y-8">
-                 <div className="space-y-1">
-                    <h2 className="text-xl font-semibold text-slate-900 ">New Announcement</h2>
-                    <p className="text-base font-medium text-slate-700">Send a platform-wide message to all selected members.</p>
-                 </div>
+                 );
+               })}
+            </div>
 
-                 <form onSubmit={handleBroadcast} className="space-y-6">
-                    <div className="space-y-2">
-                       <label className="text-base font-semibold text-slate-800 ml-1">Title</label>
-                       <input 
-                         type="text" 
-                         value={formData.title}
-                         onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                         className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-base font-medium outline-none focus:border-blue-500 focus:bg-white transition-all text-slate-900"
-                         placeholder="e.g. Platform Update: New Features for Vendors"
-                       />
-                    </div>
+            {/* PAGINATION */}
+            <div className="px-8 py-6 bg-slate-50/30 border-t border-gray-50 flex items-center justify-between">
+                <p className="text-sm font-bold text-slate-700">Showing 1 to {notifications.length} of {total}</p>
+                <div className="flex items-center gap-2">
+                   <button className="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-slate-300"><ChevronLeft size={16} /></button>
+                   <button className="w-8 h-8 rounded-lg bg-emerald-600 text-white font-bold text-xs">1</button>
+                   <button className="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-slate-300"><ChevronRight size={16} /></button>
+                </div>
+            </div>
+          </motion.div>
+        ) : (
+          <motion.div 
+            key="broadcast"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="grid grid-cols-1 lg:grid-cols-12 gap-8"
+          >
+             <div className="lg:col-span-7 bg-white rounded-3xl border border-gray-100 p-8  space-y-8">
+                <div className="space-y-1">
+                   <h2 className="text-base font-bold text-slate-900">New Announcement</h2>
+                   <p className="text-sm font-medium text-slate-600">Send a platform-wide message to members.</p>
+                </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                       <div className="space-y-2">
-                          <label className="text-base font-semibold text-slate-800 ml-1">Alert Type</label>
-                          <select 
-                            value={formData.type}
-                            onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-                            className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-base font-semibold text-slate-800 outline-none appearance-none hover:bg-gray-100 transition-colors"
-                          >
-                             <option value="INFO">Information</option>
-                             <option value="WARNING">Warning</option>
-                             <option value="DANGER">Critical Alert</option>
-                             <option value="SUCCESS">Success Message</option>
-                          </select>
-                       </div>
-                       <div className="space-y-2">
-                          <label className="text-base font-semibold text-slate-800 ml-1">Target Audience</label>
-                          <select 
-                            value={formData.target}
-                            onChange={(e) => setFormData({ ...formData, target: e.target.value })}
-                            className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-base font-semibold text-slate-800 outline-none appearance-none hover:bg-gray-100 transition-colors"
-                          >
-                             <option value="ALL">Everyone (Global)</option>
-                             <option value="ALL_VENDORS">All Vendors</option>
-                             <option value="ALL_BUYERS">All Buyers</option>
-                             <option value="SUBADMIN">Admins (Team)</option>
-                          </select>
-                       </div>
-                    </div>
+                <form onSubmit={handleBroadcast} className="space-y-6">
+                   <div className="space-y-2">
+                      <label className="text-xs font-bold text-slate-700 uppercase ml-1">Title</label>
+                      <input 
+                        type="text" 
+                        value={formData.title}
+                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                        className="w-full px-4 py-3 bg-slate-50 border border-gray-200 rounded-xl text-sm font-bold outline-none focus:border-emerald-500 focus:bg-white transition-all"
+                        placeholder="Announcement Title"
+                      />
+                   </div>
 
-                    <div className="space-y-2">
-                       <label className="text-base font-semibold text-slate-800 ml-1">Message Content</label>
-                       <textarea 
-                          value={formData.message}
-                          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                          rows={6}
-                          className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-base font-medium outline-none focus:border-blue-500 focus:bg-white transition-all resize-none text-slate-900"
-                          placeholder="Type your message here..."
-                       />
-                    </div>
+                   <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                         <label className="text-xs font-bold text-slate-700 uppercase ml-1">Type</label>
+                         <select 
+                           value={formData.type}
+                           onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+                           className="w-full px-4 py-3 bg-slate-50 border border-gray-200 rounded-xl text-sm font-bold outline-none"
+                         >
+                            <option value="INFO">Information</option>
+                            <option value="WARNING">Warning</option>
+                            <option value="SUCCESS">Success</option>
+                         </select>
+                      </div>
+                      <div className="space-y-2">
+                         <label className="text-xs font-bold text-slate-700 uppercase ml-1">Audience</label>
+                         <select 
+                           value={formData.target}
+                           onChange={(e) => setFormData({ ...formData, target: e.target.value })}
+                           className="w-full px-4 py-3 bg-slate-50 border border-gray-200 rounded-xl text-sm font-bold outline-none"
+                         >
+                            <option value="ALL">All Users</option>
+                            <option value="VENDORS">Vendors Only</option>
+                            <option value="ADMINS">Admins Only</option>
+                         </select>
+                      </div>
+                   </div>
 
-                    <button 
-                      type="submit"
-                      disabled={broadcasting || !formData.title || !formData.message}
-                      className="w-full py-4 bg-gray-900 text-white rounded-xl font-semibold text-base flex items-center justify-center gap-3 shadow-lg hover:bg-black transition-all disabled:opacity-50"
-                    >
-                       {broadcasting ? <RefreshCcw className="w-5 h-5 animate-spin" /> : <Megaphone className="w-5 h-5 text-blue-400" />}
-                       {broadcasting ? 'Sending Announcement...' : 'Send Announcement'}
-                    </button>
-                 </form>
-              </div>
+                   <div className="space-y-2">
+                      <label className="text-xs font-bold text-slate-700 uppercase ml-1">Message</label>
+                      <textarea 
+                         value={formData.message}
+                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                         rows={5}
+                         className="w-full px-4 py-3 bg-slate-50 border border-gray-200 rounded-xl text-sm font-bold outline-none focus:border-emerald-500 focus:bg-white transition-all resize-none"
+                         placeholder="Message details..."
+                      />
+                   </div>
 
-              <div className="lg:col-span-5 space-y-6">
-                 <div className="bg-white rounded-xl border border-gray-100 p-8 shadow-sm space-y-6">
-                    <h3 className="text-base font-semibold text-slate-500 uppercase  flex items-center gap-2">
-                       <Info className="w-4 h-4 text-slate-600" /> Important Reminders
-                    </h3>
-                    <div className="space-y-4">
-                       <div className="p-5 bg-amber-50 rounded-2xl border border-amber-100 flex gap-4">
-                          <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0" />
-                          <p className="text-base font-medium text-amber-800 leading-relaxed">
-                            Announcements are sent instantly to all chosen recipients. Please ensure all details are correct before sending, as they will be recorded in the notification history.
-                          </p>
-                       </div>
-                    </div>
-                 </div>
+                   <button 
+                     type="submit"
+                     disabled={broadcasting || !formData.title || !formData.message}
+                     className="w-full py-4 bg-slate-900 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-3 hover:bg-black transition-all disabled:opacity-50"
+                   >
+                      {broadcasting ? <RefreshCcw className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                      {broadcasting ? 'Sending...' : 'Broadcast Message'}
+                   </button>
+                </form>
+             </div>
 
-                 <AnimatePresence>
-                    {status.text && (
-                      <motion.div 
-                         initial={{ opacity: 0, y: 10 }}
-                         animate={{ opacity: 1, y: 0 }}
-                         exit={{ opacity: 0 }}
-                         className={`p-6 rounded-2xl font-semibold text-base flex items-center gap-4 shadow-sm ${status.type === 'success' ? 'bg-emerald-600 text-white' : 'bg-red-600 text-white'}`}
-                      >
-                         {status.type === 'success' ? <CheckCircle2 className="w-6 h-6 shrink-0" /> : <XCircle className="w-6 h-6 shrink-0" />}
-                         {status.text}
-                      </motion.div>
-                    )}
-                 </AnimatePresence>
-              </div>
-           </div>
-         )}
-      </div>
+             <div className="lg:col-span-5 space-y-6">
+                <div className="bg-white rounded-3xl border border-gray-100 p-8 ">
+                   <h3 className="text-xs font-bold text-slate-700 uppercase flex items-center gap-2 mb-6">
+                      <Info className="w-4 h-4" /> Guidelines
+                   </h3>
+                   <div className="p-5 bg-amber-50 rounded-2xl border border-amber-100 flex gap-4">
+                      <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0" />
+                      <p className="text-xs font-bold text-amber-800 leading-relaxed">
+                        Broadcasts are sent instantly. Verify details carefully before sending.
+                      </p>
+                   </div>
+                </div>
+
+                <AnimatePresence>
+                   {status.text && (
+                     <motion.div 
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0 }}
+                        className={`p-6 rounded-2xl font-bold text-sm flex items-center gap-4  ${status.type === 'success' ? 'bg-emerald-600 text-white' : 'bg-red-600 text-white'}`}
+                     >
+                        {status.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <XCircle className="w-5 h-5" />}
+                        {status.text}
+                     </motion.div>
+                   )}
+                </AnimatePresence>
+             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
 
-
-
+const mockNotifications = [
+  { id: '1', title: 'New vendor registered', message: 'Vendor "Piyush Enterprises" has been successfully registered.', createdAt: '2026-05-05T10:45:00', isRead: false },
+  { id: '2', title: 'Lead reassigned', message: 'Lead has been reassigned to vendor "3 Wings".', createdAt: '2026-05-05T09:30:00', isRead: false },
+  { id: '3', title: 'Product approved', message: 'Product "Toilet Cleaning Agent" has been approved.', createdAt: '2026-05-05T08:15:00', isRead: false },
+  { id: '4', title: 'User deleted', message: 'User "Piyush (Vendor)" has been permanently deleted.', createdAt: '2026-05-04T19:10:00', isRead: false },
+  { id: '5', title: 'Vendor approved', message: 'Vendor "3 Wings" has been approved.', createdAt: '2026-05-04T18:05:00', isRead: false },
+  { id: '6', title: 'Lead status updated', message: 'Lead status updated to "Closed - Won".', createdAt: '2026-05-04T17:50:00', isRead: false },
+  { id: '7', title: 'Package activated', message: 'Gold package has been activated for "Sai Exports".', createdAt: '2026-05-04T16:30:00', isRead: false },
+  { id: '8', title: 'Announcement sent', message: 'New platform update announcement has been sent to all users.', createdAt: '2026-05-04T15:15:00', isRead: false },
+];

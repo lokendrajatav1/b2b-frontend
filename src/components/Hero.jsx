@@ -1,324 +1,175 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { Sparkles, Search, MapPin, ShieldCheck, ArrowRight, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
+import React, { useState } from "react";
+import { Sparkles, Search, MapPin, ShieldCheck, ArrowRight, Users, Building2, Factory, Settings, Box, HardHat, PlusSquare, Pill, Cpu, Package } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { apiFetch } from "@/lib/api";
 import Link from "next/link";
 
 const Hero = () => {
   const router = useRouter();
-  const dropdownRef = useRef(null);
-  
-  const [activeTab, setActiveTab] = useState("match");
   const [searchQuery, setSearchQuery] = useState("");
   const [locationQuery, setLocationQuery] = useState("");
-  
-  // Inline Search State
-  const [searchResults, setSearchResults] = useState([]);
-  const [isSearching, setIsSearching] = useState(false);
-  const [showDropdown, setShowDropdown] = useState(false);
 
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setShowDropdown(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  const handleSearch = async () => {
-    if (activeTab === "match") {
-      router.push(`/post-requirement?q=${encodeURIComponent(searchQuery)}&city=${encodeURIComponent(locationQuery)}`);
+  const handleSearch = (type = 'browse', specificQuery = null) => {
+    const query = specificQuery !== null ? specificQuery.trim() : searchQuery.trim();
+    const city = locationQuery.trim();
+    if (type === 'match') {
+      router.push(`/post-requirement?q=${encodeURIComponent(query)}&city=${encodeURIComponent(city)}`);
     } else {
-      // Navigate to search page first
-      router.push(`/search?q=${encodeURIComponent(searchQuery)}&city=${encodeURIComponent(locationQuery)}`);
-      
-      // Also show dropdown for instant feedback
-      setIsSearching(true);
-      setShowDropdown(true);
-      
-      try {
-        const params = new URLSearchParams();
-        if (searchQuery) params.append("search", searchQuery);
-        if (locationQuery) params.append("city", locationQuery);
-        
-        const res = await apiFetch(`/vendors?${params.toString()}&limit=5`);
-        setSearchResults(Array.isArray(res.data?.vendors) ? res.data.vendors : []);
-      } catch (error) {
-        console.error("Inline search failed:", error);
-        setSearchResults([]);
-      } finally {
-        setIsSearching(false);
-      }
+      router.push(`/search?q=${encodeURIComponent(query)}&city=${encodeURIComponent(city)}`);
     }
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") handleSearch();
   };
 
   return (
-    <section className="hero-container relative w-full pt-12 pb-16 md:pt-20 md:pb-24 lg:min-h-[550px] flex flex-col justify-center overflow-hidden bg-[#ffffff]">
-      {/* Background Image on Right */}
-      <div className="hero-image-wrapper absolute right-0 top-0 w-3/4 h-full hidden lg:block">
-        <Image
-          src="/hero2.png"
-          alt="B2B Marketplace"
-          fill
-          className="object-cover"
-          priority
-        />
-      </div>
+    <div className="bg-white font-sans text-[#1a1a1a]">
+      <section className="relative min-h-[850px] lg:min-h-[900px] flex flex-col overflow-hidden bg-[#f4f7f6]">
+        
+        {/* --- FIX: Background Image Logic --- */}
+        <div className="absolute inset-0 z-0">
+           <div className="absolute top-0 right-0 w-full lg:w-[60%] h-full overflow-hidden">
+              <img 
+                // Next.js mein public folder ki images ko direct "/" se access karte hain
+                src="/Banner.png" 
+                alt="B2B Hero Background" 
+                className="w-full h-full object-cover object-right"
+              />
+              {/* Overlay for better text readability */}
+              <div className="absolute inset-0 bg-gradient-to-r from-[#f4f7f6] via-[#f4f7f6]/60 to-transparent lg:block hidden"></div>
+           </div>
+        </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 w-full relative z-20">
-        <div className="max-w-2xl w-full">
-          {/* Headline */}
-          <h2 className="text-[35px] md:text-[56px] lg:text-[60px] leading-[1.1] mt-10 md:mt-0 font-semibold text-[#164e33] mb-10 ">
-            Find trusted partners to grow your business.
-          </h2>
-
-          {/* Toggle Buttons */}
-          <div className="relative inline-flex items-center bg-gray-100/80 backdrop-blur-sm p-1.5 rounded-full mb-10 w-fit">
-            {/* Sliding Background */}
-            <div
-              className={`absolute top-1.5 bottom-1.5 rounded-full bg-[#164e33] transition-all duration-300 ease-out shadow-sm ${
-                activeTab === "match" ? "left-1.5 w-[150px]" : "left-[156px] w-[165px]"
-              }`}
-            />
-
-            <button
-              onClick={() => { setActiveTab("match"); setShowDropdown(false); }}
-              className={`relative z-10 flex items-center justify-center w-[150px] py-2 rounded-full font-semibold text-base transition-colors duration-300 ${
-                activeTab === "match" ? "text-white" : "text-slate-800 hover:text-slate-900"
-              }`}
-            >
-              {/* <Sparkles
-                className={`w-4 h-4 mr-2 ${
-                  activeTab === "match" ? "text-white" : "text-slate-700"
-                }`}
-              /> */}
-              Match me with suppliers
-            </button>
-            <button
-              onClick={() => setActiveTab("browse")}
-              className={`relative z-10 flex items-center justify-center w-[165px] py-2 rounded-full font-semibold text-base transition-colors duration-300 ${
-                activeTab === "browse" ? "text-white" : "text-slate-800 hover:text-slate-900"
-              }`}
-            >
-              Explore the directory
-            </button>
-          </div>
-
-          {/* Search Bars */}
-          <div className="hero-search-wrapper relative min-h-[70px]" ref={dropdownRef}>
-            <AnimatePresence mode="wait">
-              {activeTab === "match" ? (
-                <motion.div
-                  key="match-search"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
-                  className="hero-search-container flex flex-col md:flex-row gap-4 mb-3"
-                >
-                  <div className="relative flex-[1.5] flex items-center px-8 bg-white border border-gray-200 rounded-2xl outline-none shadow-sm focus-within:border-[#164e33]/60 focus-within:ring-4 focus-within:ring-[#164e33]/5 transition-all duration-300">
-                    <Search className="w-5 h-5 text-slate-500 mr-3 shrink-0" />
-                    <input
-                      type="text"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      onKeyDown={handleKeyDown}
-                      placeholder="What product or service do you need?"
-                      className="w-full h-[62px] bg-transparent outline-none text-lg font-medium text-[#164e33] placeholder:text-slate-500"
-                    />
-                  </div>
-                  <div className="relative flex-1 flex items-center px-8 bg-white border border-gray-200 rounded-2xl outline-none shadow-sm focus-within:border-[#164e33]/60 focus-within:ring-4 focus-within:ring-[#164e33]/5 transition-all duration-300">
-                    <MapPin className="w-5 h-5 text-slate-500 mr-3 shrink-0" />
-                    <input
-                      type="text"
-                      value={locationQuery}
-                      onChange={(e) => setLocationQuery(e.target.value)}
-                      onKeyDown={handleKeyDown}
-                      placeholder="Your City..."
-                      className="w-full h-[62px] bg-transparent outline-none text-lg font-medium text-[#164e33] placeholder:text-slate-500"
-                    />
-                  </div>
-                  <button 
-                    onClick={handleSearch}
-                    className="hero-btn-match h-[62px] bg-[#164e33] hover:bg-[#113f29] text-white px-10 rounded-2xl font-semibold text-base uppercase  whitespace-nowrap shadow-lg hover:shadow-[#164e33]/10 active:scale-95 transition-all duration-300"
-                  >
-                    Get Matched
-                  </button>
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="browse-search"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
-                  className="relative mb-3"
-                >
-                  <div className="hero-browse-container flex flex-col md:flex-row items-stretch gap-3 relative z-20">
-                      <div className="relative flex-[1.5] flex items-center px-5 py-4 md:py-0 bg-white rounded-2xl border border-gray-200 shadow-sm focus-within:border-[#164e33]/60 focus-within:ring-4 focus-within:ring-[#164e33]/5 transition-all duration-300">
-                        <Search className="w-5 h-5 text-slate-500 mr-3 shrink-0" />
-                        <input
-                          type="text"
-                          value={searchQuery}
-                          onChange={(e) => setSearchQuery(e.target.value)}
-                          onKeyDown={handleKeyDown}
-                          placeholder="Search for products, services, or companies..."
-                          className="w-full h-[58px] bg-transparent outline-none text-base font-medium text-[#164e33] placeholder:text-slate-500"
-                        />
-                      </div>
-                      <div className="relative flex-1 flex items-center px-5 py-4 md:py-0 bg-white rounded-2xl border border-gray-200 shadow-sm focus-within:border-[#164e33]/60 focus-within:ring-4 focus-within:ring-[#164e33]/5 transition-all duration-300">
-                        <MapPin className="w-5 h-5 text-slate-500 mr-3 shrink-0" />
-                        <input
-                          type="text"
-                          value={locationQuery}
-                          onChange={(e) => setLocationQuery(e.target.value)}
-                          onKeyDown={handleKeyDown}
-                          placeholder="Location..."
-                          className="w-full h-[58px] bg-transparent outline-none text-base font-medium text-[#164e33] placeholder:text-slate-500"
-                        />
-                      </div>
-                      <button 
-                        onClick={handleSearch}
-                        className="bg-[#164e33] hover:bg-[#113f29] transition-all duration-300 text-white px-9 py-3.5 rounded-2xl font-semibold text-base uppercase  whitespace-nowrap shadow-lg hover:shadow-[#164e33]/10 active:scale-95 flex items-center justify-center"
-                      >
-                        Search
-                      </button>
-                  </div>
-
-                  {/* Inline Search Results Dropdown */}
-                  <AnimatePresence>
-                      {showDropdown && (
-                          <motion.div
-                             initial={{ opacity: 0, y: 5 }}
-                             animate={{ opacity: 1, y: 0 }}
-                             exit={{ opacity: 0, y: 5 }}
-                             className="absolute top-full left-0 right-0 mt-4 bg-white rounded-3xl border border-gray-100 shadow-2xl overflow-hidden z-50 flex flex-col"
-                          >
-                             {/* Header Row */}
-                             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-50 bg-gray-50/50">
-                                 <h4 className="text-base font-semibold text-slate-700 uppercase ">
-                                     {isSearching ? 'Searching our directory...' : 'Top Matches'}
-                                 </h4>
-                                 <button onClick={() => setShowDropdown(false)} className="text-slate-500 hover:text-slate-800 transition-colors">
-                                     <X className="w-4 h-4" />
-                                 </button>
-                             </div>
-
-                             {/* Results List */}
-                             <div className="p-2 max-h-[400px] overflow-y-auto w-full">
-                                 {isSearching ? (
-                                    <div className="py-12 flex justify-center w-full">
-                                        <div className="w-8 h-8 border-4 border-[#164e33]/20 border-t-[#164e33] rounded-full animate-spin"></div>
-                                    </div>
-                                 ) : searchResults.length > 0 ? (
-                                     <div className="space-y-1 w-full">
-                                         {searchResults.map((vendor) => (
-                                             <Link 
-                                                href={`/supplier/${vendor.id}`} 
-                                                key={vendor.id}
-                                                className="w-full flex items-center p-4 hover:bg-gray-50 rounded-2xl transition-colors group"
-                                             >
-                                                <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center shrink-0 mr-4 overflow-hidden border border-gray-200">
-                                                    {vendor.gallery?.[0]?.url ? (
-                                                        <img src={vendor.gallery[0].url} alt="" className="w-full h-full object-cover" />
-                                                    ) : (
-                                                        <span className="text-lg font-semibold text-slate-500">{vendor.businessName.charAt(0)}</span>
-                                                    )}
-                                                </div>
-                                                <div className="flex-1 min-w-0">
-                                                    <div className="flex items-center gap-2 mb-1">
-                                                        <h5 className="font-semibold text-slate-900 truncate group-hover:text-[#164e33] transition-colors">{vendor.businessName}</h5>
-                                                        {vendor.verified && <ShieldCheck className="w-3.5 h-3.5 text-[#164e33]" />}
-                                                    </div>
-                                                    <div className="flex items-center gap-3 text-base text-slate-700 font-medium">
-                                                        <span className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5" /> {vendor.city}</span>
-                                                        <span className="w-1 h-1 rounded-full bg-gray-300"></span>
-                                                        <span className="truncate">{vendor.category?.name || 'Business'}</span>
-                                                    </div>
-                                                </div>
-                                                <ArrowRight className="w-5 h-5 text-gray-300 group-hover:text-[#164e33] transform group-hover:translate-x-1 transition-all ml-4 shrink-0" />
-                                             </Link>
-                                         ))}
-                                     </div>
-                                 ) : (
-                                     <div className="py-12 text-center w-full">
-                                        <Search className="w-8 h-8 text-gray-300 mx-auto mb-3" />
-                                        <p className="text-base font-semibold text-slate-900">We couldn't find any suppliers matching your search.</p>
-                                        <p className="text-base text-slate-700 mt-1">Try broadening your search terms or location.</p>
-                                     </div>
-                                 )}
-                             </div>
-
-                             {/* Footer Action */}
-                             {!isSearching && searchResults.length > 0 && (
-                                 <Link 
-                                    href={`/search?q=${encodeURIComponent(searchQuery)}&city=${encodeURIComponent(locationQuery)}`}
-                                    onClick={() => setShowDropdown(false)}
-                                    className="w-full py-4 bg-gray-50 hover:bg-gray-100 text-[#164e33] font-semibold text-base text-center transition-colors border-t border-gray-100 block"
-                                 >
-                                     See all matching results
-                                 </Link>
-                             )}
-                          </motion.div>
-                      )}
-                  </AnimatePresence>
-
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          {/* Popular Searches */}
-          <div className="mt-8">
-            <p className="text-base font-semibold text-slate-500 uppercase  mb-4">
-              Popular Industries
+        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 w-full pt-16 lg:pt-24 flex-1">
+          {/* Top Content */}
+          <div className="max-w-2xl mb-10">
+            <h1 className="text-4xl md:text-5xl lg:text-[72px] font-serif text-[#164e33] leading-[1.05] mb-8 tracking-tight">
+              Find trusted partners <br /> to grow your business.
+            </h1>
+            <p className="text-slate-600 text-lg md:text-xl mb-10 max-w-lg leading-relaxed font-medium">
+              India's most reliable B2B marketplace to connect, collaborate & grow with verified businesses.
             </p>
-            <div className="flex flex-wrap gap-2.5">
+
+            <div className="flex flex-wrap gap-4 mb-12">
+              <button 
+                onClick={() => handleSearch('match')}
+                className="bg-[#164e33] text-white px-8 py-4 rounded-xl font-bold flex items-center gap-3 shadow-2xl shadow-green-900/30 hover:bg-[#113f29] transition-all active:scale-95"
+              >
+                <Users size={22} /> Match me with vendors
+              </button>
+              <button 
+                onClick={() => handleSearch('browse')}
+                className="bg-white border border-slate-200 px-8 py-4 rounded-xl font-bold flex items-center gap-3 hover:bg-slate-50 transition-all active:scale-95 text-slate-700 shadow-sm"
+              >
+                <Building2 size={22} /> Explore the directory
+              </button>
+            </div>
+
+            {/* Search Bar Capsule */}
+            <div className="bg-white p-2.5 rounded-[24px] border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.1)] flex flex-col md:flex-row gap-2 max-w-4xl">
+               <div className="flex-[1.5] flex items-center px-5 gap-3 bg-white">
+                  <Search size={22} className="text-slate-400" />
+                  <input 
+                    type="text" 
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="What product or service do you need?" 
+                    className="w-full bg-transparent py-4 focus:outline-none text-base font-medium text-slate-800 placeholder:text-slate-400" 
+                  />
+               </div>
+               <div className="w-px h-10 bg-slate-100 self-center hidden md:block"></div>
+               <div className="flex-1 flex items-center px-5 gap-3 bg-white">
+                  <MapPin size={22} className="text-slate-400" />
+                  <input 
+                    type="text" 
+                    value={locationQuery}
+                    onChange={(e) => setLocationQuery(e.target.value)}
+                    placeholder="Your City..." 
+                    className="w-full bg-transparent py-4 focus:outline-none text-base font-medium text-slate-800 placeholder:text-slate-400" 
+                  />
+               </div>
+               <button 
+                 onClick={() => handleSearch('match')}
+                 className="bg-[#164e33] text-white px-10 py-4 rounded-[13px] font-bold flex items-center justify-center gap-3 hover:bg-[#113f29] transition-all"
+               >
+                  <Sparkles size={20} /> Get Matched
+               </button>
+            </div>
+          </div>
+          
+          {/* Floating Verified Badge */}
+          <div className="absolute right-6 top-32 lg:right-16 lg:top-48 bg-white/90 backdrop-blur-md p-6 rounded-[20px] shadow-2xl border border-white/50 max-w-[260px] hidden lg:block">
+             <div className="flex items-start gap-4">
+                <div className="bg-[#164e33] p-3 rounded-xl text-white shadow-lg">
+                   <ShieldCheck size={28} />
+                </div>
+                <div>
+                   <p className="font-bold text-[17px] leading-tight text-[#164e33]">Verified & Trusted Businesses</p>
+                   <p className="text-xs text-slate-500 mt-2 font-semibold">Quality you can rely on every time.</p>
+                </div>
+             </div>
+          </div>
+
+          {/* Popular Industries Section */}
+          <div className="mt-16 mb-16">
+            <div className="flex justify-between items-center mb-8">
+              <div className="space-y-1">
+                <h2 className="text-[19px] font-bold text-[#164e33] tracking-tight">Popular Industries</h2>
+                <div className="w-12 h-1 bg-[#164e33] rounded-full"></div>
+              </div>
+              <Link href="/suppliers" className="text-[#164e33] font-bold text-sm flex items-center gap-2 text-[#164e33] transition-colors">
+                View all industries <ArrowRight size={16} />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-5">
               {[
-                "Machine Parts",
-                "Industrial Machines",
-                "Industrial Supplies",
-                "Construction",
-                "Hospitals & Labs",
-                "Drugs & Pharma",
-                "Electronics"
-              ].map((tag, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => {
-                    setSearchQuery(tag);
-                    setTimeout(() => {
-                        if (activeTab === "match") {
-                            router.push(`/post-requirement?q=${encodeURIComponent(tag)}&city=${encodeURIComponent(locationQuery)}`);
-                        } else {
-                            router.push(`/search?q=${encodeURIComponent(tag)}&city=${encodeURIComponent(locationQuery)}`);
-                        }
-                    }, 0);
-                  }}
-                  className="group flex items-center px-4 py-2.5 bg-white hover:bg-white border border-gray-200 hover:border-[#164e33] hover:shadow-xl hover:shadow-[#164e33]/5 hover:-translate-y-0.5 rounded-xl text-base font-semibold text-slate-800 hover:text-[#164e33] transition-all duration-300 cursor-pointer"
+                { icon: <Settings size={28} />, name: "Machine Parts" },
+                { icon: <Factory size={28} />, name: "Industrial Machines" },
+                { icon: <Box size={28} />, name: "Industrial Supplies" },
+                { icon: <HardHat size={28} />, name: "Construction" },
+                { icon: <PlusSquare size={28} />, name: "Hospitals & Labs" },
+                { icon: <Pill size={28} />, name: "Drugs & Pharma" },
+                { icon: <Cpu size={28} />, name: "Electronics" },
+              ].map((item, idx) => (
+                <div 
+                  key={idx} 
+                  onClick={() => { setSearchQuery(item.name); handleSearch('browse', item.name); }}
+                  className="group bg-white p-7 rounded-[28px] shadow-sm border border-transparent hover:border-[#164e33]/10 hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer flex flex-col items-center justify-center gap-4 text-center"
                 >
-                  <Search className="w-3.5 h-3.5 mr-2.5 text-gray-300 group-hover:text-[#164e33] transition-colors" />
-                  {tag}
-                </button>
+                  <div className="text-[#164e33] group-hover:text-[#164e33] transition-all">
+                    {item.icon}
+                  </div>
+                  <span className="text-[13px] font-bold text-slate-700 group-hover:text-[#164e33] leading-tight">{item.name}</span>
+                </div>
               ))}
             </div>
           </div>
         </div>
-      </div>
-    </section>
+
+        {/* Stats Bar at Bottom */}
+        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 w-full pb-12 mt-auto">
+          <div className="bg-[#164e33] rounded-[32px] p-8 lg:p-10 flex flex-wrap lg:flex-nowrap items-center justify-around text-white gap-8 shadow-2xl">
+            <StatBox icon={<Users className="text-[#4ade80]" />} num="2,50,000+" label="Verified Vendors" />
+            <div className="h-12 w-px bg-white/10 hidden lg:block"></div>
+            <StatBox icon={<Package className="text-[#fbbf24]" />} num="10,00,000+" label="Products Listed" />
+            <div className="h-12 w-px bg-white/10 hidden lg:block"></div>
+            <StatBox icon={<Building2 className="text-[#60a5fa]" />} num="50,000+" label="Cities Covered" />
+            <div className="h-12 w-px bg-white/10 hidden lg:block"></div>
+            <StatBox icon={<ShieldCheck className="text-[#a78bfa]" />} num="100%" label="Trusted Platform" />
+          </div>
+        </div>
+      </section>
+    </div>
   );
 };
 
-export default Hero;
+const StatBox = ({ icon, num, label }) => (
+  <div className="flex items-center gap-5">
+    <div className="bg-white/10 p-4 rounded-2xl">{icon}</div>
+    <div>
+      <p className="text-2xl font-bold leading-none text-white">{num}</p>
+      <p className="text-[11px] text-white mt-1.5 font-bold uppercase ">{label}</p>
+    </div>
+  </div>
+);
 
+export default Hero;

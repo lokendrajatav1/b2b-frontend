@@ -90,20 +90,20 @@ export default function NotificationDropdown() {
                         initial={{ opacity: 0, y: 10, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                        className="fixed sm:absolute inset-x-4 sm:inset-x-auto sm:right-0 mt-4 sm:w-96 bg-white rounded-2xl border border-gray-100 shadow-2xl z-50 overflow-hidden"
+                        className="fixed sm:absolute inset-x-4 sm:inset-x-auto sm:right-0 mt-4 sm:w-96 bg-white rounded-2xl border border-gray-100  z-50 overflow-hidden"
                     >
                         {/* Header */}
                         <div className="p-4 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
                             <div className="flex items-center gap-2">
-                                <h3 className="text-base font-semibold text-slate-900">Notifications</h3>
-                                <div className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded-md text-base font-semibold leading-none">
+                                <h3 className="text-sm font-semibold text-slate-900">Notifications</h3>
+                                <div className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded-md text-sm font-semibold leading-none">
                                     {unreadCount} new
                                 </div>
                             </div>
                             {unreadCount > 0 && (
                                 <button 
                                     onClick={markAllRead}
-                                    className="text-base font-medium text-[#164e33] hover:text-blue-700 transition-colors"
+                                    className="text-sm font-medium text-[#164e33] hover:text-blue-700 transition-colors"
                                 >
                                     Mark all read
                                 </button>
@@ -130,17 +130,17 @@ export default function NotificationDropdown() {
                                         className={`p-4 border-b border-gray-50 flex gap-3 transition-colors cursor-pointer group ${!n.isRead ? 'bg-[#164e33]/5/30' : 'hover:bg-gray-50'}`}
                                     >
                                         <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border ${!n.isRead ? 'bg-white border-[#164e33]/10' : 'bg-gray-50 border-gray-100'}`}>
-                                            <Info className={`w-5 h-5 ${!n.isRead ? 'text-[#164e33]' : 'text-slate-500'}`} />
+                                            <Info className={`w-5 h-5 ${!n.isRead ? 'text-[#164e33]' : 'text-slate-700'}`} />
                                         </div>
                                         <div className="flex-1 space-y-1">
                                             <div className="flex items-center justify-between">
-                                                <h4 className="text-base font-semibold text-slate-900">{n.title}</h4>
-                                                <div className="flex items-center gap-1.5 text-slate-500">
+                                                <h4 className="text-sm font-semibold text-slate-900">{n.title}</h4>
+                                                <div className="flex items-center gap-1.5 text-slate-700">
                                                     <Clock className="w-3 h-3" />
-                                                    <span className="text-base font-medium">{new Date(n.createdAt).toLocaleDateString()}</span>
+                                                    <span className="text-sm font-medium">{new Date(n.createdAt).toLocaleDateString()}</span>
                                                 </div>
                                             </div>
-                                            <p className="text-base text-slate-700 font-medium leading-relaxed">{n.message}</p>
+                                            <p className="text-sm text-slate-700 font-medium leading-relaxed">{n.message}</p>
                                         </div>
                                         {!n.isRead && (
                                             <div className="w-2 h-2 bg-[#164e33] rounded-full mt-1.5 shrink-0"></div>
@@ -148,11 +148,11 @@ export default function NotificationDropdown() {
                                     </div>
                                 ))
                             ) : (
-                                <div className="p-12 text-center text-slate-500 space-y-3">
+                                <div className="p-12 text-center text-slate-700 space-y-3">
                                     <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center mx-auto border border-gray-100">
-                                        <Bell className="w-6 h-6 text-gray-300" />
+                                        <Bell className="w-6 h-6 text-gray-500" />
                                     </div>
-                                    <p className="text-base font-medium">You're all caught up!</p>
+                                    <p className="text-sm font-medium">You're all caught up!</p>
                                 </div>
                             )}
                         </div>
@@ -166,7 +166,7 @@ export default function NotificationDropdown() {
                                     '/vendor/notifications'
                                 }
                                 onClick={() => setIsOpen(false)}
-                                className="text-base font-semibold text-slate-500 hover:text-[#164e33] transition-colors uppercase  flex items-center justify-center gap-2"
+                                className="text-sm font-semibold text-slate-700 hover:text-[#164e33] transition-colors uppercase  flex items-center justify-center gap-2"
                             >
                                 View all notification vault
                             </Link>

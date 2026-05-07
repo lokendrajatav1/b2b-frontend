@@ -135,16 +135,16 @@ export default function AdminManagement() {
                 <ShieldCheck className="w-5 h-5" />
              </div>
            </h1>
-           <p className="text-slate-700 font-medium mt-1 text-base">View and manage administrative access for your platform team.</p>
+           <p className="text-slate-700 font-medium mt-1 text-sm">View and manage administrative access for your platform team.</p>
         </div>
 
         <div className="flex items-center gap-3">
-           <button onClick={fetchAdmins} className="p-2.5 bg-white border border-gray-200 rounded-xl text-slate-500 hover:text-[#164e33] hover:bg-[#164e33]/5 transition-all shadow-sm">
+           <button onClick={fetchAdmins} className="p-2.5 bg-white border border-gray-200 rounded-xl text-slate-700 hover:text-[#164e33] hover:bg-[#164e33]/5 transition-all ">
               <RefreshCcw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
            </button>
            <button 
              onClick={() => setIsModalOpen(true)}
-             className="px-6 py-2.5 bg-[#164e33] text-white rounded-xl font-semibold text-base tracking-wide hover:bg-[#113f29] transition-all shadow-md flex items-center gap-2"
+             className="px-6 py-2.5 bg-[#164e33] text-white rounded-xl font-semibold text-sm  hover:bg-[#113f29] transition-all  flex items-center gap-2"
            >
               <Plus className="w-4 h-4" /> Create New Admin
            </button>
@@ -154,34 +154,34 @@ export default function AdminManagement() {
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {loading ? (
              [1,2,3].map(i => (
-                <div key={i} className="animate-pulse bg-white border border-gray-200 rounded-xl h-64 shadow-sm"></div>
+                <div key={i} className="animate-pulse bg-white border border-gray-200 rounded-xl h-64 "></div>
              ))
           ) : admins.length > 0 ? (
              admins.map(admin => (
-                  <div key={admin.id} className="bg-white border border-gray-100 rounded-xl p-8 shadow-sm hover:border-[#164e33]/20 transition-all group relative flex flex-col h-full">
+                  <div key={admin.id} className="bg-white border border-gray-100 rounded-xl p-8  hover:border-[#164e33]/20 transition-all group relative flex flex-col h-full">
                      <div className="absolute top-6 right-6 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all">
                         <button 
                            onClick={() => handleEdit(admin)}
-                           className="p-2 text-slate-500 hover:text-[#164e33] hover:bg-[#164e33]/5 rounded-xl transition-all"
+                           className="p-2 text-slate-700 hover:text-[#164e33] hover:bg-[#164e33]/5 rounded-xl transition-all"
                            title="Edit Admin"
                         >
                            <UserCircle className="w-5 h-5" />
                         </button>
                         <button 
                            onClick={() => handleDelete(admin.id)}
-                           className="p-2 text-gray-300 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all"
+                           className="p-2 text-gray-500 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all"
                            title="Revoke Access"
                         >
                            <Trash2 className="w-5 h-5" />
                         </button>
                      </div>
                      <div className="flex items-center gap-4 mb-6">
-                       <div className="w-14 h-14 bg-[#164e33]/10 text-[#164e33] rounded-xl flex items-center justify-center font-semibold text-xl border border-[#164e33]/10">
+                       <div className="w-14 h-14 bg-[#164e33]/10 text-[#164e33] rounded-xl flex items-center justify-center font-semibold text-lg border border-[#164e33]/10">
                           {admin.name.charAt(0)}
                        </div>
                         <div>
-                           <h3 className="font-semibold text-slate-900 text-lg">{admin.name}</h3>
-                           <div className="flex items-center gap-2 text-base font-semibold  uppercase mt-0.5">
+                           <h3 className="font-semibold text-slate-900 text-base">{admin.name}</h3>
+                           <div className="flex items-center gap-2 text-sm font-semibold  uppercase mt-0.5">
                               <span className="px-2 py-0.5 bg-gray-100 text-slate-700 rounded-md border border-gray-200">{admin.department}</span>
                               {admin.isActive ? (
                                 <span className="text-emerald-500 flex items-center gap-1.5 ml-2">
@@ -198,23 +198,23 @@ export default function AdminManagement() {
 
                     <div className="flex-1 space-y-6">
                        <div className="space-y-3">
-                          <p className="text-base font-semibold text-slate-500 uppercase  pl-1">Operational Permissions</p>
+                          <p className="text-sm font-semibold text-slate-700 uppercase  pl-1">Operational Permissions</p>
                           <div className="flex flex-wrap gap-2">
                              {admin.permissions && admin.permissions.length > 0 ? (
                                admin.permissions.map((p: string) => (
-                                 <span key={p} className="px-2.5 py-1 bg-[#164e33]/5 text-[#164e33] text-base font-semibold rounded-xl border border-[#164e33]/10 uppercase ">
+                                 <span key={p} className="px-2.5 py-1 bg-[#164e33]/5 text-[#164e33] text-sm font-semibold rounded-xl border border-[#164e33]/10 uppercase ">
                                    {p.replace('_', ' ')}
                                  </span>
                                ))
                              ) : (
-                               <span className="text-base font-medium text-slate-500 italic">No specific permissions set</span>
+                               <span className="text-sm font-medium text-slate-700 italic">No specific permissions set</span>
                              )}
                           </div>
                        </div>
 
                        <div className="p-4 bg-gray-50/50 rounded-xl border border-gray-100">
-                           <div className="flex items-center gap-3 text-base font-medium text-slate-800">
-                             <Mail className="w-4 h-4 text-slate-500" />
+                           <div className="flex items-center gap-3 text-sm font-medium text-slate-800">
+                             <Mail className="w-4 h-4 text-slate-700" />
                              <span className="truncate">{admin.email}</span>
                            </div>
                        </div>
@@ -223,9 +223,9 @@ export default function AdminManagement() {
              ))
           ) : (
              <div className="col-span-full py-24 text-center border-2 border-dashed border-gray-200 rounded-xl bg-gray-50/50">
-                 <Users className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                 <h3 className="text-lg font-semibold text-slate-900">No admins found</h3>
-                 <p className="text-base font-medium text-slate-700 mt-1">Create your first administrative user to help manage the platform.</p>
+                 <Users className="w-12 h-12 text-gray-500 mx-auto mb-4" />
+                 <h3 className="text-base font-semibold text-slate-900">No admins found</h3>
+                 <p className="text-sm font-medium text-slate-700 mt-1">Create your first administrative user to help manage the platform.</p>
              </div>
           )}
       </div>
@@ -243,10 +243,10 @@ export default function AdminManagement() {
                initial={{ scale: 0.95, opacity: 0 }}
                animate={{ scale: 1, opacity: 1 }}
                exit={{ scale: 0.95, opacity: 0 }}
-               className="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden border border-gray-100"
+               className="bg-white rounded-xl  w-full max-w-lg overflow-hidden border border-gray-100"
              >
                <div className="px-8 py-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-                  <h2 className="text-lg font-semibold text-slate-900">{editingId ? 'Edit Admin Account' : 'Register New Admin'}</h2>
+                  <h2 className="text-base font-semibold text-slate-900">{editingId ? 'Edit Admin Account' : 'Register New Admin'}</h2>
                   <button onClick={handleClose} className="p-1.5 hover:bg-gray-200 rounded-lg transition-colors text-slate-700">
                      <XCircle className="w-5 h-5" />
                   </button>
@@ -254,7 +254,7 @@ export default function AdminManagement() {
 
                <form onSubmit={handleSubmit} className="p-8 space-y-6">
                   {error && (
-                     <div className="p-3 bg-rose-50 border border-rose-100 rounded-xl text-rose-600 text-base font-semibold">
+                     <div className="p-3 bg-rose-50 border border-rose-100 rounded-xl text-rose-600 text-sm font-semibold">
                         {error}
                      </div>
                   )}
@@ -262,26 +262,26 @@ export default function AdminManagement() {
                   <div className="space-y-4">
                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-1">
-                          <label className="text-base font-semibold text-slate-500 uppercase  ml-1">Full Name</label>
+                          <label className="text-sm font-semibold text-slate-700 uppercase  ml-1">Full Name</label>
                           <input 
                             required
                             disabled={!!editingId}
                             type="text"
                             value={formData.name}
                             onChange={(e) => setFormData({...formData, name: e.target.value})}
-                            className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:bg-white focus:border-[#164e33] text-base font-medium transition-all disabled:opacity-50"
+                            className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:bg-white focus:border-[#164e33] text-sm font-medium transition-all disabled:opacity-50"
                             placeholder="e.g. Rahul Singh"
                           />
                         </div>
                         <div className="space-y-1">
-                          <label className="text-base font-semibold text-slate-500 uppercase  ml-1">Email Identity</label>
+                          <label className="text-sm font-semibold text-slate-700 uppercase  ml-1">Email Identity</label>
                           <input 
                             required
                             disabled={!!editingId}
                             type="email"
                             value={formData.email}
                             onChange={(e) => setFormData({...formData, email: e.target.value})}
-                            className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:bg-white focus:border-[#164e33] text-base font-medium transition-all disabled:opacity-50"
+                            className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:bg-white focus:border-[#164e33] text-sm font-medium transition-all disabled:opacity-50"
                             placeholder="admin@company.com"
                           />
                         </div>
@@ -290,38 +290,38 @@ export default function AdminManagement() {
                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {!editingId && (
                           <div className="space-y-1">
-                            <label className="text-base font-semibold text-slate-500 uppercase  ml-1">Secret Key</label>
+                            <label className="text-sm font-semibold text-slate-700 uppercase  ml-1">Secret Key</label>
                             <input 
                               required
                               type="password"
                               value={formData.password}
                               onChange={(e) => setFormData({...formData, password: e.target.value})}
-                              className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:bg-white focus:border-[#164e33] text-base font-medium transition-all"
+                              className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:bg-white focus:border-[#164e33] text-sm font-medium transition-all"
                               placeholder="Min. 6 chars"
                             />
                           </div>
                         )}
                         <div className={`space-y-1 ${editingId ? 'sm:col-span-2' : ''}`}>
-                          <label className="text-base font-semibold text-slate-500 uppercase  ml-1">Assigned Division</label>
+                          <label className="text-sm font-semibold text-slate-700 uppercase  ml-1">Assigned Division</label>
                           <div className="relative">
                             <select 
                               required
                               value={formData.department}
                               onChange={(e) => setFormData({...formData, department: e.target.value})}
-                              className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:bg-white focus:border-[#164e33] text-base font-medium transition-all appearance-none cursor-pointer pr-10"
+                              className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:bg-white focus:border-[#164e33] text-sm font-medium transition-all appearance-none cursor-pointer pr-10"
                             >
                                <option value="GENERAL">General Administration</option>
                                <option value="DATA_ENTRY">Operations Control</option>
                                <option value="SALES">Market Demand & Leads</option>
                                <option value="SUPPORT">Customer Success</option>
                             </select>
-                            <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
+                            <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-700 pointer-events-none" />
                           </div>
                          </div>
                      </div>
 
                      <div className="space-y-3 pt-2">
-                        <h4 className="text-base font-semibold text-slate-500 uppercase  border-b border-gray-50 pb-2">Operational Privileges</h4>
+                        <h4 className="text-sm font-semibold text-slate-700 uppercase  border-b border-gray-50 pb-2">Operational Privileges</h4>
                         <div className="grid grid-cols-1 gap-2 max-h-48 overflow-y-auto pr-1 scrollbar-thin">
                            {availablePermissions.map(perm => (
                              <label
@@ -334,7 +334,7 @@ export default function AdminManagement() {
                                    onChange={() => handlePermissionChange(perm.id)}
                                    className="w-4 h-4 rounded-md text-[#164e33] border-gray-300 focus:ring-[#164e33]"
                                 />
-                                <span className={`text-base font-semibold ${formData.permissions.includes(perm.id) ? 'text-[#164e33]' : 'text-slate-800'}`}>{perm.label}</span>
+                                <span className={`text-sm font-semibold ${formData.permissions.includes(perm.id) ? 'text-[#164e33]' : 'text-slate-800'}`}>{perm.label}</span>
                              </label>
                            ))}
                         </div>
@@ -345,14 +345,14 @@ export default function AdminManagement() {
                      <button 
                        type="button" 
                        onClick={handleClose}
-                       className="px-6 py-2.5 text-base font-semibold text-slate-700 hover:text-slate-900 transition-colors"
+                       className="px-6 py-2.5 text-sm font-semibold text-slate-700 hover:text-slate-900 transition-colors"
                      >
                        Dismiss
                      </button>
                      <button 
                        type="submit" 
                        disabled={submitting}
-                       className="px-8 py-2.5 bg-[#164e33] hover:bg-[#113f29] text-white font-semibold text-base rounded-xl shadow-lg shadow-[#164e33]/10 transition-all disabled:opacity-50 active:scale-95 flex items-center gap-2"
+                       className="px-8 py-2.5 bg-[#164e33] hover:bg-[#113f29] text-white font-semibold text-sm rounded-xl  -[#164e33]/10 transition-all disabled:opacity-50 active:scale-95 flex items-center gap-2"
                      >
                        {submitting ? <RefreshCcw className="w-4 h-4 animate-spin" /> : editingId ? 'Update Admin' : 'Authorize Admin'}
                      </button>

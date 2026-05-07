@@ -709,7 +709,7 @@ export default function ProductDetailPage() {
               <div className="flex flex-wrap items-center justify-between gap-8 py-8 border-y border-gray-100">
                 {product.price > 0 && (
                   <div>
-                    <p className="text-xs text-gray-400 font-semibold uppercase tracking-widest mb-2">Unit Price</p>
+                    <p className="text-xs text-gray-400 font-semibold uppercase  mb-2">Unit Price</p>
                     <p className="text-xl font-black text-[#1b5e20]">₹{product.price.toLocaleString()}</p>
                   </div>
                 )}
@@ -720,7 +720,7 @@ export default function ProductDetailPage() {
                 
                 {product.moq > 0 && (
                   <div>
-                    <p className="text-xs text-gray-400 font-semibold uppercase tracking-widest mb-2">Min. Order Qty</p>
+                    <p className="text-xs text-gray-400 font-semibold uppercase  mb-2">Min. Order Qty</p>
                     <div className="flex items-center gap-2">
                       <Package className="w-5 h-5 text-[#e65100]" />
                       <p className="text-xl  text-gray-900">{product.moq} Units</p>
@@ -732,7 +732,7 @@ export default function ProductDetailPage() {
                   <>
                     <div className="hidden sm:block h-12 w-px bg-gray-100" />
                     <div>
-                      <p className="text-xs text-gray-400 font-semibold uppercase tracking-widest mb-2">Availability</p>
+                      <p className="text-xs text-gray-400 font-semibold uppercase  mb-2">Availability</p>
                       <span className={`text-[15px] font-bold flex items-center gap-2 ${product.availability ? 'text-emerald-600' : 'text-red-500'}`}>
                         {product.availability ? <><CheckCircle2 className="w-5 h-5" /> In Stock</> : <><CheckCircle2 className="w-5 h-5" /> Out of Stock</>}
                       </span>

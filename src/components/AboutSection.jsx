@@ -47,7 +47,7 @@ const AboutSection = () => {
                 </h2>
                 <p className="text-slate-900 text-lg font-medium leading-relaxed max-w-xl">
                   B2B Community is India&apos;s largest online B2B marketplace,
-                  connecting buyers with suppliers.
+                  connecting buyers with vendors.
                 </p>
               </div>
 
@@ -151,51 +151,7 @@ const AboutSection = () => {
         </div>
       </section>
 
-      {/* B2B Seller Section */}
-      <section className="b2b-seller-section py-24 bg-[#113f29] relative">
-        {/* Hexagonal Background Patterns (Simplified SVG) */}
 
-        <div className="container mx-auto px-6 md:px-12 lg:px-20 relative z-10">
-          <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-24">
-            {/* Left Side: Simple Image */}
-            <div className="flex-1 w-full max-w-xl">
-              <div className="relative aspect-4/2 md:aspect-4/3 rounded-xl md:rounded-3xl overflow-hidden shadow-2xl border border-white/10">
-                <Image
-                  src="/hero.webp"
-                  alt="Business Professionals"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            </div>
-
-            {/* Right Side: Content Area */}
-            <div className="flex-1 space-y-5 text-left">
-              <div className="space-y-4">
-                <h4 className="text-[#4ecdc4] font-semibold text-lg tracking-wide">
-                  Selling B2B Services?
-                </h4>
-                <h2 className="text-4xl md:text-5xl  text-white leading-tight">
-                  Connect with your <br />
-                  <span className="text-white/90">
-                    next client on B2B Community
-                  </span>
-                </h2>
-                <p className="text-gray-300 text-lg md:text-xl leading-relaxed max-w-2xl">
-                  Get in front of millions of active B2B buyers worldwide inside
-                  the leading global business services marketplace.
-                </p>
-              </div>
-
-              <div className="flex flex-col sm:flex-row items-start gap-6 pt-4">
-                <button className="px-10 py-3 md:py-4 rounded-xl border-2 border-white text-white font-semibold text-lg hover:bg-white hover:text-[#113f29] transition-all transform hover:scale-105 active:scale-95 cursor-pointer">
-                  Create a Profile
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* More for You Section */}
       <section className="more-for-you py-20 bg-white">
@@ -220,7 +176,7 @@ const AboutSection = () => {
                 Connect with verified partners
               </h3>
               <p className="text-slate-700 text-base md:text-base leading-relaxed max-w-[220px]">
-                Tell us your requirement & let our experts find verified sellers
+                Tell us your requirement & let our experts find verified vendors
                 for you
               </p>
             </div>
@@ -304,7 +260,7 @@ const AboutSection = () => {
                 },
                 {
                   q: "How do I find verified partners?",
-                  a: "Our platform features verified badges for trusted suppliers, allowing you to choose partners with confidence based on reviews and ratings.",
+                  a: "Our platform features verified badges for trusted vendors, allowing you to choose partners with confidence based on reviews and ratings.",
                 },
                 {
                   q: "Is there a fee for creating a profile?",
@@ -326,7 +282,7 @@ const AboutSection = () => {
                 },
                 {
                   q: "When should I use a new table vs. a view?",
-                  a: "New tables are best for distinct data types, while views allow you to filter and slice existing supplier data for specific project needs.",
+                  a: "New tables are best for distinct data types, while views allow you to filter and slice existing vendor data for specific project needs.",
                 },
                 {
                   q: "How can I transfer data from one base to another?",

@@ -4,15 +4,13 @@ import React, { useState, useEffect } from "react";
 import {
   Search,
   ChevronDown,
-  Bookmark,
-  MessageSquare,
-  UserCircle,
   Menu,
   X,
   LayoutDashboard,
   LogOut,
   MapPin,
-  Camera
+  Building2,
+  UserCircle2
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -21,7 +19,6 @@ import { useAuth } from "@/context/AuthContext";
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
-  const [isMoreDropdownOpen, setIsMoreDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [cityQuery, setCityQuery] = useState("");
   const [isCityDropdownOpen, setIsCityDropdownOpen] = useState(false);
@@ -30,7 +27,6 @@ const Navbar = () => {
   const searchParams = useSearchParams();
   const popularCities = ['Indore', 'Bhopal', 'Vadodara', 'Bengaluru', 'Delhi', 'Chennai', 'Pune', 'Ahmedabad', 'Coimbatore', 'Hyderabad', 'Mumbai'];
 
-  // Sync with URL when it changes
   useEffect(() => {
     const q = searchParams.get('q') || "";
     const city = searchParams.get('city') || "";
@@ -38,48 +34,26 @@ const Navbar = () => {
     setCityQuery(city);
   }, [searchParams]);
 
-  // Automatically fetch the user's city based on their IP - only if not in URL
   useEffect(() => {
-    // Skip if city is already in URL
     if (searchParams.get('city')) return;
-
     const fetchUserCity = async () => {
       try {
         const response = await fetch('https://ipapi.co/json/');
         const data = await response.json();
-        if (data && data.city) {
-          setCityQuery(data.city);
-        }
+        if (data && data.city) setCityQuery(data.city);
       } catch (error) {
         console.warn("Could not automatically determine user city");
       }
     };
-
     fetchUserCity();
-  }, [searchParams]); // Re-check if city is cleared from URL
-
-  // Close dropdowns on click outside
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (!e.target.closest('.profile-dropdown-container')) setIsUserDropdownOpen(false);
-      if (!e.target.closest('.more-dropdown-container')) setIsMoreDropdownOpen(false);
-      if (!e.target.closest('.city-dropdown-container')) setIsCityDropdownOpen(false);
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  }, [searchParams]);
 
   const handleSearch = (e) => {
     e.preventDefault();
     const params = new URLSearchParams();
     if (searchQuery.trim()) params.append('q', searchQuery.trim());
     if (cityQuery.trim()) params.append('city', cityQuery.trim());
-    
-    if (params.toString()) {
-      router.push(`/search?${params.toString()}`);
-    } else {
-      router.push('/search');
-    }
+    router.push(params.toString() ? `/search?${params.toString()}` : '/search');
   };
 
   const handleCitySelect = (city) => {
@@ -88,302 +62,110 @@ const Navbar = () => {
   };
 
   return (
-    <header className="w-full sticky top-0 z-50 bg-white shadow-sm transition-all duration-300">
-      {/* Main Bar (White) */}
-      <div className="border-b border-[#e6e9eb] py-4 px-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-between w-full">
-          {/* Logo & Search */}
-          <div className="flex items-center gap-6 lg:gap-10">
-            <Link href="/" className="flex items-center shrink-0">
-              <img src="/logo.png" alt="Logo" className="h-10 lg:h-14 w-auto object-contain" />
-            </Link>
+    <header className="w-full sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-3.5 flex items-center justify-between">
+        {/* Logo Section */}
+        <Link href="/" className="flex items-center gap-2 shrink-0 group">
+          <img 
+            src="/logo.png" 
+            alt="INDIA B2B" 
+            className="h-10 w-auto object-contain transition-transform group-hover:scale-105"
+          />
+        </Link>
 
-            {/* Desktop IndiaMart Style Search Bar */}
-            <form onSubmit={handleSearch} className="hidden lg:flex relative w-[600px] h-11 items-center bg-white border border-[#d0d0d0] rounded-xl shadow-sm focus-within:border-[#164e33] focus-within:shadow-md transition-all divide-x divide-gray-200">
-              {/* City Selection */}
-              <div className="w-[160px] h-full relative flex items-center px-2 hover:bg-gray-50 transition-colors cursor-pointer city-dropdown-container">
-                <MapPin className="w-4 h-4 text-[#e43737] mr-1.5 shrink-0" />
-                <input
-                  type="text"
-                  value={cityQuery}
-                  onFocus={() => setIsCityDropdownOpen(true)}
-                  onChange={(e) => setCityQuery(e.target.value)}
-                  placeholder="Enter city"
-                  className="w-full bg-transparent outline-none text-base font-semibold text-slate-800 placeholder:text-slate-500 truncate"
+        {/* Desktop Search Bar (Pixel Perfect) */}
+        <form onSubmit={handleSearch} className="hidden lg:flex flex-1 max-w-2xl mx-10 h-12 border border-slate-200 rounded-[2rem] overflow-hidden focus-within:border-[#164e33] focus-within:shadow-md transition-all shadow-sm bg-white">
+          <div className="relative flex items-center px-4 bg-slate-50 border-r border-slate-200 gap-2 min-w-[150px] city-dropdown-container">
+            <MapPin size={18} className="text-red-500 shrink-0" />
+            <input 
+              type="text" 
+              value={cityQuery}
+              onChange={(e) => setCityQuery(e.target.value)}
+              onFocus={() => setIsCityDropdownOpen(true)}
+              className="bg-transparent text-sm font-semibold text-slate-800 focus:outline-none w-full truncate cursor-pointer"
+              placeholder="Your City"
+            />
+            {isCityDropdownOpen && (
+              <div className="absolute top-full left-0 mt-1 w-[220px] bg-white border border-gray-100 rounded-xl shadow-2xl py-2 z-50 max-h-[300px] overflow-y-auto">
+                {popularCities.map(city => (
+                  <button key={city} type="button" onClick={() => handleCitySelect(city)} className="w-full text-left px-4 py-2.5 text-sm font-semibold text-slate-800 hover:bg-[#164e33]/5 hover:text-[#164e33] transition-all flex items-center gap-2">
+                    <MapPin className="w-3.5 h-3.5 opacity-40" /> {city}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+          <input 
+            type="text" 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Enter product / service to search" 
+            className="flex-1 px-4 text-sm font-medium focus:outline-none text-slate-800 placeholder:text-slate-400"
+          />
+          <button type="submit" className="bg-[#164e33] text-white px-8 flex items-center gap-2 hover:bg-[#113f29] transition-all !text-white">
+            <Search size={18} className="text-white" />
+            <span className="font-bold text-sm uppercase tracking-wide text-white">Search</span>
+          </button>
+        </form>
+
+        {/* Action Buttons */}
+        <div className="flex items-center gap-4 lg:gap-8">
+          <Link href="/register" className="hidden sm:flex items-center gap-2 border border-slate-200 px-5 py-2.5 rounded-lg text-sm font-bold text-slate-700 hover:bg-slate-50 hover:border-[#164e33]/30 transition-all shadow-sm">
+            <Building2 size={18} className="text-[#164e33]" />
+            Become a Vendor
+          </Link>
+          
+          <div className="relative">
+            <button 
+              onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
+              className="flex items-center gap-3 p-1.5 hover:bg-slate-50 rounded-xl transition-all border border-transparent hover:border-slate-100 group"
+            >
+              <div className="w-10 h-10 rounded-xl overflow-hidden border-2 border-white shadow-sm bg-slate-100 flex items-center justify-center">
+                <img 
+                  src={user?.profileImage || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"} 
+                  alt="profile" 
+                  className="w-full h-full object-cover"
                 />
-                <ChevronDown className={`w-3.5 h-3.5 text-slate-500 ml-1 transition-transform ${isCityDropdownOpen ? 'rotate-180' : ''}`} />
-                
-                {/* City Dropdown Menu */}
-                {isCityDropdownOpen && (
-                    <div className="absolute top-full left-0 mt-1 w-[220px] bg-white border border-gray-100 rounded-xl shadow-2xl py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200 max-h-[300px] overflow-y-auto">
-                        <p className="px-4 py-2 text-base font-semibold text-slate-500 uppercase  bg-gray-50/50">Popular Cities</p>
-                        {popularCities.filter(c => c.toLowerCase().includes(cityQuery.toLowerCase())).map(city => (
-                            <button
-                                key={city}
-                                type="button"
-                                onClick={() => handleCitySelect(city)}
-                                className="w-full text-left px-4 py-2.5 text-base font-semibold text-slate-800 hover:bg-[#164e33]/5 hover:text-[#164e33] transition-all flex items-center gap-2"
-                            >
-                                <MapPin className="w-3.5 h-3.5 opacity-40" />
-                                {city}
-                            </button>
-                        ))}
-                        {popularCities.filter(c => c.toLowerCase().includes(cityQuery.toLowerCase())).length === 0 && (
-                             <p className="px-4 py-4 text-base text-center text-slate-500 font-medium">No matches for "{cityQuery}"</p>
-                        )}
-                    </div>
+              </div>
+              <div className="hidden lg:flex flex-col items-start leading-none gap-1">
+                <span className="text-[10px] font-bold text-slate-400 uppercase ">{user?.role || 'Welcome'}</span>
+                <span className="text-sm font-bold text-slate-800 group-hover:text-[#164e33] transition-colors">
+                   {user ? user.name?.split(' ')[0] : 'My Account'}
+                </span>
+              </div>
+            </button>
+
+            {isUserDropdownOpen && (
+              <div className="absolute top-full right-0 mt-3 w-64 bg-white border border-gray-100 rounded-2xl shadow-2xl py-3 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+                {user ? (
+                  <div className="p-2">
+                    <Link href="/profile" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-slate-700 hover:bg-[#164e33]/5 hover:text-[#164e33] transition-all">
+                      <UserCircle2 className="w-4 h-4" /> My Profile
+                    </Link>
+                    {user.role !== 'BUYER' && (
+                      <Link 
+                        href={user.role === 'SUPERADMIN' ? '/super-admin/dashboard' : user.role === 'ADMIN' ? '/admin/dashboard' : '/vendor/dashboard'}
+                        className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-slate-700 hover:bg-[#164e33]/5 hover:text-[#164e33] transition-all mt-1"
+                      >
+                        <LayoutDashboard className="w-4 h-4" /> Dashboard
+                      </Link>
+                    )}
+                    <div className="h-px bg-slate-50 my-2 mx-2"></div>
+                    <button onClick={logout} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-red-500 hover:bg-red-50 transition-all">
+                      <LogOut className="w-4 h-4" /> Sign Out
+                    </button>
+                  </div>
+                ) : (
+                  <div className="p-4 text-center">
+                    <Link href="/login" className="block w-full py-3 bg-[#164e33] text-white rounded-xl font-bold text-sm uppercase shadow-lg shadow-[#164e33]/20 transition-all mb-3">Sign In</Link>
+                    <Link href="/register" className="block w-full py-3 border border-slate-200 text-[#164e33] rounded-xl font-bold text-sm uppercase hover:bg-slate-50 transition-all">Create Account</Link>
+                  </div>
                 )}
               </div>
-
-              {/* Product Sourcing Input */}
-              <div className="flex-1 h-full relative flex items-center px-4">
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Enter product / service to search"
-                  className="w-full h-full bg-transparent outline-none text-base font-medium text-slate-800 placeholder:text-slate-700"
-                />
-                
-                {/* Image Search / Lens Mockup */}
-                {/* <button type="button" className="p-2 text-slate-500 hover:text-[#164e33] transition-colors rounded-full hover:bg-white">
-                  <Camera className="w-5 h-5 stroke-[1.5]" />
-                </button> */}
-              </div>
-
-              {/* Search Button */}
-              <button 
-                type="submit" 
-                className="h-full px-8 bg-[#164e33] hover:bg-[#113f29] text-white font-semibold text-base transition-all flex items-center gap-2"
-              >
-                <Search className="w-4 h-4" />
-                Search
-              </button>
-            </form>
+            )}
           </div>
-
-          {/* Main Nav Links & Actions (Desktop) */}
-          <nav className="hidden lg:flex items-center space-x-6">
-            {/* Profile Dropdown Container */}
-            <div className="relative profile-dropdown-container">
-              <button 
-                onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
-                className="flex items-center gap-3 p-1.5 hover:bg-gray-100 rounded-full transition-all border border-transparent hover:border-gray-100 group"
-              >
-                <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-white shadow-sm bg-gray-100 flex items-center justify-center">
-                  <img 
-                    src={user?.profileImage || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"} 
-                    alt="profile" 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="flex items-center gap-1">
-                  <span className="text-base font-semibold text-[#164e33]">
-                    {user ? `Hi, ${user.name?.split(' ')[0]}` : 'Account'}
-                  </span>
-                  <ChevronDown className={`w-3.5 h-3.5 text-slate-500 group-hover:text-[#164e33] transition-transform ${isUserDropdownOpen ? 'rotate-180' : ''}`} />
-                </div>
-              </button>
-
-              {/* User Dropdown Menu */}
-              {isUserDropdownOpen && (
-                <div className="absolute top-full right-0 mt-3 w-64 bg-white border border-gray-100 rounded-2xl shadow-2xl py-3 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
-                  {user ? (
-                    <>
-                      <div className="px-5 py-3 border-b border-gray-50 bg-gray-50/50">
-                        <p className="text-base font-semibold text-slate-500 uppercase  mb-0.5">Signed in as</p>
-                        <p className="text-base font-semibold text-slate-900 truncate">{user.name}</p>
-                      </div>
-                      
-                      <div className="p-2">
-                        <Link href="/profile" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-semibold text-slate-800 hover:bg-[#164e33]/5 hover:text-[#164e33] transition-all">
-                          <UserCircle className="w-4 h-4" /> My Profile
-                        </Link>
-                        {user.role !== 'BUYER' && (
-                          <Link 
-                            href={user.role === 'SUPERADMIN' ? '/super-admin/dashboard' : user.role === 'ADMIN' ? '/admin/dashboard' : '/vendor/dashboard'}
-                            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-semibold text-slate-800 hover:bg-[#164e33]/5 hover:text-[#164e33] transition-all mt-1"
-                          >
-                            <LayoutDashboard className="w-4 h-4" /> Dashboard
-                          </Link>
-                        )}
-                        <div className="h-px bg-gray-50 my-2 mx-2"></div>
-                        <Link href="/post-requirement" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-semibold text-slate-800 hover:bg-[#164e33]/5 hover:text-[#164e33] transition-all">
-                          <MessageSquare className="w-4 h-4" /> Post a Requirement
-                        </Link>
-                        <div className="h-px bg-gray-50 my-2 mx-2"></div>
-                        <button 
-                          onClick={logout}
-                          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-semibold text-red-500 hover:bg-red-50 transition-all"
-                        >
-                          <LogOut className="w-4 h-4" /> Sign Out
-                        </button>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="px-5 py-4 text-center border-b border-gray-50">
-                        <p className="text-base text-slate-700 mb-3 font-medium">Access your account or grow your business</p>
-                        <Link 
-                          href="/login" 
-                          className="block w-full py-2.5 bg-[#164e33] text-white rounded-xl font-semibold text-base hover:bg-[#113f29] shadow-md active:scale-95 transition-all mb-2"
-                        >
-                          Sign In
-                        </Link>
-                        <Link 
-                          href="/register" 
-                          className="block w-full py-2.5 border border-gray-200 text-[#164e33] rounded-xl font-semibold text-base hover:bg-gray-50 transition-all"
-                        >
-                          Join for Free
-                        </Link>
-                      </div>
-                      <div className="p-2 text-center sm:text-left">
-                        <Link href="/post-requirement" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-semibold text-slate-800 hover:bg-[#164e33]/5 hover:text-[#164e33] transition-all">
-                          <MessageSquare className="w-4 h-4 text-blue-500" /> Post a Requirement
-                        </Link>
-                        <Link href="/suppliers" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-semibold text-slate-800 hover:bg-[#164e33]/5 hover:text-[#164e33] transition-all">
-                          <Search className="w-4 h-4 text-emerald-500" /> Find Suppliers
-                        </Link>
-
-                        <div className="h-px bg-gray-50 my-2 mx-2"></div>
-                        <Link href="/about" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-semibold text-slate-500 hover:text-slate-800 transition-all">
-                          About Us
-                        </Link>
-                      </div>
-                    </>
-                  )}
-                </div>
-              )}
-            </div>
-          </nav>
-
-          {/* Mobile Menu Toggle */}
-          <button
-            className="lg:hidden text-[#164e33] p-2 hover:bg-gray-100 rounded-lg transition-colors"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X size={28} /> : <Search size={28} />}
-          </button>
         </div>
       </div>
-
-      {/* Mobile Menu (Overlay) */}
-      {isMobileMenuOpen && (
-        <div className="lg:hidden bg-white fixed inset-0 z-50 p-6 flex flex-col overflow-y-auto">
-          <div className="flex items-center justify-between border-b pb-4 mb-6">
-            <img src="/logo.png" alt="Logo" className="h-16 w-auto object-contain" />
-            <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 hover:bg-gray-100 rounded-full">
-              <X size={28} className="text-[#164e33]" />
-            </button>
-          </div>
-
-          <div className="flex-1 flex flex-col space-y-8">
-             {/* Mobile IndiaMart Style Search */}
-             <form onSubmit={(e) => { handleSearch(e); setIsMobileMenuOpen(false); }} className="w-full space-y-3">
-                <div className="relative">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                    <input
-                      type="text"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      placeholder="Enter product / service to search"
-                      className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 focus:border-[#164e33] rounded-lg outline-none text-base font-medium text-slate-800 transition-all placeholder:text-slate-500"
-                    />
-                </div>
-                <div className="relative">
-                    <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#e43737]" />
-                    <input
-                      type="text"
-                      value={cityQuery}
-                      onChange={(e) => setCityQuery(e.target.value)}
-                      placeholder="Enter city"
-                      className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 focus:border-[#164e33] rounded-lg outline-none text-base font-medium text-slate-800 transition-all placeholder:text-slate-500"
-                    />
-                </div>
-                <button type="submit" className="w-full py-3.5 bg-[#164e33] hover:bg-[#113f29] text-white rounded-lg font-semibold flex items-center justify-center gap-2 transition-colors shadow-md">
-                  <Search className="w-4 h-4" /> Search
-                </button>
-             </form>
-
-             {(!user || user.role !== 'BUYER') && (
-               <Link
-                  href="/post-requirement"
-                  className="block text-2xl font-semibold text-[#164e33]  hover:text-slate-900 transition-colors"
-                  onClick={() => setIsMobileMenuOpen(false)}
-               >
-                  Post a Requirement
-               </Link>
-             )}
-             <Link
-               href="/suppliers"
-               className="block text-2xl font-semibold text-[#164e33]  hover:text-slate-900 transition-colors"
-               onClick={() => setIsMobileMenuOpen(false)}
-             >
-               Find Suppliers
-             </Link>
-             <Link
-               href="/about"
-               className="block text-xl font-semibold text-slate-700  hover:text-slate-900 transition-colors"
-               onClick={() => setIsMobileMenuOpen(false)}
-             >
-               About Us
-             </Link>
-          </div>
-
-          <div className="pt-8 border-t border-gray-100 flex flex-col space-y-4">
-            {user && (
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-gray-100 shadow-sm shrink-0 bg-gray-50 flex items-center justify-center">
-                    <img 
-                      src={user.profileImage || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"} 
-                      alt="profile" 
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div>
-                    <p className="text-base font-semibold text-slate-500 uppercase  leading-none mb-1">Welcome Back</p>
-                    <h3 className="text-2xl font-semibold text-[#164e33]">Hi, {user.name?.split(' ')[0]}</h3>
-                  </div>
-                </div>
-            )}
-            {user ? (
-               <>
-                  <Link 
-                    href={user.role === 'SUPERADMIN' ? '/super-admin/dashboard' : user.role === 'ADMIN' ? '/admin/dashboard' : user.role === 'VENDOR' ? '/vendor/dashboard' : '/post-requirement'}
-                    className="bg-[#164e33] text-white px-6 py-4 rounded-full font-semibold text-center flex items-center justify-center gap-2"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    <LayoutDashboard className="w-5 h-5" />
-                    {user.role === 'BUYER' ? 'Post Requirement' : 'Go to Dashboard'}
-                  </Link>
-                  <button 
-                    onClick={() => { logout(); setIsMobileMenuOpen(false); }}
-                    className="text-center text-red-500 font-semibold py-3 flex items-center justify-center gap-2"
-                  >
-                    <LogOut className="w-5 h-5" /> Sign Out
-                  </button>
-               </>
-            ) : (
-               <>
-                  <Link 
-                    href="/register" 
-                    className="bg-[#164e33] text-white px-6 py-4 rounded-full font-semibold tracking-wide text-center uppercase"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Join Network
-                  </Link>
-                  <Link 
-                    href="/login" 
-                    className="text-center text-[#164e33] font-semibold py-2"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Sign In
-                  </Link>
-               </>
-            )}
-          </div>
-        </div>
-      )}
     </header>
   );
 };

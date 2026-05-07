@@ -1,111 +1,149 @@
 "use client";
 
-import React from "react";
-import Image from "next/image";
+import React, { useState, useEffect } from 'react';
 import { 
-  Menu, 
-  Settings,
-  Cpu,
-  Package,
-  HardHat,
-  Stethoscope,
-  Pill,
-  Box,
-  FlaskConical,
-  Layers,
-  Sparkles,
-  Wrench,
-  Monitor,
-  Diamond,
-  Home,
-  Leaf,
-  Gamepad2,
-  Truck,
-  Briefcase,
-  Hotel,
-  BookOpen,
-  Compass,
-  Users,
-  Ship,
-  Paintbrush,
-  Zap,
-  LayoutGrid
-} from "lucide-react";
-import Link from "next/link";
+  Settings, Cpu, Box, HardHat, Stethoscope, Pill, Monitor, Package, 
+  FlaskConical, Layers, Sparkles, Wrench, Laptop, Diamond, Home, Leaf, 
+  Gamepad2, Truck, Briefcase, Plane, BookOpen, PenTool, Users, Ship, 
+  Brush, CircuitBoard, Sprout, Utensils, Shirt, Printer, Zap, LayoutGrid,
+  Search, CheckCircle2, Award, Handshake, Headphones, ArrowRight, Activity
+} from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { apiFetch } from '@/lib/api';
 
-const services = [
-  { id: 1, label: "Machine Parts", icon: Settings, color: "text-[#164e33]", bg: "bg-[#164e33]/5" },
-  { id: 2, label: "Industrial Machines", icon: Cpu, color: "text-emerald-600", bg: "bg-emerald-50" },
-  { id: 3, label: "Industrial Supplies", icon: Package, color: "text-orange-600", bg: "bg-orange-50" },
-  { id: 4, label: "Construction", icon: HardHat, color: "text-amber-600", bg: "bg-amber-50" },
-  { id: 5, label: "Hospitals & Labs", icon: Stethoscope, color: "text-rose-600", bg: "bg-rose-50" },
-  { id: 6, label: "Drugs & Pharma", icon: Pill, color: "text-[#164e33]", bg: "bg-[#164e33]/5" },
-  { id: 7, label: "Electronics", icon: Cpu, color: "text-sky-600", bg: "bg-sky-50" },
-  { id: 8, label: "Packing Machines", icon: Box, color: "text-slate-600", bg: "bg-slate-50" },
-  { id: 9, label: "Chemicals", icon: FlaskConical, color: "text-violet-600", bg: "bg-violet-50" },
-  { id: 10, label: "Metals", icon: Layers, color: "text-stone-600", bg: "bg-stone-50" },
-  { id: 11, label: "Beauty & Care", icon: Sparkles, color: "text-pink-600", bg: "bg-pink-50" },
-  { id: 12, label: "Engineering Services", icon: Wrench, color: "text-cyan-600", bg: "bg-cyan-50" },
-  { id: 13, label: "IT & Computers", icon: Monitor, color: "text-blue-500", bg: "bg-[#164e33]/5" },
-  { id: 14, label: "Jewelry & Gems", icon: Diamond, color: "text-rose-500", bg: "bg-rose-50" },
-  { id: 15, label: "Home Supplies", icon: Home, color: "text-amber-500", bg: "bg-amber-50" },
-  { id: 16, label: "Herbal Products", icon: Leaf, color: "text-green-600", bg: "bg-green-50" },
-  { id: 17, label: "Sports & Toys", icon: Gamepad2, color: "text-orange-500", bg: "bg-orange-50" },
-  { id: 18, label: "Transport & Logistics", icon: Truck, color: "text-blue-700", bg: "bg-[#164e33]/5" },
-  { id: 19, label: "Business Services", icon: Briefcase, color: "text-slate-700", bg: "bg-slate-50" },
-  { id: 20, label: "Travel & Hotels", icon: Hotel, color: "text-teal-600", bg: "bg-teal-50" },
-  { id: 21, label: "Education & Training", icon: BookOpen, color: "text-indigo-700", bg: "bg-[#164e33]/5" },
-  { id: 22, label: "Architects & Interiors", icon: Compass, color: "text-orange-700", bg: "bg-orange-50" },
-  { id: 23, label: "HR & Recruitment", icon: Users, color: "text-blue-800", bg: "bg-[#164e33]/5" },
-  { id: 24, label: "Rail & Shipping", icon: Ship, color: "text-sky-700", bg: "bg-sky-50" },
-  { id: 25, label: "Housekeeping", icon: Paintbrush, color: "text-amber-700", bg: "bg-amber-50" },
-  { id: 26, label: "Electronics Parts", icon: Cpu, color: "text-purple-600", bg: "bg-purple-50" },
-  { id: 27, label: "Popular", icon: LayoutGrid, color: "text-white", bg: "bg-[#164e33]", isMore: true },
+const defaultIcons = [
+  { icon: Settings, color: "text-green-600", bg: "bg-green-50" },
+  { icon: Cpu, color: "text-emerald-600", bg: "bg-emerald-50" },
+  { icon: Box, color: "text-orange-400", bg: "bg-orange-50" },
+  { icon: HardHat, color: "text-yellow-600", bg: "bg-yellow-50" },
+  { icon: Stethoscope, color: "text-pink-500", bg: "bg-pink-50" },
+  { icon: Pill, color: "text-teal-500", bg: "bg-teal-50" },
+  { icon: Monitor, color: "text-blue-600", bg: "bg-blue-50" },
+  { icon: Package, color: "text-purple-500", bg: "bg-purple-50" },
+  { icon: FlaskConical, color: "text-indigo-400", bg: "bg-indigo-50" },
+  { icon: Layers, color: "text-gray-500", bg: "bg-gray-100" },
+  { icon: Sparkles, color: "text-pink-400", bg: "bg-pink-50" },
+  { icon: Wrench, color: "text-blue-500", bg: "bg-blue-50" },
+  { icon: Laptop, color: "text-sky-500", bg: "bg-sky-50" },
+  { icon: Diamond, color: "text-rose-500", bg: "bg-rose-50" },
+  { icon: Home, color: "text-amber-600", bg: "bg-amber-50" },
+  { icon: Leaf, color: "text-green-500", bg: "bg-green-50" },
+  { icon: Gamepad2, color: "text-orange-500", bg: "bg-orange-50" },
+  { icon: Truck, color: "text-blue-600", bg: "bg-blue-50" },
+  { icon: Briefcase, color: "text-slate-700", bg: "bg-slate-100" },
+  { icon: Plane, color: "text-cyan-600", bg: "bg-cyan-50" },
+  { icon: BookOpen, color: "text-indigo-600", bg: "bg-indigo-50" },
+  { icon: PenTool, color: "text-orange-400", bg: "bg-orange-50" },
+  { icon: Users, color: "text-blue-700", bg: "bg-blue-50" },
+  { icon: Ship, color: "text-teal-600", bg: "bg-teal-50" },
+  { icon: Brush, color: "text-yellow-500", bg: "bg-yellow-50" },
+  { icon: CircuitBoard, color: "text-violet-600", bg: "bg-violet-50" },
+  { icon: Sprout, color: "text-emerald-500", bg: "bg-emerald-50" },
+  { icon: Utensils, color: "text-orange-600", bg: "bg-orange-50" },
+  { icon: Shirt, color: "text-pink-600", bg: "bg-pink-50" },
+  { icon: Printer, color: "text-green-600", bg: "bg-green-50" },
+  { icon: Zap, color: "text-yellow-500", bg: "bg-yellow-50" },
 ];
 
 const ServiceGrid = () => {
-  return (
-    <section className="service-grid-section py-20 bg-white">
-      <div className="max-w-[1500px] mx-auto px-4 sm:px-6">
-        <div className="mb-16 px-4">
-           <div className="space-y-4">
-              <h2 className="text-[#164e33] font-semibold  text-base uppercase flex items-center gap-2">
-                <span className="w-8 h-px bg-[#164e33]"></span>
-                Sourcing Made Simple
-              </h2>
-              <h3 className="text-3xl md:text-5xl font-semibold text-[#164e33] ">
-                Explore Our <br />
-                <span className="text-[#164e33]">Marketplace.</span>
-              </h3>
-           </div>
-        </div>
+  const router = useRouter();
+  const [categories, setCategories] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-9 gap-4 md:gap-6 lg:gap-8">
-          {services.map((service) => (
-            <Link
-              key={service.id}
-              href={service.isMore ? "/search?q" : `/search?q=${service.label}`}
-              className="service-item flex flex-col items-center group cursor-pointer"
-            >
-              <div 
-                className={`service-icon-wrapper w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 flex items-center justify-center rounded-[24px] lg:rounded-[32px] mb-4 lg:mb-5 relative border border-gray-100 group-hover:border-[#164e33]/20 group-hover:shadow-2xl group-hover:shadow-[#164e33]/10 transition-all duration-500 ${service.bg}`}
-              >
-                <div className="relative w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
-                   <service.icon className={`w-full h-full ${service.color} stroke-[1.2px]`} />
-                </div>
-                
-                <div className="absolute inset-0 rounded-[24px] lg:rounded-[32px] bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              </div>
-              <span className="service-label text-base md:text-base lg:text-base font-semibold text-slate-800 text-center leading-tight  px-1 group-hover:text-[#164e33] transition-colors">
-                {service.label}
-              </span>
-            </Link>
-          ))}
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await apiFetch('/categories');
+        if (response.success && response.data) {
+          setCategories(response.data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch categories", err);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  const handleSearch = (e) => {
+    if (e.key === 'Enter' || e.type === 'click') {
+      if (searchQuery.trim()) {
+        router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      }
+    }
+  };
+
+  const handleCategoryClick = (categoryName) => {
+    router.push(`/search?q=${encodeURIComponent(categoryName)}`);
+  };
+
+  return (
+    <div className="max-w-[1600px] mx-auto px-6 py-12 bg-white font-sans tracking-tight">
+      {/* Header Section */}
+      <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-8">
+        <div className="flex-1">
+          <h1 className="text-4xl lg:text-5xl font-bold text-slate-800 leading-tight">
+            Explore Our <span className="text-4xl lg:text-5xl font-bold text-[#134e4a]">Marketplace</span>
+          </h1>
+          <p className="text-gray-500 mt-3 text-xl font-medium">
+            Discover products and connect with verified vendors across diverse industries.
+          </p>
+        </div>
+        
+        {/* Right Aligned Search Bar */}
+        <div className="relative w-full md:w-[450px] lg:w-[500px]">
+          <input 
+            type="text" 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={handleSearch}
+            placeholder="Search industries, products or vendors..." 
+            className="w-full pl-5 pr-12 py-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 text-base shadow-sm bg-gray-50/30 transition-all"
+          />
+          <div 
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer hover:text-emerald-600 transition-colors"
+            onClick={handleSearch}
+          >
+            <Search className="w-6 h-6" />
+          </div>
         </div>
       </div>
-    </section>
+
+      {/* Grid Section */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-5 mb-20">
+        {categories.map((cat, index) => {
+          const style = defaultIcons[index % defaultIcons.length];
+          const IconComponent = style.icon;
+          return (
+            <div 
+              key={cat.id} 
+              onClick={() => handleCategoryClick(cat.name)}
+              className="group border border-gray-100 rounded-2xl p-5 flex flex-col items-center justify-center text-center hover:shadow-xl hover:border-emerald-100 transition-all duration-300 cursor-pointer bg-white min-h-[160px]"
+            >
+              {/* Bigger Icons */}
+              <div className={`p-4 rounded-2xl ${style.bg} mb-4 group-hover:scale-110 transition-transform duration-300 shadow-sm`}>
+                <IconComponent className={`w-8 h-8 ${style.color}`} strokeWidth={1.8} />
+              </div>
+              <h3 className="text-[14px] font-bold text-slate-800 leading-snug mb-1.5 group-hover:text-emerald-900">{cat.name}</h3>
+              <p className="text-[12px] text-gray-400 font-medium">{cat._count?.vendors || 0} Vendors</p>
+            </div>
+          );
+        })}
+        
+        {/* Special 'View All' Card */}
+        <div 
+          onClick={() => router.push('/search')}
+          className="bg-[#134e4a] rounded-2xl p-5 flex flex-col items-start justify-center cursor-pointer hover:bg-[#0d3633] transition-all duration-300 relative overflow-hidden group shadow-lg min-h-[160px]"
+        >
+          <LayoutGrid className="text-white/90 w-8 h-8 mb-3" />
+          <h3 className="text-base font-bold text-white mb-1">View All Categories</h3>
+          <p className="text-[12px] text-white/70">{categories.length > 0 ? `${categories.length}+ Categories` : 'Explore All'}</p>
+          <ArrowRight className="absolute right-4 bottom-4 text-white w-6 h-6 opacity-0 group-hover:opacity-100 translate-x-[-10px] group-hover:translate-x-0 transition-all duration-300" />
+        </div>
+      </div>
+
+    
+    </div>
   );
 };
 
 export default ServiceGrid;
-

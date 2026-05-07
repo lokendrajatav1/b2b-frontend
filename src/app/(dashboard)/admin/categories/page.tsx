@@ -99,25 +99,25 @@ export default function AdminCategories() {
               <Layers className="w-5 h-5" />
             </div>
           </h1>
-          <p className="text-slate-700 font-medium mt-1 text-base">Organize and manage the business categories in your hub.</p>
+          <p className="text-slate-700 font-medium mt-1 text-sm">Organize and manage the business categories in your hub.</p>
         </div>
 
         <div className="flex flex-wrap items-center gap-4">
            {/* Search Input */}
            <div className="relative w-full md:w-64">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-700" />
               <input 
                 type="text" 
                 placeholder="Search categories..." 
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-base font-semibold outline-none focus:border-[#164e33] focus:ring-4 focus:ring-[#164e33]/5 transition-all shadow-sm"
+                className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm font-semibold outline-none focus:border-[#164e33] focus:ring-4 focus:ring-[#164e33]/5 transition-all "
               />
            </div>
 
            <button 
               onClick={() => setIsAddModalOpen(true)}
-              className="px-6 py-3 bg-[#164e33] hover:bg-[#113f29] text-white rounded-xl font-semibold flex items-center gap-2 shadow-lg shadow-[#164e33]/10 transition-all active:scale-95 whitespace-nowrap text-base"
+              className="px-6 py-3 bg-[#164e33] hover:bg-[#113f29] text-white rounded-xl font-semibold flex items-center gap-2  -[#164e33]/10 transition-all active:scale-95 whitespace-nowrap text-sm"
            >
              <Plus className="w-5 h-5" />
              New Category
@@ -139,23 +139,23 @@ export default function AdminCategories() {
                 initial={{ scale: 0.95, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.95, opacity: 0 }}
-                className="relative bg-white rounded-xl p-8 max-w-sm w-full shadow-2xl border border-gray-100 z-[110]"
+                className="relative bg-white rounded-xl p-8 max-w-sm w-full  border border-gray-100 z-[110]"
               >
                 <div className="flex items-center justify-between mb-6">
                   <div className="w-12 h-12 bg-[#164e33]/5 text-[#164e33] rounded-2xl flex items-center justify-center">
                     <Layers className="w-6 h-6" />
                   </div>
-                  <button onClick={() => setIsAddModalOpen(false)} className="text-slate-500 hover:text-slate-800">
+                  <button onClick={() => setIsAddModalOpen(false)} className="text-slate-700 hover:text-slate-800">
                     <X className="w-6 h-6" />
                   </button>
                 </div>
-                <h3 className="text-xl font-semibold text-slate-900 mb-2">Add New Industry</h3>
-                <p className="text-base text-slate-500 font-medium mb-6">Define a new category for vendors to join in your hub.</p>
+                <h3 className="text-lg font-semibold text-slate-900 mb-2">Add New Industry</h3>
+                <p className="text-sm text-slate-700 font-medium mb-6">Define a new category for vendors to join in your hub.</p>
                 
                 <form onSubmit={handleAdd}>
                   <div className="space-y-5">
                     <div className="space-y-2">
-                       <label className="text-base font-semibold text-slate-500 uppercase  ml-1">Category Title</label>
+                       <label className="text-sm font-semibold text-slate-700 uppercase  ml-1">Category Title</label>
                        <input 
                          type="text" 
                          placeholder="e.g. Chemical Manufacturing" 
@@ -163,14 +163,14 @@ export default function AdminCategories() {
                          required
                          autoFocus
                          onChange={(e) => setNewCatName(e.target.value)}
-                         className="w-full px-5 py-3.5 bg-gray-50 border border-transparent rounded-xl text-base font-semibold focus:bg-white focus:border-[#164e33]/20 transition-all outline-none"
+                         className="w-full px-5 py-3.5 bg-gray-50 border border-transparent rounded-xl text-sm font-semibold focus:bg-white focus:border-[#164e33]/20 transition-all outline-none"
                        />
                     </div>
                     
                     <button 
                       type="submit"
                       disabled={adding || !newCatName.trim()}
-                      className="w-full py-4 bg-[#164e33] hover:bg-[#113f29] text-white rounded-xl font-semibold shadow-lg shadow-[#164e33]/10 transition-all disabled:opacity-50"
+                      className="w-full py-4 bg-[#164e33] hover:bg-[#113f29] text-white rounded-xl font-semibold  -[#164e33]/10 transition-all disabled:opacity-50"
                     >
                       {adding ? "Initializing..." : "Create Category"}
                     </button>
@@ -187,7 +187,7 @@ export default function AdminCategories() {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className={`mb-6 p-4 rounded-xl border flex items-center gap-3 text-base font-semibold shadow-sm ${message.type === 'success' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-red-50 text-red-700 border-red-100'}`}
+              className={`mb-6 p-4 rounded-xl border flex items-center gap-3 text-sm font-semibold  ${message.type === 'success' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-red-50 text-red-700 border-red-100'}`}
             >
               {message.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
               {message.text}
@@ -208,14 +208,14 @@ export default function AdminCategories() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.05 }}
-                className="group bg-white p-6 rounded-xl border border-gray-100 hover:border-[#164e33]/20 hover:shadow-xl hover:shadow-[#164e33]/5 transition-all flex items-center justify-between"
+                className="group bg-white p-6 rounded-xl border border-gray-100 hover:border-[#164e33]/20 hover: hover:-[#164e33]/5 transition-all flex items-center justify-between"
               >
                 <div className="flex items-center gap-5">
 <div>
-                    <h3 className="text-base font-semibold text-slate-900 capitalize leading-tight">{cat.name}</h3>
+                    <h3 className="text-sm font-semibold text-slate-900 capitalize leading-tight">{cat.name}</h3>
                     <div className="flex items-center gap-2 mt-1">
                        <span className="w-1 h-1 bg-emerald-500 rounded-full" />
-                       <p className="text-base font-semibold text-slate-500 uppercase ">Active Market</p>
+                       <p className="text-sm font-semibold text-slate-700 uppercase ">Active Market</p>
                     </div>
                   </div>
                 </div>
@@ -226,7 +226,7 @@ export default function AdminCategories() {
                         setSelectedCatId(cat.id);
                         setIsDeleteConfirmOpen(true);
                       }}
-                      className="p-2.5 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
+                      className="p-2.5 text-gray-500 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
                     >
                       <Trash2 className="w-5 h-5" />
                     </button>
@@ -236,8 +236,8 @@ export default function AdminCategories() {
            ) : (
              <div className="col-span-full py-24 text-center border-2 border-dashed border-gray-100 rounded-xl bg-gray-50/50">
                 <LayoutGrid className="w-16 h-16 text-gray-200 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-slate-500 ">No Markets Found</h3>
-                <p className="text-base font-medium text-gray-300 max-w-xs mx-auto mt-2">Try adjusting your search or add a new industry classification to your hub.</p>
+                <h3 className="text-base font-semibold text-slate-700 ">No Markets Found</h3>
+                <p className="text-sm font-medium text-gray-500 max-w-xs mx-auto mt-2">Try adjusting your search or add a new industry classification to your hub.</p>
              </div>
            )}
          </div>
@@ -259,13 +259,13 @@ export default function AdminCategories() {
                initial={{ scale: 0.95, opacity: 0 }}
                animate={{ scale: 1, opacity: 1 }}
                exit={{ scale: 0.95, opacity: 0 }}
-               className="relative bg-white rounded-xl p-8 max-w-sm w-full shadow-2xl border border-gray-100"
+               className="relative bg-white rounded-xl p-8 max-w-sm w-full  border border-gray-100"
              >
                <div className="w-16 h-16 bg-red-50 text-red-600 rounded-[1.5rem] flex items-center justify-center mb-6 border border-red-100">
                  <AlertCircle className="w-8 h-8" />
                </div>
-               <h3 className="text-xl font-semibold text-slate-900 mb-2">Remove Industry?</h3>
-               <p className="text-base text-slate-500 font-medium mb-8 leading-relaxed">
+               <h3 className="text-lg font-semibold text-slate-900 mb-2">Remove Industry?</h3>
+               <p className="text-sm text-slate-700 font-medium mb-8 leading-relaxed">
                  Are you sure you want to remove this category? Any vendors currently classified under this category will lose their industry association.
                </p>
                <div className="flex flex-col gap-3">
@@ -275,7 +275,7 @@ export default function AdminCategories() {
                      setIsDeleteConfirmOpen(false);
                      setSelectedCatId(null);
                    }}
-                   className="w-full py-4 bg-red-600 hover:bg-red-700 text-white rounded-2xl font-semibold shadow-lg shadow-red-50 transition-all"
+                   className="w-full py-4 bg-red-600 hover:bg-red-700 text-white rounded-2xl font-semibold   transition-all"
                  >
                    Yes, Remove Market
                  </button>

@@ -138,19 +138,19 @@ export default function AdminDashboard() {
         {dashboardCards.map((card, idx) => (
           <div
             key={card.label}
-            className="bg-white p-5 rounded-[12px] border border-gray-200 shadow-sm relative group overflow-hidden"
+            className="bg-white p-5 rounded-[12px] border border-gray-200  relative group overflow-hidden"
           >
             <div className="flex items-start justify-between mb-2">
-              <p className="text-[13px] font-semibold text-slate-500 uppercase tracking-wide">{card.label}</p>
-              <button className="text-gray-400 hover:text-gray-600">
+              <p className="text-sm font-semibold text-slate-700 uppercase ">{card.label}</p>
+              <button className="text-gray-600 hover:text-gray-600">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="5" r="1" /><circle cx="12" cy="12" r="1" /><circle cx="12" cy="19" r="1" /></svg>
               </button>
             </div>
 
             <div className="mt-4 mb-2">
-              <span className="text-xs text-gray-400 block mb-1">Value this month</span>
+              <span className="text-xs text-gray-600 block mb-1">Value this month</span>
               <h3 className="text-3xl font-bold text-[#164e33] tabular-nums">{loading ? '...' : card.value}</h3>
-              <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
+              <p className="text-xs text-gray-700 mt-1 flex items-center gap-1">
                 Target: <span className="text-gray-700 font-medium">{card.desc}</span>
               </p>
             </div>
@@ -175,10 +175,10 @@ export default function AdminDashboard() {
       {/* Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-2">
         {/* Top Left: Bar Chart */}
-        <div className="bg-white p-6 rounded-[12px] border border-gray-200 shadow-sm col-span-1 min-h-[300px] flex flex-col relative">
+        <div className="bg-white p-6 rounded-[12px] border border-gray-200  col-span-1 min-h-[300px] flex flex-col relative">
           <div className="flex items-start justify-between mb-6">
-            <h3 className="text-[15px] font-semibold text-slate-800">Forecast - weighted</h3>
-            <button className="text-gray-400 hover:text-gray-600"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="5" r="1" /><circle cx="12" cy="12" r="1" /><circle cx="12" cy="19" r="1" /></svg></button>
+            <h3 className="text-base font-semibold text-slate-800">Forecast - weighted</h3>
+            <button className="text-gray-600 hover:text-gray-600"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="5" r="1" /><circle cx="12" cy="12" r="1" /><circle cx="12" cy="19" r="1" /></svg></button>
           </div>
           <div className="flex-1 w-full relative">
             <ResponsiveContainer width="100%" height="100%">
@@ -194,10 +194,10 @@ export default function AdminDashboard() {
         </div>
 
         {/* Middle: Donut Chart */}
-        <div className="bg-white p-6 rounded-[12px] border border-gray-200 shadow-sm col-span-1 min-h-[300px] flex flex-col relative">
+        <div className="bg-white p-6 rounded-[12px] border border-gray-200  col-span-1 min-h-[300px] flex flex-col relative">
           <div className="flex items-start justify-between mb-2">
-            <h3 className="text-[15px] font-semibold text-slate-800">Won leads by reason</h3>
-            <button className="text-gray-400 hover:text-gray-600"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="5" r="1" /><circle cx="12" cy="12" r="1" /><circle cx="12" cy="19" r="1" /></svg></button>
+            <h3 className="text-base font-semibold text-slate-800">Won leads by reason</h3>
+            <button className="text-gray-600 hover:text-gray-600"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="5" r="1" /><circle cx="12" cy="12" r="1" /><circle cx="12" cy="19" r="1" /></svg></button>
           </div>
           <div className="flex-1 w-full flex items-center justify-center relative min-h-[200px]">
             <ResponsiveContainer width="100%" height="100%">
@@ -221,24 +221,24 @@ export default function AdminDashboard() {
             </ResponsiveContainer>
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none pb-0">
               <span className="text-[18px] font-bold text-slate-800 tabular-nums">{stats?.totalLeads || 0}</span>
-              <span className="text-[10px] text-slate-500 font-medium uppercase">TOTAL</span>
+              <span className="text-xs text-slate-700 font-medium uppercase">TOTAL</span>
             </div>
           </div>
           <div className="flex flex-wrap flex-row items-center justify-center gap-3 mt-4">
             {pieData.map((item: any) => (
               <div key={item.name} className="flex items-center gap-1.5">
                 <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: item.color }} />
-                <span className="text-[11px] font-medium text-[#164e33]">{item.name}</span>
+                <span className="text-xs font-medium text-[#164e33]">{item.name}</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* Right: Large Area Chart overlapping */}
-        <div className="bg-white p-6 rounded-[12px] border border-gray-200 shadow-sm col-span-1 lg:col-span-1 min-h-[300px] flex flex-col relative">
+        <div className="bg-white p-6 rounded-[12px] border border-gray-200  col-span-1 lg:col-span-1 min-h-[300px] flex flex-col relative">
           <div className="flex items-start justify-between mb-4">
-            <h3 className="text-[15px] font-semibold text-slate-800">Demand this year compared</h3>
-            <button className="text-gray-400 hover:text-gray-600"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="5" r="1" /><circle cx="12" cy="12" r="1" /><circle cx="12" cy="19" r="1" /></svg></button>
+            <h3 className="text-base font-semibold text-slate-800">Demand this year compared</h3>
+            <button className="text-gray-600 hover:text-gray-600"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="5" r="1" /><circle cx="12" cy="12" r="1" /><circle cx="12" cy="19" r="1" /></svg></button>
           </div>
           <div className="flex-1 w-full relative">
             <ResponsiveContainer width="100%" height="100%">
@@ -257,10 +257,10 @@ export default function AdminDashboard() {
       {/* Bottom Layout Row */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-2">
         {/* Live Activity (reusing functionality) */}
-        <div className="lg:col-span-8 bg-white rounded-[12px] p-6 border border-gray-200 shadow-sm min-h-[300px]">
+        <div className="lg:col-span-8 bg-white rounded-[12px] p-6 border border-gray-200  min-h-[300px]">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-[15px] font-semibold text-slate-800">Live Regional Demand Activity</h3>
-            <button onClick={fetchDashboardStats} className="text-gray-400 hover:text-gray-600">
+            <h3 className="text-base font-semibold text-slate-800">Live Regional Demand Activity</h3>
+            <button onClick={fetchDashboardStats} className="text-gray-600 hover:text-gray-600">
               <RefreshCcw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
             </button>
           </div>
@@ -271,22 +271,22 @@ export default function AdminDashboard() {
                   <div className="w-8 h-8 rounded-full bg-[#186a5a] text-white flex items-center justify-center font-bold text-xs">{lead.buyerName?.charAt(0) || 'U'}</div>
                   <div>
                     <p className="text-sm font-semibold text-slate-800">{lead.searchKeyword ? lead.searchKeyword : `Requirement from ${lead.buyerName}`}</p>
-                    <p className="text-[11px] text-slate-500">{lead.city}</p>
+                    <p className="text-xs text-slate-700">{lead.city}</p>
                   </div>
                 </div>
-                <span className="text-[13px] font-medium tabular-nums text-slate-500">Just now</span>
+                <span className="text-sm font-medium tabular-nums text-slate-700">Just now</span>
               </div>
             )) : (
-              <div className="py-10 text-center text-sm text-slate-500">Scanning for regional trade signals...</div>
+              <div className="py-10 text-center text-sm text-slate-700">Scanning for regional trade signals...</div>
             )}
           </div>
         </div>
 
         {/* Sales falling behind Equivalent */}
-        <div className="lg:col-span-4 bg-white rounded-[12px] p-6 border border-gray-200 shadow-sm min-h-[300px]">
+        <div className="lg:col-span-4 bg-white rounded-[12px] p-6 border border-gray-200  min-h-[300px]">
           <div className="flex items-start justify-between mb-6">
-            <h3 className="text-[15px] font-semibold text-slate-800">Pending Actions - Act now</h3>
-            <button className="text-gray-400 hover:text-gray-600"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="5" r="1" /><circle cx="12" cy="12" r="1" /><circle cx="12" cy="19" r="1" /></svg></button>
+            <h3 className="text-base font-semibold text-slate-800">Pending Actions - Act now</h3>
+            <button className="text-gray-600 hover:text-gray-600"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="5" r="1" /><circle cx="12" cy="12" r="1" /><circle cx="12" cy="19" r="1" /></svg></button>
           </div>
           <div className="space-y-6">
             <div className="flex items-center justify-between group">
@@ -294,7 +294,7 @@ export default function AdminDashboard() {
                 <div className="w-8 h-8 rounded-full bg-[#164e33] flex items-center justify-center text-white"><ShieldAlert className="w-4 h-4" /></div>
                 <div>
                   <p className="text-[14px] font-semibold text-slate-800 leading-tight">{stats?.pendingApprovals || 0} Vendors</p>
-                  <p className="text-[11px] text-slate-500">Awaiting Profile Review</p>
+                  <p className="text-xs text-slate-700">Awaiting Profile Review</p>
                 </div>
               </div>
               <Link href="/admin/vendors" className="text-xs font-bold text-[#f58220] opacity-0 group-hover:opacity-100 transition-opacity">VERIFY</Link>
@@ -304,7 +304,7 @@ export default function AdminDashboard() {
                 <div className="w-8 h-8 rounded-full bg-[#164e33] flex items-center justify-center text-white"><Target className="w-4 h-4" /></div>
                 <div>
                   <p className="text-[14px] font-semibold text-slate-800 leading-tight">Product Moderation</p>
-                  <p className="text-[11px] text-slate-500">Catalog Checks</p>
+                  <p className="text-xs text-slate-700">Catalog Checks</p>
                 </div>
               </div>
               <Link href="/admin/products" className="text-xs font-bold text-[#f58220] opacity-0 group-hover:opacity-100 transition-opacity">REVIEW</Link>

@@ -22,7 +22,8 @@ import {
   Building2,
   Lock,
   ArrowRight,
-  History
+  History,
+  Headphones
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/context/AuthContext';
@@ -39,28 +40,20 @@ export default function DashboardSidebar({ isCollapsed, onToggle, mobileOpen, se
   }, [user]);
 
   const adminNav = [
-    { section: 'Dashboard', items: [
-      { label: 'Overview', icon: LayoutDashboard, href: '/super-admin/dashboard' },
-      { label: 'Analytics', icon: BarChart3, href: '/super-admin/analytics' },
-      { label: 'Activity', icon: History, href: '/super-admin/activity' },
-      { label: 'Alerts', icon: Bell, href: '/super-admin/notifications' },
-    ]},
-    { section: 'Verification', items: [
-      { label: 'Vendors', icon: Building2, href: '/super-admin/vendor-approvals' },
-      { label: 'Products', icon: Briefcase, href: '/super-admin/offering-approvals' },
-    ]},
-    { section: 'Ecosystem', items: [
-      { label: 'Users', icon: Users, href: '/super-admin/users' },
-      { label: 'Categories', icon: Layers, href: '/super-admin/categories' },
-      { label: 'Leads', icon: Target, href: '/super-admin/leads' },
-    ]},
-    { section: 'Business', items: [
-      { label: 'Admins', icon: Users, href: '/super-admin/subadmins' },
-      { label: 'Packages', icon: Package, href: '/super-admin/packages' },
-      { label: 'Ledger', icon: CreditCard, href: '/super-admin/transactions' },
-      { label: 'Refunds', icon: Briefcase, href: '/super-admin/refunds' },
-      { label: 'Settings', icon: Settings, href: '/super-admin/settings' },
-    ]}
+    { label: 'Overview', icon: LayoutDashboard, href: '/super-admin/dashboard' },
+    { label: 'Analytics', icon: BarChart3, href: '/super-admin/analytics' },
+    { label: 'Activity', icon: History, href: '/super-admin/activity' },
+    { label: 'Alerts', icon: Bell, href: '/super-admin/notifications', badge: 12 },
+    { label: 'Vendors', icon: Building2, href: '/super-admin/vendor-approvals' },
+    { label: 'Products', icon: Package, href: '/super-admin/offering-approvals' },
+    { label: 'Users', icon: Users, href: '/super-admin/users' },
+    { label: 'Categories', icon: Layers, href: '/super-admin/categories' },
+    { label: 'Leads', icon: Target, href: '/super-admin/leads' },
+    { label: 'Admins', icon: Users, href: '/super-admin/subadmins' },
+    { label: 'Packages', icon: Package, href: '/super-admin/packages' },
+    { label: 'Ledger', icon: CreditCard, href: '/super-admin/transactions' },
+    { label: 'Refunds', icon: Briefcase, href: '/super-admin/refunds' },
+    { label: 'Settings', icon: Settings, href: '/super-admin/settings' },
   ];
 
   const vendorNav = [
@@ -102,7 +95,7 @@ export default function DashboardSidebar({ isCollapsed, onToggle, mobileOpen, se
     <>
 
       {/* Main Sidebar */}
-      <aside className={`fixed left-0 top-0 h-screen bg-[#164e33] border-r border-[#164e33] flex flex-col transition-all duration-300 z-40 ${mobileOpen ? 'translate-x-0 w-64 shadow-2xl' : '-translate-x-full lg:translate-x-0'} ${isCollapsed ? 'lg:w-[72px]' : 'lg:w-64'}`}>
+      <aside className={`fixed left-0 top-0 h-screen bg-[#062d1d] border-r border-[#062d1d] flex flex-col transition-all duration-300 z-40 ${mobileOpen ? 'translate-x-0 w-64 ' : '-translate-x-full lg:translate-x-0'} ${isCollapsed ? 'lg:w-[72px]' : 'lg:w-64'}`}>
         {/* Brand Header & Toggle */}
         <div className={`relative flex items-center justify-between border-b border-[#ffffff]/10 ${isCollapsed ? 'h-20 flex-col py-4' : 'h-[80px] px-4'}`}>
            <Link href="/" className={`flex items-center gap-3 group ${isCollapsed ? 'justify-center' : ''}`} title="Dashboard">
@@ -111,8 +104,8 @@ export default function DashboardSidebar({ isCollapsed, onToggle, mobileOpen, se
                   {userRole === 'SUPERADMIN' ? 'SA' : (userRole === 'ADMIN' ? 'AD' : 'VP')}
                 </div>
               ) : (
-                <span className="text-white font-bold text-lg tracking-widest uppercase truncate">
-                   {userRole === 'SUPERADMIN' ? 'SUPERADMIN' : (userRole === 'ADMIN' ? 'ADMIN PANEL' : 'VENDOR PANEL')}
+                <span className="text-white font-bold text-base uppercase truncate pl-2">
+                   {userRole === 'SUPERADMIN' ? 'SUPER ADMIN' : (userRole === 'ADMIN' ? 'ADMIN PANEL' : 'VENDOR PANEL')}
                 </span>
               )}
            </Link>
@@ -129,43 +122,45 @@ export default function DashboardSidebar({ isCollapsed, onToggle, mobileOpen, se
 
 
         {/* Navigation Core */}
-        <nav className="flex-1 px-3 py-2 overflow-y-auto space-y-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-           {currentNav.map((section) => (
-             <div key={section.section} className={`${isCollapsed ? 'space-y-3 pt-4' : 'space-y-1 pt-2'}`}>
-                {!isCollapsed && (
-                  <p className="px-3 text-xs font-semibold text-[#8ebfb5] uppercase tracking-wider mb-2 mt-4 hidden">
-                    {section.section}
-                  </p>
-                )}
-                {section.items.map((item) => {
-                  const isActive = pathname === item.href;
-                  return (
-                    <Link 
-                      key={item.href} 
-                      href={item.href}
-                      onClick={() => setMobileOpen(false)}
-                      title={isCollapsed ? item.label : ''}
-                      className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group relative border border-transparent ${isActive ? 'bg-[#186a5a] text-white' : 'text-[#8ebfb5] hover:bg-[#186a5a] hover:text-white font-medium'}`}
-                    >
-                      <div className={`transition-all ${isActive ? 'text-white' : 'text-[#8ebfb5] group-hover:text-white'}`}>
-                        <item.icon className="w-5 h-5 stroke-[2]" />
-                      </div>
-                      {!isCollapsed && <span className={`text-[15px] ${isActive ? 'font-medium' : ''}`}>{item.label}</span>}
-                    </Link>
-                  );
-                })}
-             </div>
-           ))}
+        <nav className="flex-1 px-4 py-6 overflow-y-auto space-y-1.5 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+           {(userRole === 'SUPERADMIN' ? adminNav : currentNav.flatMap(s => s.items)).map((item) => {
+             const isActive = pathname === item.href;
+             return (
+               <Link 
+                 key={item.href} 
+                 href={item.href}
+                 onClick={() => setMobileOpen(false)}
+                 title={isCollapsed ? item.label : ''}
+                 className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group relative ${isActive ? 'bg-[#124131] text-white' : 'text-white/70 hover:text-white hover:bg-white/5 font-medium'}`}
+               >
+                 <div className={`transition-all ${isActive ? 'text-white' : 'text-white/60 group-hover:text-white'}`}>
+                   <item.icon className="w-5 h-5 stroke-[2]" />
+                 </div>
+                 {!isCollapsed && (
+                    <div className="flex items-center justify-between w-full">
+                      <span className="text-base font-semibold">{item.label}</span>
+                      {item.badge && (
+                        <span className="bg-[#BA2B1E] text-white text-xs font-bold px-2 py-0.5 rounded-lg ">
+                          {item.badge}
+                        </span>
+                      )}
+                    </div>
+                 )}
+               </Link>
+             );
+           })}
         </nav>
+
+
 
         {/* User Foothold */}
         {/* <div className={`p-6 border-t border-gray-50 space-y-4 ${isCollapsed ? 'items-center' : ''}`}>
            {!isCollapsed && userRole === 'VENDOR' && (
              <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100 mb-2">
                 <div className="flex items-center justify-between mb-2">
-                   <p className="text-base font-semibold text-slate-500 uppercase  leading-none">Wallet Balance</p>
+                   <p className="text-sm font-semibold text-slate-700 uppercase  leading-none">Wallet Balance</p>
                 </div>
-                <p className="text-lg font-semibold text-slate-900">₹12,450.00</p>
+                <p className="text-base font-semibold text-slate-900">₹12,450.00</p>
              </div>
            )}
 
@@ -176,7 +171,7 @@ export default function DashboardSidebar({ isCollapsed, onToggle, mobileOpen, se
               <div className="p-2 bg-gray-50 group-hover:bg-red-100 rounded-lg transition-colors">
                 <LogOut className="w-4 h-4" />
               </div>
-              {!isCollapsed && <span className="text-base">Sign Out</span>}
+              {!isCollapsed && <span className="text-sm">Sign Out</span>}
            </button>
         </div> */}
       </aside>
