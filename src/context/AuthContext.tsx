@@ -11,6 +11,7 @@ interface User {
   phone?: string;
   role: 'SUPERADMIN' | 'ADMIN' | 'VENDOR' | 'BUYER';
   avatar?: string;
+  profileImage?: string;
   city?: string;
   vendor?: any;
   admin?: any;
