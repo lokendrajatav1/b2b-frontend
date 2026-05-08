@@ -57,7 +57,7 @@ export default function AdminPackages() {
     }
   };
 
-  if (loading) return <div className="p-12 animate-pulse bg-slate-50 rounded-2xl h-[400px] border border-gray-100"></div>;
+  if (loading) return <div className="p-12 animate-pulse bg-slate-50 rounded-xl h-[400px] border border-gray-100"></div>;
 
   return (
     <div className="max-w-7xl mx-auto space-y-10 animate-simple-fade pb-24 px-4 lg:px-8">
@@ -91,7 +91,7 @@ export default function AdminPackages() {
                initial={{ opacity: 0, y: 15 }}
                animate={{ opacity: 1, y: 0 }}
                transition={{ delay: idx * 0.1 }}
-               className={`relative bg-white rounded-[2rem] border border-gray-100 transition-all duration-500 flex flex-col group hover:-translate-y-4 hover: hover:-[#164e33]/10 overflow-hidden ${
+               className={`relative bg-white rounded-xl border border-gray-100 transition-all duration-500 flex flex-col group hover:-translate-y-4 hover: hover:-[#164e33]/10 overflow-hidden ${
                  isPopular ? 'scale-105 z-10  ' : ' '
                }`}
             >
@@ -165,7 +165,7 @@ export default function AdminPackages() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto mt-16 bg-[#f0f9f8] border border-[#164e33]/20 rounded-[2.5rem] p-10 text-slate-900 relative overflow-hidden ">
+      <div className="max-w-7xl mx-auto mt-16 bg-[#f0f9f8] border border-[#164e33]/20 rounded-xl p-10 text-slate-900 relative overflow-hidden ">
           <div className="absolute -right-20 -top-20 w-80 h-80 bg-white/50 rounded-full blur-3xl"></div>
           <div className="absolute left-1/3 bottom-0 w-64 h-64 bg-[#164e33]/5 rounded-full blur-3xl"></div>
           
@@ -329,7 +329,7 @@ export default function AdminPackages() {
                      <button 
                         type="button"
                         onClick={() => setIsModalOpen(false)}
-                        className="flex-1 py-4 bg-gray-50 text-slate-800 rounded-2xl font-semibold uppercase  text-sm hover:bg-gray-100 transition-all"
+                        className="flex-1 py-4 bg-gray-50 text-slate-800 rounded-xl font-semibold uppercase  text-sm hover:bg-gray-100 transition-all"
                      >
                         Discard
                      </button>

@@ -113,7 +113,7 @@ export default function AdminSettings() {
     }
   };
 
-  if (loading) return <div className="p-10 animate-pulse bg-slate-50 rounded-2xl h-80 border border-slate-100"></div>;
+  if (loading) return <div className="p-10 animate-pulse bg-slate-50 rounded-xl h-80 border border-slate-100"></div>;
 
   return (
     <div className="space-y-8 animate-simple-fade pb-20 p-2 md:p-0">

@@ -107,7 +107,7 @@ export default function AdminNotifications() {
       {/* --- HEADER --- */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
         <div className="flex items-center gap-5">
-           <div className="w-12 h-12 bg-emerald-50/50 rounded-2xl border border-emerald-100 flex items-center justify-center text-emerald-600 ">
+           <div className="w-12 h-12 bg-emerald-50/50 rounded-xl border border-emerald-100 flex items-center justify-center text-emerald-600 ">
               <Bell className="w-6 h-6" />
            </div>
            <div>
@@ -141,16 +141,16 @@ export default function AdminNotifications() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="bg-white border border-gray-100 rounded-3xl  overflow-hidden flex flex-col"
+            className="bg-white border border-gray-100 rounded-xl  overflow-hidden flex flex-col"
           >
             {/* TABS BAR */}
-            <div className="px-8 py-5 border-b border-gray-50 flex items-center justify-between">
-                <button className="text-sm font-bold text-slate-900 relative pb-5 -mb-5">
+            <div className="px-4 sm:px-8 py-5 border-b border-gray-50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <button className="text-sm font-bold text-slate-900 relative pb-2 sm:pb-5 sm:-mb-5 w-fit">
                    Recent Activity
                    <div className="absolute bottom-0 left-0 w-full h-0.5 bg-slate-900 rounded-full" />
                 </button>
-
-                <div className="flex items-center gap-6">
+ 
+                <div className="flex items-center justify-between sm:justify-end gap-6 w-full sm:w-auto">
                     <button onClick={markAllRead} className="flex items-center gap-2 text-xs font-bold text-emerald-600 hover:text-emerald-700">
                        <CheckCheck size={16} /> Mark all read
                     </button>
@@ -165,32 +165,37 @@ export default function AdminNotifications() {
                {notifications.map((n, idx) => {
                  const style = getCategoryStyle(n.title);
                  return (
-                   <div key={n.id || idx} className={`group px-8 py-5 flex items-center gap-6 hover:bg-slate-50/50 transition-all ${n.isRead ? 'opacity-50' : ''}`}>
-                      <div className="relative shrink-0">
-                         <div className="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600">
-                            <Bell size={18} />
-                         </div>
-                         {!n.isRead && <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-white" />}
+                   <div key={n.id || idx} className={`group px-4 sm:px-8 py-5 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 hover:bg-slate-50/50 transition-all ${n.isRead ? 'opacity-50' : ''}`}>
+                      <div className="flex items-center gap-4 flex-1 min-w-0">
+                        <div className="relative shrink-0">
+                           <div className="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600">
+                              <Bell size={18} />
+                           </div>
+                           {!n.isRead && <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-white" />}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                           <h3 className="text-base font-bold text-slate-900 mb-0.5 truncate">{n.title}</h3>
+                           <p className="text-sm font-medium text-slate-600 truncate">{n.message}</p>
+                        </div>
                       </div>
-                      <div className="flex-1 min-w-0">
-                         <h3 className="text-base font-bold text-slate-900 mb-0.5">{n.title}</h3>
-                         <p className="text-sm font-medium text-slate-600 truncate">{n.message}</p>
+                      
+                      <div className="flex items-center justify-between sm:justify-end gap-6 sm:min-w-[300px]">
+                        <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg border font-bold text-[10px] uppercase ${style.color}`}>
+                           {style.icon} {style.label}
+                        </div>
+                        <div className="text-right whitespace-nowrap">
+                           <p className="text-[11px] font-bold text-slate-900 mb-0.5">{format(new Date(n.createdAt || Date.now()), 'MMM dd, yyyy')}</p>
+                           <p className="text-[10px] font-bold text-slate-500 uppercase">{format(new Date(n.createdAt || Date.now()), 'hh:mm a')}</p>
+                        </div>
+                        <button className="p-2 text-slate-200 hover:text-slate-700 sm:block hidden"><MoreVertical size={16} /></button>
                       </div>
-                      <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg border font-bold text-xs uppercase ${style.color}`}>
-                         {style.icon} {style.label}
-                      </div>
-                      <div className="text-right min-w-[120px]">
-                         <p className="text-sm font-bold text-slate-900 mb-0.5">{format(new Date(n.createdAt || Date.now()), 'MMM dd, yyyy')}</p>
-                         <p className="text-xs font-bold text-slate-600 uppercase">{format(new Date(n.createdAt || Date.now()), 'hh:mm a')}</p>
-                      </div>
-                      <button className="p-2 text-slate-200 hover:text-slate-700"><MoreVertical size={16} /></button>
                    </div>
                  );
                })}
             </div>
 
             {/* PAGINATION */}
-            <div className="px-8 py-6 bg-slate-50/30 border-t border-gray-50 flex items-center justify-between">
+            <div className="px-8 py-6 bg-slate-50/30 border-t border-gray-50 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <p className="text-sm font-bold text-slate-700">Showing 1 to {notifications.length} of {total}</p>
                 <div className="flex items-center gap-2">
                    <button className="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-slate-300"><ChevronLeft size={16} /></button>
@@ -207,7 +212,7 @@ export default function AdminNotifications() {
             exit={{ opacity: 0, y: -10 }}
             className="grid grid-cols-1 lg:grid-cols-12 gap-8"
           >
-             <div className="lg:col-span-7 bg-white rounded-3xl border border-gray-100 p-8  space-y-8">
+             <div className="lg:col-span-7 bg-white rounded-xl border border-gray-100 p-8  space-y-8">
                 <div className="space-y-1">
                    <h2 className="text-base font-bold text-slate-900">New Announcement</h2>
                    <p className="text-sm font-medium text-slate-600">Send a platform-wide message to members.</p>
@@ -275,11 +280,11 @@ export default function AdminNotifications() {
              </div>
 
              <div className="lg:col-span-5 space-y-6">
-                <div className="bg-white rounded-3xl border border-gray-100 p-8 ">
+                <div className="bg-white rounded-xl border border-gray-100 p-8 ">
                    <h3 className="text-xs font-bold text-slate-700 uppercase flex items-center gap-2 mb-6">
                       <Info className="w-4 h-4" /> Guidelines
                    </h3>
-                   <div className="p-5 bg-amber-50 rounded-2xl border border-amber-100 flex gap-4">
+                   <div className="p-5 bg-amber-50 rounded-xl border border-amber-100 flex gap-4">
                       <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0" />
                       <p className="text-xs font-bold text-amber-800 leading-relaxed">
                         Broadcasts are sent instantly. Verify details carefully before sending.
@@ -293,7 +298,7 @@ export default function AdminNotifications() {
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0 }}
-                        className={`p-6 rounded-2xl font-bold text-sm flex items-center gap-4  ${status.type === 'success' ? 'bg-emerald-600 text-white' : 'bg-red-600 text-white'}`}
+                        className={`p-6 rounded-xl font-bold text-sm flex items-center gap-4  ${status.type === 'success' ? 'bg-emerald-600 text-white' : 'bg-red-600 text-white'}`}
                      >
                         {status.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <XCircle className="w-5 h-5" />}
                         {status.text}

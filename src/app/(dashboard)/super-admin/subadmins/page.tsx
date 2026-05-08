@@ -154,78 +154,89 @@ export default function AdminManagement() {
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {loading ? (
              [1,2,3].map(i => (
-                <div key={i} className="animate-pulse bg-white border border-gray-200 rounded-xl h-64 "></div>
+                <div key={i} className="animate-pulse bg-white border border-gray-100 rounded-xl h-80 shadow-sm"></div>
              ))
           ) : admins.length > 0 ? (
              admins.map(admin => (
-                  <div key={admin.id} className="bg-white border border-gray-100 rounded-xl p-8  hover:border-[#164e33]/20 transition-all group relative flex flex-col h-full">
-                     <div className="absolute top-6 right-6 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all">
+                  <motion.div 
+                    layout
+                    key={admin.id} 
+                    className="bg-white border border-gray-100 rounded-xl p-6 hover:shadow-lg transition-all group relative flex flex-col h-full"
+                  >
+                     <div className="absolute top-4 right-4 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all z-10">
                         <button 
                            onClick={() => handleEdit(admin)}
-                           className="p-2 text-slate-700 hover:text-[#164e33] hover:bg-[#164e33]/5 rounded-xl transition-all"
+                           className="p-2 text-slate-400 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all"
                            title="Edit Admin"
                         >
-                           <UserCircle className="w-5 h-5" />
+                           <UserCircle className="w-4.5 h-4.5" />
                         </button>
                         <button 
                            onClick={() => handleDelete(admin.id)}
-                           className="p-2 text-gray-500 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all"
+                           className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all"
                            title="Revoke Access"
                         >
-                           <Trash2 className="w-5 h-5" />
+                           <Trash2 className="w-4.5 h-4.5" />
                         </button>
                      </div>
+
                      <div className="flex items-center gap-4 mb-6">
-                       <div className="w-14 h-14 bg-[#164e33]/10 text-[#164e33] rounded-xl flex items-center justify-center font-semibold text-lg border border-[#164e33]/10">
-                          {admin.name.charAt(0)}
-                       </div>
-                        <div>
-                           <h3 className="font-semibold text-slate-900 text-base">{admin.name}</h3>
-                           <div className="flex items-center gap-2 text-sm font-semibold  uppercase mt-0.5">
-                              <span className="px-2 py-0.5 bg-gray-100 text-slate-700 rounded-md border border-gray-200">{admin.department}</span>
-                              {admin.isActive ? (
-                                <span className="text-emerald-500 flex items-center gap-1.5 ml-2">
-                                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Authorized
-                                </span>
+                        <div className="relative shrink-0">
+                           <div className="w-14 h-14 rounded-xl overflow-hidden border border-slate-100 bg-slate-50 flex items-center justify-center shadow-sm">
+                              {admin.user?.avatar ? (
+                                 <img src={admin.user.avatar} alt={admin.name} className="w-full h-full object-cover" />
                               ) : (
-                                <span className="text-rose-500 flex items-center gap-1.5 ml-2">
-                                  <div className="w-1.5 h-1.5 rounded-full bg-rose-500" /> Revoked
-                                </span>
+                                 <div className="text-xl font-bold text-slate-400 uppercase">
+                                    {admin.name.charAt(0)}
+                                 </div>
                               )}
+                           </div>
+                           <div className={`absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full border-2 border-white ${admin.isActive ? 'bg-emerald-500' : 'bg-rose-500'}`} />
+                        </div>
+
+                        <div>
+                           <h3 className="font-bold text-slate-900 text-base leading-tight">{admin.name}</h3>
+                           <div className="flex items-center gap-2 mt-1">
+                              <span className="px-2 py-0.5 bg-slate-100 text-slate-500 text-[10px] font-bold uppercase rounded border border-slate-200">
+                                 {admin.department}
+                              </span>
+                              <span className={`text-[10px] font-bold uppercase ${admin.isActive ? 'text-emerald-600' : 'text-rose-600'}`}>
+                                 {admin.isActive ? 'Active' : 'Inactive'}
+                              </span>
                            </div>
                         </div>
                      </div>
 
-                    <div className="flex-1 space-y-6">
+                    <div className="flex-1 flex flex-col justify-between gap-6">
                        <div className="space-y-3">
-                          <p className="text-sm font-semibold text-slate-700 uppercase  pl-1">Operational Permissions</p>
-                          <div className="flex flex-wrap gap-2">
+                          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-1">Permissions</p>
+                          <div className="flex flex-wrap gap-1.5">
                              {admin.permissions && admin.permissions.length > 0 ? (
-                               admin.permissions.map((p: string) => (
-                                 <span key={p} className="px-2.5 py-1 bg-[#164e33]/5 text-[#164e33] text-sm font-semibold rounded-xl border border-[#164e33]/10 uppercase ">
-                                   {p.replace('_', ' ')}
-                                 </span>
-                               ))
+                                admin.permissions.map((p: string) => (
+                                  <span key={p} className="px-2.5 py-1 bg-slate-50 text-slate-600 text-[10px] font-bold rounded-lg border border-slate-100 uppercase transition-colors group-hover:bg-slate-100 group-hover:text-slate-900">
+                                    {p.replace(/_/g, ' ')}
+                                  </span>
+                                ))
                              ) : (
-                               <span className="text-sm font-medium text-slate-700 italic">No specific permissions set</span>
+                                <span className="text-[10px] font-medium text-slate-400 italic px-1">Basic Access</span>
                              )}
                           </div>
                        </div>
 
-                       <div className="p-4 bg-gray-50/50 rounded-xl border border-gray-100">
-                           <div className="flex items-center gap-3 text-sm font-medium text-slate-800">
-                             <Mail className="w-4 h-4 text-slate-700" />
-                             <span className="truncate">{admin.email}</span>
+                       <div className="p-3 bg-slate-50/50 rounded-lg border border-slate-100 flex items-center gap-3 mt-2">
+                           <div className="w-7 h-7 rounded-lg bg-white shadow-sm flex items-center justify-center text-slate-400 border border-slate-50">
+                              <Mail className="w-3.5 h-3.5" />
                            </div>
+                           <span className="text-[11px] font-bold text-slate-500 break-all leading-tight">{admin.email}</span>
                        </div>
                     </div>
-                  </div>
+                  </motion.div>
              ))
           ) : (
-             <div className="col-span-full py-24 text-center border-2 border-dashed border-gray-200 rounded-xl bg-gray-50/50">
-                 <Users className="w-12 h-12 text-gray-500 mx-auto mb-4" />
-                 <h3 className="text-base font-semibold text-slate-900">No admins found</h3>
-                 <p className="text-sm font-medium text-slate-700 mt-1">Create your first administrative user to help manage the platform.</p>
+             <div className="col-span-full py-24 text-center border-4 border-dashed border-slate-100 rounded-xl bg-slate-50/50">
+                 <Users className="w-16 h-16 text-slate-300 mx-auto mb-6" />
+                 <h3 className="text-xl font-bold text-slate-900">Platform Team Empty</h3>
+                 <p className="text-slate-500 font-medium mt-2 max-w-sm mx-auto">Authorize your first administrative account to begin distributed platform management.</p>
              </div>
           )}
       </div>
@@ -365,6 +376,3 @@ export default function AdminManagement() {
     </div>
   );
 }
-
-
-

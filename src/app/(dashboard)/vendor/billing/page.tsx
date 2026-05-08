@@ -136,11 +136,11 @@ export default function VendorBilling() {
   if (loading) return (
     <div className="space-y-5 animate-pulse">
       <div className="h-8 w-52 bg-gray-200/70 rounded-xl" />
-      <div className="h-36 bg-gray-200/70 rounded-2xl" />
+      <div className="h-36 bg-gray-200/70 rounded-xl" />
       <div className="grid grid-cols-3 gap-4">
-        <div className="h-80 bg-gray-200/70 rounded-2xl" />
-        <div className="h-80 bg-gray-200/70 rounded-2xl" />
-        <div className="h-80 bg-gray-200/70 rounded-2xl" />
+        <div className="h-80 bg-gray-200/70 rounded-xl" />
+        <div className="h-80 bg-gray-200/70 rounded-xl" />
+        <div className="h-80 bg-gray-200/70 rounded-xl" />
       </div>
     </div>
   );
@@ -261,7 +261,7 @@ export default function VendorBilling() {
           </h2>
 
           {packages.length === 0 ? (
-            <div className="text-center py-10 border border-dashed border-gray-200 rounded-2xl text-slate-700 text-sm">
+            <div className="text-center py-10 border border-dashed border-gray-200 rounded-xl text-slate-700 text-sm">
               No plans available. Please contact admin.
             </div>
           ) : (
@@ -276,7 +276,7 @@ export default function VendorBilling() {
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.1 }}
-                    className={`relative bg-white rounded-[2rem] border border-gray-100 transition-all duration-500 flex flex-col group hover:-translate-y-4 hover: hover:-[#164e33]/10 overflow-hidden ${
+                    className={`relative bg-white rounded-xl border border-gray-100 transition-all duration-500 flex flex-col group hover:-translate-y-4 hover: hover:-[#164e33]/10 overflow-hidden ${
                       isPopular ? 'scale-105 z-10  ' : ' '
                     }`}
                   >

@@ -77,33 +77,33 @@ const ServiceGrid = () => {
   };
 
   return (
-    <div className="max-w-[1600px] mx-auto px-6 py-12 bg-white font-sans tracking-tight">
+    <div className="max-w-[1600px] mx-auto px-4 md:px-8 py-12 bg-white font-sans tracking-tight">
       {/* Header Section */}
-      <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-8">
-        <div className="flex-1">
-          <h1 className="text-4xl lg:text-5xl font-bold text-slate-800 leading-tight">
-            Explore Our <span className="text-4xl lg:text-5xl font-bold text-[#134e4a]">Marketplace</span>
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-12 gap-8">
+        <div className="flex-1 max-w-3xl">
+          <h1 className="text-3xl sm:text-4xl lg:text-4xl font-bold text-slate-800 leading-tight">
+            Explore Our <span className="text-3xl sm:text-4xl lg:text-4xl font-bold text-[#134e4a]">Marketplace</span>
           </h1>
-          <p className="text-gray-500 mt-3 text-xl font-medium">
+          <p className="text-gray-500 mt-4 text-lg sm:text-xl font-medium leading-relaxed">
             Discover products and connect with verified vendors across diverse industries.
           </p>
         </div>
         
         {/* Right Aligned Search Bar */}
-        <div className="relative w-full md:w-[450px] lg:w-[500px]">
+        <div className="relative w-full lg:w-[500px]">
           <input 
             type="text" 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={handleSearch}
-            placeholder="Search industries, products or vendors..." 
-            className="w-full pl-5 pr-12 py-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 text-base shadow-sm bg-gray-50/30 transition-all"
+            placeholder="Search industries, products..." 
+            className="w-full pl-5 pr-14 py-4 md:py-5 bg-gray-50 border border-gray-100 rounded-xl focus:outline-none focus:ring-4 focus:ring-emerald-500/5 focus:border-emerald-500/30 text-base shadow-sm transition-all font-medium"
           />
           <div 
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer hover:text-emerald-600 transition-colors"
+            className="absolute right-5 top-1/2 -translate-y-1/2 text-emerald-800 cursor-pointer hover:scale-110 transition-transform p-1"
             onClick={handleSearch}
           >
-            <Search className="w-6 h-6" />
+            <Search className="w-6 h-6 md:w-7 h-7" />
           </div>
         </div>
       </div>
@@ -117,10 +117,10 @@ const ServiceGrid = () => {
             <div 
               key={cat.id} 
               onClick={() => handleCategoryClick(cat.name)}
-              className="group border border-gray-100 rounded-2xl p-5 flex flex-col items-center justify-center text-center hover:shadow-xl hover:border-emerald-100 transition-all duration-300 cursor-pointer bg-white min-h-[160px]"
+              className="group border border-gray-100 rounded-xl p-5 flex flex-col items-center justify-center text-center hover:shadow-xl hover:border-emerald-100 transition-all duration-300 cursor-pointer bg-white min-h-[160px]"
             >
               {/* Bigger Icons */}
-              <div className={`p-4 rounded-2xl ${style.bg} mb-4 group-hover:scale-110 transition-transform duration-300 shadow-sm`}>
+              <div className={`p-4 rounded-xl ${style.bg} mb-4 group-hover:scale-110 transition-transform duration-300 shadow-sm`}>
                 <IconComponent className={`w-8 h-8 ${style.color}`} strokeWidth={1.8} />
               </div>
               <h3 className="text-[14px] font-bold text-slate-800 leading-snug mb-1.5 group-hover:text-emerald-900">{cat.name}</h3>
@@ -132,7 +132,7 @@ const ServiceGrid = () => {
         {/* Special 'View All' Card */}
         <div 
           onClick={() => router.push('/search')}
-          className="bg-[#134e4a] rounded-2xl p-5 flex flex-col items-start justify-center cursor-pointer hover:bg-[#0d3633] transition-all duration-300 relative overflow-hidden group shadow-lg min-h-[160px]"
+          className="bg-[#134e4a] rounded-xl p-5 flex flex-col items-start justify-center cursor-pointer hover:bg-[#0d3633] transition-all duration-300 relative overflow-hidden group shadow-lg min-h-[160px]"
         >
           <LayoutGrid className="text-white/90 w-8 h-8 mb-3" />
           <h3 className="text-base font-bold text-white mb-1">View All Categories</h3>

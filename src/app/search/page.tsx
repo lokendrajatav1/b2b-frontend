@@ -7,7 +7,7 @@ import {
     Search, MapPin, Star, ShieldCheck, Filter, Mail, PhoneCall, Globe,
     Heart, LayoutGrid, Headphones, Handshake, Sparkles, Settings, Box,
     ChevronDown, ArrowRight, Loader2, X, CheckCircle2, ChevronRight,
-    ArrowLeft
+    ArrowLeft, Video, Image as ImageIcon, Navigation, Factory, Layers
 } from 'lucide-react';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
@@ -20,84 +20,111 @@ const ProductCard = ({ item, handleViewClick }: { item: any; handleViewClick: an
         : (item.imageUrl || item.image ? [item.imageUrl || item.image] : []);
 
     return (
-        <div
-            onClick={(e) => handleViewClick(e, 'PRODUCT', item.id, item.vendor)}
-            className="bg-white rounded-3xl border border-gray-200 overflow-hidden flex flex-col hover:shadow-xl transition-shadow duration-300 group cursor-pointer relative"
-        >
-            <div className="h-64 w-full relative bg-gray-50">
+        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden flex flex-col hover:shadow-lg transition-all duration-300 group">
+            {/* Image Section with Slider Logic Placeholder */}
+            <div className="h-56 w-full relative bg-gray-50 border-b border-gray-100">
                 {images.length > 0 ? (
                     <img src={images[0]} alt={item.name} className="w-full h-full object-cover" />
                 ) : (
                     <div className="w-full h-full flex items-center justify-center text-gray-200">
-                        <Box className="w-12 h-12 opacity-20" />
+                        <Box size={40} className="opacity-20" />
                     </div>
                 )}
-                <div className="absolute top-4 left-4 bg-[#164e33] text-white px-3 py-1.5 rounded text-[12px] font-bold uppercase tracking-wider z-10">
-                    {item.category?.name || 'General'}
+                
+                {/* Category Badge */}
+                <div className="absolute bottom-2 right-2 flex gap-1.5">
+                   <div className="bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-[10px] font-bold text-[#164e33] flex items-center gap-1 shadow-sm border border-gray-100 uppercase tracking-wider">
+                      <Box size={12} className="text-[#164e33]" /> {item.category?.name || item.category || (item.vendor?.categories && item.vendor.categories[0]?.name) || 'General'}
+                   </div>
                 </div>
-                <button className="absolute top-4 right-4 p-2.5 rounded-full bg-white text-slate-400 hover:text-red-500 transition-colors z-10 shadow-md border border-gray-100">
-                    <Heart size={20} />
+
+                {/* Left/Right Nav Arrows (Simulation) */}
+                <button className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 bg-black/20 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                   <ArrowLeft size={14} />
+                </button>
+                <button className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 bg-black/20 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                   <ArrowRight size={14} />
                 </button>
             </div>
 
-            <div className="p-6 flex flex-col flex-1">
-                <div className="flex justify-between items-start mb-2">
-                    <h3 className="text-[20px] font-bold text-slate-800 leading-tight line-clamp-1">
+            <div className="p-4 flex flex-col flex-1">
+                {/* Title & Price */}
+                <div className="mb-3">
+                    <h3 className="text-[15px] font-bold text-[#D97528] hover:underline cursor-pointer leading-tight mb-1 line-clamp-2 min-h-[40px]">
                         {item.name}
                     </h3>
-                    <p className="text-[20px] font-bold text-[#1b5e20]">
-                        ₹{item.price ? item.price.toLocaleString() : 'N/A'}
+                    <p className="text-[17px] font-black text-slate-900">
+                       {item.price ? `₹${item.price.toLocaleString()}` : 'Ask Price'}
                     </p>
                 </div>
 
-                <p className="text-[15px] text-slate-600 mb-2 font-medium">{item.vendor?.businessName || 'Business Name'}</p>
+                {/* Main Action Button */}
+                <button 
+                  onClick={(e) => handleViewClick(e, 'PRODUCT', item.id, item.vendor)}
+                  className="w-full py-2.5 bg-[#164e33] hover:bg-[#006972] text-white rounded-md text-sm font-bold flex items-center justify-center gap-2 transition-colors mb-4 shadow-sm"
+                >
+                   <Navigation size={16} className="rotate-45" /> Contact Supplier
+                </button>
 
-                <div className="flex items-center gap-1.5 text-slate-400 mb-4">
-                    <MapPin size={16} className="fill-slate-400 text-white" />
-                    <span className="text-[13px] font-semibold uppercase tracking-wide">{item.vendor?.city || 'India'}</span>
+                {/* Vendor Info */}
+                <div className="space-y-1.5 border-t border-gray-50 pt-3">
+                   <p className="text-[12px] font-bold text-slate-600 hover:text-[#164e33] cursor-pointer truncate">
+                      {item.vendor?.businessName || 'Verified Supplier'}
+                   </p>
+                   <div className="flex items-center gap-1.5 text-#164e33">
+                      <MapPin size={13} className="text-slate-400" />
+                      <span className="text-[11px] font-bold">{item.vendor?.city || 'India'}</span>
+                      {item.vendor?.area && <span className="text-[11px] text-slate-400">• {item.vendor.area}</span>}
+                   </div>
+                   
+                   {/* Verification Badges */}
+                   <div className="flex flex-wrap items-center gap-2 py-1">
+                      {['GST', 'Email', 'Mobile'].map(label => (
+                         <div key={label} className="flex items-center gap-1 text-[10px] font-bold text-#164e33">
+                            <CheckCircle2 size={10} className="text-emerald-500" /> {label}
+                         </div>
+                      ))}
+                      <div className="text-[10px] font-bold text-slate-400">• Member: 1 yr</div>
+                   </div>
+
+                   {/* Ratings & TrustSeal */}
+                   <div className="flex items-center justify-between pt-1">
+                      <div className="flex items-center gap-1">
+                         <div className="flex items-center">
+                            {[1, 2, 3, 4].map(i => <Star key={i} size={10} className="fill-amber-400 text-amber-400" />)}
+                            <Star size={10} className="text-slate-200" />
+                         </div>
+                         <span className="text-[11px] font-bold text-slate-600">4.5 (18)</span>
+                      </div>
+                      <div className="bg-amber-50 text-amber-600 px-1.5 py-0.5 rounded text-[9px] font-black uppercase border border-amber-100 flex items-center gap-1">
+                         <ShieldCheck size={10} /> TrustSEAL
+                      </div>
+                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-2.5 mb-4">
-                    {['GST', 'MOBILE', 'EMAIL'].map((label) => (
-                        <div key={label} className="flex items-center gap-1.5 bg-emerald-50 text-[#164e33] px-3 py-1 rounded-md text-[11px] font-bold border border-emerald-100">
-                            <CheckCircle2 size={12} strokeWidth={2.5} />
-                            {label}
-                        </div>
-                    ))}
-                </div>
-
-                <div className="mb-5">
-                    <span className="bg-slate-50 text-slate-500 px-3 py-1 rounded text-[11px] font-bold uppercase border border-slate-200">Member</span>
-                </div>
-
-                <div className="flex items-center gap-4 py-4 border-t border-gray-100 mt-auto">
-                    <div className="flex items-center gap-1.5">
-                        <span className="text-[15px] font-bold text-slate-800">4.5</span>
-                        <Star size={14} className="fill-amber-400 text-amber-400" />
-                        <span className="text-[13px] font-medium text-slate-400">(10)</span>
-                    </div>
-                    <div className="flex items-center gap-1.5 text-slate-500">
-                        <ShieldCheck size={18} className="text-slate-400" />
-                        <span className="text-[13px] font-semibold">Active Hub Partner</span>
-                    </div>
-                    <div className="ml-auto bg-amber-50 text-amber-600 px-2.5 py-1 rounded text-[11px] font-bold border border-amber-100 uppercase tracking-tighter">TrustSeal</div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3 mt-2">
-                    <button
-                        onClick={(e) => { e.stopPropagation(); handleViewClick(e, 'PRODUCT', item.id, item.vendor); }}
-                        className="py-3 px-4 border-2 border-[#164e33] text-[#164e33] hover:bg-emerald-50 rounded-2xl text-[15px] font-bold transition-all flex items-center justify-center gap-2"
-                    >
-                        <Mail size={18} /> Vendor
-                    </button>
-                    <button
-                        onClick={(e) => { e.stopPropagation(); handleViewClick(e, 'CALL', item.id, item.vendor); }}
-                        className="py-3 px-4 bg-[#f37021] hover:bg-[#e06015] text-white rounded-2xl text-[15px] font-bold transition-all flex items-center justify-center gap-2 shadow-md"
-                    >
-                        <PhoneCall size={18} /> Call Now
-                    </button>
-                </div>
+                {/* Secondary Action */}
+                <button 
+                  onClick={(e) => handleViewClick(e, 'CALL', item.id, item.vendor)}
+                  className="w-full mt-4 py-2 border border-[#164e33] text-[#164e33] hover:bg-emerald-50 rounded-md text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-sm"
+                >
+                   <PhoneCall size={16} /> Call Now
+                </button>
             </div>
+        </div>
+    );
+};
+
+const FilterSection = ({ title, children, defaultOpen = true }: { title: string; children: React.ReactNode; defaultOpen?: boolean }) => {
+    const [isOpen, setIsOpen] = useState(defaultOpen);
+    return (
+        <div className="border-b border-gray-100 last:border-0 pb-4 mb-4">
+            <button 
+                onClick={() => setIsOpen(!isOpen)}
+                className="w-full flex items-center justify-between py-2 text-sm font-bold text-slate-800 hover:text-[#164e33] transition-colors"
+            >
+                {title} <ChevronDown size={16} className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+            </button>
+            {isOpen && <div className="pt-2">{children}</div>}
         </div>
     );
 };
@@ -110,11 +137,20 @@ function SearchContent() {
 
     const [authModalOpen, setAuthModalOpen] = useState(false);
     const [targetVendor, setTargetVendor] = useState<any>(null);
+    const [isExploreOpen, setIsExploreOpen] = useState(false);
     const [loading, setLoading] = useState(true);
     const [vendors, setVendors] = useState<any[]>([]);
     const [categories, setCategories] = useState<any[]>([]);
     const [pagination, setPagination] = useState({ total: 0, totalPages: 1 });
-    const [isExploreOpen, setIsExploreOpen] = useState(false);
+    const scrollRef = React.useRef<HTMLDivElement>(null);
+
+    const scroll = (direction: 'left' | 'right') => {
+        if (scrollRef.current) {
+            const { scrollLeft, clientWidth } = scrollRef.current;
+            const scrollTo = direction === 'left' ? scrollLeft - 300 : scrollLeft + 300;
+            scrollRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
+        }
+    };
 
     const q = searchParams.get('q') || '';
     const city = searchParams.get('city') || '';
@@ -171,7 +207,46 @@ function SearchContent() {
     };
 
     const filteredItems = vendors.flatMap((v: any) => (v.products || [])
-        .filter((p: any) => p.status === 'APPROVED')
+        .filter((p: any) => {
+            // Basic Approval Filter
+            if (p.status !== 'APPROVED') return false;
+
+            // 1. Price Filter
+            const priceRange = searchParams.get('priceRange');
+            if (priceRange) {
+                const [min, max] = priceRange.split('-').map(v => v === 'max' ? Infinity : parseInt(v));
+                const price = p.price || 0;
+                if (price < min || price > max) return false;
+            }
+
+            // 2. Automation Grade Filter
+            const automation = searchParams.get('automation');
+            if (automation) {
+                const activeGrades = automation.split(',');
+                // Assuming products have an 'automationGrade' field or similar
+                if (!p.automationGrade || !activeGrades.includes(p.automationGrade)) return false;
+            }
+
+            // 3. Business Credentials (Vendor Level)
+            const highTurnover = searchParams.get('highTurnover') === 'true';
+            if (highTurnover && v.annualTurnover !== '5Cr+') return false;
+
+            const gst3yr = searchParams.get('gst3yr') === 'true';
+            if (gst3yr && !v.isGstOld) return false;
+
+            // 4. Category Filter (Important for precise results)
+            const selectedCatId = searchParams.get('category');
+            if (selectedCatId) {
+                // Find the name of the selected category to match with product.category string if needed
+                const selectedCat = categories.find(c => c.id === selectedCatId);
+                const matchesId = p.categoryId === selectedCatId;
+                const matchesName = selectedCat && (p.category === selectedCat.name || p.category?.name === selectedCat.name);
+                
+                if (!matchesId && !matchesName) return false;
+            }
+
+            return true;
+        })
         .map((p: any) => ({ ...p, vendor: v }))
     );
 
@@ -179,7 +254,7 @@ function SearchContent() {
         <div className="min-h-screen bg-[#fcfcfc] font-sans antialiased text-slate-900">
             <VendorLoginModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} vendor={targetVendor} />
 
-            {/* --- EXPLORE SIDEBAR --- */}
+            {/* --- Explore Drawer --- */}
             <AnimatePresence>
                 {isExploreOpen && (
                     <>
@@ -188,345 +263,363 @@ function SearchContent() {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={() => setIsExploreOpen(false)}
-                            className="fixed inset-0 bg-black/30 backdrop-blur-sm z-[100]"
+                            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100]"
                         />
-                        <motion.div 
-                            initial={{ x: '-100%' }}
-                            animate={{ x: 0 }}
-                            exit={{ x: '-100%' }}
-                            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                            className="fixed left-0 top-0 h-screen w-full max-w-[380px] bg-white z-[110] shadow-2xl flex flex-col"
-                        >
-                            <div className="p-8 border-b border-gray-50 flex items-center justify-between">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600">
-                                        <LayoutGrid size={20} />
-                                    </div>
-                                    <h2 className="text-xl font-bold text-slate-900 uppercase tracking-tight">Categories</h2>
-                                </div>
-                                <button onClick={() => setIsExploreOpen(false)} className="p-2 hover:bg-slate-50 rounded-xl transition-all text-slate-400">
-                                    <X size={20} />
-                                </button>
-                            </div>
-
-                            <div className="flex-1 overflow-y-auto p-6 space-y-2 no-scrollbar">
-                                <button 
-                                    onClick={() => { updateURL({ category: '' }); setIsExploreOpen(false); }}
-                                    className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl font-bold text-[15px] transition-all ${!currentCategoryId ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'text-slate-600 hover:bg-slate-50'}`}
-                                >
-                                    <LayoutGrid size={20} /> All Categories
-                                </button>
-                                {categories.map((cat: any) => (
-                                    <button 
-                                        key={cat.id} 
-                                        onClick={() => { updateURL({ category: cat.id }); setIsExploreOpen(false); }}
-                                        className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl font-bold text-[15px] transition-all ${currentCategoryId === cat.id ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'text-slate-600 hover:bg-slate-50'}`}
-                                    >
-                                        <div className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400">
-                                            <Box size={18} />
-                                        </div>
-                                        <span className="truncate">{cat.name}</span>
-                                        {currentCategoryId === cat.id && <CheckCircle2 size={16} className="ml-auto text-emerald-500" />}
+<motion.div
+    initial={{ x: '-100%' }}
+    animate={{ x: 0 }}
+    exit={{ x: '-100%' }}
+    transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+    className="fixed top-0 left-0 h-full w-full max-w-md bg-white z-[101] shadow-2xl overflow-y-auto no-scrollbar"
+>
+                            <div className="p-6">
+                                <div className="flex items-center justify-between mb-6 border-b border-gray-100 pb-4">
+                                    <h2 className="text-xl font-bold text-slate-800">Explore More</h2>
+                                    <button onClick={() => setIsExploreOpen(false)} className="p-2 hover:bg-slate-50 rounded-full transition-colors text-slate-400 hover:text-slate-900">
+                                        <X size={24} />
                                     </button>
-                                ))}
-                            </div>
+                                </div>
 
-                            <div className="p-6 border-t border-gray-50">
-                                <button className="w-full py-4 bg-slate-900 text-white rounded-2xl font-bold text-sm uppercase tracking-wide shadow-xl shadow-slate-200">
-                                    Apply Filters
-                                </button>
+                                <div className="space-y-8">
+                                    {/* Price Range Section */}
+                                    <section>
+                                        <h3 className="text-sm font-bold text-#164e33 uppercase tracking-wider mb-4">Price Range</h3>
+                                        <div className="grid grid-cols-2 gap-4">
+                                            {[
+                                                { label: 'Below ₹2,00,000', val: '200000' },
+                                                { label: '₹2,00,001 - ₹7,50,000', val: '750000' },
+                                                { label: '₹7,50,001 - ₹15,50,000', val: '1550000' },
+                                                { label: 'Above ₹15,50,001', val: 'max' }
+                                            ].map(p => (
+                                                <label key={p.val} className="flex items-center gap-3 cursor-pointer group">
+                                                    <div className="w-5 h-5 rounded-full border-2 border-slate-200 flex items-center justify-center group-hover:border-[#164e33] transition-all">
+                                                        <div className="w-2.5 h-2.5 rounded-full bg-transparent group-hover:bg-[#164e33]/30"></div>
+                                                    </div>
+                                                    <span className="text-[13px] font-semibold text-slate-600 group-hover:text-slate-900">{p.label}</span>
+                                                </label>
+                                            ))}
+                                        </div>
+                                    </section>
+
+                                    {/* Categories Section */}
+                                    <section>
+                                        <h3 className="text-sm font-bold text-#164e33 uppercase tracking-wider mb-4">Categories</h3>
+                                        <div className="flex flex-wrap gap-2">
+                                            {categories.map((cat) => (
+                                                <button 
+                                                    key={cat.id} 
+                                                    onClick={() => { updateURL({ category: cat.id }); setIsExploreOpen(false); }}
+                                                    className={`px-4 py-2 rounded-lg text-[13px] font-bold transition-all border ${currentCategoryId === cat.id ? 'bg-[#164e33] text-white border-[#164e33] shadow-md shadow-emerald-900/20' : 'bg-white text-slate-600 border-gray-100 hover:border-[#164e33]/30 hover:bg-emerald-50'}`}
+                                                >
+                                                    {cat.name}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </section>
+
+                                    {/* Filters Section */}
+                                    <section>
+                                        <h3 className="text-sm font-bold text-#164e33 uppercase tracking-wider mb-4">Filters</h3>
+                                        <div className="space-y-4">
+                                            <label className="flex items-center gap-3 cursor-pointer group">
+                                                <input 
+                                                    type="checkbox" 
+                                                    checked={!!city}
+                                                    onChange={(e) => updateURL({ city: e.target.checked ? 'Indore' : '' })}
+                                                    className="w-5 h-5 rounded border-gray-300 text-[#164e33] focus:ring-[#164e33]" 
+                                                />
+                                                <span className="text-[13px] font-semibold text-slate-600">Show Suppliers from {city || 'Indore'} only</span>
+                                            </label>
+                                            <label className="flex items-center gap-3 cursor-pointer group">
+                                                <input type="checkbox" className="w-5 h-5 rounded border-gray-300 text-[#164e33] focus:ring-[#164e33]" />
+                                                <span className="text-[13px] font-semibold text-slate-600">Your City</span>
+                                            </label>
+                                        </div>
+                                    </section>
+                                </div>
+
+                                <div className="mt-12 pt-6 border-t border-gray-100">
+                                    <button 
+                                        onClick={() => setIsExploreOpen(false)}
+                                        className="w-full py-4 bg-[#164e33] text-white rounded-xl font-bold text-sm uppercase shadow-lg shadow-[#164e33]/20 hover:bg-[#006972] transition-all"
+                                    >
+                                        Show Results
+                                    </button>
+                                </div>
                             </div>
                         </motion.div>
                     </>
                 )}
             </AnimatePresence>
 
-            <nav className="max-w-[1400px] mx-auto px-6 py-5 flex items-center gap-2 text-[15px] font-medium text-slate-500">
-                <Link href="/" className="hover:text-[#164e33]">B2B Community</Link>
-                <ChevronRight size={16} className="text-slate-300" />
-                <Link href="/search" className="hover:text-[#164e33]">All Categories</Link>
-                <ChevronRight size={16} className="text-slate-300" />
-                <span className="text-slate-900 font-bold">Products</span>
-            </nav>
-
-            <main className="max-w-[1400px] mx-auto px-6 pb-20">
-                <div className="mb-8">
-                    <div className="flex items-center gap-4 mb-2">
-                        <h1 className="text-[36px] font-bold text-slate-900">Vendors</h1>
-                        <div className="bg-emerald-50 text-[#164e33] px-4 py-1.5 rounded-full text-[13px] font-bold border border-emerald-100 mt-1">
-                            {pagination.total} products available
-                        </div>
-                    </div>
-                    <p className="text-slate-500 text-[16px] font-medium">Discover verified vendors and trusted businesses in {city || 'India'}</p>
+            {/* --- Search Result Title --- */}
+            <div className="bg-white border-b border-gray-100">
+                <div className="max-w-[1500px] mx-auto px-4 lg:px-8 py-4">
+                    <h1 className="text-[22px] lg:text-[28px] font-medium text-slate-800">
+                        {q || 'Products'} {city ? `near ${city}` : 'across India'}
+                        <span className="ml-4 text-xs font-bold text-slate-400 uppercase tracking-widest bg-slate-50 px-3 py-1 rounded-full">Advanced Search</span>
+                    </h1>
                 </div>
+            </div>
 
-                <div className="bg-white rounded-2xl p-3 border border-gray-100 shadow-sm flex flex-wrap items-center gap-3 mb-10">
-                    <button 
-                        onClick={() => setIsExploreOpen(true)}
-                        className="flex items-center gap-2 bg-white border border-[#164e33]/30 px-6 py-3 rounded-xl text-[#164e33] font-bold text-[15px] hover:border-[#164e33] transition-all"
-                    >
-                        <Filter size={20} strokeWidth={2.5} /> Explore
-                    </button>
-
-                    <form 
-                        onSubmit={(e) => { e.preventDefault(); updateURL({ city: locationQuery }); }}
-                        className="flex-1 min-w-[200px] relative"
-                    >
-                        <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                        <input
+            {/* --- Sub-Header Filter Bar --- */}
+            <div className="bg-white border-b border-gray-100 sticky top-0 z-40 shadow-sm">
+                <div className="max-w-[1500px] mx-auto px-4 lg:px-8 py-3 flex flex-wrap items-center gap-3">
+                    {/* Location Input Box */}
+                    <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5 lg:w-[350px] group focus-within:border-[#164e33] transition-all">
+                        <MapPin size={18} className="text-slate-400 group-focus-within:text-[#164e33]" />
+                        <input 
+                            type="text" 
                             value={locationQuery}
                             onChange={(e) => setLocationQuery(e.target.value)}
-                            placeholder="Indore"
-                            className="w-full bg-slate-50/50 border border-gray-100 rounded-xl py-3.5 pl-11 pr-4 focus:ring-2 focus:ring-[#164e33]/10 focus:bg-white text-[15px] font-bold"
+                            placeholder="Select City to find sellers near you"
+                            className="bg-transparent text-sm font-semibold w-full focus:outline-none placeholder:text-slate-400"
                         />
-                        <button type="submit">
-                            <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 hover:text-[#164e33] transition-colors" size={18} />
+                        <button onClick={() => updateURL({ city: locationQuery })} className="text-slate-400 hover:text-[#164e33]">
+                           <Search size={16} />
                         </button>
-                    </form>
+                    </div>
 
-                    <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
-                        <button onClick={() => updateURL({ city: '' })} className={`px-6 py-3 rounded-xl border font-bold text-[15px] whitespace-nowrap transition-all ${!city ? 'bg-[#164e33] text-white border-[#164e33]' : 'border-gray-100 text-slate-600'}`}>All India</button>
-                        {city && (
-                            <div className="bg-[#164e33] text-white px-5 py-3 rounded-xl font-bold text-[15px] flex items-center gap-2 whitespace-nowrap">
-                                {city} <X size={16} className="cursor-pointer" onClick={() => updateURL({ city: '' })} />
-                            </div>
-                        )}
-                        {['Indore', 'Bhopal', 'Vadodara', 'Delhi'].filter(c => c !== city).map(c => (
-                            <button key={c} onClick={() => updateURL({ city: c })} className="px-6 py-3 rounded-xl border border-gray-100 text-slate-500 font-bold text-[15px] hover:bg-gray-50 hidden lg:block whitespace-nowrap">
-                                {c}
+                    {/* Explore Now Button */}
+                    <button 
+                        onClick={() => setIsExploreOpen(true)}
+                        className="flex items-center gap-2 border border-gray-200 px-4 py-1.5 rounded-full text-xs font-bold text-white bg-[#164e33] hover:bg-[#006972] shadow-md shadow-[#164e33]/10 transition-all active:scale-95"
+                    >
+                        <Sparkles size={14} /> Explore Now
+                    </button>
+
+                    {/* Near Me Button */}
+                    <button className="flex items-center gap-2 border border-gray-200 px-4 py-1.5 rounded-full text-xs font-bold text-slate-700 hover:bg-slate-50 shadow-sm transition-all active:scale-95">
+                        <div className="w-5 h-5 bg-[#164e33]/10 rounded-full flex items-center justify-center text-[#164e33]">
+                           <Navigation size={12} className="rotate-45" />
+                        </div>
+                        Near Me
+                    </button>
+
+                    <div className="h-6 w-px bg-gray-200 mx-2 hidden lg:block"></div>
+
+                    {/* City Pills Slider */}
+                    <div className="relative flex-1 overflow-hidden group/slider">
+                        <div 
+                            ref={scrollRef}
+                            className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth pr-10"
+                        >
+                            <button 
+                              onClick={() => updateURL({ city: '' })}
+                              className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border ${!city ? 'bg-[#D97528] text-white border-[#D97528]' : 'bg-white text-slate-600 border-gray-200 hover:border-slate-300'}`}
+                            >
+                               All India
                             </button>
-                        ))}
+                            {city && (
+                               <div className="bg-[#D97528] text-white px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-2 whitespace-nowrap shadow-sm">
+                                   {city} <X size={14} className="cursor-pointer" onClick={() => updateURL({ city: '' })} />
+                               </div>
+                            )}
+                            {['Indore', 'Ahmedabad', 'Bhopal', 'Jaipur', 'Pune', 'Thane', 'Morbi', 'Hyderabad', 'Delhi', 'Mumbai', 'Bangalore', 'Chennai', 'Kolkata', 'Surat', 'Lucknow', 'Kanpur'].filter(c => c !== city).map(c => (
+                               <button 
+                                 key={c} 
+                                 onClick={() => updateURL({ city: c })}
+                                 className="px-4 py-1.5 rounded-full bg-white border border-gray-200 text-slate-600 text-xs font-bold hover:border-slate-300 transition-all whitespace-nowrap shadow-sm"
+                               >
+                                   {c}
+                               </button>
+                            ))}
+                        </div>
+
+                        {/* Navigation Arrows */}
+                        <button 
+                            onClick={() => scroll('left')}
+                            className="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 backdrop-blur-sm border border-gray-100 rounded-full flex items-center justify-center text-slate-400 hover:text-[#164e33] shadow-sm opacity-0 group-hover/slider:opacity-100 transition-opacity z-10"
+                        >
+                            <ChevronRight size={18} className="rotate-180" />
+                        </button>
+                        <button 
+                            onClick={() => scroll('right')}
+                            className="absolute right-0 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 backdrop-blur-sm border border-gray-100 rounded-full flex items-center justify-center text-slate-400 hover:text-[#164e33] shadow-sm opacity-0 group-hover/slider:opacity-100 transition-opacity z-10"
+                        >
+                            <ChevronRight size={18} />
+                        </button>
+
+                        {/* Fades */}
+                        <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white to-transparent pointer-events-none" />
+                        <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white to-transparent pointer-events-none" />
                     </div>
                 </div>
+            </div>
 
-                <div className="flex gap-10">
-                    {/* Desktop Sidebar (Left) */}
-                    <aside className="w-[300px] shrink-0 hidden xl:block">
-                        <div className="bg-white border border-gray-100 rounded-3xl p-8 space-y-10 sticky top-6 shadow-sm">
-                            <div>
-                                <h3 className="text-[16px] font-bold text-slate-800 flex items-center justify-between mb-6 uppercase tracking-tight">
-                                    Offering Type <ChevronDown size={18} className="text-slate-400" />
-                                </h3>
-                                <div className="space-y-5">
-                                    {['All Offers', 'Products', 'Services'].map((type, i) => (
-                                        <label key={type} className="flex items-center gap-4 cursor-pointer group">
-                                            <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${i === 0 ? 'border-[#164e33]' : 'border-gray-300'}`}>
-                                                {i === 0 && <div className="w-3 h-3 bg-[#164e33] rounded-full" />}
-                                            </div>
-                                            <span className={`text-[15px] font-bold ${i === 0 ? 'text-[#164e33]' : 'text-slate-600'}`}>{type}</span>
-                                        </label>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div>
-                                <h3 className="text-[16px] font-bold text-slate-800 flex items-center justify-between mb-6 uppercase tracking-tight">
-                                    Categories <ChevronDown size={18} className="text-slate-400" />
-                                </h3>
-                                <div className="space-y-2 -mx-2">
-                                    <button 
-                                        onClick={() => updateURL({ category: '' })}
-                                        className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-xl font-bold text-[15px] transition-all ${!currentCategoryId ? 'bg-emerald-50 text-[#164e33]' : 'text-slate-600 hover:bg-slate-50'}`}
-                                    >
-                                        <LayoutGrid size={20} /> All Categories
-                                    </button>
-                                    {categories.map((cat: any) => (
-                                        <button 
-                                            key={cat.id} 
-                                            onClick={() => updateURL({ category: cat.id })}
-                                            className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-xl font-bold text-[15px] transition-all ${currentCategoryId === cat.id ? 'bg-emerald-50 text-[#164e33]' : 'text-slate-600 hover:bg-slate-50'}`}
-                                        >
-                                            <Box size={20} className={currentCategoryId === cat.id ? 'text-[#164e33]' : 'text-slate-400'} /> 
-                                            <span className="truncate">{cat.name}</span>
-                                        </button>
-                                    ))}
-                                </div>
-                                <button 
-                                    onClick={() => setIsExploreOpen(true)}
-                                    className="w-full mt-6 py-4 border-2 border-emerald-50 rounded-2xl text-[#164e33] font-bold text-[15px] flex items-center justify-center gap-2 hover:bg-emerald-50 transition-all"
-                                >
-                                    <ArrowRight size={18} /> View More
-                                </button>
-                            </div>
-                        </div>
-                    </aside>
-
-                    <div className="flex-1">
-                        <div className="mb-8 flex items-center justify-between">
-                            <p className="text-slate-600 font-bold text-[16px]">Found {filteredItems.length} results</p>
-                        </div>
-
-                        {loading ? (
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                {[1, 2, 3, 4, 5, 6].map(i => <div key={i} className="bg-white rounded-3xl h-[520px] animate-pulse border border-gray-100" />)}
-                            </div>
-                        ) : (
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                {filteredItems.length > 0 ? (
-                                    filteredItems.map((item: any, index: number) => {
-                                        const adIndex = Math.floor((index + 1) / 6) - 1;
-                                        const showAd = (index + 1) % 6 === 0;
-                                        
-                                        const adsData = [
-                                            {
-                                                title: "Scale Your Global Operations with Admission Master",
-                                                desc: "Join 10,000+ verified businesses leveraging our pan-India network to capture high-intent leads.",
-                                                image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop",
-                                                cta: "Start Your Campaign",
-                                                tag: "Premium Growth"
-                                            },
-                                            {
-                                                title: "Verified Supplier Gold Membership",
-                                                desc: "Get the 'TrustSeal' badge and 5x more visibility in category searches across the platform.",
-                                                image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=800&auto=format&fit=crop",
-                                                cta: "Upgrade to Gold",
-                                                tag: "Seller Success"
-                                            },
-                                            {
-                                                title: "Logistics & Supply Chain Solutions",
-                                                desc: "Streamline your delivery with our integrated logistics partners. Flat 20% off for new vendors.",
-                                                image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=800&auto=format&fit=crop",
-                                                cta: "Explore Logistics",
-                                                tag: "Service Partner"
-                                            },
-                                            {
-                                                title: "Digital Marketing for Manufacturers",
-                                                desc: "Boost your online presence with professional SEO and social media curation tailored for B2B.",
-                                                image: "https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?q=80&w=800&auto=format&fit=crop",
-                                                cta: "Get Free Audit",
-                                                tag: "Digital Reach"
-                                            }
-                                        ];
-
-                                        const currentAd = adsData[adIndex % adsData.length];
-
-                                        return (
-                                            <React.Fragment key={item.id}>
-                                                <ProductCard item={item} handleViewClick={handleViewClick} />
-                                                
-                                                {showAd && (
-                                                    <div className="col-span-full my-6">
-                                                        <div className="bg-white border border-gray-100 rounded-[2rem] p-4 flex flex-col lg:flex-row items-stretch gap-6 relative overflow-hidden group shadow-lg shadow-slate-100/50">
-                                                            {/* Ad Image Wrapper */}
-                                                            <div className="lg:w-1/3 h-64 lg:h-auto relative rounded-2xl overflow-hidden shrink-0 shadow-inner">
-                                                                <img 
-                                                                    src={currentAd.image} 
-                                                                    alt={currentAd.title} 
-                                                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                                                                />
-                                                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                                                                <div className="absolute bottom-4 left-4 flex items-center gap-2">
-                                                                    <div className="bg-[#164e33] text-white px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-widest">Sponsored</div>
-                                                                    <div className="bg-white/20 backdrop-blur-md text-white px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-tight">Marketplace Ads</div>
-                                                                </div>
-                                                            </div>
-
-                                                            {/* Ad Content Wrapper */}
-                                                            <div className="flex-1 py-4 lg:py-8 px-4 flex flex-col justify-center gap-6">
-                                                                <div>
-                                                                    <div className="flex items-center gap-3 mb-3">
-                                                                        <div className="w-8 h-8 bg-amber-50 rounded-lg flex items-center justify-center text-amber-500 shadow-sm border border-amber-100/50">
-                                                                            <Sparkles className="w-4 h-4 animate-pulse" />
-                                                                        </div>
-                                                                        <span className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em]">{currentAd.tag}</span>
-                                                                    </div>
-                                                                    <h4 className="text-2xl md:text-3xl font-black text-slate-900 mb-3 tracking-tight leading-tight">{currentAd.title}</h4>
-                                                                    <p className="text-slate-500 font-medium max-w-xl leading-relaxed text-[15px]">
-                                                                        {currentAd.desc}
-                                                                    </p>
-                                                                </div>
-
-                                                                <div className="flex flex-col sm:flex-row items-center gap-6">
-                                                                    <button className="w-full sm:w-auto px-10 py-4 bg-slate-900 text-white rounded-2xl font-bold text-[15px] hover:bg-black transition-all shadow-xl shadow-slate-200 hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2">
-                                                                        {currentAd.cta} <ArrowRight className="w-5 h-5" />
-                                                                    </button>
-                                                                    <div className="flex items-center gap-3">
-                                                                        <div className="flex -space-x-3">
-                                                                            {[1,2,3].map(i => (
-                                                                                <div key={i} className="w-10 h-10 rounded-full border-2 border-white bg-slate-100 overflow-hidden shadow-sm">
-                                                                                    <img src={`https://i.pravatar.cc/100?img=${i+20 + (adIndex * 3)}`} alt="user" />
-                                                                                </div>
-                                                                            ))}
-                                                                        </div>
-                                                                        <p className="text-xs font-bold text-slate-400 leading-tight">Active Partners <br/> In your network</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            
-                                                            {/* Decorative Subtle Grid Overlay */}
-                                                            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03] pointer-events-none" />
-                                                        </div>
-                                                    </div>
-                                                )}
-                                            </React.Fragment>
-                                        );
-                                    })
-                                ) : (
-                                    <div className="col-span-full py-32 text-center bg-white rounded-[3rem] border border-gray-100 flex flex-col items-center">
-                                        <div className="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mb-6">
-                                            <Search size={40} className="text-slate-200" />
-                                        </div>
-                                        <h3 className="text-2xl font-bold text-slate-800 mb-2">No results found</h3>
-                                        <p className="text-slate-400 font-medium max-w-sm mx-auto">We couldn't find any products matching your search. Try adjusting your filters or location.</p>
-                                        <button 
-                                            onClick={() => updateURL({ city: '', category: '', q: '' })}
-                                            className="mt-8 px-8 py-3.5 bg-[#164e33] text-white rounded-2xl font-bold text-[14px]"
-                                        >
-                                            Reset All Filters
-                                        </button>
-                                    </div>
-                                )}
-                            </div>
-                        )}
-
-                        {/* Pagination */}
-                        {pagination.totalPages > 1 && (
-                            <div className="mt-16 flex items-center justify-center gap-2">
-                                <button 
-                                    disabled={currentPage === 1}
-                                    onClick={() => updateURL({ page: currentPage - 1 })}
-                                    className="w-12 h-12 rounded-2xl border border-gray-100 flex items-center justify-center text-slate-400 hover:text-[#164e33] disabled:opacity-30 transition-all"
-                                >
-                                    <ArrowLeft size={20} />
-                                </button>
-                                {[...Array(pagination.totalPages)].map((_, i) => (
-                                    <button 
-                                        key={i} 
-                                        onClick={() => updateURL({ page: i + 1 })}
-                                        className={`w-12 h-12 rounded-2xl font-bold text-sm transition-all ${currentPage === i + 1 ? 'bg-[#164e33] text-white shadow-lg shadow-emerald-900/10' : 'border border-gray-100 text-slate-600 hover:bg-gray-50'}`}
-                                    >
-                                        {i + 1}
-                                    </button>
+            {/* --- Main Content Section --- */}
+            <main className="max-w-[1500px] mx-auto px-4 lg:px-8 py-8 flex gap-8">
+                
+                {/* --- Sidebar Filters --- */}
+                <aside className="w-[280px] shrink-0 hidden xl:block">
+                    <div className="bg-white border border-gray-200 rounded-xl p-5 sticky top-24 shadow-sm">
+                        <FilterSection title="Price">
+                            <div className="space-y-2.5">
+                                {[
+                                   { label: 'Below ₹2,00,000', val: '0-200000' },
+                                   { label: '₹2,00,001 - ₹7,50,000', val: '200001-750000' },
+                                   { label: '₹7,50,001 - ₹15,50,000', val: '750001-1550000' },
+                                   { label: 'Above ₹15,50,001', val: '1550001-max' }
+                                ].map(p => (
+                                   <label key={p.val} className="flex items-center gap-2.5 cursor-pointer group">
+                                      <input 
+                                        type="radio" 
+                                        name="price"
+                                        checked={searchParams.get('priceRange') === p.val}
+                                        onChange={() => updateURL({ priceRange: p.val })}
+                                        className="w-4 h-4 border-gray-300 text-[#164e33] focus:ring-[#164e33]" 
+                                      />
+                                      <span className="text-[13px] font-medium text-slate-600 group-hover:text-[#164e33]">{p.label}</span>
+                                   </label>
                                 ))}
-                                <button 
-                                    disabled={currentPage === pagination.totalPages}
-                                    onClick={() => updateURL({ page: currentPage + 1 })}
-                                    className="w-12 h-12 rounded-2xl border border-gray-100 flex items-center justify-center text-slate-400 hover:text-[#164e33] disabled:opacity-30 transition-all"
-                                >
-                                    <ArrowRight size={20} />
-                                </button>
                             </div>
-                        )}
+                        </FilterSection>
+
+                        <FilterSection title="Business Credentials">
+                           <div className="space-y-3">
+                              <label className="flex items-center gap-2.5 cursor-pointer group">
+                                 <input 
+                                    type="checkbox" 
+                                    checked={searchParams.get('highTurnover') === 'true'}
+                                    onChange={(e) => updateURL({ highTurnover: e.target.checked })}
+                                    className="w-4 h-4 rounded border-gray-300 text-[#164e33]" 
+                                 />
+                                 <span className="text-[13px] font-medium text-slate-600 group-hover:text-[#164e33]">Annual turnover ₹5 Cr+</span>
+                              </label>
+                              <label className="flex items-center gap-2.5 cursor-pointer group">
+                                 <input 
+                                    type="checkbox" 
+                                    checked={searchParams.get('gst3yr') === 'true'}
+                                    onChange={(e) => updateURL({ gst3yr: e.target.checked })}
+                                    className="w-4 h-4 rounded border-gray-300 text-[#164e33]" 
+                                 />
+                                 <span className="text-[13px] font-medium text-slate-600 group-hover:text-[#164e33]">GST registered 3+ years</span>
+                              </label>
+                           </div>
+                        </FilterSection>
+
+                        <FilterSection title="Automation Grade" defaultOpen={true}>
+                           <div className="space-y-3">
+                              {['Manual', 'Semi Automatic', 'Automatic'].map(grade => (
+                                 <label key={grade} className="flex items-center gap-2.5 cursor-pointer group">
+                                    <input 
+                                        type="checkbox" 
+                                        checked={searchParams.get('automation')?.includes(grade)}
+                                        onChange={(e) => {
+                                            const current = searchParams.get('automation') || '';
+                                            const newVal = e.target.checked ? (current ? `${current},${grade}` : grade) : current.replace(new RegExp(`,?${grade}`), '');
+                                            updateURL({ automation: newVal });
+                                        }}
+                                        className="w-4 h-4 rounded border-gray-300 text-[#164e33]" 
+                                    />
+                                    <span className="text-[13px] font-medium text-slate-600 group-hover:text-[#164e33]">{grade}</span>
+                                 </label>
+                              ))}
+                           </div>
+                        </FilterSection>
+
+                        <div className="pt-2">
+                           <h3 className="text-sm font-bold text-slate-800 mb-4 uppercase tracking-tight">Categories</h3>
+                           <div className="space-y-1.5">
+                              {categories.slice(0, 8).map(cat => (
+                                 <button 
+                                   key={cat.id} 
+                                   onClick={() => updateURL({ category: cat.id })}
+                                   className={`w-full text-left px-2 py-1.5 rounded text-[13px] font-medium transition-all ${currentCategoryId === cat.id ? 'bg-emerald-50 text-[#164e33]' : 'text-#164e33 hover:bg-gray-50'}`}
+                                 >
+                                    {cat.name}
+                                 </button>
+                              ))}
+                           </div>
+                        </div>
                     </div>
+                </aside>
+
+                {/* --- Main Product Grid --- */}
+                <div className="flex-1">
+                    <div className="flex items-center justify-between mb-6">
+                        <p className="text-[14px] font-bold text-#164e33">
+                           Showing <span className="text-slate-900">{filteredItems.length}</span> results for <span className="text-slate-900 font-black">"{q || 'All Products'}"</span>
+                        </p>
+                  
+                    </div>
+
+                    {loading ? (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                            {[1, 2, 3, 4, 8].map(i => <div key={i} className="bg-white rounded-xl h-[450px] animate-pulse border border-gray-100" />)}
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                            {filteredItems.length > 0 ? (
+                                filteredItems.map((item: any) => (
+                                    <ProductCard key={item.id} item={item} handleViewClick={handleViewClick} />
+                                ))
+                            ) : (
+                                <div className="col-span-full py-32 text-center bg-white rounded-3xl border border-gray-100 flex flex-col items-center">
+                                    <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-6 text-slate-200">
+                                        <Search size={40} />
+                                    </div>
+                                    <h3 className="text-xl font-bold text-slate-800 mb-2">No items found</h3>
+                                    <p className="text-slate-400 font-medium max-w-sm mx-auto text-sm">We couldn't find any products matching your criteria. Try adjusting your location or filters.</p>
+                                    <button 
+                                        onClick={() => updateURL({ city: '', category: '', q: '' })}
+                                        className="mt-8 px-10 py-3 bg-[#164e33] text-white rounded-lg font-bold text-sm shadow-lg shadow-emerald-900/10"
+                                    >
+                                        Clear All Filters
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* Pagination */}
+                    {pagination.totalPages > 1 && (
+                        <div className="mt-16 flex items-center justify-center gap-2">
+                            <button
+                                disabled={currentPage === 1}
+                                onClick={() => updateURL({ page: currentPage - 1 })}
+                                className="w-10 h-10 rounded-lg border border-gray-200 flex items-center justify-center text-slate-400 hover:text-[#164e33] disabled:opacity-30 transition-all bg-white shadow-sm"
+                            >
+                                <ArrowLeft size={18} />
+                            </button>
+                            {[...Array(pagination.totalPages)].map((_, i) => (
+                                <button
+                                    key={i}
+                                    onClick={() => updateURL({ page: i + 1 })}
+                                    className={`w-10 h-10 rounded-lg font-bold text-sm transition-all ${currentPage === i + 1 ? 'bg-[#D97528] text-white shadow-md' : 'bg-white border border-gray-200 text-slate-600 hover:border-slate-300 shadow-sm'}`}
+                                >
+                                    {i + 1}
+                                </button>
+                            ))}
+                            <button
+                                disabled={currentPage === pagination.totalPages}
+                                onClick={() => updateURL({ page: currentPage + 1 })}
+                                className="w-10 h-10 rounded-lg border border-gray-200 flex items-center justify-center text-slate-400 hover:text-[#164e33] disabled:opacity-30 transition-all bg-white shadow-sm"
+                            >
+                                <ArrowRight size={18} />
+                            </button>
+                        </div>
+                    )}
                 </div>
             </main>
 
-            <div className="bg-[#f8fafc] border-t border-gray-200 mt-20">
-                <div className="max-w-[1400px] mx-auto px-6 py-16">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+            {/* --- Footer Feature Bar --- */}
+            <div className="bg-white border-t border-gray-100 mt-20">
+                <div className="max-w-[1500px] mx-auto px-8 py-12">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                         {[
                             { icon: ShieldCheck, title: "Verified Vendors", desc: "Quality checked partners" },
-                            { icon: Box, title: "Wide Range", desc: "100+ categories to explore" },
-                            { icon: Handshake, title: "Easy & Reliable", desc: "Quick bookings & secure payments" },
-                            { icon: Headphones, title: "24/7 Support", desc: "We're here to help you" },
+                            { icon: Box, title: "Wide Range", desc: "1000+ products listed" },
+                            { icon: Handshake, title: "Reliable B2B", desc: "India's trusted community" },
+                            { icon: Headphones, title: "Support", desc: "Dedicated help center" },
                         ].map((f, i) => (
-                            <div key={i} className="flex items-center gap-5 group">
-                                <div className="bg-emerald-50 p-5 rounded-full group-hover:bg-emerald-100 transition-colors">
-                                    <f.icon className="text-[#164e33]" size={28} />
+                            <div key={i} className="flex items-center gap-4">
+                                <div className="bg-slate-50 p-4 rounded-xl text-slate-400">
+                                    <f.icon size={24} />
                                 </div>
                                 <div>
-                                    <p className="font-bold text-slate-800 text-[16px]">{f.title}</p>
-                                    <p className="text-[14px] text-slate-500 font-medium">{f.desc}</p>
+                                    <p className="font-bold text-slate-800 text-sm">{f.title}</p>
+                                    <p className="text-xs text-slate-400 font-medium">{f.desc}</p>
                                 </div>
                             </div>
                         ))}

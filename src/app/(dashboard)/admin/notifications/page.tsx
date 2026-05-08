@@ -148,7 +148,7 @@ export default function AdminNotifications() {
                          initial={{ opacity: 0, y: 10 }}
                          animate={{ opacity: 1, y: 0 }}
                          exit={{ opacity: 0, y: -10 }}
-                         className={`group p-6 bg-white rounded-2xl border ${n.isRead ? 'border-gray-50 opacity-75' : 'border-gray-100 '} flex items-start gap-6 hover:border-[#164e33]/20 transition-all`}
+                         className={`group p-6 bg-white rounded-xl border ${n.isRead ? 'border-gray-50 opacity-75' : 'border-gray-100 '} flex items-start gap-6 hover:border-[#164e33]/20 transition-all`}
                        >
                          <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${n.isRead ? 'bg-gray-50 text-slate-700' : 'bg-[#164e33]/10 text-[#164e33]'}`}>
                            <Bell className="w-5 h-5" />
@@ -253,7 +253,7 @@ export default function AdminNotifications() {
                        <Info className="w-4 h-4 text-[#164e33]" /> Broadcast Guidelines
                     </h3>
                     <div className="space-y-4">
-                       <div className="p-5 bg-amber-50 rounded-2xl border border-amber-100 flex gap-4">
+                       <div className="p-5 bg-amber-50 rounded-xl border border-amber-100 flex gap-4">
                           <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0" />
                           <p className="text-sm font-medium text-amber-800 leading-relaxed">
                             Hub broadcasts are sent to all verified vendors within your assigned business categories. Verify all details before sending.
@@ -268,7 +268,7 @@ export default function AdminNotifications() {
                          initial={{ opacity: 0, y: 10 }}
                          animate={{ opacity: 1, y: 0 }}
                          exit={{ opacity: 0 }}
-                         className={`p-6 rounded-2xl font-semibold text-sm flex items-center gap-4  ${status.type === 'success' ? 'bg-emerald-600 text-white' : 'bg-red-600 text-white'}`}
+                         className={`p-6 rounded-xl font-semibold text-sm flex items-center gap-4  ${status.type === 'success' ? 'bg-emerald-600 text-white' : 'bg-red-600 text-white'}`}
                       >
                          {status.type === 'success' ? <CheckCircle2 className="w-6 h-6 shrink-0" /> : <XCircle className="w-6 h-6 shrink-0" />}
                          {status.text}

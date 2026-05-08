@@ -100,7 +100,8 @@ export default function VendorRefunds() {
 
       <div className="max-w-7xl mx-auto">
          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden ">
-            <table className="w-full text-left">
+            <div className="overflow-x-auto w-full no-scrollbar">
+               <table className="w-full text-left min-w-[800px]">
                <thead>
                   <tr className="bg-gray-50/50 border-b border-gray-100">
                      <th className="px-6 py-4 text-sm font-semibold text-slate-700 uppercase ">Date</th>
@@ -250,6 +251,7 @@ export default function VendorRefunds() {
           </motion.div>
         )}
       </AnimatePresence>
+    </div>
     </div>
   );
 }

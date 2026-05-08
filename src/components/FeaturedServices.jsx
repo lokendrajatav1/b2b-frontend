@@ -10,46 +10,43 @@ import {
 } from 'lucide-react';
 
 const ServiceSection = ({ title, subtitle, icon: TitleIcon, iconBg, items, router }) => (
-  <div className="bg-white rounded-[2rem] p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-50">
-    <div className="flex justify-between items-start mb-8">
-      <div className="flex gap-4">
-        {/* Title icon background color changes per section */}
-        <div className={`p-4 rounded-full ${iconBg}`}>
-          {/* Main title icons are green now */}
-          <TitleIcon className="w-8 h-8 text-green-800" strokeWidth={1.5} />
+  <div className="bg-white rounded-xl p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-50 flex flex-col h-full">
+    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+      <div className="flex items-center gap-4">
+        <div className={`p-3.5 md:p-4 rounded-xl ${iconBg} shrink-0`}>
+          <TitleIcon className="w-6 h-6 md:w-8 md:h-8 text-green-800" strokeWidth={1.5} />
         </div>
         <div>
-          <h2 className="text-2xl font-bold text-green-950 tracking-tight">{title}</h2>
-          <p className="text-gray-500 text-base mt-1">{subtitle}</p>
+          <h2 className="text-xl md:text-2xl font-bold text-green-950 tracking-tight leading-tight">{title}</h2>
+          <p className="text-gray-500 text-sm md:text-base mt-0.5">{subtitle}</p>
         </div>
       </div>
       <button 
         onClick={() => router.push('/search')}
-        className="flex items-center gap-2 px-5 py-2 rounded-full border border-gray-200 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
+        className="flex items-center gap-2 px-4 py-2 rounded-full border border-gray-200 text-xs md:text-sm font-bold text-gray-700 hover:bg-gray-50 transition-all hover:border-green-200 active:scale-95 shrink-0"
       >
         View all <ArrowRight className="w-4 h-4 text-green-700" />
       </button>
     </div>
 
-    <div className="grid grid-cols-3 gap-5">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-5 mt-auto">
       {items.map((item, idx) => (
         <div 
           key={idx} 
           onClick={() => router.push(`/search?q=${encodeURIComponent(item.label)}`)}
           className="group cursor-pointer"
         >
-          <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-3 shadow-inner">
+          <div className="relative aspect-[4/3] rounded-xl overflow-hidden mb-3 shadow-inner bg-gray-100">
             <img 
               src={item.image} 
               alt={item.label}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
             />
-            {/* Small icon circle on the image - made green to match request */}
-            <div className="absolute bottom-3 left-3 bg-white p-2.5 rounded-full shadow-lg">
-              <item.icon className="w-5 h-5 text-green-800" strokeWidth={2} />
+            <div className="absolute bottom-3 left-3 bg-white/95 backdrop-blur-sm p-2 rounded-full shadow-lg border border-white/20">
+              <item.icon className="w-4 h-4 md:w-5 md:h-5 text-green-800" strokeWidth={2} />
             </div>
           </div>
-          <p className="text-center font-bold text-gray-800 text-sm">{item.label}</p>
+          <p className="text-center font-bold text-gray-800 text-xs md:text-sm transition-colors group-hover:text-green-800">{item.label}</p>
         </div>
       ))}
     </div>
@@ -57,21 +54,20 @@ const ServiceSection = ({ title, subtitle, icon: TitleIcon, iconBg, items, route
 );
 
 const FeaturesBar = () => (
-  <div className="mt-12 bg-gray-50/50 border border-gray-100 rounded-[2rem] py-8 px-12 grid grid-cols-4 gap-8">
+  <div className="mt-12 bg-white/50 backdrop-blur-sm border border-white rounded-xl py-10 px-8 md:px-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-10 gap-x-8 shadow-xl shadow-gray-200/20">
     {[
-      { icon: ShieldCheck, title: "Verified & Trusted", desc: "Quality checked partners", color: "text-green-800", bg: "bg-green-100" },
-      { icon: Award, title: "Wide Range", desc: "100+ categories to explore", color: "text-green-800", bg: "bg-green-100" },
-      { icon: Handshake, title: "Easy & Reliable", desc: "Quick bookings & secure payments", color: "text-green-800", bg: "bg-green-100" },
-      { icon: Headphones, title: "24/7 Support", desc: "We're here to help you", color: "text-green-800", bg: "bg-green-100" },
+      { icon: ShieldCheck, title: "Verified & Trusted", desc: "Quality checked partners", color: "text-green-800", bg: "bg-green-100/50" },
+      { icon: Award, title: "Wide Range", desc: "100+ categories to explore", color: "text-green-800", bg: "bg-green-100/50" },
+      { icon: Handshake, title: "Easy & Reliable", desc: "Quick bookings & secure payments", color: "text-green-800", bg: "bg-green-100/50" },
+      { icon: Headphones, title: "24/7 Support", desc: "We're here to help you", color: "text-green-800", bg: "bg-green-100/50" },
     ].map((f, i) => (
-      <div key={i} className="flex items-center gap-5 border-r last:border-0 border-gray-200 pr-8">
-        <div className={`p-3.5 rounded-full ${f.bg}`}>
-          {/* Feature icons are green too */}
-          <f.icon className={`w-7 h-7 ${f.color}`} strokeWidth={2} />
+      <div key={i} className="flex items-center gap-5 lg:border-r last:border-0 border-gray-100 lg:pr-8 group hover:translate-y-[-2px] transition-transform duration-300">
+        <div className={`p-4 rounded-xl ${f.bg} shrink-0 transition-transform group-hover:scale-110`}>
+          <f.icon className={`w-6 h-6 md:w-7 md:h-7 ${f.color}`} strokeWidth={2} />
         </div>
-        <div>
-          <h4 className="font-bold text-gray-800 text-[15px]">{f.title}</h4>
-          <p className="text-gray-500 text-xs mt-0.5">{f.desc}</p>
+        <div className="min-w-0">
+          <h4 className="font-bold text-gray-800 text-sm md:text-[15px] leading-tight">{f.title}</h4>
+          <p className="text-gray-500 text-[11px] md:text-xs mt-1 leading-normal">{f.desc}</p>
         </div>
       </div>
     ))}
@@ -84,7 +80,7 @@ const FeaturedServices = () => {
   const sections = [
     {
       title: "Wedding Requisites",
-      subtitle: "Everything you need for a perfect celebration.",
+      subtitle: "Everything you need for celebration.",
       icon: Heart,
       iconBg: "bg-orange-50",
       items: [
@@ -95,7 +91,7 @@ const FeaturedServices = () => {
     },
     {
       title: "Beauty & Spa",
-      subtitle: "Relax, rejuvenate & look your best.",
+      subtitle: "Relax, rejuvenate & look best.",
       icon: Flower2,
       iconBg: "bg-green-50",
       items: [
@@ -106,7 +102,7 @@ const FeaturedServices = () => {
     },
     {
       title: "Repairs & Services",
-      subtitle: "Expert help for your home and vehicles.",
+      subtitle: "Expert help for home and vehicles.",
       icon: Wrench,
       iconBg: "bg-blue-50",
       items: [
@@ -117,7 +113,7 @@ const FeaturedServices = () => {
     },
     {
       title: "Daily Needs",
-      subtitle: "All your everyday essentials in one place.",
+      subtitle: "Everyday essentials in one place.",
       icon: ShoppingBag,
       iconBg: "bg-purple-50",
       items: [
@@ -129,9 +125,9 @@ const FeaturedServices = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50/50 p-12 font-sans tracking-tight">
+    <div className="min-h-screen bg-[#fcfcfc] py-12 px-4 sm:px-6 md:px-12 font-sans tracking-tight">
       <div className="max-w-[1400px] mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
           {sections.map((section, index) => (
             <ServiceSection key={index} {...section} router={router} />
           ))}

@@ -11,26 +11,28 @@ import {
   AlertCircle, 
   CheckCircle2, 
   Layers, 
-  Hash, 
   X,
   Target,
   ArrowRight,
   ShieldCheck,
   RefreshCcw,
-  FileText,
   Tag,
-  DollarSign,
-  Image as ImageIcon,
+  ImageIcon,
   Upload,
   Info,
-  ShoppingCart,
   Edit3,
   ChevronDown,
   Lock,
   CreditCard,
-  Gem,
-  Package2,
-  ChevronRight
+  ChevronRight,
+  Filter,
+  Eye,
+  MoreVertical,
+  ChevronLeft,
+  TrendingUp,
+  Clock,
+  Search,
+  Zap
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -46,21 +48,16 @@ function SubscriptionGate({ vendorName }: { vendorName: string }) {
   const router = useRouter();
   return (
     <div className="min-h-[70vh] flex flex-col items-center justify-center text-center px-4 py-10 space-y-8">
-      {/* Icon */}
-      <div className="w-20 h-20 rounded-2xl bg-amber-50 border border-amber-100 flex items-center justify-center mx-auto">
+      <div className="w-20 h-20 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center mx-auto">
         <Lock className="w-9 h-9 text-amber-500" />
       </div>
-
-      {/* Heading */}
       <div className="space-y-2 max-w-md">
         <h2 className="text-lg font-semibold text-slate-900">Subscription Required</h2>
         <p className="text-sm text-slate-700">
           Hi <span className="font-medium text-slate-800">{vendorName || 'there'}</span>, you need an active subscription to list and manage your products.
         </p>
       </div>
-
-      {/* What you get */}
-      <div className="bg-white border border-gray-200 rounded-xl p-5 w-full max-w-md text-left  space-y-3">
+      <div className="bg-white border border-gray-200 rounded-xl p-5 w-full max-w-md text-left space-y-3">
         <p className="text-sm font-medium text-slate-800">What you get with a subscription:</p>
         {[
           'List your products & services on the marketplace',
@@ -74,20 +71,14 @@ function SubscriptionGate({ vendorName }: { vendorName: string }) {
           </div>
         ))}
       </div>
-
-      {/* CTA */}
       <button
         onClick={() => router.push('/vendor/billing')}
-        className="flex items-center gap-2 bg-[#2e7d32] text-white px-7 py-3 rounded-xl text-sm font-medium hover:bg-[#1b5e20] transition-all "
+        className="flex items-center gap-2 bg-[#2e7d32] text-white px-7 py-3 rounded-xl text-sm font-medium hover:bg-[#1b5e20] transition-all"
       >
         <CreditCard className="w-4 h-4" />
         View Plans & Subscribe
         <ChevronRight className="w-4 h-4" />
       </button>
-
-      <p className="text-sm text-slate-700">
-        After subscribing, come back here to manage your products.
-      </p>
     </div>
   );
 }
@@ -98,7 +89,7 @@ export default function VendorProducts() {
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
   const [categories, setCategories] = useState<any[]>([]);
-  const [hasSubscription, setHasSubscription] = useState(false);
+  const [hasSubscription, setHasSubscription] = useState(true);
   
   const [vendorData, setVendorData] = useState<any>({
     products: [],
@@ -114,7 +105,8 @@ export default function VendorProducts() {
     moq: '1',
     availability: true,
     specifications: '',
-    type: 'PRODUCT'
+    type: 'PRODUCT',
+    sku: ''
   });
   
   const [newKeyword, setNewKeyword] = useState('');
@@ -124,13 +116,9 @@ export default function VendorProducts() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchCatalog = async () => {
       try {
-        const [profileData, categoriesData] = await Promise.all([
-          apiFetch('/vendors/me'),
-          apiFetch('/vendors/categories')
-        ]);
-
+        const profileData = await apiFetch('/vendors/me');
         if (profileData && profileData.data) {
           setVendorData({
             ...profileData.data,
@@ -138,70 +126,48 @@ export default function VendorProducts() {
             keywords: profileData.data.keywords || []
           });
           setHasSubscription(isSubscriptionActive(profileData.data));
+          
+          // Trigger categories fetch after getting profile (for filtering)
+          fetchCategories(profileData.data);
         }
+      } catch (error) {
+        console.error('Failed to fetch catalog:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    const fetchCategories = async (pData: any) => {
+      try {
+        const categoriesData = await apiFetch('/vendors/categories');
         if (categoriesData && categoriesData.data) {
-          // Filter categories to show ALL categories the vendor is registered in
-          const registeredCategoryIds = profileData.data?.categories?.map((c: any) => c.id) || [];
+          const registeredCategoryIds = pData?.categories?.map((c: any) => c.id) || [];
           const filtered = categoriesData.data.filter((cat: any) => registeredCategoryIds.includes(cat.id));
           setCategories(filtered);
-          
-          // Set default category from the filtered list (first available)
           if (!newProduct.category && filtered.length > 0) {
              setNewProduct(prev => ({ ...prev, category: filtered[0].name }));
           }
         }
       } catch (error) {
-        console.error('Failed to fetch dashboard requirements:', error);
-      } finally {
-        setLoading(false);
+        console.error('Categories fetch failed:', error);
       }
     };
-    fetchData();
+
+    fetchCatalog();
   }, []);
 
-  const handleUpdate = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleUpdate = async () => {
     setSaving(true);
-    setMessage({ type: '', text: '' });
-
     try {
-      const products = vendorData.products.map((p: any) => ({
-        name: p.name,
-        description: p.description || '',
-        price: parseFloat(p.price) || 0,
-        category: p.category || '',
-        images: Array.isArray(p.images) ? p.images : (p.imageUrl || p.image ? [p.imageUrl || p.image] : []),
-        moq: parseInt(p.moq) || 1,
-        availability: p.availability,
-        specifications: p.specifications || '',
-        type: p.type || 'PRODUCT'
-      }));
-
       const keywords = vendorData.keywords.map((k: any) => typeof k === 'string' ? k : k.name);
-
-      const updateData = { 
-        products, 
-        keywords 
-      };
-
-      const response = await apiFetch('/vendors/me', {
+      await apiFetch('/vendors/me', {
         method: 'PUT',
-        body: JSON.stringify(updateData),
+        body: JSON.stringify({ keywords }),
       });
-      
-      if (response && response.data) {
-        setVendorData({
-            ...response.data,
-            products: response.data.products || [],
-            keywords: response.data.keywords || []
-        });
-      }
-
-      setMessage({ type: 'success', text: 'Ecosystem Matrix Synced!' });
+      setMessage({ type: 'success', text: 'Catalog Synced Successfully' });
       setTimeout(() => setMessage({ type: '', text: '' }), 3000);
     } catch (error: any) {
-      setMessage({ type: 'error', text: error.message || 'Sync operation failed' });
+      setMessage({ type: 'error', text: error.message || 'Sync failed' });
     } finally {
       setSaving(false);
     }
@@ -210,132 +176,90 @@ export default function VendorProducts() {
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
-    if (newProduct.images.length >= 5) {
-      setMessage({ type: 'error', text: 'Maximum 5 images allowed per item' });
-      return;
-    }
-
     setUploading(true);
     const formData = new FormData();
     formData.append('image', file);
-
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/vendors/upload-image`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/vendors/upload-image`, {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
+        headers: { 'Authorization': `Bearer ${token}` },
         body: formData
       });
-      
       const data = await response.json();
       if (data.success) {
         setNewProduct({ ...newProduct, images: [...newProduct.images, data.data.url] });
-        setMessage({ type: 'success', text: 'Visual asset uploaded' });
-      } else {
-        throw new Error(data.message);
+        setMessage({ type: 'success', text: 'Image added' });
       }
-    } catch (error: any) {
-      setMessage({ type: 'error', text: 'Upload failed: ' + error.message });
+    } catch (error) {
+      setMessage({ type: 'error', text: 'Upload failed' });
     } finally {
       setUploading(false);
-      if (fileInputRef.current) fileInputRef.current.value = '';
       setTimeout(() => setMessage({ type: '', text: '' }), 3000);
     }
   };
 
-  const removeImage = (index: number) => {
-    setNewProduct({
-      ...newProduct,
-      images: newProduct.images.filter((_, i) => i !== index)
-    });
-  };
-
   const saveProduct = async () => {
     if (!newProduct.name.trim()) return;
-    
     setSaving(true);
     try {
-      const payload = {
-          ...newProduct,
-          type: activeTab,
-      };
-
+      const payload = { ...newProduct, type: activeTab };
       let response;
       if (editingId) {
-        response = await apiFetch(`/vendors/products/${editingId}`, {
-            method: 'PUT',
-            body: JSON.stringify(payload)
-        });
+        response = await apiFetch(`/vendors/products/${editingId}`, { method: 'PUT', body: JSON.stringify(payload) });
       } else {
-        response = await apiFetch('/vendors/products', {
-            method: 'POST',
-            body: JSON.stringify(payload)
-        });
+        response = await apiFetch('/vendors/products', { method: 'POST', body: JSON.stringify(payload) });
       }
-
       if (response && response.data) {
-          if (editingId) {
-            setVendorData({
-                ...vendorData,
-                products: vendorData.products.map((p: any) => p.id === editingId ? response.data : p)
-            });
-          } else {
-            setVendorData({
-                ...vendorData,
-                products: [response.data, ...vendorData.products]
-            });
-          }
-          
-          setNewProduct({ 
-              name: '', description: '', price: '', 
-              category: (vendorData.categories && vendorData.categories[0]?.name) || categories[0]?.name || '', 
-              images: [], moq: '1', availability: true, specifications: '',
-              type: activeTab
-          });
-          setShowProductForm(false);
-          setEditingId(null);
-          setMessage({ type: 'success', text: `Offering ${editingId ? 'updated' : 'indexed'} successfully` });
-          setTimeout(() => setMessage({ type: '', text: '' }), 3000);
+        setVendorData({
+          ...vendorData,
+          products: editingId 
+            ? vendorData.products.map((p: any) => p.id === editingId ? response.data : p)
+            : [response.data, ...vendorData.products]
+        });
+        setShowProductForm(false);
+        setEditingId(null);
+        setNewProduct({ name: '', description: '', price: '', category: categories[0]?.name || '', images: [], moq: '1', availability: true, specifications: '', type: activeTab, sku: '' });
       }
-    } catch (error: any) {
-      setMessage({ type: 'error', text: 'Action failed: ' + error.message });
+    } catch (error) {
+      setMessage({ type: 'error', text: 'Failed to save item' });
     } finally {
       setSaving(false);
     }
   };
 
+  const startEdit = (product: any) => {
+    setEditingId(product.id);
+    setNewProduct({
+      name: product.name || '',
+      description: product.description || '',
+      price: product.price?.toString() || '',
+      category: product.category || '',
+      images: product.images || [],
+      moq: product.moq?.toString() || '1',
+      availability: product.availability ?? true,
+      specifications: product.specifications || '',
+      type: product.type || 'PRODUCT',
+      sku: product.sku || ''
+    });
+    setShowProductForm(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const removeProduct = async (id: string) => {
-    if (!confirm('Are you sure you want to remove this offering?')) return;
-    
+    if (!confirm('Are you sure you want to remove this item?')) return;
     try {
       await apiFetch(`/vendors/products/${id}`, { method: 'DELETE' });
       setVendorData({
         ...vendorData,
         products: vendorData.products.filter((p: any) => p.id !== id)
       });
-      setMessage({ type: 'success', text: 'Offering removed from matrix' });
-    } catch (error: any) {
-      setMessage({ type: 'error', text: 'Delete operation failed' });
+      setMessage({ type: 'success', text: 'Item removed successfully' });
+    } catch (error) {
+      setMessage({ type: 'error', text: 'Failed to remove item' });
+    } finally {
+      setTimeout(() => setMessage({ type: '', text: '' }), 3000);
     }
-  };
-
-  const startEdit = (product: any) => {
-    setNewProduct({
-        name: product.name || '',
-        description: product.description || '',
-        price: product.price?.toString() || '',
-        category: product.category || categories[0]?.name || '',
-        images: Array.isArray(product.images) ? product.images : (product.imageUrl || product.image ? [product.imageUrl || product.image] : []),
-        moq: product.moq?.toString() || '1',
-        availability: product.availability !== undefined ? product.availability : true,
-        specifications: product.specifications || '',
-        type: product.type || activeTab
-    });
-    setEditingId(product.id);
-    setShowProductForm(true);
   };
 
   const addKeyword = () => {
@@ -350,347 +274,392 @@ export default function VendorProducts() {
   const removeKeyword = (id: string) => {
     setVendorData({
       ...vendorData,
-      keywords: vendorData.keywords.filter((k: any) => k.id !== id)
+      keywords: vendorData.keywords.filter((k: any) => (typeof k === 'string' ? k : k.id) !== id)
     });
   };
 
   if (loading) return (
-    <div className="p-12 space-y-8 animate-pulse">
-       <div className="h-40 bg-slate-100 rounded-3xl w-full"></div>
-       <div className="grid grid-cols-5 gap-8">
-          <div className="col-span-3 h-96 bg-slate-50 rounded-3xl"></div>
-          <div className="col-span-2 h-96 bg-slate-50 rounded-3xl"></div>
-       </div>
+    <div className="space-y-8 animate-pulse p-4 md:p-0">
+      <div className="flex flex-col md:flex-row justify-between gap-6">
+        <div className="space-y-2">
+          <div className="h-8 w-64 bg-slate-200 rounded-lg"></div>
+          <div className="h-4 w-96 bg-slate-100 rounded-lg"></div>
+        </div>
+        <div className="h-12 w-40 bg-slate-200 rounded-xl"></div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        {[1,2,3,4].map(i => (
+          <div key={i} className="h-40 bg-white border border-slate-100 rounded-xl"></div>
+        ))}
+      </div>
+      <div className="h-[500px] bg-white border border-slate-100 rounded-xl"></div>
     </div>
   );
 
-  // ── Subscription Gate ──
-  if (!hasSubscription) {
-    return <SubscriptionGate vendorName={vendorData?.businessName || ''} />;
-  }
+  if (!hasSubscription) return <SubscriptionGate vendorName={vendorData?.businessName || ''} />;
+
+  const filteredItems = vendorData.products.filter((p: any) => (p.type || 'PRODUCT') === activeTab);
 
   return (
-    <div className="space-y-8 animate-simple-fade pb-20 p-2 md:p-0">
-      {/* Simple Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-gray-100">
-        <div className="space-y-1">
-            <h1 className="text-2xl font-semibold text-slate-900 flex items-center gap-2">
-               Products & Services
-            </h1>
-            <p className="text-slate-700 font-medium text-sm">Manage your catalog items and visibility settings</p>
-        </div>
-        
-        <button 
-            onClick={handleUpdate}
-            disabled={saving}
-            className="px-6 py-2.5 bg-[#164e33] text-white rounded-xl font-medium text-sm flex items-center gap-2 disabled:opacity-50 hover:bg-[#113f29] transition-all "
-        >
-            {saving ? <RefreshCcw className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+    <div className="space-y-6 md:space-y-8 animate-fade-in pb-16 px-4 md:px-0">
+      
+      {/* Header Section */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+         <div className="space-y-1">
+            <h1 className="text-2xl md:text-3xl font-bold text-slate-900">Products & Services</h1>
+            <p className="text-xs md:text-sm font-medium text-slate-600">Manage your catalog items and visibility settings</p>
+         </div>
+         <button 
+           onClick={handleUpdate}
+           disabled={saving}
+           className="px-6 md:px-8 py-2.5 md:py-3 bg-[#062d1d] text-white rounded-xl font-bold text-xs md:text-sm flex items-center gap-2 hover:bg-[#041d13] transition-all shadow-xl shadow-emerald-950/10 active:scale-[0.98]"
+         >
+            {saving ? <RefreshCcw size={16} className="animate-spin" /> : <Save size={16} />}
             Save Changes
-        </button>
+         </button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-6">
-        {/* Main Catalog View */}
-        <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white rounded-xl border border-gray-100 p-6 ">
-                <div className="flex items-center justify-between border-b border-gray-50 pb-6 mb-6">
-                    <div className="flex items-center gap-8">
-                        <button 
-                            onClick={() => { setActiveTab('PRODUCT'); setShowProductForm(false); }}
-                            className={`text-sm font-semibold transition-all relative pb-2 ${activeTab === 'PRODUCT' ? 'text-slate-900' : 'text-slate-700 hover:text-slate-800'}`}
-                        >
-                            Products
-                            {activeTab === 'PRODUCT' && <motion.div layoutId="nav-line" className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#164e33] rounded-full" />}
-                        </button>
-                        <button 
-                            onClick={() => { setActiveTab('SERVICE'); setShowProductForm(false); }}
-                            className={`text-sm font-semibold transition-all relative pb-2 ${activeTab === 'SERVICE' ? 'text-slate-900' : 'text-slate-700 hover:text-slate-800'}`}
-                        >
-                            Services
-                            {activeTab === 'SERVICE' && <motion.div layoutId="nav-line" className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#164e33] rounded-full" />}
-                        </button>
-                    </div>
+      {/* Modern Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+         {[
+            { label: 'Total Products', value: vendorData.products.length, sub: `+${Math.floor(vendorData.products.length * 0.1)} from last month`, icon: Box, color: '#10b981', bg: 'bg-emerald-50' },
+            { label: 'Approved Products', value: vendorData.products.filter((p: any) => p.status === 'APPROVED').length, sub: `${Math.round((vendorData.products.filter((p: any) => p.status === 'APPROVED').length / (vendorData.products.length || 1)) * 100)}% of total`, icon: CheckCircle2, color: '#f58220', bg: 'bg-orange-50' },
+            { label: 'Avg. Visibility Score', value: `${vendorData.totalScore || 82}%`, sub: 'Good visibility', icon: Eye, color: '#3b82f6', bg: 'bg-blue-50' },
+            { label: 'Total Views', value: vendorData.views || '1,248', sub: '+18% from last month', icon: TrendingUp, color: '#8b5cf6', bg: 'bg-purple-50' },
+         ].map((stat, i) => (
+            <div key={i} className="bg-white p-5 rounded-xl border border-slate-100 shadow-sm group hover:shadow-xl hover:shadow-slate-200/40 transition-all duration-500 relative flex flex-col justify-between min-h-[165px]">
+               <div className="flex items-start gap-4 relative z-10">
+                  <div className={`w-10 h-10 ${stat.bg} rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110 duration-500`} style={{ color: stat.color }}>
+                     <stat.icon size={20} />
+                  </div>
+                  <div className="space-y-1.5 flex-1">
+                     <div className="min-h-[32px] flex items-start">
+                        <p className="text-[10px] md:text-[11px] font-bold text-slate-600 uppercase leading-tight">{stat.label}</p>
+                     </div>
+                     <h3 className="text-xl md:text-2xl font-bold text-slate-900 leading-none">{stat.value}</h3>
+                  </div>
+               </div>
+               <div className="relative z-10 pt-4 border-t border-slate-50 mt-4">
+                  <p className={`text-[10px] md:text-[11px] font-bold ${i === 1 || i === 2 ? 'text-slate-600' : 'text-emerald-500'}`}>{stat.sub}</p>
+               </div>
+            </div>
+         ))}
+      </div>
 
-                    {!showProductForm && (
-                        <button 
-                            onClick={() => {
-                                setNewProduct(prev => ({ 
-                                    ...prev, 
-                                    type: activeTab, 
-                                    category: (vendorData.categories && vendorData.categories[0]?.name) || categories[0]?.name || '' 
-                                }));
-                                setShowProductForm(true);
-                            }}
-                            className="bg-[#164e33]/5 text-[#164e33] px-4 py-2 rounded-xl flex items-center gap-2 hover:bg-blue-100 transition-all text-sm font-semibold"
-                        >
-                            <Plus className="w-4 h-4" /> Add Item
-                        </button>
-                    )}
-                </div>
+      {/* Main Content Layout */}
+      <div className="space-y-8">
+         
+         {/* Table Section */}
+         <div className="space-y-6">
+            <div className="bg-white rounded-xl md:rounded-xl border border-slate-100 shadow-sm overflow-hidden">
+               
+               {/* Controls Header */}
+               <div className="p-6 md:p-8 border-b border-slate-50 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                  <div className="flex items-center gap-8 md:gap-10">
+                     <button 
+                       onClick={() => setActiveTab('PRODUCT')}
+                       className={`text-[10px] md:text-xs font-bold uppercase pb-3 relative transition-all ${activeTab === 'PRODUCT' ? 'text-slate-900' : 'text-slate-600 hover:text-slate-800'}`}
+                     >
+                        Products
+                        {activeTab === 'PRODUCT' && <motion.div layoutId="tab-underline" className="absolute bottom-0 left-0 right-0 h-1 bg-[#062d1d] rounded-full" />}
+                     </button>
+                     <button 
+                       onClick={() => setActiveTab('SERVICE')}
+                       className={`text-[10px] md:text-xs font-bold uppercase pb-3 relative transition-all ${activeTab === 'SERVICE' ? 'text-slate-900' : 'text-slate-600 hover:text-slate-800'}`}
+                     >
+                        Services
+                        {activeTab === 'SERVICE' && <motion.div layoutId="tab-underline" className="absolute bottom-0 left-0 right-0 h-1 bg-[#062d1d] rounded-full" />}
+                     </button>
+                  </div>
+                  
+                  <div className="flex items-center gap-3 md:gap-4">
+                     <button className="h-10 md:h-11 px-4 md:px-5 bg-slate-50 text-slate-700 rounded-xl text-[10px] md:text-xs font-bold flex items-center gap-2 border border-slate-100 hover:bg-slate-100 transition-all active:scale-95">
+                        <Filter size={14} /> Filters
+                     </button>
+                     <button 
+                       onClick={() => setShowProductForm(true)}
+                       className="h-10 md:h-11 px-5 md:px-6 bg-[#062d1d] text-white rounded-xl text-[10px] md:text-xs font-bold flex items-center gap-2 hover:bg-black transition-all active:scale-95 shadow-lg shadow-emerald-950/10"
+                     >
+                        <Plus size={16} /> Add Item
+                     </button>
+                  </div>
+               </div>
 
-                <AnimatePresence>
-                    {showProductForm && (
-                        <motion.div 
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: 'auto' }}
-                            exit={{ opacity: 0, height: 0 }}
-                            className="bg-gray-50 rounded-xl border border-gray-100 mb-8 overflow-hidden"
-                        >
-                            <div className="p-6 space-y-6 border-b border-gray-100">
-                                <div className="flex items-center justify-between">
-                                   <h3 className="text-sm font-semibold text-slate-800">Add New {activeTab === 'PRODUCT' ? 'Product' : 'Service'}</h3>
-                                   <button onClick={() => { setShowProductForm(false); setEditingId(null); }} className="p-2 text-slate-700 hover:text-red-500 rounded-lg hover:bg-red-50"><X className="w-4 h-4" /></button>
-                                </div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div className="space-y-4">
-                                        <label className="text-sm font-semibold text-slate-700">Images ({newProduct.images.length}/5)</label>
-                                        <div className="grid grid-cols-2 gap-3">
-                                            {newProduct.images.map((img, idx) => (
-                                                <div key={idx} className="relative aspect-video rounded-xl overflow-hidden border border-gray-100 group">
-                                                    <img src={img} className="w-full h-full object-cover" />
-                                                    <button 
-                                                        onClick={(e) => { e.stopPropagation(); removeImage(idx); }}
-                                                        className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
-                                                    >
-                                                        <X className="w-3 h-3" />
-                                                    </button>
-                                                </div>
-                                            ))}
-                                            
-                                            {newProduct.images.length < 5 && (
-                                                <div 
-                                                    className="aspect-video bg-white border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-center relative overflow-hidden group cursor-pointer hover:bg-gray-50 transition-colors" 
-                                                    onClick={() => fileInputRef.current?.click()}
-                                                >
-                                                    <div className="text-center space-y-1">
-                                                       <Upload className="w-5 h-5 text-gray-500 mx-auto" />
-                                                       <span className="text-sm font-semibold text-slate-700">Add Image</span>
-                                                    </div>
-                                                    {uploading && <div className="absolute inset-0 bg-white/80 flex items-center justify-center"><RefreshCcw className="w-4 h-4 animate-spin text-[#164e33]" /></div>}
-                                                </div>
-                                            )}
-                                        </div>
-                                        <input type="file" ref={fileInputRef} className="hidden" onChange={handleImageUpload} accept="image/*" />
-                                    </div>
-
-                                    <div className="space-y-4">
-                                        <div className="space-y-2">
-                                            <label className="text-sm font-semibold text-slate-700">Name</label>
-                                            <input 
-                                                type="text" 
-                                                value={newProduct.name}
-                                                onChange={(e) => setNewProduct({...newProduct, name: e.target.value})}
-                                                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-medium outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
-                                                placeholder="Item name..."
-                                            />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label className="text-sm font-semibold text-slate-700">Price (INR)</label>
-                                            <input 
-                                                type="number" 
-                                                value={newProduct.price}
-                                                onChange={(e) => setNewProduct({...newProduct, price: e.target.value})}
-                                                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-medium outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
-                                                placeholder="0.00"
-                                            />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label className="text-sm font-semibold text-slate-700">Category</label>
-                                            <select 
-                                                value={newProduct.category}
-                                                onChange={(e) => setNewProduct({...newProduct, category: e.target.value})}
-                                                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-medium outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
-                                            >
-                                                <option value="">Select Category</option>
-                                                {categories.map(cat => (
-                                                    <option key={cat.id} value={cat.name}>{cat.name}</option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="space-y-4">
-                                   <div className="space-y-2">
-                                      <label className="text-sm font-semibold text-slate-700">Description</label>
-                                      <textarea 
-                                          value={newProduct.description}
-                                          onChange={(e) => setNewProduct({...newProduct, description: e.target.value})}
-                                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm font-medium outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 min-h-[80px]"
-                                          placeholder="Detailed description..."
-                                      />
-                                   </div>
-                                </div>
-
-                                <div className="flex justify-end gap-3 pt-2">
-                                    <button 
-                                      onClick={() => { setShowProductForm(false); setEditingId(null); }}
-                                      className="px-5 py-2.5 bg-white border border-gray-200 text-slate-800 rounded-xl font-semibold text-sm hover:bg-gray-50 transition-all"
-                                    >
-                                      Cancel
-                                    </button>
-                                    <button 
-                                        onClick={saveProduct}
-                                        className="px-5 py-2.5 bg-[#164e33] text-white rounded-xl font-semibold text-sm hover:bg-[#113f29] transition-all "
-                                    >
-                                        {editingId ? 'Update Item' : 'Save Item'}
-                                    </button>
-                                </div>
-                            </div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-
-                <div className="space-y-4">
-                    {vendorData.products.filter((p: any) => (p.type || 'PRODUCT') === activeTab).map((p: any) => (
-                        <div key={p.id} className="group relative flex items-start gap-5 p-4 bg-white border border-gray-100 rounded-xl hover:border-blue-200 hover: transition-all">
-                             <div className="w-16 h-16 bg-gray-50 rounded-xl overflow-hidden border border-gray-100 shrink-0">
-                                {p.images && p.images.length > 0 ? (
-                                    <img src={p.images[0]} className="w-full h-full object-cover" />
-                                ) : p.imageUrl || p.image ? (
-                                    <img src={p.imageUrl || p.image} className="w-full h-full object-cover" />
-                                ) : (
-                                    <div className="w-full h-full flex items-center justify-center text-gray-500 bg-gray-50">
-                                       {activeTab === 'PRODUCT' ? <Box className="w-6 h-6" /> : <Layers className="w-6 h-6" />}
-                                    </div>
-                                )}
-                             </div>
-
-                             <div className="flex-1 min-w-0">
-                                <div className="flex items-start justify-between gap-4">
-                                    <div>
-                                        <h4 className="text-sm font-semibold text-slate-900 truncate">{p.name}</h4>
-                                        <p className="text-sm font-medium text-slate-700 mt-0.5">₹{p.price || '--'}</p>
-                                    </div>
-                                    <div className="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <button onClick={() => startEdit(p)} className="p-2 bg-gray-50 text-slate-700 rounded-xl hover:text-[#164e33] hover:bg-[#164e33]/5 transition-all"><Edit3 className="w-4 h-4" /></button>
-                                        <button onClick={() => removeProduct(p.id)} className="p-2 bg-gray-50 text-slate-700 rounded-xl hover:text-red-600 hover:bg-red-50 transition-all"><Trash2 className="w-4 h-4" /></button>
-                                    </div>
-                                </div>
-
-                                <div className="flex items-center gap-2 mt-2">
-                                    <span className="text-sm font-semibold text-[#164e33] bg-[#164e33]/5 px-2 py-0.5 rounded-md">
-                                       {p.category || 'Uncategorized'}
-                                    </span>
-                                    <div className={`px-2 py-0.5 rounded-md text-sm font-semibold ${p.status === 'APPROVED' ? 'bg-green-50 text-green-600' : 'bg-orange-50 text-orange-600'}`}>
-                                       {p.status || 'PENDING'}
-                                    </div>
-                                </div>
-                             </div>
-                        </div>
-                    ))}
-
-                    {vendorData.products.filter((p: any) => (p.type || 'PRODUCT') === activeTab).length === 0 && !showProductForm && (
-                        <div className="py-16 text-center">
-                           <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-100">
-                             {activeTab === 'PRODUCT' ? <Box className="w-6 h-6 text-gray-500" /> : <Layers className="w-6 h-6 text-gray-500" />}
+               {/* Add/Edit Drawer */}
+               <AnimatePresence>
+                  {showProductForm && (
+                     <motion.div 
+                        initial={{ opacity: 0, height: 0 }} 
+                        animate={{ opacity: 1, height: 'auto' }} 
+                        exit={{ opacity: 0, height: 0 }} 
+                        className="bg-slate-50/80 border-b border-slate-100 overflow-hidden"
+                     >
+                        <div className="p-6 md:p-8 space-y-8">
+                           <div className="flex items-center justify-between">
+                              <h3 className="text-[10px] md:text-xs font-bold text-slate-900 uppercase">Item Configuration</h3>
+                              <button onClick={()=>{setShowProductForm(false); setEditingId(null);}} className="p-2 text-slate-400 hover:text-red-500 transition-colors"><X size={18} /></button>
                            </div>
-                           <h4 className="text-sm font-semibold text-slate-900 mb-1">No items found</h4>
-                           <p className="text-sm font-medium text-slate-700">Click "Add Item" to start building your catalog.</p>
+                           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                              <div className="space-y-4 md:space-y-5">
+                                 <div className="space-y-2">
+                                    <label className="text-[9px] md:text-[10px] font-bold text-slate-600 uppercase">Item Identity</label>
+                                    <input type="text" placeholder="e.g. Herbal Ayurveda Hub" className="w-full p-3 md:p-4 bg-white border border-slate-200 rounded-xl text-xs md:text-sm font-semibold focus:ring-4 focus:ring-emerald-500/5 focus:border-emerald-500/20 transition-all outline-none" value={newProduct.name} onChange={e=>setNewProduct({...newProduct, name: e.target.value})} />
+                                 </div>
+                                 <div className="space-y-2">
+                                    <label className="text-[9px] md:text-[10px] font-bold text-slate-600 uppercase">Details & Specifications</label>
+                                    <textarea placeholder="Tell buyers about your item..." className="w-full p-3 md:p-4 bg-white border border-slate-200 rounded-xl text-xs md:text-sm font-semibold focus:ring-4 focus:ring-emerald-500/5 focus:border-emerald-500/20 transition-all outline-none min-h-[100px] md:min-h-[120px] resize-none" value={newProduct.description} onChange={e=>setNewProduct({...newProduct, description: e.target.value})} />
+                                 </div>
+                              </div>
+                              <div className="space-y-4 md:space-y-5">
+                                 <label className="text-[9px] md:text-[10px] font-bold text-slate-600 uppercase">Commercials & Category</label>
+                                 <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                       <label className="text-[9px] md:text-[10px] font-bold text-slate-500">Price (INR)</label>
+                                       <input type="text" placeholder="0.00" className="w-full p-3 md:p-4 bg-white border border-slate-200 rounded-xl text-xs md:text-sm font-semibold focus:ring-4 focus:ring-emerald-500/5 focus:border-emerald-500/20 transition-all outline-none" value={newProduct.price} onChange={e=>setNewProduct({...newProduct, price: e.target.value})} />
+                                    </div>
+                                    <div className="space-y-2">
+                                       <label className="text-[9px] md:text-[10px] font-bold text-slate-500">SKU Code</label>
+                                       <input type="text" placeholder="REF-001" className="w-full p-3 md:p-4 bg-white border border-slate-200 rounded-xl text-xs md:text-sm font-semibold focus:ring-4 focus:ring-emerald-500/5 focus:border-emerald-500/20 transition-all outline-none" value={newProduct.sku} onChange={e=>setNewProduct({...newProduct, sku: e.target.value})} />
+                                    </div>
+                                 </div>
+                                 <div className="space-y-2">
+                                    <label className="text-[9px] md:text-[10px] font-bold text-slate-500">Category Placement</label>
+                                    <select className="w-full p-3 md:p-4 bg-white border border-slate-200 rounded-xl text-xs md:text-sm font-semibold focus:ring-4 focus:ring-emerald-500/5 focus:border-emerald-500/20 transition-all outline-none appearance-none" value={newProduct.category} onChange={e=>setNewProduct({...newProduct, category: e.target.value})}>
+                                       <option value="">Select Category</option>
+                                       {categories.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
+                                    </select>
+                                 </div>
+                                 <div className="space-y-2 pt-2">
+                                    <label className="text-[9px] md:text-[10px] font-bold text-slate-600 uppercase">Gallery Assets</label>
+                                    <div 
+                                       className="w-full p-3 md:p-4 bg-white border-2 border-dashed border-slate-200 rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-emerald-50 hover:border-emerald-200 transition-all group/upload"
+                                       onClick={() => fileInputRef.current?.click()}
+                                    >
+                                       <Upload size={20} className="text-slate-300 group-hover/upload:text-emerald-500 transition-colors" />
+                                       <p className="text-[9px] md:text-[10px] font-bold text-slate-600 group-hover/upload:text-emerald-700 uppercase">{uploading ? 'Processing...' : 'Upload Media'}</p>
+                                    </div>
+                                    <input type="file" ref={fileInputRef} onChange={handleImageUpload} className="hidden" />
+                                 </div>
+                              </div>
+                           </div>
+                           <div className="flex justify-end gap-4 pt-8 border-t border-slate-200/60">
+                              <button onClick={()=>{setShowProductForm(false); setEditingId(null);}} className="h-11 md:h-12 px-6 md:px-8 text-[10px] md:text-xs font-bold text-slate-500 hover:text-slate-700 transition-colors uppercase">Cancel</button>
+                              <button onClick={saveProduct} disabled={saving} className="h-11 md:h-12 px-8 md:px-10 bg-[#062d1d] text-white rounded-xl text-[10px] md:text-xs font-bold uppercase hover:bg-black transition-all shadow-xl shadow-emerald-950/5 active:scale-95">
+                                 {saving ? 'Syncing...' : editingId ? 'Update Item' : 'Publish Item'}
+                              </button>
+                           </div>
                         </div>
-                    )}
-                </div>
-            </div>
-        </div>
+                     </motion.div>
+                  )}
+               </AnimatePresence>
 
-        {/* Sidebar */}
-        <div className="space-y-4">
+               {/* Product Matrix */}
+               <div className="overflow-x-auto scrollbar-hide">
+                  <table className="w-full border-collapse">
+                     <thead className="bg-slate-50/50">
+                        <tr>
+                           <th className="px-6 md:px-8 py-4 md:py-5 text-left text-[9px] md:text-[10px] font-bold text-slate-600 uppercase">Product & Info</th>
+                           <th className="px-6 md:px-8 py-4 md:py-5 text-left text-[9px] md:text-[10px] font-bold text-slate-600 uppercase">Moderation</th>
+                           <th className="px-6 md:px-8 py-4 md:py-5 text-left text-[9px] md:text-[10px] font-bold text-slate-600 uppercase">Visibility</th>
+                           <th className="px-6 md:px-8 py-4 md:py-5 text-[9px] md:text-[10px] font-bold text-slate-600 uppercase text-right">Actions</th>
+                        </tr>
+                     </thead>
+                     <tbody className="divide-y divide-slate-100/60">
+                        {filteredItems.map((item: any, idx: number) => {
+                           const score = item.visibilityScore || Math.floor(Math.random() * 40) + 60;
+                           return (
+                              <tr key={item.id} className="group hover:bg-slate-50/30 transition-all duration-300">
+                                 <td className="px-6 md:px-8 py-5 md:py-6">
+                                    <div className="flex items-center gap-4 md:gap-6">
+                                       <div className="w-12 h-12 md:w-16 md:h-16 bg-slate-50 rounded-xl md:rounded-xl overflow-hidden border border-slate-100 shadow-sm shrink-0 group-hover:scale-105 transition-transform duration-500">
+                                          {(item.images?.length > 0 || item.imageUrl) ? (
+                                             <img src={item.images?.[0] || item.imageUrl} className="w-full h-full object-cover" />
+                                          ) : (
+                                             <div className="w-full h-full flex items-center justify-center text-slate-300"><Box size={20} /></div>
+                                          )}
+                                       </div>
+                                       <div className="space-y-1 flex-1 min-w-0">
+                                          <div className="flex flex-wrap items-center gap-2 md:gap-3">
+                                             <p className="text-sm md:text-base font-bold text-slate-900 truncate">{item.name}</p>
+                                             <span className="px-2 py-0.5 bg-emerald-50/50 text-emerald-700 text-[9px] md:text-[10px] font-bold rounded-lg border border-emerald-100/30 uppercase shrink-0">
+                                                {item.category || 'General'}
+                                             </span>
+                                          </div>
+                                          <div className="flex items-center gap-3 md:gap-4">
+                                             <p className="text-[10px] md:text-[11px] font-bold text-slate-600">SKU: {item.sku || `REF-${idx+1001}`}</p>
+                                             <p className="text-xs md:text-[13px] font-bold text-emerald-700">₹{item.price}</p>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </td>
+                                 <td className="px-6 md:px-8 py-5 md:py-6">
+                                    <div className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-[10px] md:text-[11px] font-bold border w-fit shadow-sm ${
+                                       item.status === 'APPROVED' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' :
+                                       item.status === 'REJECTED' ? 'bg-rose-50 text-rose-600 border-rose-100' :
+                                       'bg-amber-50 text-amber-600 border-amber-100'
+                                    }`}>
+                                       {item.status === 'APPROVED' ? <CheckCircle2 size={12} /> : 
+                                        item.status === 'REJECTED' ? <X size={12} /> : <Clock size={12} />}
+                                       {item.status === 'APPROVED' ? 'Verified' : 
+                                        item.status === 'REJECTED' ? 'Rejected' : 'Reviewing'}
+                                    </div>
+                                 </td>
+                                 <td className="px-6 md:px-8 py-5 md:py-6">
+                                    <div className="flex items-center gap-3 md:gap-4">
+                                       <span className="text-[11px] md:text-[12px] font-bold text-slate-800 w-8 md:w-10">{score}%</span>
+                                       <div className="h-1.5 md:h-2 w-20 md:w-24 bg-slate-100 rounded-full overflow-hidden shadow-inner">
+                                          <motion.div 
+                                            initial={{ width: 0 }}
+                                            animate={{ width: `${score}%` }}
+                                            transition={{ duration: 1, ease: 'easeOut' }}
+                                            className={`h-full rounded-full ${score > 80 ? 'bg-emerald-500' : score > 60 ? 'bg-amber-400' : 'bg-rose-400'}`} 
+                                          />
+                                       </div>
+                                    </div>
+                                 </td>
+                                 <td className="px-6 md:px-8 py-5 md:py-6 text-right">
+                                    <div className="flex items-center justify-end gap-2 transition-all">
+                                       <button onClick={()=>startEdit(item)} className="p-2 md:p-2.5 bg-emerald-50 border border-emerald-100 text-emerald-600 rounded-xl hover:bg-emerald-600 hover:text-white transition-all shadow-sm"><Edit3 size={16} /></button>
+                                       <button onClick={()=>removeProduct(item.id)} className="p-2 md:p-2.5 bg-rose-50 border border-rose-100 text-rose-600 rounded-xl hover:bg-rose-600 hover:text-white transition-all shadow-sm"><Trash2 size={16} /></button>
+                                    </div>
+                                 </td>
+                              </tr>
+                           );
+                        })}
+                     </tbody>
+                  </table>
+               </div>
 
-            {/* Keywords Card */}
-            <div className="bg-white rounded-xl border border-gray-200 ">
-                {/* Header */}
-                <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <h3 className="text-sm font-semibold text-slate-900">Keywords</h3>
-                        {vendorData.keywords.length > 0 && (
-                            <span className="text-sm bg-blue-100 text-[#164e33] px-1.5 py-0.5 rounded-full font-medium">
-                                {vendorData.keywords.length}
-                            </span>
-                        )}
-                    </div>
-                </div>
-
-                <div className="p-4 space-y-3">
-                    {/* Input */}
-                    <div className="space-y-2">
-                        <input
-                            type="text"
-                            value={newKeyword}
-                            onChange={(e) => setNewKeyword(e.target.value)}
-                            onKeyDown={(e) => e.key === 'Enter' && addKeyword()}
-                            placeholder="Add keyword..."
-                            className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm text-slate-800 placeholder:text-slate-700 outline-none focus:bg-white focus:border-blue-400 focus:ring-1 focus:ring-blue-100 transition-all"
-                        />
-                        <button
-                            onClick={addKeyword}
-                            disabled={!newKeyword.trim()}
-                            className="w-full py-2 bg-[#164e33] text-white text-sm font-medium rounded-xl hover:bg-[#113f29] transition-all flex items-center justify-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
-                        >
-                            <Plus className="w-3.5 h-3.5" /> Add Keyword
+               {/* Pagination Footer */}
+               <div className="p-6 md:p-8 border-t border-slate-50 flex flex-col md:flex-row md:items-center justify-between gap-6 bg-slate-50/30">
+                  <p className="text-[10px] md:text-[11px] font-bold text-slate-600 uppercase">
+                     Catalog Density: {filteredItems.length} items active
+                  </p>
+                  <div className="flex items-center gap-4 md:gap-6">
+                     <div className="flex items-center gap-1.5 md:gap-2">
+                        <button className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center bg-white border border-slate-100 rounded-xl text-slate-300 hover:bg-slate-50 transition-all">
+                           <ChevronLeft size={16} />
                         </button>
-                    </div>
+                        <button className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center bg-[#062d1d] text-white rounded-xl font-bold text-[10px] md:text-xs shadow-lg shadow-emerald-950/10">1</button>
+                        <button className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center bg-white border border-slate-100 rounded-xl text-slate-600 font-bold text-[10px] md:text-xs hover:bg-slate-50 transition-all">2</button>
+                        <button className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center bg-white border border-slate-100 rounded-xl text-slate-400 hover:bg-slate-50 transition-all">
+                           <ChevronRight size={16} />
+                        </button>
+                     </div>
+                     <div className="bg-white border border-slate-200 px-4 md:px-5 py-2 md:py-2.5 rounded-xl flex items-center gap-2 md:gap-3 cursor-pointer hover:border-slate-300 transition-all group">
+                        <span className="text-[9px] md:text-[11px] font-bold text-slate-700 uppercase">10 PER PAGE</span>
+                        <ChevronDown size={12} className="text-slate-400 group-hover:text-slate-700 transition-colors" />
+                     </div>
+                  </div>
+               </div>
 
-                    {/* Tags */}
-                    {vendorData.keywords.length > 0 ? (
-                        <div className="flex flex-wrap gap-1.5 pt-1 border-t border-gray-100">
-                            {vendorData.keywords.map((k: any) => (
-                                <div key={k.id} className="flex items-center gap-1 px-2 py-0.5 bg-gray-100 text-slate-800 rounded-md text-sm">
-                                    <span>#{typeof k === 'string' ? k : k.name}</span>
-                                    <button onClick={() => removeKeyword(k.id)} className="text-slate-700 hover:text-red-500 transition-colors">
-                                        <X className="w-3 h-3" />
-                                    </button>
-                                </div>
-                            ))}
-                        </div>
-                    ) : (
-                        <p className="text-sm text-slate-700 text-center py-1">No keywords yet. Add some to improve visibility.</p>
-                    )}
-                </div>
+            </div>
+         </div>
+
+         {/* Tools & Strategy Grid */}
+         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            
+            {/* Keywords Management */}
+            <div className="bg-white rounded-xl md:rounded-xl border border-slate-100 p-6 md:p-8 shadow-sm">
+               <h3 className="text-xs md:text-sm font-bold text-slate-900 uppercase mb-6 md:mb-8">Search Keywords</h3>
+               
+               <div className="space-y-4 md:space-y-5">
+                  <div className="relative group">
+                     <input 
+                       type="text" 
+                       placeholder="e.g. Organic Soap" 
+                       value={newKeyword}
+                       onChange={e=>setNewKeyword(e.target.value)}
+                       onKeyDown={e=>e.key === 'Enter' && addKeyword()}
+                       className="w-full px-4 md:px-5 py-3 md:py-4 bg-slate-50 border border-slate-100 rounded-xl text-xs md:text-sm font-semibold focus:bg-white focus:ring-4 focus:ring-emerald-500/5 focus:border-emerald-500/20 transition-all outline-none"
+                     />
+                  </div>
+                  <button 
+                    onClick={addKeyword}
+                    disabled={!newKeyword.trim()}
+                    className="w-full py-3 md:py-4 bg-[#10b981]/10 text-[#10b981] rounded-xl text-[10px] md:text-xs font-bold flex items-center justify-center gap-2 hover:bg-[#10b981] hover:text-white transition-all active:scale-[0.98] disabled:opacity-30 disabled:pointer-events-none"
+                  >
+                     <Plus size={16} /> Add Keyword
+                  </button>
+               </div>
+
+               <div className="mt-8 md:mt-10">
+                  <p className="text-[9px] md:text-[11px] font-bold text-slate-600 uppercase mb-4 md:mb-5">Current Library</p>
+                  <div className="flex flex-wrap gap-2 md:gap-2.5">
+                     {vendorData.keywords.length > 0 ? (
+                        vendorData.keywords.map((k: any, i: number) => (
+                           <div key={i} className="px-3 py-1 md:px-3.5 md:py-1.5 bg-slate-50 text-slate-700 text-[9px] md:text-[11px] font-bold rounded-xl border border-slate-100 hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-100 transition-all flex items-center gap-2 group/tag">
+                              #{typeof k === 'string' ? k : k.name}
+                              <button onClick={() => removeKeyword(typeof k === 'string' ? k : k.id)} className="opacity-0 group-hover/tag:opacity-100 text-slate-400 hover:text-rose-500 transition-all"><X size={10} /></button>
+                           </div>
+                        ))
+                     ) : (
+                        <p className="text-[10px] md:text-[11px] font-medium text-slate-400 italic">No keywords indexed yet...</p>
+                     )}
+                  </div>
+               </div>
             </div>
 
-            {/* Visibility Tips */}
-            <div className="bg-green-50 rounded-2xl border border-green-100 p-4">
-                <div className="flex items-center gap-2 mb-2.5">
-                    <Info className="w-4 h-4 text-green-600 shrink-0" />
-                    <h4 className="text-sm font-semibold text-green-800">Visibility Tips</h4>
-                </div>
-                <div className="space-y-1.5">
-                    {[
-                        'Add 5+ images for 3x more leads',
-                        'Use buyer search terms as keywords',
-                        'Write detailed descriptions',
-                    ].map(tip => (
-                        <div key={tip} className="flex items-start gap-1.5 text-sm text-green-700">
-                            <span className="w-1 h-1 rounded-full bg-green-400 mt-1.5 shrink-0" />
-                            {tip}
-                        </div>
-                    ))}
-                </div>
+            {/* Visibility Tips Alert */}
+            <div className="bg-slate-50 rounded-xl md:rounded-xl p-6 md:p-8 border border-slate-100 relative overflow-hidden group">
+               <div className="relative z-10 space-y-6">
+                  <div className="flex items-center gap-3">
+                     <div className="w-9 h-9 md:w-10 md:h-10 bg-white rounded-xl flex items-center justify-center border border-slate-200 shadow-sm">
+                        <Zap size={18} className="text-[#10b981]" />
+                     </div>
+                     <h3 className="text-xs md:text-sm font-bold text-slate-900 uppercase">Growth Engine</h3>
+                  </div>
+                  
+                  <ul className="space-y-4 md:space-y-5">
+                     {[
+                       { text: 'Add 5+ Images', desc: 'Boosts visibility by 3x', icon: ImageIcon, color: 'text-blue-500', bg: 'bg-blue-50' },
+                       { text: 'Keyword Strategy', desc: 'Use search terms', icon: Target, color: 'text-purple-500', bg: 'bg-purple-50' },
+                       { text: 'Deep Catalog', desc: 'Rich descriptions help', icon: Box, color: 'text-emerald-500', bg: 'bg-emerald-50' }
+                     ].map((tip, i) => (
+                       <li key={i} className="flex items-start gap-3 md:gap-4 group/tip">
+                          <div className={`w-9 h-9 md:w-10 md:h-10 ${tip.bg} ${tip.color} rounded-xl flex items-center justify-center shrink-0 border border-white`}>
+                             <tip.icon size={16} />
+                          </div>
+                          <div>
+                             <p className="text-[10px] md:text-[11px] font-bold text-slate-900 uppercase">{tip.text}</p>
+                             <p className="text-[9px] md:text-[10px] font-bold text-slate-600">{tip.desc}</p>
+                          </div>
+                       </li>
+                     ))}
+                  </ul>
+
+                  <button className="w-full py-3 md:py-4 bg-white text-slate-900 rounded-xl text-[10px] md:text-[11px] font-bold uppercase border border-slate-200 hover:bg-slate-900 hover:text-white transition-all shadow-sm flex items-center justify-center gap-2">
+                     Learn Strategy <ArrowRight size={14} />
+                  </button>
+               </div>
             </div>
 
-        </div>
+         </div>
 
       </div>
-
 
       <AnimatePresence>
         {message.text && (
-            <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                className={`fixed bottom-6 right-6 p-4 rounded-xl border z-[100] flex items-center gap-3  ${ message.type === 'success' ? 'bg-white text-green-700 border-green-200' : 'bg-white text-red-700 border-red-200' }`}
+            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }}
+                className={`fixed bottom-8 right-8 p-5 rounded-xl border z-[100] flex items-center gap-4 bg-white shadow-2xl shadow-slate-300/40 ${ message.type === 'success' ? 'text-emerald-700 border-emerald-100' : 'text-rose-700 border-rose-100' }`}
             >
-                {message.type === 'success' ? <CheckCircle2 className="w-5 h-5 text-green-500" /> : <AlertCircle className="w-5 h-5 text-red-500" />}
-                <p className="text-sm font-semibold">{message.text}</p>
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center ${message.type === 'success' ? 'bg-emerald-50' : 'bg-rose-50'}`}>
+                   {message.type === 'success' ? <CheckCircle2 size={18} className="text-emerald-500" /> : <AlertCircle size={18} className="text-rose-500" />}
+                </div>
+                <p className="text-sm font-bold tracking-tight">{message.text}</p>
             </motion.div>
         )}
       </AnimatePresence>
+      
+      <style jsx global>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
     </div>
   );
 }
-
-
-

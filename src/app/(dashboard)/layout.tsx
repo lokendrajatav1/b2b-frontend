@@ -60,7 +60,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   const getProfileLink = () => {
     if (!user) return '#';
-    if (user.role === 'SUPERADMIN') return '/super-admin/settings';
+    if (user.role === 'SUPERADMIN') return '/super-admin/profile';
     if (user.role === 'ADMIN') return '/admin/profile';
     return '/vendor/profile';
   };
@@ -101,7 +101,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
              </div>
           </div>
 
-          <div className="flex items-center gap-8">
+          {/* Header Spacer (Search removed) */}
+          <div className="flex-1" />
+
+          <div className="flex items-center gap-6">
             <NotificationDropdown />
             
             <div ref={profileRef} className="relative">
@@ -117,12 +120,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     {user.role === 'SUPERADMIN' ? 'SUPER ADMIN' : user.role}
                   </p>
                 </div>
-                <div className="w-10 h-10 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-[#164e33]  overflow-hidden transition-all group-hover:border-[#164e33]/30">
-                  {user.avatar ? (
-                    <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+                <div className="w-10 h-10 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-[#164e33] overflow-hidden transition-all group-hover:border-[#164e33]/30 shadow-sm">
+                  {user.avatar || user.profileImage || user.vendor?.logoUrl ? (
+                    <img src={user.avatar || user.profileImage || user.vendor?.logoUrl} alt={user.name} className="w-full h-full object-cover" />
                   ) : (
-                    <div className="w-full h-full bg-[#e8f5e9] flex items-center justify-center font-bold text-[#164e33]">
-                       {user.name ? user.name[0] : 'M'}
+                    <div className="w-full h-full bg-[#164e33] flex items-center justify-center font-bold text-white text-sm">
+                       {user.name ? user.name[0].toUpperCase() : 'M'}
                     </div>
                   )}
                 </div>

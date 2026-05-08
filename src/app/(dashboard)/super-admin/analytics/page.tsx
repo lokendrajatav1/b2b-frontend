@@ -24,7 +24,7 @@ import {
   Headphones,
   Clock
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip,
   AreaChart, Area, LineChart, Line, XAxis, YAxis, CartesianGrid, BarChart, Bar
@@ -127,7 +127,8 @@ export default function SuperAdminAnalytics() {
            </div>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-wrap items-center gap-4">
           <div className="flex items-center gap-2 bg-white border border-gray-300 rounded-xl px-3 py-1.5 shadow-sm">
             <Clock size={14} className="text-gray-500" />
             <select 
@@ -144,22 +145,6 @@ export default function SuperAdminAnalytics() {
             </select>
           </div>
 
-          {timeRange === 'custom' && (
-            <div className="flex items-center gap-2">
-              <input 
-                type="date" 
-                className="bg-white border border-gray-300 rounded-lg px-2 py-1 text-xs font-bold"
-                onChange={(e) => setCustomRange(prev => ({ ...prev, start: e.target.value }))}
-              />
-              <span className="text-xs font-bold text-gray-500">to</span>
-              <input 
-                type="date" 
-                className="bg-white border border-gray-300 rounded-lg px-2 py-1 text-xs font-bold"
-                onChange={(e) => setCustomRange(prev => ({ ...prev, end: e.target.value }))}
-              />
-            </div>
-          )}
-
            <button 
              onClick={fetchDashboardStats}
              className="flex items-center gap-2 px-5 py-2.5 bg-white text-slate-700 rounded-xl font-bold text-sm hover:bg-gray-50 transition-all border border-gray-100 "
@@ -167,6 +152,43 @@ export default function SuperAdminAnalytics() {
               <RefreshCcw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
               Refresh
            </button>
+          </div>
+
+          {/* Custom Date Range Sub-row */}
+          <AnimatePresence>
+            {timeRange === 'custom' && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.2 }}
+                className="overflow-hidden"
+              >
+                <div className="flex flex-col md:flex-row md:items-center gap-3 bg-slate-50 rounded-xl px-4 py-3 border border-slate-100">
+                  <div className="flex items-center gap-3">
+                    <Clock size={13} className="text-slate-400 shrink-0" />
+                    <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider shrink-0">Custom Range:</span>
+                  </div>
+                  <div className="flex items-center gap-2 w-full md:w-auto">
+                    <input
+                      type="date"
+                      className="flex-1 md:flex-none bg-white border border-gray-200 rounded-lg px-3 py-1.5 text-[11px] font-bold text-slate-700 outline-none focus:border-emerald-400 transition-all shadow-sm cursor-pointer"
+                      onChange={(e) => setCustomRange(prev => ({ ...prev, start: e.target.value }))}
+                    />
+                    <span className="text-[11px] font-bold text-slate-400">→</span>
+                    <input
+                      type="date"
+                      className="flex-1 md:flex-none bg-white border border-gray-200 rounded-lg px-3 py-1.5 text-[11px] font-bold text-slate-700 outline-none focus:border-emerald-400 transition-all shadow-sm cursor-pointer"
+                      onChange={(e) => setCustomRange(prev => ({ ...prev, end: e.target.value }))}
+                    />
+                  </div>
+                  {customRange.start && customRange.end && (
+                    <span className="md:ml-auto text-center md:text-left text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-100 shrink-0">Range Active</span>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
 

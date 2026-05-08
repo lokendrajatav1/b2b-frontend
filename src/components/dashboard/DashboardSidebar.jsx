@@ -53,6 +53,7 @@ export default function DashboardSidebar({ isCollapsed, onToggle, mobileOpen, se
     { label: 'Packages', icon: Package, href: '/super-admin/packages' },
     { label: 'Ledger', icon: CreditCard, href: '/super-admin/transactions' },
     { label: 'Refunds', icon: Briefcase, href: '/super-admin/refunds' },
+    { label: 'Profile', icon: Globe, href: '/super-admin/profile' },
     { label: 'Settings', icon: Settings, href: '/super-admin/settings' },
   ];
 
@@ -153,27 +154,27 @@ export default function DashboardSidebar({ isCollapsed, onToggle, mobileOpen, se
 
 
 
-        {/* User Foothold */}
-        {/* <div className={`p-6 border-t border-gray-50 space-y-4 ${isCollapsed ? 'items-center' : ''}`}>
-           {!isCollapsed && userRole === 'VENDOR' && (
-             <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100 mb-2">
-                <div className="flex items-center justify-between mb-2">
-                   <p className="text-sm font-semibold text-slate-700 uppercase  leading-none">Wallet Balance</p>
-                </div>
-                <p className="text-base font-semibold text-slate-900">₹12,450.00</p>
-             </div>
-           )}
+        {/* Need Help Section - For All Roles Except Super Admin */}
+        {!isCollapsed && userRole !== 'SUPERADMIN' && (
+          <div className="px-4 mb-8">
+            <div className="p-5 bg-white/5 rounded-[1.5rem] border border-white/10 relative overflow-hidden group">
+               {/* Background Decorative Element */}
+               <div className="absolute -right-4 -top-4 w-16 h-16 bg-white/5 rounded-full blur-xl group-hover:bg-white/10 transition-all" />
+               
+               <p className="text-sm font-bold text-white mb-1.5 relative z-10 tracking-tight">Need Help?</p>
+               <p className="text-[11px] font-medium text-white/50 mb-4 leading-relaxed relative z-10">
+                  Our support team is available to help you with anything.
+               </p>
+               
+               <button className="w-full flex items-center justify-center gap-2 py-2.5 bg-white/10 hover:bg-white/15 text-white text-xs font-bold rounded-xl border border-white/10 transition-all group-hover:scale-[1.02] active:scale-[0.98]">
+                  <Headphones size={14} className="text-white" />
+                  Contact Support
+               </button>
+            </div>
+          </div>
+        )}
 
-           <button 
-             onClick={logout}
-             className={`flex items-center gap-4 px-4 py-3 w-full rounded-2xl text-slate-700 hover:text-red-600 hover:bg-red-50 transition-all font-medium group ${isCollapsed ? 'justify-center' : ''}`}
-           >
-              <div className="p-2 bg-gray-50 group-hover:bg-red-100 rounded-lg transition-colors">
-                <LogOut className="w-4 h-4" />
-              </div>
-              {!isCollapsed && <span className="text-sm">Sign Out</span>}
-           </button>
-        </div> */}
+     
       </aside>
 
       {/* Mobile Backdrop */}

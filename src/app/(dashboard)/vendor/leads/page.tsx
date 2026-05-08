@@ -2,244 +2,324 @@
 
 import React, { useState, useEffect } from 'react';
 import { apiFetch } from '@/lib/api';
-import { 
-  Users, 
-  MapPin, 
-  Calendar, 
-  CheckCircle, 
-  RefreshCcw, 
-  Phone, 
-  MessageSquare, 
-  MoreVertical,
-  ChevronRight,
-  Clock,
-  LayoutDashboard,
-  Layers,
-  Search,
-  Filter,
-  ArrowUpRight,
-  ShieldCheck,
-  Building2,
-  BadgeCheck,
-  Star,
-  Activity,
-  History
+import {
+   Users,
+   MapPin,
+   Calendar,
+   CheckCircle,
+   RefreshCcw,
+   Phone,
+   MessageSquare,
+   MoreVertical,
+   ChevronRight,
+   Clock,
+   LayoutDashboard,
+   Layers,
+   Search,
+   Filter,
+   ArrowUpRight,
+   ShieldCheck,
+   Building2,
+   BadgeCheck,
+   Star,
+   Activity,
+   History,
+   ChevronLeft,
+   ChevronDown,
+   Download,
+   CheckCircle2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function VendorLeads() {
-  const [leads, setLeads] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState('ALL');
+   const [leads, setLeads] = useState([]);
+   const [loading, setLoading] = useState(true);
+   const [filter, setFilter] = useState('ALL');
 
-  useEffect(() => {
-    const fetchLeads = async () => {
+   useEffect(() => {
+      const fetchLeads = async () => {
+         try {
+            const data = await apiFetch('/leads/my-leads');
+            setLeads(data.data);
+         } catch (error) {
+            console.error('Failed to fetch leads:', error);
+         } finally {
+            setLoading(false);
+         }
+      };
+      fetchLeads();
+   }, []);
+
+   const handleUpdateStatus = async (leadId: string, status: 'CLOSED' | 'REDISTRIBUTE') => {
+      const originalLeads = [...leads];
+      if (status === 'REDISTRIBUTE') {
+         setLeads(leads.filter((l: any) => l.id !== leadId));
+      }
       try {
-        const data = await apiFetch('/leads/my-leads');
-        setLeads(data.data);
+         await apiFetch(`/leads/${leadId}/status`, {
+            method: 'PATCH',
+            body: JSON.stringify({ status }),
+         });
+         if (status === 'CLOSED') {
+            const data = await apiFetch('/leads/my-leads');
+            setLeads(data.data);
+         }
       } catch (error) {
-        console.error('Failed to fetch leads:', error);
-      } finally {
-        setLoading(false);
+         console.error('Status update failed:', error);
+         setLeads(originalLeads);
       }
-    };
-    fetchLeads();
-  }, []);
+   };
 
-  const handleUpdateStatus = async (leadId: string, status: 'CLOSED' | 'REDISTRIBUTE') => {
-    // Optimistic Update: Remove from list immediately if passing or closing
-    const originalLeads = [...leads];
-    if (status === 'REDISTRIBUTE') {
-       setLeads(leads.filter((l: any) => l.id !== leadId));
-    }
+   const filteredLeads = filter === 'ALL' ? leads : leads.filter((l: any) => {
+      if (filter === 'DISTRIBUTED') return l.status === 'DISTRIBUTED' || l.status === 'PENDING';
+      return l.status === filter;
+   });
 
-    try {
-      await apiFetch(`/leads/${leadId}/status`, {
-        method: 'PATCH',
-        body: JSON.stringify({ status }),
-      });
-      
-      // If closing, we keep the state from the server to show "Won"
-      if (status === 'CLOSED') {
-        const data = await apiFetch('/leads/my-leads');
-        setLeads(data.data);
-      }
-    } catch (error) {
-      console.error('Status update failed:', error);
-      // Rollback on error
-      setLeads(originalLeads);
-    }
-  };
-
-  const filteredLeads = filter === 'ALL' ? leads : leads.filter((l: any) => l.status === filter);
-
-  if (loading) return <div className="p-10 animate-pulse bg-slate-50 rounded-2xl h-80 border border-slate-100"></div>;
-
-  return (
-    <div className="space-y-6 animate-simple-fade pb-20 p-2 md:p-0">
-      {/* Clean Leads Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-gray-100">
-        <div>
-            <h1 className="text-2xl font-semibold text-slate-900 flex items-center gap-3">
-              My Leads
-              <div className="flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 border border-emerald-100 rounded-full">
-                <Activity className="w-3.5 h-3.5 text-emerald-600" />
-                <span className="text-sm font-semibold text-emerald-600">Receiving Leads</span>
-              </div>
-            </h1>
-            <p className="text-slate-700 font-medium mt-1 text-sm">Review and respond to inquiries from potential buyers.</p>
-        </div>
-        
-        <div className="flex items-center gap-3">
-            <button className="px-4 py-2 bg-white border border-gray-200 rounded-xl text-slate-800 font-semibold text-sm hover:bg-gray-50 transition-all flex items-center gap-2">
-                Export Leads
-            </button>
-        </div>
+   if (loading) return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+         <div className="w-10 h-10 border-4 border-emerald-600/20 border-t-emerald-600 rounded-full animate-spin"></div>
       </div>
+   );
 
-      <div className="flex flex-wrap items-center gap-2 mb-6 bg-white p-2 rounded-2xl  border border-gray-100 inline-flex">
-           {['ALL', 'DISTRIBUTED', 'CLOSED', 'EXPIRED'].map(st => (
-                <button 
-                    key={st}
-                    onClick={() => setFilter(st)}
-                    className={`px-6 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 ${ filter === st ? 'bg-[#164e33] text-white ' : 'bg-transparent text-slate-600 hover:text-slate-900 hover:bg-gray-100' }`}
-                >
-                    {st === 'ALL' ? 'All Leads' : st === 'DISTRIBUTED' ? 'Active' : st === 'CLOSED' ? 'Won' : 'Expired'}
-                </button>
-           ))}
-      </div>
+   return (
+      <div className="space-y-6 animate-fade-in pb-10">
 
-      <div className="space-y-4">
-        {filteredLeads.length > 0 ? filteredLeads.map((lead: any, idx) => (
-            <motion.div 
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: idx * 0.05 }}
-            key={lead.id} 
-            className="group bg-white rounded-2xl border border-gray-200 overflow-hidden hover:border-[#164e33]/30 transition-all duration-300  hover:"
-          >
-            <div className="flex flex-col md:flex-row">
-                {/* Status Column */}
-                <div className="md:w-40 shrink-0 p-6 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-gray-100 bg-gradient-to-b from-gray-50/50 to-transparent relative">
-                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#164e33]/20 to-[#f58220]/20 hidden md:block"></div>
-                    <div className={`w-14 h-14 rounded-full flex items-center justify-center mb-3  ${
-                      lead.status === 'DISTRIBUTED' ? 'bg-[#164e33]/10 text-[#164e33]' : 
-                      lead.status === 'CLOSED' ? 'bg-[#f58220]/10 text-[#f58220]' : 'bg-gray-100 text-gray-600'
-                    }`}>
-                        {lead.status === 'CLOSED' ? <ShieldCheck className="w-6 h-6" /> : <Users className="w-6 h-6" />}
-                    </div>
-                    <div className="text-center">
-                        <p className={`text-sm font-bold uppercase  mb-1 ${
-                          lead.status === 'DISTRIBUTED' ? 'text-[#164e33]' : 
-                          lead.status === 'CLOSED' ? 'text-[#f58220]' : 'text-slate-600'
-                        }`}>
-                           {lead.status === 'DISTRIBUTED' ? 'New Lead' : lead.status === 'CLOSED' ? 'Won' : lead.status}
-                        </p>
-                        <p className="text-sm font-semibold text-slate-700 flex items-center justify-center gap-1.5">
-                           <Calendar className="w-3.5 h-3.5" />
-                           {new Date(lead.createdAt).toLocaleDateString()}
-                        </p>
-                    </div>
-                </div>
-
-                {/* Main Lead Details */}
-                <div className="flex-1 p-6 md:p-8 flex flex-col xl:flex-row xl:items-start justify-between gap-8">
-                    <div className="space-y-5 flex-1">
-                        <div className="space-y-2.5">
-                             <div className="flex flex-wrap items-center gap-3">
-                                 <h3 className="text-lg md:text-2xl font-bold text-slate-900">{lead.buyerName}</h3>
-                                 <span className="text-xs font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md">ID #{lead.id.slice(0,8)}</span>
-                             </div>
-                             <div className="flex flex-wrap items-center gap-4">
-                                <div className="flex items-center gap-1.5 text-sm font-semibold text-slate-600 bg-gray-50 px-3 py-1 rounded-full border border-gray-200">
-                                    <MapPin className="w-4 h-4 text-slate-600" />
-                                    {lead.city}
-                                </div>
-                                <div className="flex items-center gap-1.5 text-sm font-semibold text-[#164e33] bg-[#164e33]/5 px-3 py-1 rounded-full border border-[#164e33]/20">
-                                    <Layers className="w-4 h-4 text-[#164e33]/70" />
-                                    {lead.category?.name || 'Inquiry'}
-                                </div>
-                                <div className="flex items-center gap-1.5 text-sm font-semibold text-slate-600 hover:text-[#164e33] transition-colors bg-gray-50 px-3 py-1 rounded-full border border-gray-200 cursor-default">
-                                    <Phone className="w-4 h-4 text-emerald-600" />
-                                    {lead.phone || 'N/A'}
-                                </div>
-                             </div>
-                        </div>
-
-                        <div className="p-5 bg-gradient-to-r from-emerald-50/50 to-white rounded-2xl border border-emerald-100/60  relative overflow-hidden group">
-                            <div className="absolute top-0 left-0 w-1.5 h-full bg-[#164e33]/20 group-hover:bg-[#164e33]/80 transition-all duration-300 rounded-l-2xl"></div>
-                            <div className="flex gap-3">
-                                <MessageSquare className="w-5 h-5 text-[#164e33]/40 shrink-0 mt-0.5" />
-                                <p className="text-base text-slate-700 font-medium leading-relaxed italic">
-                                   "{lead.message || (lead.searchKeyword ? `Buyer was searching for '${lead.searchKeyword}' and your business matched their criteria.` : `Buyer submitted a request for ${lead.category?.name} in ${lead.city}.`)}"
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Actions Column */}
-                    <div className="flex flex-col gap-3 min-w-[260px] shrink-0 pt-1">
-                        <div className="grid grid-cols-2 gap-3">
-                            <a 
-                                href={`tel:${lead.phone}`}
-                                className="h-11 bg-white border border-gray-200 text-slate-800 rounded-xl font-bold text-sm uppercase  flex items-center justify-center gap-2 hover:bg-gray-50 hover:border-gray-300 transition-all  hover: group/btn"
-                            >
-                                <Phone className="w-4 h-4 text-emerald-500 transition-transform group-hover/btn:scale-110" />
-                                Call
-                            </a>
-                            <a 
-                                href={`https://wa.me/${lead.phone?.replace(/[^0-9]/g, '')}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="h-11 bg-white border border-emerald-200 text-[#164e33] rounded-xl font-bold text-sm uppercase  flex items-center justify-center gap-2 hover:bg-emerald-50  transition-all  hover: group/btn"
-                            >
-                                <MessageSquare className="w-4 h-4 text-[#164e33] transition-transform group-hover/btn:scale-110" />
-                                Chat
-                            </a>
-                        </div>
-
-                        <div className="flex items-center gap-3">
-                           {(lead.status === 'DISTRIBUTED' || lead.status === 'PENDING') && (
-                                <>
-                                <button 
-                                    onClick={() => handleUpdateStatus(lead.id, 'CLOSED')}
-                                    className="flex-1 h-12 bg-gradient-to-r from-[#164e33] to-[#147a67] text-white rounded-xl font-bold text-sm uppercase  hover: hover:-translate-y-0.5 transition-all w-full flex items-center justify-center gap-2"
-                                >
-                                    <CheckCircle className="w-4 h-4" />
-                                    Mark as Won
-                                </button>
-                                <button 
-                                    onClick={() => handleUpdateStatus(lead.id, 'REDISTRIBUTE')}
-                                    className="px-5 h-12 bg-white border border-gray-200 text-slate-600 rounded-xl font-bold text-sm uppercase hover:bg-gray-50 transition-all hover:text-red-600 hover:border-red-200"
-                                >
-                                    Pass
-                                </button>
-                                </>
-                           )}
-                           {lead.status === 'CLOSED' && (
-                               <div className="w-full h-12 bg-gradient-to-r from-emerald-50 to-white text-emerald-700 border border-emerald-200 rounded-xl font-bold text-sm uppercase  flex items-center justify-center gap-2 ">
-                                   <ShieldCheck className="w-5 h-5" />
-                                   Deal Successfully Closed
-                                </div>
-                           )}
-                        </div>
-                    </div>
-                </div>
+         {/* Header Row */}
+         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+               <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-3">
+                  My Leads
+                  <span className="flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 text-emerald-600 text-xs font-bold rounded-full border border-emerald-100">
+                     <Activity size={12} /> Receiving Leads
+                  </span>
+               </h1>
+               <p className="text-sm font-medium text-slate-400">Review and respond to inquiries from potential buyers.</p>
             </div>
-          </motion.div>
-        )) : (
-          <div className="text-center py-16 bg-white rounded-xl border border-gray-100 space-y-3 ">
-              <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center mx-auto border border-gray-100">
-                 <History className="w-6 h-6 text-gray-500" />
-              </div>
-              <h3 className="text-base font-semibold text-slate-900">No leads found</h3>
-              <p className="text-slate-700 font-medium text-sm">When buyers reach out to you, their inquiries will appear here.</p>
-          </div>
-        )}
+            <button className="px-6 py-2.5 bg-white border border-gray-100 text-slate-700 rounded-xl font-bold text-sm flex items-center gap-2 hover:bg-gray-50 transition-all">
+               <Download size={16} /> Export Leads
+            </button>
+         </div>
+ 
+         {/* Analytics Overview */}
+         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-7xl mx-auto">
+            <VendorLeadStatCard 
+               label="Total Inquiries" 
+               value={leads.length} 
+               sub="Lifetime requirements"
+               icon={MessageSquare} 
+               iconBg="bg-slate-50" 
+               iconColor="text-slate-600" 
+            />
+            <VendorLeadStatCard 
+               label="Active Deals" 
+               value={leads.filter((l: any) => l.status === 'DISTRIBUTED' || l.status === 'PENDING').length} 
+               sub="In review phase"
+               icon={Clock} 
+               iconBg="bg-amber-50" 
+               iconColor="text-amber-600" 
+            />
+            <VendorLeadStatCard 
+               label="Won Leads" 
+               value={leads.filter((l: any) => l.status === 'CLOSED').length} 
+               sub="Successfully closed"
+               icon={CheckCircle2} 
+               iconBg="bg-emerald-50" 
+               iconColor="text-emerald-600" 
+            />
+            <VendorLeadStatCard 
+               label="Market Velocity" 
+               value={leads.filter((l: any) => new Date(l.createdAt).toDateString() === new Date().toDateString()).length} 
+               sub="New leads today"
+               icon={ArrowUpRight} 
+               iconBg="bg-blue-50" 
+               iconColor="text-blue-600" 
+            />
+         </div>
+
+         {/* Filter Tabs & Sort Row */}
+         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pt-4">
+            <div className="flex items-center gap-2 bg-white p-1.5 rounded-xl border border-gray-100 w-fit">
+               {[
+                  { id: 'ALL', label: 'All Leads' },
+                  { id: 'DISTRIBUTED', label: 'Active' },
+                  { id: 'CLOSED', label: 'Won' },
+                  { id: 'EXPIRED', label: 'Expired' }
+               ].map((tab) => (
+                  <button
+                     key={tab.id}
+                     onClick={() => setFilter(tab.id)}
+                     className={`px-6 py-2 rounded-xl text-sm font-bold transition-all ${filter === tab.id ? 'bg-[#062d1d] text-white shadow-lg' : 'text-slate-400 hover:text-slate-600'}`}
+                  >
+                     {tab.label}
+                  </button>
+               ))}
+            </div>
+
+            <div className="flex items-center gap-3">
+               <button className="px-4 py-2.5 bg-white border border-gray-100 text-slate-600 rounded-xl text-xs font-bold flex items-center gap-2 hover:bg-gray-50 transition-all">
+                  <Filter size={14} /> Filter
+               </button>
+               <div className="px-4 py-2.5 bg-white border border-gray-100 text-slate-700 rounded-xl text-xs font-bold flex items-center gap-4 hover:bg-gray-50 transition-all cursor-pointer group">
+                  <span>Sort: Newest</span>
+                  <ChevronDown size={14} className="text-slate-400" />
+               </div>
+            </div>
+         </div>
+
+         {/* Leads List */}
+         <div className="space-y-6 pt-4">
+            {filteredLeads.length > 0 ? filteredLeads.map((lead: any, idx: number) => {
+               const isWon = lead.status === 'CLOSED';
+               const isNew = lead.status === 'DISTRIBUTED' || lead.status === 'PENDING';
+               const date = new Date(lead.createdAt);
+               const timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+               const dateStr = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+
+               return (
+                  <motion.div
+                     initial={{ opacity: 0, y: 20 }}
+                     animate={{ opacity: 1, y: 0 }}
+                     transition={{ delay: idx * 0.05 }}
+                     key={lead.id}
+                     className="bg-white rounded-xl border border-gray-100 overflow-hidden flex flex-col md:flex-row group"
+                  >
+                     {/* Left Column: Status */}
+                     <div className={`md:w-32 shrink-0 p-6 flex flex-col items-center justify-center text-center gap-3 border-b md:border-b-0 md:border-r border-gray-50 ${isNew ? 'bg-emerald-50/20' : isWon ? 'bg-orange-50/20' : 'bg-gray-50/20'}`}>
+                        <div className={`w-12 h-12 rounded-full flex items-center justify-center border ${isNew ? 'bg-white text-emerald-600 border-emerald-100' : isWon ? 'bg-white text-orange-500 border-orange-100' : 'bg-white text-slate-400 border-gray-100'}`}>
+                           {isNew ? <Users size={20} /> : isWon ? <ShieldCheck size={20} /> : <Clock size={20} />}
+                        </div>
+                        <div>
+                           <p className={`text-[10px] font-bold uppercase tracking-wider mb-1.5 ${isNew ? 'text-emerald-600' : isWon ? 'text-orange-600' : 'text-slate-400'}`}>
+                              {isNew ? 'NEW LEAD' : isWon ? 'WON' : lead.status}
+                           </p>
+                           <div className="space-y-0.5">
+                              <p className="text-[10px] font-bold text-slate-400 flex items-center justify-center gap-1.5"><Calendar size={10} /> {dateStr}</p>
+                              <p className="text-[10px] font-bold text-slate-400 flex items-center justify-center gap-1.5"><Clock size={10} /> {timeStr}</p>
+                           </div>
+                        </div>
+                     </div>
+
+                     {/* Middle Column: Info */}
+                     <div className="flex-1 p-6 md:p-8 space-y-6">
+                        <div className="space-y-4">
+                           <div className="flex flex-wrap items-center gap-3">
+                              <h3 className="text-xl font-bold text-slate-900">{lead.buyerName}</h3>
+                              <span className="text-[10px] font-bold text-slate-400 bg-gray-50 px-2 py-1 rounded-md border border-gray-100 uppercase">ID #{lead.id.slice(0, 8)}</span>
+                           </div>
+
+                           <div className="flex flex-wrap items-center gap-3">
+                              <div className="flex items-center gap-1.5 px-3 py-1 bg-gray-50 text-slate-500 text-[10px] font-bold rounded-lg border border-gray-100">
+                                 <MapPin size={12} /> {lead.city}
+                              </div>
+                              <div className="flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-700 text-[10px] font-bold rounded-lg border border-emerald-100/50">
+                                 <Layers size={12} /> {lead.category?.name || 'General'}
+                              </div>
+                              <div className="flex items-center gap-1.5 px-3 py-1 bg-gray-50 text-slate-500 text-[10px] font-bold rounded-lg border border-gray-100">
+                                 <Phone size={12} /> {lead.phone}
+                              </div>
+                           </div>
+                        </div>
+
+                        <div className={`p-5 rounded-xl border relative overflow-hidden group/msg ${isWon ? 'bg-orange-50/30 border-orange-100/50' : 'bg-emerald-50/30 border-emerald-100/50'}`}>
+                           <div className={`absolute top-0 left-0 w-1 h-full opacity-30 ${isWon ? 'bg-orange-500' : 'bg-emerald-500'}`} />
+                           <div className="flex gap-4">
+                              <MessageSquare size={18} className={`shrink-0 mt-1 ${isWon ? 'text-orange-300' : 'text-emerald-300'}`} />
+                              <div className="space-y-2">
+                                 <p className="text-sm font-medium text-slate-700 leading-relaxed italic">
+                                    "{lead.message || (lead.searchKeyword ? `Buyer was searching for '${lead.searchKeyword}' and your business matched.` : `Inquiry for ${lead.category?.name} in ${lead.city}.`)}"
+                                 </p>
+                                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">
+                                    Source: {lead.source || 'Search Page'} &nbsp;•&nbsp; 2 min ago
+                                 </p>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+
+                     {/* Right Column: Actions */}
+                     <div className="md:w-64 shrink-0 p-6 md:p-8 flex flex-col justify-center gap-3 border-t md:border-t-0 md:border-l border-gray-50 bg-gray-50/20">
+                        <div className="grid grid-cols-2 gap-3">
+                           <a href={`tel:${lead.phone}`} className="h-11 bg-white border border-gray-100 text-slate-700 rounded-xl text-xs font-bold flex items-center justify-center gap-2 hover:bg-gray-100 transition-all shadow-sm">
+                              <Phone size={14} className="text-emerald-600" /> Call
+                           </a>
+                           <a href={`https://wa.me/${lead.phone}`} target="_blank" className="h-11 bg-white border border-gray-100 text-slate-700 rounded-xl text-xs font-bold flex items-center justify-center gap-2 hover:bg-gray-100 transition-all shadow-sm">
+                              <MessageSquare size={14} className="text-emerald-600" /> Chat
+                           </a>
+                        </div>
+
+                        {isWon ? (
+                           <div className="w-full h-12 bg-emerald-50 text-emerald-700 border border-emerald-100 rounded-xl flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider">
+                              <CheckCircle2 size={16} /> Deal Successfully Closed
+                           </div>
+                        ) : (
+                           <div className="flex flex-col gap-2">
+                              <button
+                                 onClick={() => handleUpdateStatus(lead.id, 'CLOSED')}
+                                 className="w-full h-12 bg-[#164e33] text-white rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-[#113f29] transition-all shadow-lg shadow-emerald-900/10"
+                              >
+                                 Mark as Won
+                              </button>
+                              <button
+                                 onClick={() => handleUpdateStatus(lead.id, 'REDISTRIBUTE')}
+                                 className="w-full py-2 text-xs font-bold text-slate-400 hover:text-red-500 transition-colors uppercase "
+                              >
+                                 Pass
+                              </button>
+                           </div>
+                        )}
+                     </div>
+                  </motion.div>
+               );
+            }) : (
+               <div className="p-20 text-center space-y-4 bg-white rounded-xl border border-gray-100">
+                  <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto border border-gray-100">
+                     <History size={24} className="text-slate-300" />
+                  </div>
+                  <div className="space-y-1">
+                     <h3 className="text-base font-bold text-slate-900">No leads found</h3>
+                     <p className="text-sm font-medium text-slate-400">Your potential customer inquiries will appear here.</p>
+                  </div>
+               </div>
+            )}
+         </div>
+
+         {/* Pagination Footer */}
+         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pt-10 px-2">
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tight">
+               Showing 1 to {filteredLeads.length} of {leads.length} leads
+            </p>
+            <div className="flex items-center gap-3">
+               <div className="flex items-center gap-1">
+                  <button className="w-8 h-8 flex items-center justify-center bg-white border border-gray-100 rounded-lg text-slate-400 hover:bg-gray-50 transition-all">
+                     <ChevronLeft size={16} />
+                  </button>
+                  <button className="w-8 h-8 flex items-center justify-center bg-[#164e33] text-white rounded-lg font-bold text-xs">1</button>
+                  <button className="w-8 h-8 flex items-center justify-center bg-white border border-gray-100 rounded-lg text-slate-600 font-bold text-xs hover:bg-gray-50 transition-all">2</button>
+                  <button className="w-8 h-8 flex items-center justify-center bg-white border border-gray-100 rounded-lg text-slate-600 font-bold text-xs hover:bg-gray-50 transition-all">3</button>
+                  <button className="w-8 h-8 flex items-center justify-center bg-white border border-gray-100 rounded-lg text-slate-600 hover:bg-gray-50 transition-all">
+                     <ChevronRight size={16} />
+                  </button>
+               </div>
+               <div className="bg-gray-50 border border-gray-100 px-3 py-1.5 rounded-lg flex items-center gap-2 cursor-pointer">
+                  <span className="text-[10px] font-bold text-slate-700 uppercase">10 / page</span>
+                  <ChevronDown size={10} className="text-slate-400" />
+               </div>
+            </div>
+         </div>
+
       </div>
-    </div>
-  );
+   );
 }
 
-
-
+const VendorLeadStatCard = ({ label, value, sub, icon: Icon, iconColor, iconBg }: any) => (
+  <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between group hover:shadow-md transition-all">
+     <div>
+        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">{label}</p>
+        <h4 className="text-2xl font-bold text-slate-900">{value}</h4>
+        <p className="text-[10px] font-medium text-slate-400 mt-0.5">{sub}</p>
+     </div>
+     <div className={`w-12 h-12 rounded-xl ${iconBg} ${iconColor} flex items-center justify-center`}>
+        <Icon size={20} />
+     </div>
+  </div>
+);

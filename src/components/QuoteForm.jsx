@@ -57,7 +57,7 @@ const QuoteForm = () => {
           </div>
 
           {/* Right Side: Lead Form */}
-          <div className="bg-white p-6 md:p-8 rounded-2xl border border-gray-100 shadow-xl shadow-gray-200/40">
+          <div className="bg-white p-6 md:p-8 rounded-xl border border-gray-100 shadow-xl shadow-gray-200/40">
             <h3 className="text-xl md:text-2xl font-semibold text-slate-900 mb-6">
               Tell us what you need
             </h3>

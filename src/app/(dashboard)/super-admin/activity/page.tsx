@@ -73,7 +73,8 @@ export default function AdminActivityLogs() {
     <div className="space-y-10 animate-fade-in pb-20">
       
       {/* --- HEADER & FILTERS --- */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
         <div className="flex items-center gap-6">
            <div>
               <div className="flex items-center gap-3 mb-1">
@@ -104,21 +105,23 @@ export default function AdminActivityLogs() {
              </select>
            </div>
 
-           {timeRange === 'custom' && (
-             <div className="flex items-center gap-2">
-               <input 
-                 type="date" 
-                 className="bg-white border border-gray-100 rounded-lg px-2 py-1 text-xs font-bold"
-                 onChange={(e) => setCustomRange(prev => ({ ...prev, start: e.target.value }))}
-               />
-               <span className="text-xs font-bold text-gray-500">to</span>
-               <input 
-                 type="date" 
-                 className="bg-white border border-gray-100 rounded-lg px-2 py-1 text-xs font-bold"
-                 onChange={(e) => setCustomRange(prev => ({ ...prev, end: e.target.value }))}
-               />
-             </div>
-           )}
+            {timeRange === 'custom' && (
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 bg-gray-50 p-2 rounded-xl border border-gray-100">
+                <div className="flex items-center gap-2 w-full">
+                  <input 
+                    type="date" 
+                    className="flex-1 bg-white border border-gray-100 rounded-lg px-2 py-1.5 text-[10px] font-bold outline-none"
+                    onChange={(e) => setCustomRange(prev => ({ ...prev, start: e.target.value }))}
+                  />
+                  <span className="text-[10px] font-bold text-gray-500 uppercase tracking-tighter shrink-0">to</span>
+                  <input 
+                    type="date" 
+                    className="flex-1 bg-white border border-gray-100 rounded-lg px-2 py-1.5 text-[10px] font-bold outline-none"
+                    onChange={(e) => setCustomRange(prev => ({ ...prev, end: e.target.value }))}
+                  />
+                </div>
+              </div>
+            )}
 
            {/* Module Selector */}
            <div className="relative group min-w-[180px]">
@@ -128,7 +131,7 @@ export default function AdminActivityLogs() {
               <select 
                 value={module}
                 onChange={(e) => { setModule(e.target.value); setPage(1); }}
-                className="w-full pl-10 pr-10 py-3 bg-white border border-gray-100 rounded-2xl text-sm font-bold text-slate-700 outline-none focus:border-emerald-600/50 focus:ring-4 focus:ring-emerald-50 transition-all appearance-none cursor-pointer shadow-sm"
+                className="w-full pl-10 pr-10 py-3 bg-white border border-gray-100 rounded-xl text-sm font-bold text-slate-700 outline-none focus:border-emerald-600/50 focus:ring-4 focus:ring-emerald-50 transition-all appearance-none cursor-pointer shadow-sm"
               >
                  <option value="">All Modules</option>
                  <option value="VENDOR">Vendors</option>
@@ -143,19 +146,56 @@ export default function AdminActivityLogs() {
            {/* Refresh Button */}
            <button 
              onClick={() => fetchLogs()} 
-             className="p-4 bg-white border border-gray-100 rounded-2xl text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 transition-all  group active:scale-95"
+             className="p-4 bg-white border border-gray-100 rounded-xl text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 transition-all  group active:scale-95"
            >
               <RefreshCcw className={`w-5 h-5 ${loading ? 'animate-spin' : ''}`} />
            </button>
         </div>
       </div>
+      </div>
+
+      {/* Analytics Overview */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-7xl mx-auto">
+        <ActivityStatCard 
+          label="Total Operational Traces" 
+          value={total} 
+          sub="Global audit trail"
+          icon={Database} 
+          iconBg="bg-slate-50" 
+          iconColor="text-slate-600" 
+        />
+        <ActivityStatCard 
+          label="Security Events" 
+          value={logs.filter(l => l.action.includes('REJECT') || l.action.includes('DELETE') || l.action.includes('REVOKE')).length} 
+          sub="In current view"
+          icon={ShieldCheck} 
+          iconBg="bg-rose-50" 
+          iconColor="text-rose-600" 
+        />
+        <ActivityStatCard 
+          label="Productive Movements" 
+          value={logs.filter(l => l.action.includes('CREATE') || l.action.includes('APPROVE') || l.action.includes('AUTHENTICATE')).length} 
+          sub="In current view"
+          icon={Target} 
+          iconBg="bg-emerald-50" 
+          iconColor="text-emerald-600" 
+        />
+        <ActivityStatCard 
+          label="Active Registry" 
+          value={module || 'All Hubs'} 
+          sub="Selected Focus"
+          icon={Layers} 
+          iconBg="bg-blue-50" 
+          iconColor="text-blue-600" 
+        />
+      </div>
 
       {/* --- ACTIVITY TABLE --- */}
-      <div className="bg-white border border-gray-100 rounded-[2.5rem]  overflow-hidden flex flex-col shadow-sm">
+      <div className="bg-white border border-gray-100 rounded-xl  overflow-hidden flex flex-col shadow-sm">
           <div className="overflow-x-auto w-full">
               <table className="w-full text-left border-collapse min-w-[1200px]">
-                 <thead>
-                    <tr className="bg-slate-50/30 border-b border-gray-50">
+              <thead className="sticky top-0 z-20 bg-white">
+                <tr className="bg-white border-b border-gray-100 ">
                        <th className="px-8 py-5 text-xs font-bold text-slate-600 uppercase tracking-tight">Time Trace</th>
                        <th className="px-8 py-5 text-xs font-bold text-slate-600 uppercase tracking-tight">Team Member</th>
                        <th className="px-8 py-5 text-xs font-bold text-slate-600 uppercase tracking-tight">Module</th>
@@ -301,3 +341,16 @@ export default function AdminActivityLogs() {
     </div>
   );
 }
+
+const ActivityStatCard = ({ label, value, sub, icon: Icon, iconColor, iconBg }: any) => (
+  <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between group hover:shadow-md transition-all">
+     <div>
+        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">{label}</p>
+        <h4 className="text-2xl font-bold text-slate-900">{value}</h4>
+        <p className="text-[10px] font-medium text-slate-400 mt-0.5">{sub}</p>
+     </div>
+     <div className={`w-12 h-12 rounded-xl ${iconBg} ${iconColor} flex items-center justify-center`}>
+        <Icon size={20} />
+     </div>
+  </div>
+);

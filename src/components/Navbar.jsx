@@ -13,10 +13,12 @@ import {
   UserCircle2
 } from "lucide-react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 
 const Navbar = () => {
+  const pathname = usePathname();
+  const isDashboard = pathname.includes('/dashboard') || pathname.includes('/vendor/') || pathname.includes('/admin/') || pathname.includes('/super-admin/');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -73,40 +75,42 @@ const Navbar = () => {
           />
         </Link>
 
-        {/* Desktop Search Bar (Pixel Perfect) */}
-        <form onSubmit={handleSearch} className="hidden lg:flex flex-1 max-w-2xl mx-10 h-12 border border-slate-200 rounded-[2rem] overflow-hidden focus-within:border-[#164e33] focus-within:shadow-md transition-all shadow-sm bg-white">
-          <div className="relative flex items-center px-4 bg-slate-50 border-r border-slate-200 gap-2 min-w-[150px] city-dropdown-container">
-            <MapPin size={18} className="text-red-500 shrink-0" />
+        {/* Desktop Search Bar (Pixel Perfect) - Hidden on Dashboards */}
+        {!isDashboard && (
+          <form onSubmit={handleSearch} className="hidden lg:flex flex-1 max-w-2xl mx-10 h-11 border border-slate-200 rounded-xl overflow-hidden focus-within:border-[#164e33] focus-within:shadow-md transition-all shadow-sm bg-white">
+            <div className="relative flex items-center px-4 bg-slate-50 border-r border-slate-200 gap-2 min-w-[150px] city-dropdown-container">
+              <MapPin size={16} className="text-red-500 shrink-0" />
+              <input 
+                type="text" 
+                value={cityQuery}
+                onChange={(e) => setCityQuery(e.target.value)}
+                onFocus={() => setIsCityDropdownOpen(true)}
+                className="bg-transparent text-sm font-semibold text-slate-800 focus:outline-none w-full truncate cursor-pointer"
+                placeholder="City"
+              />
+              {isCityDropdownOpen && (
+                <div className="absolute top-full left-0 mt-1 w-[220px] bg-white border border-gray-100 rounded-xl shadow-2xl py-2 z-50 max-h-[300px] overflow-y-auto">
+                  {popularCities.map(city => (
+                    <button key={city} type="button" onClick={() => handleCitySelect(city)} className="w-full text-left px-4 py-2.5 text-sm font-semibold text-slate-800 hover:bg-[#164e33]/5 hover:text-[#164e33] transition-all flex items-center gap-2">
+                      <MapPin className="w-3.5 h-3.5 opacity-40" /> {city}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
             <input 
               type="text" 
-              value={cityQuery}
-              onChange={(e) => setCityQuery(e.target.value)}
-              onFocus={() => setIsCityDropdownOpen(true)}
-              className="bg-transparent text-sm font-semibold text-slate-800 focus:outline-none w-full truncate cursor-pointer"
-              placeholder="Your City"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search product / service..." 
+              className="flex-1 px-4 text-sm font-medium focus:outline-none text-slate-800 placeholder:text-slate-500"
             />
-            {isCityDropdownOpen && (
-              <div className="absolute top-full left-0 mt-1 w-[220px] bg-white border border-gray-100 rounded-xl shadow-2xl py-2 z-50 max-h-[300px] overflow-y-auto">
-                {popularCities.map(city => (
-                  <button key={city} type="button" onClick={() => handleCitySelect(city)} className="w-full text-left px-4 py-2.5 text-sm font-semibold text-slate-800 hover:bg-[#164e33]/5 hover:text-[#164e33] transition-all flex items-center gap-2">
-                    <MapPin className="w-3.5 h-3.5 opacity-40" /> {city}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-          <input 
-            type="text" 
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Enter product / service to search" 
-            className="flex-1 px-4 text-sm font-medium focus:outline-none text-slate-800 placeholder:text-slate-400"
-          />
-          <button type="submit" className="bg-[#164e33] text-white px-8 flex items-center gap-2 hover:bg-[#113f29] transition-all !text-white">
-            <Search size={18} className="text-white" />
-            <span className="font-bold text-sm uppercase tracking-wide text-white">Search</span>
-          </button>
-        </form>
+            <button type="submit" className="bg-[#164e33] text-white px-8 flex items-center gap-2 hover:bg-[#113f29] transition-all !text-white">
+              <Search size={18} className="text-white" />
+              <span className="font-bold text-sm uppercase tracking-wide text-white">Search</span>
+            </button>
+          </form>
+        )}
 
         {/* Action Buttons */}
         <div className="flex items-center gap-4 lg:gap-8">
@@ -136,10 +140,13 @@ const Navbar = () => {
             </button>
 
             {isUserDropdownOpen && (
-              <div className="absolute top-full right-0 mt-3 w-64 bg-white border border-gray-100 rounded-2xl shadow-2xl py-3 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+              <div className="absolute top-full right-0 mt-3 w-64 bg-white border border-gray-100 rounded-xl shadow-2xl py-3 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
                 {user ? (
                   <div className="p-2">
-                    <Link href="/profile" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-slate-700 hover:bg-[#164e33]/5 hover:text-[#164e33] transition-all">
+                    <Link 
+                      href={user.role === 'SUPERADMIN' ? '/super-admin/profile' : user.role === 'ADMIN' ? '/admin/profile' : '/profile'} 
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-slate-700 hover:bg-[#164e33]/5 hover:text-[#164e33] transition-all"
+                    >
                       <UserCircle2 className="w-4 h-4" /> My Profile
                     </Link>
                     {user.role !== 'BUYER' && (

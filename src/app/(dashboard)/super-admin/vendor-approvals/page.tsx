@@ -126,173 +126,197 @@ export default function VendorVerificationQueue() {
     <div className="space-y-8 animate-fade-in pb-20">
       
       {/* --- HEADER --- */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-        <div className="flex items-center gap-4">
-           <h1 className="text-2xl font-bold text-slate-900 leading-none uppercase tracking-tight">Vendor Registry</h1>
+      <div className="flex flex-col gap-3 pb-6 border-b border-gray-100 max-w-7xl mx-auto">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div>
+           <h1 className="text-xl font-bold text-slate-900 uppercase tracking-tight">Vendor Registry</h1>
+           <p className="text-slate-500 font-medium text-[11px] uppercase tracking-wider">Monitor and verify business partnerships</p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-4">
+        <div className="flex flex-wrap items-center gap-2">
            {/* Tab Filter */}
-           <div className="relative group">
-              <select 
-                value={activeTab}
-                onChange={(e) => setActiveTab(e.target.value as any)}
-                className="pl-4 pr-10 py-1.5 bg-white border border-gray-300 rounded-xl text-xs font-bold text-gray-900 outline-none appearance-none cursor-pointer shadow-sm"
-              >
-                 <option value="PENDING">Pending Check</option>
-                 <option value="VERIFIED">Verified Hub</option>
-                 <option value="ALL">All Registry</option>
-              </select>
-              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-500 pointer-events-none" />
-           </div>
+            <select 
+              value={activeTab}
+              onChange={(e) => setActiveTab(e.target.value as any)}
+              className="px-4 py-2 bg-white border border-gray-200 rounded-xl text-[11px] font-bold text-slate-700 outline-none hover:bg-gray-50 transition-all shadow-sm cursor-pointer"
+            >
+               <option value="PENDING">Pending Check</option>
+               <option value="VERIFIED">Verified Hub</option>
+               <option value="ALL">All Registry</option>
+            </select>
 
-           <div className="flex items-center gap-2 bg-white border border-gray-300 rounded-xl px-3 py-1.5 shadow-sm">
-             <Clock size={14} className="text-gray-500" />
+           <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-3 py-2 shadow-sm">
+             <Clock size={14} className="text-slate-400" />
              <select 
                value={timeRange}
                onChange={(e) => setTimeRange(e.target.value)}
-               className="text-xs font-bold text-gray-900 outline-none bg-transparent cursor-pointer"
+               className="text-[11px] font-bold text-slate-700 outline-none bg-transparent cursor-pointer"
              >
                <option value="ALL">Lifetime</option>
                <option value="today">Today</option>
                <option value="yesterday">Yesterday</option>
-               <option value="weekly">Last 7 Days</option>
-               <option value="monthly">Last 30 Days</option>
-               <option value="yearly">Last 12 Months</option>
-               <option value="custom">Custom Range</option>
+               <option value="weekly">7 Days</option>
+               <option value="monthly">30 Days</option>
+               <option value="yearly">12 Months</option>
+               <option value="custom">Custom</option>
              </select>
            </div>
 
-           {timeRange === 'custom' && (
-             <div className="flex items-center gap-2">
-               <input 
-                 type="date" 
-                 className="bg-white border border-gray-300 rounded-lg px-2 py-1 text-xs font-bold"
-                 onChange={(e) => setCustomRange(prev => ({ ...prev, start: e.target.value }))}
-               />
-               <span className="text-xs font-bold text-gray-500">to</span>
-               <input 
-                 type="date" 
-                 className="bg-white border border-gray-300 rounded-lg px-2 py-1 text-xs font-bold"
-                 onChange={(e) => setCustomRange(prev => ({ ...prev, end: e.target.value }))}
-               />
-             </div>
-           )}
+           <select 
+             value={city}
+             onChange={(e) => setCity(e.target.value)}
+             className="px-4 py-2 bg-white border border-gray-200 rounded-xl text-[11px] font-bold text-slate-700 outline-none hover:bg-gray-50 transition-all shadow-sm cursor-pointer"
+           >
+              <option value="All Cities">All Cities</option>
+              {cities.map((c, i) => (
+                <option key={i} value={c}>{c}</option>
+              ))}
+           </select>
 
-           <div className="flex items-center gap-3">
-              <div className="relative group">
-                 <select 
-                   value={city}
-                   onChange={(e) => setCity(e.target.value)}
-                   className="pl-4 pr-10 py-1.5 bg-white border border-gray-300 rounded-xl text-xs font-bold text-gray-900 outline-none appearance-none cursor-pointer shadow-sm"
-                 >
-                    <option value="All Cities">All Cities</option>
-                    {cities.map((c, i) => (
-                      <option key={i} value={c}>{c}</option>
-                    ))}
-                 </select>
-                 <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-500 pointer-events-none" />
-              </div>
-           </div>
+           <button onClick={fetchVendors} className="p-2 bg-white border border-gray-200 rounded-xl text-slate-400 hover:text-emerald-600 transition-all shadow-sm">
+              <RefreshCcw size={16} className={loading ? 'animate-spin' : ''} />
+           </button>
         </div>
+        </div>
+
+        {/* Custom Date Range Sub-row */}
+        <AnimatePresence>
+          {timeRange === 'custom' && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.2 }}
+              className="overflow-hidden"
+            >
+              <div className="flex flex-col md:flex-row md:items-center gap-3 bg-slate-50 rounded-xl px-4 py-3 border border-slate-100">
+                <div className="flex items-center gap-3">
+                  <Clock size={13} className="text-slate-400 shrink-0" />
+                  <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider shrink-0">Custom Range:</span>
+                </div>
+                <div className="flex items-center gap-2 w-full md:w-auto">
+                  <input
+                    type="date"
+                    className="flex-1 md:flex-none bg-white border border-gray-200 rounded-lg px-3 py-1.5 text-[11px] font-bold text-slate-700 outline-none focus:border-emerald-400 transition-all shadow-sm cursor-pointer"
+                    onChange={(e) => setCustomRange(prev => ({ ...prev, start: e.target.value }))}
+                  />
+                  <span className="text-[11px] font-bold text-slate-400">→</span>
+                  <input
+                    type="date"
+                    className="flex-1 md:flex-none bg-white border border-gray-200 rounded-lg px-3 py-1.5 text-[11px] font-bold text-slate-700 outline-none focus:border-emerald-400 transition-all shadow-sm cursor-pointer"
+                    onChange={(e) => setCustomRange(prev => ({ ...prev, end: e.target.value }))}
+                  />
+                </div>
+                {customRange.start && customRange.end && (
+                  <span className="md:ml-auto text-center md:text-left text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-100 shrink-0">Range Active</span>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* --- SEARCH & REFRESH --- */}
-      <div className="flex items-center gap-4">
-         <div className="relative flex-1 max-w-lg">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600" size={18} />
+      <div className="max-w-7xl mx-auto w-full">
+         <div className="relative group">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-emerald-600" />
             <input 
               type="text" 
-              placeholder="Search business by name, mobile, email..."
+              placeholder="Search business by name, mobile, email or city..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3.5 bg-white border border-gray-100 rounded-xl text-[14px] font-medium outline-none  focus:border-emerald-500 transition-all"
+              className="w-full pl-11 pr-4 py-3.5 bg-white border border-gray-200 rounded-xl text-[13px] font-bold text-slate-700 outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all shadow-sm placeholder:text-slate-300"
             />
          </div>
-         <button onClick={fetchVendors} className="p-3.5 bg-white border border-gray-100 rounded-xl text-slate-600 hover:text-emerald-600 transition-all ">
-            <RefreshCcw size={20} className={loading ? 'animate-spin' : ''} />
-         </button>
       </div>
 
       {/* --- STAT CARDS --- */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-7xl mx-auto w-full">
          <VerificationStatCard 
            label="Total Applications" 
            value={stats.total} 
-           sub="All time" 
-           color="text-slate-900" 
-           bg="bg-white" 
+           icon={Building2}
+           iconColor="text-slate-600" 
+           iconBg="bg-slate-100/50" 
          />
          <VerificationStatCard 
            label="Pending Review" 
            value={stats.pending} 
-           sub="Awaiting action" 
-           color="text-slate-900" 
-           bg="bg-white" 
+           icon={Clock}
+           iconColor="text-amber-600" 
+           iconBg="bg-amber-100/50" 
          />
          <VerificationStatCard 
            label="Verified" 
            value={stats.verified} 
-           sub="Approved vendors" 
-           color="text-slate-900" 
-           bg="bg-white" 
+           icon={CheckCheck}
+           iconColor="text-emerald-600" 
+           iconBg="bg-emerald-100/50" 
          />
          <VerificationStatCard 
            label="Rejected" 
            value={stats.rejected} 
-           sub="Declined applications" 
-           color="text-slate-900" 
-           bg="bg-white" 
+           icon={XCircle}
+           iconColor="text-rose-600" 
+           iconBg="bg-rose-100/50" 
          />
       </div>
 
       {/* --- TABLE AREA --- */}
-      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden min-h-[500px] flex flex-col shadow-sm">
-         <table className="w-full text-left">
-            <thead>
-                <tr className="border-b border-gray-50 bg-slate-50/30">
-                   <th className="px-10 py-6 text-xs font-bold text-slate-800 uppercase  ">Business Identity</th>
-                   <th className="px-10 py-6 text-xs font-bold text-slate-800 uppercase  ">Location Hub</th>
-                   <th className="px-10 py-6 text-xs font-bold text-slate-800 uppercase  ">Verification</th>
-                   <th className="px-10 py-6 text-xs font-bold text-slate-800 uppercase  ">Applied On</th>
-                   <th className="px-10 py-6 text-xs font-bold text-slate-800 uppercase   text-right">Action</th>
-                </tr>
-            </thead>
+      <div className="max-w-7xl mx-auto w-full">
+         <div className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm">
+            <div className="overflow-x-auto w-full no-scrollbar">
+               <table className="w-full text-left whitespace-nowrap min-w-[900px]">
+                  <thead>
+                  <tr className="bg-slate-50/50 border-b border-gray-100">
+                    <th className="px-6 py-5 text-[11px] font-bold text-slate-500 uppercase tracking-wider">Business Identity</th>
+                    <th className="px-6 py-5 text-[11px] font-bold text-slate-500 uppercase tracking-wider">Location Hub</th>
+                    <th className="px-6 py-5 text-[11px] font-bold text-slate-500 uppercase tracking-wider">Verification</th>
+                    <th className="px-6 py-5 text-[11px] font-bold text-slate-500 uppercase tracking-wider">Applied On</th>
+                    <th className="px-6 py-5 text-[11px] font-bold text-slate-500 uppercase tracking-wider text-right">Action</th>
+                  </tr>
+                </thead>
             <tbody className="divide-y divide-gray-50">
                {loading ? (
-                 [1,2,3,4].map(i => <tr key={i} className="animate-pulse h-24 bg-gray-50/10" />)
+                 [1,2,3,4,5].map(i => (
+                  <tr key={i} className="animate-pulse">
+                    <td colSpan={5} className="px-6 py-10 h-20 bg-gray-50/5"></td>
+                   </tr>
+                ))
                ) : vendors.length > 0 ? (
                  vendors.map((vendor) => (
-                    <tr key={vendor.id} className="hover:bg-slate-50 transition-all group">
-                       <td className="px-10 py-6">
+                    <tr key={vendor.id} className="group hover:bg-slate-50/50 transition-colors">
+                       <td className="px-6 py-5">
                           <div className="flex items-center gap-4">
-                             <div className="w-12 h-12 rounded-xl bg-slate-100 border border-gray-100 overflow-hidden flex items-center justify-center text-lg font-bold text-slate-400 shrink-0">
+                             <div className="w-12 h-12 rounded-xl bg-slate-50 border border-gray-100 overflow-hidden flex items-center justify-center text-lg font-bold text-slate-300 shrink-0">
                                 {(vendor.logo || vendor.logoUrl) ? (
-                                  <img src={vendor.logo || vendor.logoUrl} className="w-full h-full object-cover" />
+                                  <img src={vendor.logo || vendor.logoUrl} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                 ) : (vendor.businessName || vendor.user?.name)?.charAt(0)}
                              </div>
-                             <div className="flex flex-col">
-                                <span className="text-[15px] font-bold text-slate-900 mb-0.5 leading-tight">{vendor.businessName || vendor.user?.name}</span>
-                                <span className="text-[11px] font-bold text-slate-800 uppercase tracking-wider">GST: {vendor.gstNumber || 'PENDING'}</span>
+                             <div>
+                                <p className="text-sm font-bold text-slate-900 leading-tight">{vendor.businessName || vendor.user?.name}</p>
+                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">GST: {vendor.gstNumber || 'PENDING'}</p>
                              </div>
                           </div>
                        </td>
-                       <td className="px-10 py-6 text-[14px] font-bold text-slate-700">
-                          {vendor.city || 'India'}
+                       <td className="px-6 py-5">
+                          <p className="text-[13px] font-bold text-slate-700">{vendor.city || 'India'}</p>
                        </td>
-                      <td className="px-10 py-6">
-                         <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-xl border text-xs font-bold uppercase tracking-tight ${vendor.verified ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-amber-50 text-amber-600 border-amber-100'}`}>
-                            <div className={`w-1.5 h-1.5 rounded-full ${vendor.verified ? 'bg-emerald-500' : 'bg-amber-500 animate-pulse'}`} />
+                      <td className="px-6 py-5">
+                         <div className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase transition-all ${
+                             vendor.verified ? 'bg-emerald-50 text-emerald-600 border border-emerald-100 shadow-sm' : 'bg-amber-50 text-amber-600 border border-amber-100 shadow-sm'
+                          }`}>
+                            <span className={`w-1.5 h-1.5 rounded-full ${vendor.verified ? 'bg-emerald-500' : 'bg-amber-500 animate-pulse'}`} />
                             {vendor.verified ? 'Verified' : 'Review Required'}
                          </div>
                       </td>
-                      <td className="px-10 py-6 text-[14px] font-bold text-slate-700">
+                      <td className="px-6 py-5 text-[13px] font-bold text-slate-600">
                          {new Date(vendor.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
                       </td>
-                      <td className="px-10 py-6 text-right">
+                      <td className="px-6 py-5 text-right">
                          <button 
                             onClick={() => { setSelectedVendor(vendor); setIsModalOpen(true); }}
-                            className="px-5 py-2 bg-slate-900 text-white rounded-xl text-sm font-bold uppercase   hover:bg-black transition-all"
+                            className="px-5 py-2.5 bg-slate-900 text-white rounded-xl text-[11px] font-bold uppercase tracking-wider hover:bg-black hover:shadow-lg transition-all active:scale-95"
                          >
                             Review
                          </button>
@@ -324,7 +348,9 @@ export default function VendorVerificationQueue() {
                  </tr>
                )}
             </tbody>
-         </table>
+            </table>
+            </div>
+         </div>
       </div>
 
       {/* --- SIDE DRAWER --- */}
@@ -358,7 +384,7 @@ export default function VendorVerificationQueue() {
                <div className="flex-1 overflow-y-auto p-8 space-y-8">
                   {/* Business Header Card */}
                   <div className="bg-white p-8 rounded-xl border border-gray-100  flex items-start gap-8">
-                     <div className="w-24 h-24 bg-emerald-50 rounded-2xl border border-emerald-100 overflow-hidden shrink-0 flex items-center justify-center text-3xl font-bold text-emerald-700 ">
+                     <div className="w-24 h-24 bg-emerald-50 rounded-xl border border-emerald-100 overflow-hidden shrink-0 flex items-center justify-center text-3xl font-bold text-emerald-700 ">
                         {(selectedVendor.logoUrl || selectedVendor.logo) ? <img src={selectedVendor.logoUrl || selectedVendor.logo} className="w-full h-full object-cover" /> : (selectedVendor.businessName || selectedVendor.user?.name)?.charAt(0)}
                      </div>
                      <div className="flex-1 min-w-0">
@@ -440,23 +466,22 @@ export default function VendorVerificationQueue() {
                      </div>
                   </div>
 
-                  {/* Actions */}
-                  <div className="pt-8 border-t border-gray-100 flex items-center gap-4">
+                  {/* Secure Action Hub */}
+                  <div className="pt-8 border-t border-gray-100 flex items-center gap-3 shrink-0">
                      <button 
                         onClick={() => handleStatusUpdate(selectedVendor.id, 'APPROVE')}
                         disabled={processingId === selectedVendor.id}
-                        className="flex-1 py-4 bg-[#06392D] text-white rounded-xl font-bold text-[14px] uppercase    flex items-center justify-center gap-2 hover:bg-[#0D824D] transition-all disabled:opacity-50"
+                        className="flex-1 py-3.5 bg-slate-900 hover:bg-black text-white rounded-xl font-bold text-[12px] uppercase tracking-wider flex items-center justify-center gap-2 transition-all disabled:opacity-50 active:scale-95 shadow-lg shadow-slate-900/10"
                      >
-                        <ShieldCheck size={18} />
-                        {processingId === selectedVendor.id ? 'Authorizing...' : 'Authorize Partnership'}
+                        <ShieldCheck size={18} className="text-emerald-400" />
+                        {processingId === selectedVendor.id ? 'Wait...' : 'Authorize Partnership'}
                      </button>
                      <button 
                         onClick={() => handleStatusUpdate(selectedVendor.id, 'REJECT')}
                         disabled={processingId === selectedVendor.id}
-                        className="flex-1 py-4 bg-white border border-red-100 text-red-600 rounded-xl font-bold text-[14px] uppercase  flex items-center justify-center gap-2 hover:bg-red-50 transition-all disabled:opacity-50"
+                        className="px-5 py-3.5 bg-white border border-rose-100 hover:bg-rose-50 text-rose-600 rounded-xl font-bold text-[12px] uppercase flex items-center justify-center gap-2 transition-all disabled:opacity-50 active:scale-95"
                      >
                         <XCircle size={18} />
-                        Decline Application
                      </button>
                   </div>
                </div>
@@ -468,12 +493,14 @@ export default function VendorVerificationQueue() {
   );
 }
 
-const VerificationStatCard = ({ label, value, sub, color, bg }: any) => (
-  <div className={`bg-white p-8 rounded-xl border border-gray-200 flex flex-col justify-center group transition-all`}>
+const VerificationStatCard = ({ label, value, icon: Icon, iconColor, iconBg }: any) => (
+  <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between group hover:shadow-md transition-all">
      <div>
-        <p className="text-xs font-bold text-slate-800 uppercase mb-1">{label}</p>
-        <h3 className="text-2xl font-bold text-slate-900 leading-none mb-1">{value}</h3>
-        <p className="text-[10px] font-bold text-slate-800 uppercase ">{sub}</p>
+        <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">{label}</p>
+        <h4 className="text-2xl font-bold text-slate-900">{value}</h4>
+     </div>
+     <div className={`w-12 h-12 rounded-xl ${iconBg} ${iconColor} flex items-center justify-center`}>
+        <Icon size={20} />
      </div>
   </div>
 );

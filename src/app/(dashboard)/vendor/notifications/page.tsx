@@ -52,7 +52,7 @@ export default function VendorNotificationsPage() {
   };
 
   if (loading && notifications.length === 0) {
-    return <div className="p-10 animate-pulse bg-slate-50 rounded-2xl h-80 border border-slate-100"></div>;
+    return <div className="p-10 animate-pulse bg-slate-50 rounded-xl h-80 border border-slate-100"></div>;
   }
 
   return (
@@ -96,7 +96,7 @@ export default function VendorNotificationsPage() {
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 10 }}
-                className={`p-6 bg-white rounded-2xl border ${n.isRead ? 'border-gray-100' : 'border-blue-200 bg-[#164e33]/5/30'} flex gap-5 group hover:border-blue-300 transition-all `}
+                className={`p-6 bg-white rounded-xl border ${n.isRead ? 'border-gray-100' : 'border-blue-200 bg-[#164e33]/5/30'} flex gap-5 group hover:border-blue-300 transition-all `}
               >
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border ${n.isRead ? 'bg-gray-50 text-slate-700 border-gray-100' : 'bg-white text-[#164e33] border-[#164e33]/10'}`}>
                   {n.title.includes('Approved') || n.title.includes('Success') ? <CheckCircle2 className="w-5 h-5 cursor-default" /> : <Bell className="w-5 h-5 cursor-default" />}

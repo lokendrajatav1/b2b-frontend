@@ -85,13 +85,14 @@ body {
   animation: simple-fade 0.2s ease-out forwards;
 }
 
-/* Hide scrollbars */
-.no-scrollbar::-webkit-scrollbar {
+/* Hide scrollbars globally */
+*::-webkit-scrollbar {
   display: none;
 }
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+
+* {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
 }
 
 /* Smooth transitions */

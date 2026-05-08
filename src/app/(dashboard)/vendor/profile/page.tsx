@@ -60,6 +60,7 @@ export default function SimpleVendorProfile() {
   const [categories, setCategories] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [initialSync, setInitialSync] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Close dropdown on click outside
@@ -74,37 +75,51 @@ export default function SimpleVendorProfile() {
   }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
+    if (user && !initialSync) {
+      setVendorData((prev: any) => ({
+        ...prev,
+        email: user.email || prev.email,
+        phone: user.phone || prev.phone,
+      }));
+      setInitialSync(true);
+    }
+  }, [user, initialSync]);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
       try {
-        const [profileData, catsData] = await Promise.all([
-          apiFetch('/vendors/me').catch(err => {
-            if (err.status === 404) return { data: null };
-            throw err;
-          }),
-          apiFetch('/vendors/categories')
-        ]);
-        
-        if (profileData.data) {
+        const res = await apiFetch('/vendors/me');
+        if (res.data) {
           setVendorData({
-              ...profileData.data,
-              categoryIds: profileData.data.categories?.map((c: any) => c.id) || []
+              ...res.data,
+              categoryIds: res.data.categories?.map((c: any) => c.id) || []
           });
-        } else if (user) {
-          setVendorData((prev: any) => ({
-              ...prev,
-              email: user.email || '',
-              phone: user.phone || '',
-          }));
         }
-        setCategories(catsData.data);
-      } catch (error) {
-        console.error('Failed to fetch data:', error);
+      } catch (error: any) {
+        if (error.status !== 404) console.error('Failed to fetch profile:', error);
       } finally {
         setLoading(false);
       }
     };
-    fetchData();
-  }, [user]);
+
+    const fetchCategories = async () => {
+      try {
+        const res = await apiFetch('/vendors/categories');
+        if (res && res.data) {
+           setCategories(res.data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch categories:', error);
+      }
+    };
+
+    if (user) {
+      fetchProfile();
+      fetchCategories();
+    } else {
+      setLoading(false);
+    }
+  }, [user?.id]);
   
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: 'DOCUMENT' | 'LOGO' = 'DOCUMENT') => {
     const file = e.target.files?.[0];
@@ -204,7 +219,38 @@ export default function SimpleVendorProfile() {
     }
   };
 
-  if (loading) return <div className="p-10 animate-pulse bg-slate-50 rounded-2xl h-80 border border-slate-100"></div>;
+  if (loading) return (
+    <div className="max-w-7xl mx-auto space-y-8 p-6 animate-pulse">
+      <div className="flex justify-between items-center pb-6 border-b border-gray-100">
+        <div className="space-y-3">
+          <div className="h-8 w-64 bg-slate-200 rounded-lg"></div>
+          <div className="h-4 w-96 bg-slate-100 rounded-lg"></div>
+        </div>
+        <div className="h-10 w-32 bg-slate-200 rounded-xl"></div>
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 space-y-6">
+          <div className="h-[400px] bg-white border border-gray-100 rounded-xl"></div>
+        </div>
+        <div className="space-y-6">
+          <div className="h-48 bg-white border border-gray-100 rounded-xl"></div>
+          <div className="h-64 bg-white border border-gray-100 rounded-xl"></div>
+        </div>
+      </div>
+    </div>
+  );
+
+  if (!user && !loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center p-6">
+        <div className="w-16 h-16 bg-rose-50 text-rose-500 rounded-xl flex items-center justify-center mb-4">
+           <AlertCircle size={32} />
+        </div>
+        <h2 className="text-xl font-bold text-slate-900">Authentication Required</h2>
+        <p className="text-slate-600 mt-2">Please login to access your business profile settings.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto space-y-6 animate-simple-fade pb-20 p-2 lg:p-6">
@@ -307,7 +353,7 @@ export default function SimpleVendorProfile() {
                     {/* Selected Tags Display */}
                     <div className="flex flex-wrap gap-2 mb-3">
                         {vendorData.categoryIds?.map((id: any) => {
-                            const cat: any = categories.find((c: any) => c.id === id);
+                            const cat: any = Array.isArray(categories) ? categories.find((c: any) => c.id === id) : null;
                             if (!cat) return null;
                             return (
                                 <motion.span 
@@ -362,8 +408,8 @@ export default function SimpleVendorProfile() {
                                     exit={{ opacity: 0, y: 10 }}
                                     className="absolute left-0 right-0 top-full mt-2 bg-white border border-gray-100 rounded-xl  z-50 max-h-60 overflow-y-auto p-2"
                                 >
-                                    {categories
-                                        .filter((c: any) => c.name.toLowerCase().includes(searchTerm.toLowerCase()))
+                                    {Array.isArray(categories) && categories
+                                        .filter((c: any) => c.name?.toLowerCase().includes(searchTerm.toLowerCase()))
                                         .map((c: any) => {
                                             const isSelected = vendorData.categoryIds?.includes(c.id);
                                             return (

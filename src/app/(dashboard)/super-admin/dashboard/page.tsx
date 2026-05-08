@@ -25,7 +25,7 @@ import {
   ArrowUpRight,
   RefreshCcw
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   LineChart, 
   Line, 
@@ -99,7 +99,8 @@ export default function SuperAdminDashboard() {
           </p>
         </div>
         
-        <div className="flex flex-wrap items-center gap-4">
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-wrap items-center gap-4">
           <div className="flex items-center gap-2 bg-white border border-gray-300 rounded-xl px-3 py-1.5 shadow-sm">
             <Calendar size={14} className="text-gray-500" />
             <select 
@@ -116,22 +117,6 @@ export default function SuperAdminDashboard() {
             </select>
           </div>
 
-          {timeRange === 'custom' && (
-            <div className="flex items-center gap-2">
-              <input 
-                type="date" 
-                className="bg-white border border-gray-300 rounded-lg px-2 py-1 text-xs font-bold"
-                onChange={(e) => setCustomRange(prev => ({ ...prev, start: e.target.value }))}
-              />
-              <span className="text-xs font-bold text-gray-500">to</span>
-              <input 
-                type="date" 
-                className="bg-white border border-gray-300 rounded-lg px-2 py-1 text-xs font-bold"
-                onChange={(e) => setCustomRange(prev => ({ ...prev, end: e.target.value }))}
-              />
-            </div>
-          )}
-
           <button 
             onClick={fetchDashboardStats}
             className="p-2.5 bg-white border border-gray-300 rounded-xl text-black hover:text-[#0D824D] hover:border-[#0D824D] transition-all shadow-sm"
@@ -139,6 +124,43 @@ export default function SuperAdminDashboard() {
           >
             <RefreshCcw size={18} className={loading ? 'animate-spin' : ''} />
           </button>
+          </div>
+
+          {/* Custom Date Range Sub-row */}
+          <AnimatePresence>
+            {timeRange === 'custom' && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.2 }}
+                className="overflow-hidden"
+              >
+                <div className="flex flex-col md:flex-row md:items-center gap-3 bg-slate-50 rounded-xl px-4 py-3 border border-slate-100">
+                  <div className="flex items-center gap-3">
+                    <Clock size={13} className="text-slate-400 shrink-0" />
+                    <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider shrink-0">Custom Range:</span>
+                  </div>
+                  <div className="flex items-center gap-2 w-full md:w-auto">
+                    <input
+                      type="date"
+                      className="flex-1 md:flex-none bg-white border border-gray-200 rounded-lg px-3 py-1.5 text-[11px] font-bold text-slate-700 outline-none focus:border-emerald-400 transition-all shadow-sm cursor-pointer"
+                      onChange={(e) => setCustomRange(prev => ({ ...prev, start: e.target.value }))}
+                    />
+                    <span className="text-[11px] font-bold text-slate-400">→</span>
+                    <input
+                      type="date"
+                      className="flex-1 md:flex-none bg-white border border-gray-200 rounded-lg px-3 py-1.5 text-[11px] font-bold text-slate-700 outline-none focus:border-emerald-400 transition-all shadow-sm cursor-pointer"
+                      onChange={(e) => setCustomRange(prev => ({ ...prev, end: e.target.value }))}
+                    />
+                  </div>
+                  {customRange.start && customRange.end && (
+                    <span className="md:ml-auto text-center md:text-left text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-100 shrink-0">Range Active</span>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
 
@@ -185,7 +207,7 @@ export default function SuperAdminDashboard() {
       {/* Main Grid: Revenue & Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Revenue Chart Placeholder */}
-        <div className="lg:col-span-8 bg-white rounded-2xl border border-gray-100 p-6 ">
+        <div className="lg:col-span-8 bg-white rounded-xl border border-gray-100 p-6 ">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h3 className="font-bold text-sm text-gray-900 mb-0.5">Platform Revenue Growth</h3>
@@ -196,43 +218,57 @@ export default function SuperAdminDashboard() {
             </select>
           </div>
           
-          <div className="flex flex-col md:flex-row gap-10">
+          <div className="flex flex-col xl:flex-row gap-8">
             {/* Fake Graph Area */}
-            <div className="flex-1 h-64 relative flex items-end justify-between px-2">
-              <div className="absolute inset-0 border-b border-gray-200 flex flex-col justify-between text-sm text-black font-bold">
-                <span>₹20L</span><span>₹15L</span><span>₹10L</span><span>₹5L</span><span>₹0</span>
+            <div className="flex-1 min-h-[300px] flex flex-col">
+              <div className="flex-1 flex gap-4">
+                {/* Y-Axis Labels */}
+                <div className="flex flex-col justify-between text-[10px] font-bold text-slate-400 py-2 shrink-0">
+                  <span>₹20L</span><span>₹15L</span><span>₹10L</span><span>₹5L</span><span>₹0</span>
+                </div>
+                {/* Chart Visualization */}
+                <div className="flex-1 relative border-b border-l border-gray-100 flex items-end">
+                   <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+                    <path d="M0,200 L100,150 L200,140 L300,135 L400,100 L500,50 L600,60" fill="none" stroke="#0D824D" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+                    <circle cx="600" cy="60" r="6" fill="#0D824D" />
+                    <circle cx="600" cy="60" r="10" stroke="#0D824D" strokeWidth="2" fill="none" className="animate-ping" />
+                  </svg>
+                </div>
               </div>
-              <svg className="absolute bottom-0 left-0 w-full h-full" preserveAspectRatio="none">
-                <path d="M0,200 L100,150 L200,140 L300,135 L400,100 L500,50 L600,60" fill="none" stroke="#0D824D" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-                <circle cx="600" cy="60" r="6" fill="#0D824D" />
-                <circle cx="600" cy="60" r="10" stroke="#0D824D" strokeWidth="2" fill="none" className="animate-ping" />
-              </svg>
-              {['Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'].map(m => <span key={m} className="text-sm font-bold text-black mt-6">{m}</span>)}
+              {/* X-Axis Labels */}
+              <div className="flex justify-between pl-10 pr-2 mt-4">
+                {['Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'].map(m => (
+                  <span key={m} className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">{m}</span>
+                ))}
+              </div>
             </div>
             
             {/* Revenue Stats */}
-            <div className="w-full md:w-56 space-y-4 border-l border-gray-200 pl-6">
-              <div>
-                <p className="text-xs font-bold text-black uppercase mb-0.5">Total Revenue</p>
-                <p className="text-base font-bold text-black leading-none mb-1">₹{dashboardData?.summary?.totalRevenue?.toLocaleString() || '0'}</p>
-                <p className="text-xs text-green-700 font-bold flex items-center gap-1">+16.4% <span className="text-gray-950 font-bold">vs last month</span></p>
+            <div className="w-full xl:w-64 grid grid-cols-1 sm:grid-cols-3 xl:flex xl:flex-col gap-6 xl:border-l xl:border-gray-100 xl:pl-8 pt-6 xl:pt-0 border-t xl:border-t-0 border-gray-50">
+              <div className="space-y-1">
+                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Total Revenue</p>
+                <p className="text-xl font-bold text-slate-900 leading-none">₹{dashboardData?.summary?.totalRevenue?.toLocaleString() || '0'}</p>
+                <div className="flex items-center gap-1.5 mt-2">
+                  <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">+16.4%</span>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">vs last month</span>
+                </div>
               </div>
-              <div>
-                <p className="text-xs font-bold text-black uppercase mb-0.5">Subscription Revenue</p>
-                <p className="text-sm font-bold text-black leading-none mb-1">₹11,20,430</p>
-                <p className="text-xs text-green-700 font-bold">+12.6%</p>
+              <div className="space-y-1">
+                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Subscriptions</p>
+                <p className="text-lg font-bold text-slate-900 leading-none">₹11,20,430</p>
+                <span className="inline-block text-[10px] font-bold text-emerald-600 mt-1">+12.6%</span>
               </div>
-              <div>
-                <p className="text-xs font-bold text-black uppercase mb-0.5">Listing Revenue</p>
-                <p className="text-sm font-bold text-black leading-none mb-1">₹7,55,000</p>
-                <p className="text-xs text-green-700 font-bold">+21.3%</p>
+              <div className="space-y-1">
+                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Listings</p>
+                <p className="text-lg font-bold text-slate-900 leading-none">₹7,55,000</p>
+                <span className="inline-block text-[10px] font-bold text-emerald-600 mt-1">+21.3%</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Activity Feed */}
-        <div className="lg:col-span-4 bg-white rounded-2xl border border-gray-100 p-6  flex flex-col">
+        <div className="lg:col-span-4 bg-white rounded-xl border border-gray-100 p-6  flex flex-col">
           <div className="flex items-center justify-between mb-6">
             <h3 className="font-bold text-sm text-gray-900">Platform Activity</h3>
             <button className="text-xs font-bold bg-gray-50 border border-gray-200 px-2.5 py-1 rounded-lg">View All</button>
@@ -257,7 +293,7 @@ export default function SuperAdminDashboard() {
 
       {/* Footer Row Widgets */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
-        <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 min-h-[400px] flex flex-col">
+        <div className="bg-white p-8 rounded-xl border border-gray-100 min-h-[400px] flex flex-col">
           <div className="flex items-center justify-between mb-6">
             <h4 className="font-bold text-[14px] text-gray-900 uppercase">Top Cities by Vendors</h4>
             <BarChart2 size={18} className="text-gray-400" />
@@ -278,7 +314,7 @@ export default function SuperAdminDashboard() {
           </div>
         </div>
 
-        <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 min-h-[400px] flex flex-col">
+        <div className="bg-white p-8 rounded-xl border border-gray-100 min-h-[400px] flex flex-col">
           <div className="flex items-center justify-between mb-6">
             <div className="flex flex-col gap-1">
               <h4 className="font-bold text-[14px] text-gray-900 uppercase">Category Performance</h4>
@@ -315,7 +351,7 @@ export default function SuperAdminDashboard() {
           </div>
         </div>
         
-        <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 ">
+        <div className="bg-white p-8 rounded-xl border border-gray-100 ">
           <h4 className="font-bold text-[14px] text-gray-900 uppercase mb-6">Verification Overview</h4>
           <div className="flex items-center gap-6">
              <div className="w-20 h-20 rounded-full border-[10px] border-green-500 border-r-orange-400 relative rotate-45 "></div>
@@ -326,7 +362,7 @@ export default function SuperAdminDashboard() {
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-gray-100  flex flex-col justify-center">
+        <div className="bg-white p-5 rounded-xl border border-gray-100  flex flex-col justify-center">
           <div className="flex justify-between mb-3">
              <h4 className="font-bold text-xs text-gray-900 uppercase">System Health</h4>
              <span className="text-xs font-bold text-[#0D824D] cursor-pointer hover:underline">Details</span>
@@ -348,7 +384,7 @@ const StatCard = ({ label, value, growth, color, icon, bg, delay }: any) => (
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ delay }}
-    className="bg-white p-8 rounded-[2.5rem] border border-gray-100  relative overflow-hidden group hover: transition-all"
+    className="bg-white p-8 rounded-xl border border-gray-100  relative overflow-hidden group hover: transition-all"
   >
     <div className="flex items-center justify-between mb-3">
       <div style={{ backgroundColor: bg }} className="p-2.5 rounded-xl">
@@ -395,7 +431,7 @@ const ActivityItem = ({ title, sub, time }: any) => (
 );
 
 const FooterWidget = ({ title, value, subtitle, color }: any) => (
-  <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100  hover: transition-all">
+  <div className="bg-white p-8 rounded-xl border border-gray-100  hover: transition-all">
     <div className="flex justify-between mb-6">
         <h4 className="font-bold text-[14px] text-gray-900 uppercase leading-tight pr-4">{title}</h4>
         <ArrowUpRight size={18} className="text-gray-500 cursor-pointer hover:text-blue-500 transition-colors" />
