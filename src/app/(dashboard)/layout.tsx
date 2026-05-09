@@ -113,10 +113,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 className="flex items-center gap-3 cursor-pointer group"
               >
                 <div className="text-right hidden sm:block">
-                  <p className="text-base font-bold text-slate-900 leading-none mb-1">
+                  <p className="text-base font-semibold text-slate-900 leading-none mb-1">
                     {user.name && isNaN(Number(user.name)) ? user.name : 'Monu'}
                   </p>
-                  <p className="text-xs font-bold text-slate-600 uppercase leading-none">
+                  <p className="text-xs font-semibold text-slate-800 uppercase leading-none">
                     {user.role === 'SUPERADMIN' ? 'SUPER ADMIN' : user.role}
                   </p>
                 </div>
@@ -124,7 +124,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   {user.avatar || user.profileImage || user.vendor?.logoUrl ? (
                     <img src={user.avatar || user.profileImage || user.vendor?.logoUrl} alt={user.name} className="w-full h-full object-cover" />
                   ) : (
-                    <div className="w-full h-full bg-[#164e33] flex items-center justify-center font-bold text-white text-sm">
+                    <div className="w-full h-full bg-[#164e33] flex items-center justify-center font-semibold text-white text-sm">
                        {user.name ? user.name[0].toUpperCase() : 'M'}
                     </div>
                   )}
@@ -134,8 +134,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               {/* Profile Dropdown Overlay */}
               <div className={`fixed sm:absolute inset-x-4 sm:inset-x-auto sm:right-0 mt-3 sm:w-56 bg-white border border-gray-100 rounded-2xl  transition-all z-50 p-2 transform origin-top-right ${isProfileOpen ? 'opacity-100 scale-100 visible' : 'opacity-0 scale-95 invisible'}`}>
                  <div className="px-3 py-3 border-b border-gray-50 mb-1 sm:hidden">
-                    <p className="text-sm font-bold text-slate-900 capitalize leading-none mb-1">{user.name}</p>
-                    <p className="text-sm font-bold text-slate-600 uppercase">{user.role === 'SUPERADMIN' ? 'SUPER ADMIN' : user.role}</p>
+                    <p className="text-sm font-semibold text-slate-900 capitalize leading-none mb-1">{user.name}</p>
+                    <p className="text-sm font-semibold text-slate-800 uppercase">{user.role === 'SUPERADMIN' ? 'SUPER ADMIN' : user.role}</p>
                  </div>
 
                  <button 
@@ -143,7 +143,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                      router.push(getProfileLink());
                      setIsProfileOpen(false);
                    }}
-                   className="w-full flex items-center gap-3 px-3.5 py-3 text-sm font-bold text-slate-600 hover:text-[#164e33] hover:bg-[#164e33]/5 rounded-xl transition-all"
+                   className="w-full flex items-center gap-3 px-3.5 py-3 text-sm font-semibold text-slate-800 hover:text-[#164e33] hover:bg-[#164e33]/5 rounded-xl transition-all"
                  >
                     <UserCircle className="w-4 h-4" />
                     View Profile

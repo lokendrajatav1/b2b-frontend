@@ -2,13 +2,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { apiFetch } from '@/lib/api';
-import { 
-  Building2, 
-  Search, 
-  ShieldCheck, 
-  Clock, 
+import {
+  Building2,
+  Search,
+  ShieldCheck,
+  Clock,
   RefreshCcw,
   CheckCircle2,
+  ChevronLeft,
   ChevronDown,
   FileText,
   MapPin,
@@ -29,10 +30,10 @@ import {
   Linkedin,
   Instagram,
   Facebook,
-  ChevronRight,
   AlertCircle,
   X,
-  Filter
+  Filter,
+  ChevronRight
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -51,6 +52,10 @@ export default function VendorVerificationQueue() {
   const [timeRange, setTimeRange] = useState('ALL');
   const [customRange, setCustomRange] = useState({ start: '', end: '' });
 
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [total, setTotal] = useState(0);
+
   const [stats, setStats] = useState({
     total: 0,
     pending: 0,
@@ -61,15 +66,10 @@ export default function VendorVerificationQueue() {
   useEffect(() => {
     fetchVendors();
     fetchCities();
-  }, [activeTab, timeRange, customRange, searchQuery, city]);
+  }, [activeTab, timeRange, customRange, searchQuery, city, page, limit]);
 
   const fetchCities = async () => {
-    try {
-      const data = await apiFetch('/vendors/cities');
-      setCities(data.success ? data.data : []);
-    } catch (error) {
-      console.error('Failed to fetch cities:', error);
-    }
+    setCities(['Delhi', 'Mumbai', 'Bangalore', 'Ahmedabad', 'Surat', 'Kolkata', 'Pune', 'Chennai', 'Hyderabad', 'Jaipur']);
   };
 
   const fetchVendors = async () => {
@@ -84,9 +84,12 @@ export default function VendorVerificationQueue() {
         params.append('startDate', customRange.start);
         params.append('endDate', customRange.end);
       }
+      params.append('page', page.toString());
+      params.append('limit', limit.toString());
       
       const data = await apiFetch(`/admin/vendors/pending?${params.toString()}`);
-      setVendors(data.data || []);
+      setVendors(data.data?.vendors || []);
+      setTotal(data.data?.total || 0);
       
       const analytics = await apiFetch('/admin/analytics');
       const s = analytics.data?.summary || {};
@@ -128,9 +131,14 @@ export default function VendorVerificationQueue() {
       {/* --- HEADER --- */}
       <div className="flex flex-col gap-3 pb-6 border-b border-gray-100 max-w-7xl mx-auto">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-        <div>
-           <h1 className="text-xl font-bold text-slate-900 uppercase tracking-tight">Vendor Registry</h1>
-           <p className="text-slate-500 font-medium text-[11px] uppercase tracking-wider">Monitor and verify business partnerships</p>
+        <div className="flex items-center gap-5">
+           <div className="w-12 h-12 bg-emerald-50/50 rounded-xl border border-emerald-100 flex items-center justify-center text-emerald-600">
+              <Building2 className="w-6 h-6" />
+           </div>
+           <div>
+           <h1 className="text-xl font-semibold text-slate-900">Vendor Registry</h1>
+           <p className="text-sm text-slate-600 font-normal mt-1">Monitor and verify business partnerships</p>
+           </div>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
@@ -146,7 +154,7 @@ export default function VendorVerificationQueue() {
             </select>
 
            <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-3 py-2 shadow-sm">
-             <Clock size={14} className="text-slate-400" />
+             <Clock size={14} className="text-slate-600" />
              <select 
                value={timeRange}
                onChange={(e) => setTimeRange(e.target.value)}
@@ -173,7 +181,7 @@ export default function VendorVerificationQueue() {
               ))}
            </select>
 
-           <button onClick={fetchVendors} className="p-2 bg-white border border-gray-200 rounded-xl text-slate-400 hover:text-emerald-600 transition-all shadow-sm">
+           <button onClick={fetchVendors} className="p-2 bg-white border border-gray-200 rounded-xl text-slate-600 hover:text-emerald-600 transition-all shadow-sm">
               <RefreshCcw size={16} className={loading ? 'animate-spin' : ''} />
            </button>
         </div>
@@ -191,8 +199,8 @@ export default function VendorVerificationQueue() {
             >
               <div className="flex flex-col md:flex-row md:items-center gap-3 bg-slate-50 rounded-xl px-4 py-3 border border-slate-100">
                 <div className="flex items-center gap-3">
-                  <Clock size={13} className="text-slate-400 shrink-0" />
-                  <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider shrink-0">Custom Range:</span>
+                  <Clock size={13} className="text-slate-600 shrink-0" />
+                  <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider shrink-0">Custom Range:</span>
                 </div>
                 <div className="flex items-center gap-2 w-full md:w-auto">
                   <input
@@ -200,7 +208,7 @@ export default function VendorVerificationQueue() {
                     className="flex-1 md:flex-none bg-white border border-gray-200 rounded-lg px-3 py-1.5 text-[11px] font-bold text-slate-700 outline-none focus:border-emerald-400 transition-all shadow-sm cursor-pointer"
                     onChange={(e) => setCustomRange(prev => ({ ...prev, start: e.target.value }))}
                   />
-                  <span className="text-[11px] font-bold text-slate-400">→</span>
+                  <span className="text-[11px] font-bold text-slate-600">→</span>
                   <input
                     type="date"
                     className="flex-1 md:flex-none bg-white border border-gray-200 rounded-lg px-3 py-1.5 text-[11px] font-bold text-slate-700 outline-none focus:border-emerald-400 transition-all shadow-sm cursor-pointer"
@@ -219,13 +227,13 @@ export default function VendorVerificationQueue() {
       {/* --- SEARCH & REFRESH --- */}
       <div className="max-w-7xl mx-auto w-full">
          <div className="relative group">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-emerald-600" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600 group-focus-within:text-emerald-600" />
             <input 
               type="text" 
               placeholder="Search business by name, mobile, email or city..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-11 pr-4 py-3.5 bg-white border border-gray-200 rounded-xl text-[13px] font-bold text-slate-700 outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all shadow-sm placeholder:text-slate-300"
+              className="w-full pl-11 pr-4 py-3.5 bg-white border border-gray-200 rounded-xl text-[13px] font-medium text-slate-700 outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all shadow-sm placeholder:text-slate-600"
             />
          </div>
       </div>
@@ -264,16 +272,16 @@ export default function VendorVerificationQueue() {
 
       {/* --- TABLE AREA --- */}
       <div className="max-w-7xl mx-auto w-full">
-         <div className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm">
-            <div className="overflow-x-auto w-full no-scrollbar">
-               <table className="w-full text-left whitespace-nowrap min-w-[900px]">
-                  <thead>
-                  <tr className="bg-slate-50/50 border-b border-gray-100">
-                    <th className="px-6 py-5 text-[11px] font-bold text-slate-500 uppercase tracking-wider">Business Identity</th>
-                    <th className="px-6 py-5 text-[11px] font-bold text-slate-500 uppercase tracking-wider">Location Hub</th>
-                    <th className="px-6 py-5 text-[11px] font-bold text-slate-500 uppercase tracking-wider">Verification</th>
-                    <th className="px-6 py-5 text-[11px] font-bold text-slate-500 uppercase tracking-wider">Applied On</th>
-                    <th className="px-6 py-5 text-[11px] font-bold text-slate-500 uppercase tracking-wider text-right">Action</th>
+         <div className="bg-white border border-gray-100 rounded-xl overflow-hidden flex flex-col shadow-sm">
+            <div className="overflow-x-auto overflow-y-auto w-full max-h-[calc(70vh-50px)] relative">
+               <table className="w-full text-left border-collapse min-w-[900px]">
+                  <thead className="sticky top-0 z-20 bg-white">
+                  <tr className="bg-slate-50/50 border-b border-gray-100 shadow-sm">
+                    <th className="px-6 py-5 text-[11px] font-bold text-slate-600 uppercase tracking-wider">Business Identity</th>
+                    <th className="px-6 py-5 text-[11px] font-bold text-slate-600 uppercase tracking-wider">Location Hub</th>
+                    <th className="px-6 py-5 text-[11px] font-bold text-slate-600 uppercase tracking-wider">Verification</th>
+                    <th className="px-6 py-5 text-[11px] font-bold text-slate-600 uppercase tracking-wider">Applied On</th>
+                    <th className="px-6 py-5 text-[11px] font-bold text-slate-600 uppercase tracking-wider text-right">Action</th>
                   </tr>
                 </thead>
             <tbody className="divide-y divide-gray-50">
@@ -288,14 +296,14 @@ export default function VendorVerificationQueue() {
                     <tr key={vendor.id} className="group hover:bg-slate-50/50 transition-colors">
                        <td className="px-6 py-5">
                           <div className="flex items-center gap-4">
-                             <div className="w-12 h-12 rounded-xl bg-slate-50 border border-gray-100 overflow-hidden flex items-center justify-center text-lg font-bold text-slate-300 shrink-0">
+                             <div className="w-12 h-12 rounded-xl bg-slate-50 border border-gray-100 overflow-hidden flex items-center justify-center text-lg font-bold text-slate-600 shrink-0">
                                 {(vendor.logo || vendor.logoUrl) ? (
                                   <img src={vendor.logo || vendor.logoUrl} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                 ) : (vendor.businessName || vendor.user?.name)?.charAt(0)}
                              </div>
                              <div>
                                 <p className="text-sm font-bold text-slate-900 leading-tight">{vendor.businessName || vendor.user?.name}</p>
-                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">GST: {vendor.gstNumber || 'PENDING'}</p>
+                                <p className="text-[10px] font-bold text-slate-600 uppercase tracking-widest mt-0.5">GST: {vendor.gstNumber || 'PENDING'}</p>
                              </div>
                           </div>
                        </td>
@@ -350,6 +358,56 @@ export default function VendorVerificationQueue() {
             </tbody>
             </table>
             </div>
+
+            {/* Pagination Footer */}
+            <div className="px-8 py-6 bg-slate-50/30 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-6">
+               <p className="text-xs font-semibold text-slate-600 uppercase tracking-tight">
+                  Showing <span className="text-slate-900 font-bold">{Math.min(((page - 1) * limit) + 1, total)}</span> to <span className="text-slate-900 font-bold">{Math.min(page * limit, total)}</span> of <span className="text-slate-900 font-bold">{total}</span> nodes
+               </p>
+
+               <div className="flex items-center gap-6">
+                  <select
+                     value={limit}
+                     onChange={(e) => { setLimit(parseInt(e.target.value)); setPage(1); }}
+                     className="bg-white border border-gray-200 rounded-xl px-4 py-2 text-[10px] font-bold text-slate-700 outline-none hover:border-slate-300 transition-all cursor-pointer uppercase appearance-none pr-8"
+                     style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%23475569\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'%3E%3C/path%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.75rem center', backgroundSize: '1rem' }}
+                  >
+                     <option value={10}>10 nodes</option>
+                     <option value={25}>25 nodes</option>
+                     <option value={50}>50 nodes</option>
+                  </select>
+
+                  <div className="flex items-center gap-2">
+                     <button
+                        onClick={() => setPage(p => Math.max(1, p - 1))}
+                        disabled={page === 1}
+                        className="w-9 h-9 rounded-xl border border-gray-200 flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-white disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                     >
+                        <ChevronLeft size={18} />
+                     </button>
+                     
+                     <div className="flex items-center gap-1">
+                        {[...Array(Math.ceil(total / limit))].slice(0, 5).map((_, i) => (
+                           <button
+                              key={i}
+                              onClick={() => setPage(i + 1)}
+                              className={`w-9 h-9 rounded-xl text-[11px] font-bold transition-all ${page === i + 1 ? 'bg-slate-900 text-white shadow-lg' : 'text-slate-600 hover:bg-slate-100'}`}
+                           >
+                              {i + 1}
+                           </button>
+                        ))}
+                     </div>
+
+                     <button
+                        onClick={() => setPage(p => Math.min(Math.ceil(total / limit), p + 1))}
+                        disabled={page >= Math.ceil(total / limit)}
+                        className="w-9 h-9 rounded-xl border border-gray-200 flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-white disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                     >
+                        <ChevronRight size={18} />
+                     </button>
+                  </div>
+               </div>
+            </div>
          </div>
       </div>
 
@@ -389,7 +447,7 @@ export default function VendorVerificationQueue() {
                      </div>
                      <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                           <h3 className="text-2xl font-bold text-slate-900 truncate">{selectedVendor.businessName || selectedVendor.user?.name}</h3>
+                           <h3 className="text-xl font-semibold text-slate-900 truncate">{selectedVendor.businessName || selectedVendor.user?.name}</h3>
                            {selectedVendor.verified && <CheckCircle2 size={18} className="text-blue-500" />}
                         </div>
                         <div className="flex flex-wrap items-center gap-4">
@@ -421,7 +479,7 @@ export default function VendorVerificationQueue() {
                               {['LinkedIn', 'Instagram', 'Facebook', 'Globe'].map((s, i) => (
                                  <div key={i} className="p-3 bg-white border border-gray-100 rounded-xl flex items-center justify-between group cursor-pointer hover:border-emerald-200 transition-all">
                                     <span className="text-sm font-bold text-slate-600">{s}</span>
-                                    <ExternalLink size={12} className="text-slate-300 group-hover:text-emerald-500" />
+                                    <ExternalLink size={12} className="text-slate-600 group-hover:text-emerald-500" />
                                  </div>
                               ))}
                            </div>
@@ -440,7 +498,7 @@ export default function VendorVerificationQueue() {
                                     <FileText size={18} className="text-blue-500" />
                                     <span className="text-sm font-bold text-slate-700">Registration Doc</span>
                                  </div>
-                                 <ExternalLink size={14} className="text-slate-300" />
+                                 <ExternalLink size={14} className="text-slate-600" />
                               </div>
                            </div>
                         </div>
@@ -496,8 +554,8 @@ export default function VendorVerificationQueue() {
 const VerificationStatCard = ({ label, value, icon: Icon, iconColor, iconBg }: any) => (
   <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between group hover:shadow-md transition-all">
      <div>
-        <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">{label}</p>
-        <h4 className="text-2xl font-bold text-slate-900">{value}</h4>
+        <p className="text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1">{label}</p>
+        <h4 className="text-xl font-semibold text-slate-900">{value}</h4>
      </div>
      <div className={`w-12 h-12 rounded-xl ${iconBg} ${iconColor} flex items-center justify-center`}>
         <Icon size={20} />
@@ -511,7 +569,7 @@ const InfoRow = ({ icon, label, value }: any) => (
         {icon}
      </div>
      <div className="flex-1 min-w-0">
-        <p className="text-[10px] font-bold text-slate-400 uppercase leading-none mb-1 tracking-wider">{label}</p>
+        <p className="text-[10px] font-bold text-slate-600 uppercase leading-none mb-1 tracking-wider">{label}</p>
         <p className="text-sm font-bold text-slate-900 truncate leading-tight">{value}</p>
      </div>
   </div>
@@ -523,8 +581,10 @@ const AssetRow = ({ icon, label, value }: any) => (
         {icon}
      </div>
      <div className="flex-1 min-w-0">
-        <p className="text-[10px] font-bold text-slate-400 uppercase leading-none mb-1 tracking-wider">{label}</p>
+        <p className="text-[10px] font-bold text-slate-600 uppercase leading-none mb-1 tracking-wider">{label}</p>
         <p className="text-sm font-mono font-bold text-slate-900 truncate leading-none">{value}</p>
      </div>
   </div>
 );
+
+

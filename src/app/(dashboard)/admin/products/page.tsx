@@ -2,12 +2,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { apiFetch } from '@/lib/api';
-import { 
-  Briefcase, 
-  Search, 
-  Filter, 
-  XCircle, 
-  RefreshCcw, 
+import {
+  Briefcase,
+  Search,
+  Filter,
+  XCircle,
+  RefreshCcw,
   ShieldCheck,
   ChevronRight,
   Zap,
@@ -17,7 +17,8 @@ import {
   Clock,
   ChevronDown,
   X,
-  Layers
+  Layers,
+  ChevronLeft
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -34,9 +35,16 @@ export default function AdminProducts() {
   const [timeRange, setTimeRange] = useState('ALL');
   const [customRange, setCustomRange] = useState({ start: '', end: '' });
 
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+
   useEffect(() => {
     fetchOfferings();
   }, [searchTerm, statusFilter, typeFilter, timeRange, customRange]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [searchTerm, statusFilter, typeFilter, timeRange]);
 
   useEffect(() => {
     const header = document.getElementById('main-dashboard-header');
@@ -96,14 +104,14 @@ export default function AdminProducts() {
       <div className="flex flex-col gap-3 pb-6 border-b border-gray-100 max-w-7xl mx-auto">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div>
-           <h1 className="text-xl font-bold text-slate-900 uppercase tracking-tight">Hub Catalogue Review</h1>
-           <p className="text-slate-500 font-medium text-[11px] uppercase tracking-wider">Moderate product listings for your hub</p>
+           <h1 className="text-xl font-semibold text-slate-900">Hub Catalogue Review</h1>
+           <p className="text-sm text-gray-600 font-normal mt-1">Moderate product listings for your hub</p>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
            {/* Date Range Selector */}
            <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-3 py-2 shadow-sm">
-             <Clock size={14} className="text-slate-400" />
+             <Clock size={14} className="text-slate-600" />
              <select 
                value={timeRange}
                onChange={(e) => setTimeRange(e.target.value)}
@@ -141,7 +149,7 @@ export default function AdminProducts() {
                 <option value="SERVICE">Services</option>
               </select>
 
-              <button onClick={fetchOfferings} className="p-2 bg-white border border-gray-200 rounded-xl text-slate-400 hover:text-emerald-600 transition-all shadow-sm">
+              <button onClick={fetchOfferings} className="p-2 bg-white border border-gray-200 rounded-xl text-slate-600 hover:text-emerald-600 transition-all shadow-sm">
                 <RefreshCcw size={16} className={loading ? 'animate-spin' : ''} />
               </button>
            </div>
@@ -160,8 +168,8 @@ export default function AdminProducts() {
             >
               <div className="flex flex-col md:flex-row md:items-center gap-3 bg-slate-50 rounded-xl px-4 py-3 border border-slate-100">
                 <div className="flex items-center gap-3">
-                  <Clock size={13} className="text-slate-400 shrink-0" />
-                  <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider shrink-0">Custom Range:</span>
+                  <Clock size={13} className="text-slate-600 shrink-0" />
+                  <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider shrink-0">Custom Range:</span>
                 </div>
                 <div className="flex items-center gap-2 w-full md:w-auto">
                   <input
@@ -169,7 +177,7 @@ export default function AdminProducts() {
                     className="flex-1 md:flex-none bg-white border border-gray-200 rounded-lg px-3 py-1.5 text-[11px] font-bold text-slate-700 outline-none focus:border-emerald-400 transition-all shadow-sm cursor-pointer"
                     onChange={(e) => setCustomRange(prev => ({ ...prev, start: e.target.value }))}
                   />
-                  <span className="text-[11px] font-bold text-slate-400">→</span>
+                  <span className="text-[11px] font-bold text-slate-600">→</span>
                   <input
                     type="date"
                     className="flex-1 md:flex-none bg-white border border-gray-200 rounded-lg px-3 py-1.5 text-[11px] font-bold text-slate-700 outline-none focus:border-emerald-400 transition-all shadow-sm cursor-pointer"
@@ -188,7 +196,7 @@ export default function AdminProducts() {
       {/* Dedicated Search Row */}
       <div className="max-w-7xl mx-auto">
          <div className="relative group">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-emerald-600" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600 group-focus-within:text-emerald-600" />
             <input 
               type="text" 
               placeholder="Search by product name, vendor, category or city..." 
@@ -209,8 +217,8 @@ export default function AdminProducts() {
          ].map((stat, i) => (
            <div key={i} className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between group hover:shadow-md transition-all">
               <div>
-                 <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">{stat.label}</p>
-                 <h4 className="text-2xl font-bold text-slate-900">{stat.value}</h4>
+                 <p className="text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1">{stat.label}</p>
+                 <h4 className="text-xl font-semibold text-slate-900">{stat.value}</h4>
               </div>
               <div className={`w-12 h-12 rounded-xl ${stat.bg} ${stat.color} flex items-center justify-center`}>
                  <stat.icon size={20} />
@@ -220,16 +228,16 @@ export default function AdminProducts() {
       </div>
 
       <div className="max-w-7xl mx-auto">
-         <div className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm">
-            <div className="overflow-x-auto w-full no-scrollbar">
-               <table className="w-full text-left whitespace-nowrap min-w-[900px]">
-                  <thead>
-                  <tr className="bg-slate-50/50 border-b border-gray-100">
-                      <th className="px-6 py-5 text-[11px] font-bold text-slate-500 uppercase tracking-wider">Product Info</th>
-                      <th className="px-6 py-5 text-[11px] font-bold text-slate-500 uppercase tracking-wider">Vendor Node</th>
-                      <th className="px-6 py-5 text-[11px] font-bold text-slate-500 uppercase tracking-wider">Financials</th>
-                      <th className="px-6 py-5 text-[11px] font-bold text-slate-500 uppercase tracking-wider">Current Status</th>
-                      <th className="px-6 py-5 text-[11px] font-bold text-slate-500 uppercase tracking-wider text-right">Actions</th>
+         <div className="bg-white border border-gray-100 rounded-xl overflow-hidden flex flex-col shadow-sm">
+            <div className="overflow-x-auto overflow-y-auto w-full max-h-[calc(70vh-50px)] relative">
+               <table className="w-full text-left border-collapse min-w-[900px]">
+                  <thead className="sticky top-0 z-20 bg-white">
+                  <tr className="bg-slate-50/50 border-b border-gray-100 shadow-sm">
+                      <th className="px-6 py-5 text-[11px] font-bold text-slate-600 uppercase tracking-wider">Product Info</th>
+                      <th className="px-6 py-5 text-[11px] font-bold text-slate-600 uppercase tracking-wider">Vendor Node</th>
+                      <th className="px-6 py-5 text-[11px] font-bold text-slate-600 uppercase tracking-wider">Financials</th>
+                      <th className="px-6 py-5 text-[11px] font-bold text-slate-600 uppercase tracking-wider">Current Status</th>
+                      <th className="px-6 py-5 text-[11px] font-bold text-slate-600 uppercase tracking-wider text-right">Actions</th>
                    </tr>
                 </thead>
             <tbody className="divide-y divide-gray-50">
@@ -240,7 +248,7 @@ export default function AdminProducts() {
                    </tr>
                 ))
               ) : offerings.length > 0 ? (
-                offerings.map((offer) => (
+                offerings.slice((page - 1) * limit, page * limit).map((offer) => (
                   <tr key={offer.id} className="group hover:bg-slate-50/50 transition-colors">
                     {/* Product Info */}
                     <td className="px-6 py-5">
@@ -253,9 +261,9 @@ export default function AdminProducts() {
                           <div className="max-w-[240px]">
                              <p className="text-sm font-bold text-slate-900 truncate leading-tight">{offer.name}</p>
                              <div className="flex items-center gap-2 mt-1">
-                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{offer.category || 'General'}</span>
+                                <span className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">{offer.category || 'General'}</span>
                                 <span className="w-1 h-1 bg-slate-200 rounded-full"></span>
-                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{offer.type || 'Product'}</span>
+                                <span className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">{offer.type || 'Product'}</span>
                              </div>
                           </div>
                        </div>
@@ -282,7 +290,7 @@ export default function AdminProducts() {
                     <td className="px-6 py-5">
                        <div>
                           <p className="text-sm font-bold text-slate-900">₹{offer.price?.toLocaleString() || 'N/A'}</p>
-                          <p className="text-[10px] font-bold text-slate-400 uppercase mt-0.5 tracking-tight">MOQ: {offer.moq || 1} Units</p>
+                          <p className="text-[10px] font-bold text-slate-600 uppercase mt-0.5 tracking-tight">MOQ: {offer.moq || 1} Units</p>
                        </div>
                     </td>
 
@@ -319,13 +327,64 @@ export default function AdminProducts() {
                        <CheckCheck className="w-10 h-10 text-emerald-500/30" />
                     </div>
                     <p className="text-sm font-bold text-slate-800">Workspace Clear</p>
-                    <p className="text-xs font-bold text-slate-400 mt-1 uppercase">No pending reviews at this time.</p>
+                    <p className="text-xs font-bold text-slate-600 mt-1 uppercase">No pending reviews at this time.</p>
                   </td>
                 </tr>
               )}
             </tbody>
           </table>
         </div>
+
+            {/* Pagination Footer */}
+            <div className="px-8 py-6 bg-slate-50/30 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-6">
+               <p className="text-xs font-semibold text-slate-600 uppercase tracking-tight">
+                  Showing <span className="text-slate-900 font-bold">{Math.min(((page - 1) * limit) + 1, offerings.length)}</span> to <span className="text-slate-900 font-bold">{Math.min(page * limit, offerings.length)}</span> of <span className="text-slate-900 font-bold">{offerings.length}</span> products
+               </p>
+
+               <div className="flex items-center gap-6">
+                  <select
+                     value={limit}
+                     onChange={(e) => { setLimit(parseInt(e.target.value)); setPage(1); }}
+                     className="bg-white border border-gray-200 rounded-xl px-4 py-2 text-[10px] font-bold text-slate-700 outline-none hover:border-slate-300 transition-all cursor-pointer uppercase appearance-none pr-8"
+                     style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%23475569\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'%3E%3C/path%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.75rem center', backgroundSize: '1rem' }}
+                  >
+                     <option value={10}>10 products</option>
+                     <option value={25}>25 products</option>
+                     <option value={50}>50 products</option>
+                  </select>
+
+                  <div className="flex items-center gap-2">
+                     <button
+                        onClick={() => setPage(p => Math.max(1, p - 1))}
+                        disabled={page === 1}
+                        className="w-9 h-9 rounded-xl border border-gray-200 flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-white disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                     >
+                        <ChevronLeft size={18} />
+                     </button>
+                     
+                     <div className="flex items-center gap-1">
+                        {[...Array(Math.max(0, Math.ceil((offerings?.length || 0) / (limit || 10)) || 0))].slice(0, 5).map((_, i) => (
+                           <button
+                              key={i}
+                              onClick={() => setPage(i + 1)}
+                              className={`w-9 h-9 rounded-xl text-[11px] font-bold transition-all ${page === i + 1 ? 'bg-slate-900 text-white shadow-lg' : 'text-slate-600 hover:bg-slate-100'}`}
+                           >
+                              {i + 1}
+                           </button>
+                        ))}
+                     </div>
+
+                     <button
+                        onClick={() => setPage(p => Math.min(limit > 0 ? Math.ceil(offerings.length / limit) : 0, p + 1))}
+                        disabled={page >= limit > 0 ? Math.ceil(offerings.length / limit) : 0}
+                        className="w-9 h-9 rounded-xl border border-gray-200 flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-white disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                     >
+                        <ChevronRight size={18} />
+                     </button>
+                  </div>
+               </div>
+            </div>
+
       </div>
     </div>
 
@@ -350,10 +409,10 @@ export default function AdminProducts() {
                     </div>
                     <div>
                        <h2 className="text-[15px] font-bold text-slate-900 uppercase tracking-tight">Review Listing</h2>
-                       <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Verification Hub node</p>
+                       <p className="text-[10px] font-bold text-slate-600 uppercase tracking-widest mt-0.5">Verification Hub node</p>
                     </div>
                   </div>
-                  <button onClick={() => setIsModalOpen(false)} className="p-2.5 hover:bg-slate-50 rounded-xl transition-all text-slate-400 hover:text-slate-900 border border-transparent hover:border-slate-100">
+                  <button onClick={() => setIsModalOpen(false)} className="p-2.5 hover:bg-slate-50 rounded-xl transition-all text-slate-600 hover:text-slate-900 border border-transparent hover:border-slate-100">
                      <X className="w-5 h-5" />
                   </button>
                </div>
@@ -362,7 +421,7 @@ export default function AdminProducts() {
                   {/* Visual Inspection Section */}
                   <div className="space-y-3">
                      <div className="flex items-center justify-between px-1">
-                        <h4 className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Visual Assets</h4>
+                        <h4 className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Visual Assets</h4>
                         <span className="text-[9px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-100">HD VIEW</span>
                      </div>
                      <div className="flex gap-3 overflow-x-auto no-scrollbar pb-1 snap-x">
@@ -381,7 +440,7 @@ export default function AdminProducts() {
                               <div className="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center border border-slate-100">
                                  <Package className="w-6 h-6 text-slate-200" />
                               </div>
-                              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">No Visuals</span>
+                              <span className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">No Visuals</span>
                            </div>
                         )}
                      </div>
@@ -400,17 +459,17 @@ export default function AdminProducts() {
 
                      <div className="grid grid-cols-2 gap-6 border-t border-gray-50 pt-5">
                         <div>
-                           <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Price Point</p>
+                           <p className="text-[9px] font-bold text-slate-600 uppercase tracking-wider mb-0.5">Price Point</p>
                            <p className="text-lg font-bold text-slate-900">₹{selectedOffering.price?.toLocaleString() || 'N/A'}</p>
                         </div>
                         <div>
-                           <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Min. Order</p>
-                           <p className="text-lg font-bold text-slate-900">{selectedOffering.moq || 1} <span className="text-[10px] text-slate-400 ml-0.5">Units</span></p>
+                           <p className="text-[9px] font-bold text-slate-600 uppercase tracking-wider mb-0.5">Min. Order</p>
+                           <p className="text-lg font-bold text-slate-900">{selectedOffering.moq || 1} <span className="text-[10px] text-slate-600 ml-0.5">Units</span></p>
                         </div>
                      </div>
 
                      <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
-                        <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 text-center">Summary</p>
+                        <p className="text-[9px] font-bold text-slate-600 uppercase tracking-wider mb-1.5 text-center">Summary</p>
                         <p className="text-[12px] text-slate-600 leading-relaxed font-medium">
                            {selectedOffering.description || 'No description provided.'}
                         </p>
@@ -421,8 +480,8 @@ export default function AdminProducts() {
                   {selectedOffering.specifications && (
                     <div className="space-y-3">
                         <div className="flex items-center gap-2 px-1">
-                           <Layers size={12} className="text-slate-400" />
-                           <h4 className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Technical Ledger</h4>
+                           <Layers size={12} className="text-slate-600" />
+                           <h4 className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Technical Ledger</h4>
                         </div>
                         <div className="p-6 bg-slate-900 rounded-xl shadow-lg relative overflow-hidden">
                            <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 rounded-full blur-3xl -mr-8 -mt-8" />
@@ -435,9 +494,9 @@ export default function AdminProducts() {
 
                   {/* Business Metadata */}
                   <div className="space-y-3">
-                     <h4 className="text-[10px] font-bold text-slate-500 uppercase tracking-wider px-1">Vendor Context</h4>
+                     <h4 className="text-[10px] font-bold text-slate-600 uppercase tracking-wider px-1">Vendor Context</h4>
                      <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group transition-all">
-                        <div className="w-12 h-12 rounded-xl bg-slate-50 border border-gray-100 flex items-center justify-center text-slate-400 text-lg font-bold overflow-hidden shrink-0 group-hover:shadow-sm transition-all">
+                        <div className="w-12 h-12 rounded-xl bg-slate-50 border border-gray-100 flex items-center justify-center text-slate-600 text-lg font-bold overflow-hidden shrink-0 group-hover:shadow-sm transition-all">
                            {(selectedOffering.vendor?.logo || selectedOffering.vendor?.logoUrl) ? (
                              <img src={selectedOffering.vendor?.logo || selectedOffering.vendor?.logoUrl} className="w-full h-full object-cover" />
                            ) : selectedOffering.vendor?.businessName?.charAt(0)}
@@ -447,7 +506,7 @@ export default function AdminProducts() {
                               <p className="text-[13px] font-bold text-slate-900">{selectedOffering.vendor?.businessName}</p>
                               <ShieldCheck size={12} className="text-emerald-500" />
                            </div>
-                           <p className="text-[10px] font-bold text-slate-400 mt-0.5 uppercase tracking-widest">
+                           <p className="text-[10px] font-bold text-slate-600 mt-0.5 uppercase tracking-widest">
                               {selectedOffering.vendor?.city || 'Verified'} Node
                            </p>
                         </div>
@@ -481,3 +540,5 @@ export default function AdminProducts() {
     </div>
   );
 }
+
+

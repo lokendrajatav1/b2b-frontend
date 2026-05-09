@@ -115,20 +115,20 @@ export default function AdminDashboard() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
           <h1 className="text-xl md:text-2xl font-bold text-slate-800">Key metrics for {currentZone}</h1>
-          <p className="text-sm font-medium text-slate-500">Regional intelligence & performance overview</p>
+          <p className="text-sm font-medium text-slate-600">Regional intelligence & performance overview</p>
         </div>
         <div className="flex items-center gap-3">
           <select 
             value={timeRange} 
             onChange={(e) => setTimeRange(e.target.value)}
-            className="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-slate-700 outline-none focus:ring-4 focus:ring-[#164e33]/5 focus:border-[#164e33]/20 transition-all cursor-pointer"
+            className="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-slate-800 outline-none focus:ring-4 focus:ring-[#164e33]/5 focus:border-[#164e33]/20 transition-all cursor-pointer"
           >
             <option value="all">All Time</option>
             <option value="yearly">This Year</option>
             <option value="monthly">This Month</option>
             <option value="weekly">This Week</option>
           </select>
-          <button className="px-5 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-bold text-slate-700 hover:bg-slate-50 transition-all flex items-center gap-2 shadow-sm active:scale-95">
+          <button className="px-5 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-bold text-slate-800 hover:bg-slate-50 transition-all flex items-center gap-2 shadow-sm active:scale-95">
             <Filter size={16} /> Filters
           </button>
         </div>
@@ -144,7 +144,7 @@ export default function AdminDashboard() {
             <div className="flex items-start justify-between relative z-10">
               <div className="space-y-1">
                  <div className="min-h-[36px] flex items-start">
-                    <p className="text-[10px] md:text-[11px] font-bold text-slate-500 uppercase leading-tight tracking-normal">{card.label}</p>
+                    <p className="text-[10px] md:text-[11px] font-bold text-slate-600 uppercase leading-tight tracking-normal">{card.label}</p>
                  </div>
                  <h3 className="text-2xl md:text-3xl font-bold text-slate-900 leading-none">{loading ? '...' : card.value}</h3>
               </div>
@@ -234,7 +234,7 @@ export default function AdminDashboard() {
             </ResponsiveContainer>
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none pb-0">
               <span className="text-[18px] font-bold text-slate-800 tabular-nums">{stats?.totalLeads || 0}</span>
-              <span className="text-xs text-slate-700 font-medium uppercase">TOTAL</span>
+              <span className="text-xs text-slate-800 font-medium uppercase">TOTAL</span>
             </div>
           </div>
           <div className="flex flex-wrap flex-row items-center justify-center gap-3 mt-4">
@@ -284,13 +284,13 @@ export default function AdminDashboard() {
                   <div className="w-8 h-8 rounded-full bg-[#186a5a] text-white flex items-center justify-center font-bold text-xs">{lead.buyerName?.charAt(0) || 'U'}</div>
                   <div>
                     <p className="text-sm font-semibold text-slate-800">{lead.searchKeyword ? lead.searchKeyword : `Requirement from ${lead.buyerName}`}</p>
-                    <p className="text-xs text-slate-700">{lead.city}</p>
+                    <p className="text-xs text-slate-800">{lead.city}</p>
                   </div>
                 </div>
-                <span className="text-sm font-medium tabular-nums text-slate-700">Just now</span>
+                <span className="text-sm font-medium tabular-nums text-slate-800">Just now</span>
               </div>
             )) : (
-              <div className="py-10 text-center text-sm text-slate-700">Scanning for regional trade signals...</div>
+              <div className="py-10 text-center text-sm text-slate-800">Scanning for regional trade signals...</div>
             )}
           </div>
         </div>
@@ -307,7 +307,7 @@ export default function AdminDashboard() {
                 <div className="w-8 h-8 rounded-full bg-[#164e33] flex items-center justify-center text-white"><ShieldAlert className="w-4 h-4" /></div>
                 <div>
                   <p className="text-[14px] font-semibold text-slate-800 leading-tight">{stats?.pendingApprovals || 0} Vendors</p>
-                  <p className="text-xs text-slate-700">Awaiting Profile Review</p>
+                  <p className="text-xs text-slate-800">Awaiting Profile Review</p>
                 </div>
               </div>
               <Link href="/admin/vendors" className="text-xs font-bold text-[#f58220] opacity-0 group-hover:opacity-100 transition-opacity">VERIFY</Link>
@@ -317,7 +317,7 @@ export default function AdminDashboard() {
                 <div className="w-8 h-8 rounded-full bg-[#164e33] flex items-center justify-center text-white"><Target className="w-4 h-4" /></div>
                 <div>
                   <p className="text-[14px] font-semibold text-slate-800 leading-tight">Product Moderation</p>
-                  <p className="text-xs text-slate-700">Catalog Checks</p>
+                  <p className="text-xs text-slate-800">Catalog Checks</p>
                 </div>
               </div>
               <Link href="/admin/products" className="text-xs font-bold text-[#f58220] opacity-0 group-hover:opacity-100 transition-opacity">REVIEW</Link>

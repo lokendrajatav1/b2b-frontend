@@ -313,7 +313,7 @@ export default function SuperAdminProfile() {
                         <button 
                            type="button"
                            onClick={() => setShowPassword(!showPassword)}
-                           className={`absolute right-4 top-1/2 -translate-y-1/2 transition-colors ${showPassword ? 'text-[#164e33]' : 'text-slate-400 hover:text-slate-600'}`}
+                           className={`absolute right-4 top-1/2 -translate-y-1/2 transition-colors ${showPassword ? 'text-[#164e33]' : 'text-slate-600 hover:text-slate-600'}`}
                          >
                            {showPassword ? <EyeOff className="w-4.5 h-4.5" /> : <Eye className="w-4.5 h-4.5" />}
                         </button>

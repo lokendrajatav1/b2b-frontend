@@ -4,7 +4,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { apiFetch } from '@/lib/api';
 import { useRouter } from 'next/navigation';
 import { 
-  Box, 
+  Package,
+  Box,
   Plus, 
   Trash2, 
   Save, 
@@ -53,7 +54,7 @@ function SubscriptionGate({ vendorName }: { vendorName: string }) {
       </div>
       <div className="space-y-2 max-w-md">
         <h2 className="text-lg font-semibold text-slate-900">Subscription Required</h2>
-        <p className="text-sm text-slate-700">
+        <p className="text-sm text-slate-800">
           Hi <span className="font-medium text-slate-800">{vendorName || 'there'}</span>, you need an active subscription to list and manage your products.
         </p>
       </div>
@@ -108,6 +109,10 @@ export default function VendorProducts() {
     type: 'PRODUCT',
     sku: ''
   });
+
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [total, setTotal] = useState(0);
   
   const [newKeyword, setNewKeyword] = useState('');
   const [showProductForm, setShowProductForm] = useState(false);
@@ -303,256 +308,292 @@ export default function VendorProducts() {
   return (
     <div className="space-y-6 md:space-y-8 animate-fade-in pb-16 px-4 md:px-0">
       
-      {/* Header Section */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-         <div className="space-y-1">
-            <h1 className="text-2xl md:text-3xl font-bold text-slate-900">Products & Services</h1>
-            <p className="text-xs md:text-sm font-medium text-slate-600">Manage your catalog items and visibility settings</p>
+      {/* Standardized Header Section */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-gray-100">
+         <div className="flex items-center gap-5">
+            <div className="w-12 h-12 bg-emerald-50/50 rounded-xl border border-emerald-100 flex items-center justify-center text-emerald-600">
+               <Package className="w-6 h-6" />
+            </div>
+            <div>
+               <h1 className="text-xl font-semibold text-slate-900">Catalog Management</h1>
+               <p className="text-sm text-slate-800 font-normal mt-1">Manage your products, services and search visibility settings.</p>
+            </div>
          </div>
          <button 
            onClick={handleUpdate}
            disabled={saving}
-           className="px-6 md:px-8 py-2.5 md:py-3 bg-[#062d1d] text-white rounded-xl font-bold text-xs md:text-sm flex items-center gap-2 hover:bg-[#041d13] transition-all shadow-xl shadow-emerald-950/10 active:scale-[0.98]"
+           className="px-6 py-2.5 bg-[#164e33] text-white rounded-xl font-semibold text-sm flex items-center gap-2 hover:bg-[#113f29] transition-all shadow-sm disabled:opacity-50"
          >
             {saving ? <RefreshCcw size={16} className="animate-spin" /> : <Save size={16} />}
             Save Changes
          </button>
       </div>
 
-      {/* Modern Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+      {/* Stats Grid - Refined Spacing */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
          {[
-            { label: 'Total Products', value: vendorData.products.length, sub: `+${Math.floor(vendorData.products.length * 0.1)} from last month`, icon: Box, color: '#10b981', bg: 'bg-emerald-50' },
-            { label: 'Approved Products', value: vendorData.products.filter((p: any) => p.status === 'APPROVED').length, sub: `${Math.round((vendorData.products.filter((p: any) => p.status === 'APPROVED').length / (vendorData.products.length || 1)) * 100)}% of total`, icon: CheckCircle2, color: '#f58220', bg: 'bg-orange-50' },
-            { label: 'Avg. Visibility Score', value: `${vendorData.totalScore || 82}%`, sub: 'Good visibility', icon: Eye, color: '#3b82f6', bg: 'bg-blue-50' },
-            { label: 'Total Views', value: vendorData.views || '1,248', sub: '+18% from last month', icon: TrendingUp, color: '#8b5cf6', bg: 'bg-purple-50' },
+            { label: 'Total Products', value: vendorData.products.length, sub: `+${Math.floor(vendorData.products.length * 0.1)} growth`, icon: Box, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+            { label: 'Approved Items', value: vendorData.products.filter((p: any) => p.status === 'APPROVED').length, sub: 'Verified & Active', icon: CheckCircle2, color: 'text-orange-600', bg: 'bg-orange-50' },
+            { label: 'Visibility Score', value: `${vendorData.totalScore || 82}%`, sub: 'Search Ranking', icon: Eye, color: 'text-blue-600', bg: 'bg-blue-50' },
+            { label: 'Total Views', value: vendorData.views || '1,248', sub: 'Last 30 Days', icon: TrendingUp, color: 'text-purple-600', bg: 'bg-purple-50' },
          ].map((stat, i) => (
-            <div key={i} className="bg-white p-5 rounded-xl border border-slate-100 shadow-sm group hover:shadow-xl hover:shadow-slate-200/40 transition-all duration-500 relative flex flex-col justify-between min-h-[165px]">
-               <div className="flex items-start gap-4 relative z-10">
-                  <div className={`w-10 h-10 ${stat.bg} rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110 duration-500`} style={{ color: stat.color }}>
-                     <stat.icon size={20} />
-                  </div>
-                  <div className="space-y-1.5 flex-1">
-                     <div className="min-h-[32px] flex items-start">
-                        <p className="text-[10px] md:text-[11px] font-bold text-slate-600 uppercase leading-tight">{stat.label}</p>
-                     </div>
-                     <h3 className="text-xl md:text-2xl font-bold text-slate-900 leading-none">{stat.value}</h3>
-                  </div>
+            <div key={i} className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-start gap-4 hover:border-emerald-200 transition-all">
+               <div className={`w-12 h-12 ${stat.bg} ${stat.color} rounded-xl flex items-center justify-center shrink-0 border border-gray-50`}>
+                  <stat.icon size={22} />
                </div>
-               <div className="relative z-10 pt-4 border-t border-slate-50 mt-4">
-                  <p className={`text-[10px] md:text-[11px] font-bold ${i === 1 || i === 2 ? 'text-slate-600' : 'text-emerald-500'}`}>{stat.sub}</p>
+               <div className="space-y-1">
+                  <p className="text-xs font-semibold text-slate-800 uppercase tracking-tight">{stat.label}</p>
+                  <h3 className="text-xl font-bold text-slate-900">{stat.value}</h3>
+                  <p className="text-[10px] font-bold text-emerald-600">{stat.sub}</p>
                </div>
             </div>
          ))}
       </div>
 
       {/* Main Content Layout */}
-      <div className="space-y-8">
+      <div className="space-y-6 md:space-y-8">
          
-         {/* Table Section */}
-         <div className="space-y-6">
-            <div className="bg-white rounded-xl md:rounded-xl border border-slate-100 shadow-sm overflow-hidden">
-               
-               {/* Controls Header */}
-               <div className="p-6 md:p-8 border-b border-slate-50 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                  <div className="flex items-center gap-8 md:gap-10">
-                     <button 
-                       onClick={() => setActiveTab('PRODUCT')}
-                       className={`text-[10px] md:text-xs font-bold uppercase pb-3 relative transition-all ${activeTab === 'PRODUCT' ? 'text-slate-900' : 'text-slate-600 hover:text-slate-800'}`}
-                     >
-                        Products
-                        {activeTab === 'PRODUCT' && <motion.div layoutId="tab-underline" className="absolute bottom-0 left-0 right-0 h-1 bg-[#062d1d] rounded-full" />}
-                     </button>
-                     <button 
-                       onClick={() => setActiveTab('SERVICE')}
-                       className={`text-[10px] md:text-xs font-bold uppercase pb-3 relative transition-all ${activeTab === 'SERVICE' ? 'text-slate-900' : 'text-slate-600 hover:text-slate-800'}`}
-                     >
-                        Services
-                        {activeTab === 'SERVICE' && <motion.div layoutId="tab-underline" className="absolute bottom-0 left-0 right-0 h-1 bg-[#062d1d] rounded-full" />}
-                     </button>
-                  </div>
-                  
-                  <div className="flex items-center gap-3 md:gap-4">
-                     <button className="h-10 md:h-11 px-4 md:px-5 bg-slate-50 text-slate-700 rounded-xl text-[10px] md:text-xs font-bold flex items-center gap-2 border border-slate-100 hover:bg-slate-100 transition-all active:scale-95">
-                        <Filter size={14} /> Filters
-                     </button>
-                     <button 
-                       onClick={() => setShowProductForm(true)}
-                       className="h-10 md:h-11 px-5 md:px-6 bg-[#062d1d] text-white rounded-xl text-[10px] md:text-xs font-bold flex items-center gap-2 hover:bg-black transition-all active:scale-95 shadow-lg shadow-emerald-950/10"
-                     >
-                        <Plus size={16} /> Add Item
-                     </button>
-                  </div>
+         {/* Catalog Controls */}
+         <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+            <div className="p-4 md:p-6 border-b border-gray-50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+               <div className="flex items-center gap-6 md:gap-8">
+                  <button 
+                    onClick={() => setActiveTab('PRODUCT')}
+                    className={`text-[11px] font-bold uppercase tracking-wider pb-1 relative transition-all ${activeTab === 'PRODUCT' ? 'text-[#164e33]' : 'text-slate-800 hover:text-slate-800'}`}
+                  >
+                     Products
+                     {activeTab === 'PRODUCT' && <motion.div layoutId="tab-underline" className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#164e33] rounded-full" />}
+                  </button>
+                  <button 
+                    onClick={() => setActiveTab('SERVICE')}
+                    className={`text-[11px] font-bold uppercase tracking-wider pb-1 relative transition-all ${activeTab === 'SERVICE' ? 'text-[#164e33]' : 'text-slate-800 hover:text-slate-800'}`}
+                  >
+                     Services
+                     {activeTab === 'SERVICE' && <motion.div layoutId="tab-underline" className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#164e33] rounded-full" />}
+                  </button>
                </div>
+               
+               <div className="flex items-center gap-2">
+                  <button 
+                    onClick={() => setShowProductForm(true)}
+                    className="px-5 py-2 bg-[#164e33] text-white rounded-xl text-[11px] font-bold flex items-center gap-2 hover:bg-[#113f29] transition-all active:scale-95 shadow-sm"
+                  >
+                     <Plus size={14} /> Add {activeTab === 'PRODUCT' ? 'Product' : 'Service'}
+                  </button>
+               </div>
+            </div>
 
-               {/* Add/Edit Drawer */}
-               <AnimatePresence>
-                  {showProductForm && (
-                     <motion.div 
-                        initial={{ opacity: 0, height: 0 }} 
-                        animate={{ opacity: 1, height: 'auto' }} 
-                        exit={{ opacity: 0, height: 0 }} 
-                        className="bg-slate-50/80 border-b border-slate-100 overflow-hidden"
-                     >
+            {/* Add/Edit Drawer */}
+            <AnimatePresence>
+               {showProductForm && (
+                  <motion.div 
+                     initial={{ opacity: 0, height: 0 }} 
+                     animate={{ opacity: 1, height: 'auto' }} 
+                     exit={{ opacity: 0, height: 0 }} 
+                     className="bg-slate-50/50 border-b border-gray-100 overflow-hidden"
+                  >
                         <div className="p-6 md:p-8 space-y-8">
                            <div className="flex items-center justify-between">
-                              <h3 className="text-[10px] md:text-xs font-bold text-slate-900 uppercase">Item Configuration</h3>
-                              <button onClick={()=>{setShowProductForm(false); setEditingId(null);}} className="p-2 text-slate-400 hover:text-red-500 transition-colors"><X size={18} /></button>
+                              <h3 className="text-xs font-bold text-slate-900 uppercase">Item Configuration</h3>
+                              <button onClick={()=>{setShowProductForm(false); setEditingId(null);}} className="p-2 text-slate-800 hover:text-red-500 transition-colors"><X size={18} /></button>
                            </div>
                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-                              <div className="space-y-4 md:space-y-5">
+                              <div className="space-y-4">
                                  <div className="space-y-2">
-                                    <label className="text-[9px] md:text-[10px] font-bold text-slate-600 uppercase">Item Identity</label>
-                                    <input type="text" placeholder="e.g. Herbal Ayurveda Hub" className="w-full p-3 md:p-4 bg-white border border-slate-200 rounded-xl text-xs md:text-sm font-semibold focus:ring-4 focus:ring-emerald-500/5 focus:border-emerald-500/20 transition-all outline-none" value={newProduct.name} onChange={e=>setNewProduct({...newProduct, name: e.target.value})} />
+                                    <label className="text-[10px] font-bold text-slate-800 uppercase">Item Identity</label>
+                                    <input type="text" placeholder="e.g. Herbal Ayurveda Hub" className="w-full p-4 bg-white border border-gray-200 rounded-xl text-sm font-semibold focus:ring-4 focus:ring-emerald-500/5 focus:border-emerald-500/20 transition-all outline-none" value={newProduct.name} onChange={e=>setNewProduct({...newProduct, name: e.target.value})} />
                                  </div>
                                  <div className="space-y-2">
-                                    <label className="text-[9px] md:text-[10px] font-bold text-slate-600 uppercase">Details & Specifications</label>
-                                    <textarea placeholder="Tell buyers about your item..." className="w-full p-3 md:p-4 bg-white border border-slate-200 rounded-xl text-xs md:text-sm font-semibold focus:ring-4 focus:ring-emerald-500/5 focus:border-emerald-500/20 transition-all outline-none min-h-[100px] md:min-h-[120px] resize-none" value={newProduct.description} onChange={e=>setNewProduct({...newProduct, description: e.target.value})} />
+                                    <label className="text-[10px] font-bold text-slate-800 uppercase">Details & Specifications</label>
+                                    <textarea placeholder="Tell buyers about your item..." className="w-full p-4 bg-white border border-gray-200 rounded-xl text-sm font-semibold focus:ring-4 focus:ring-emerald-500/5 focus:border-emerald-500/20 transition-all outline-none min-h-[120px] resize-none" value={newProduct.description} onChange={e=>setNewProduct({...newProduct, description: e.target.value})} />
                                  </div>
                               </div>
-                              <div className="space-y-4 md:space-y-5">
-                                 <label className="text-[9px] md:text-[10px] font-bold text-slate-600 uppercase">Commercials & Category</label>
+                              <div className="space-y-4">
+                                 <label className="text-[10px] font-bold text-slate-800 uppercase">Commercials & Category</label>
                                  <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-2">
-                                       <label className="text-[9px] md:text-[10px] font-bold text-slate-500">Price (INR)</label>
-                                       <input type="text" placeholder="0.00" className="w-full p-3 md:p-4 bg-white border border-slate-200 rounded-xl text-xs md:text-sm font-semibold focus:ring-4 focus:ring-emerald-500/5 focus:border-emerald-500/20 transition-all outline-none" value={newProduct.price} onChange={e=>setNewProduct({...newProduct, price: e.target.value})} />
+                                       <label className="text-[10px] font-bold text-slate-800">Price (INR)</label>
+                                       <input type="text" placeholder="0.00" className="w-full p-4 bg-white border border-gray-200 rounded-xl text-sm font-semibold focus:ring-4 focus:ring-emerald-500/5 focus:border-emerald-500/20 transition-all outline-none" value={newProduct.price} onChange={e=>setNewProduct({...newProduct, price: e.target.value})} />
                                     </div>
                                     <div className="space-y-2">
-                                       <label className="text-[9px] md:text-[10px] font-bold text-slate-500">SKU Code</label>
-                                       <input type="text" placeholder="REF-001" className="w-full p-3 md:p-4 bg-white border border-slate-200 rounded-xl text-xs md:text-sm font-semibold focus:ring-4 focus:ring-emerald-500/5 focus:border-emerald-500/20 transition-all outline-none" value={newProduct.sku} onChange={e=>setNewProduct({...newProduct, sku: e.target.value})} />
+                                       <label className="text-[10px] font-bold text-slate-800">SKU Code</label>
+                                       <input type="text" placeholder="REF-001" className="w-full p-4 bg-white border border-gray-200 rounded-xl text-sm font-semibold focus:ring-4 focus:ring-emerald-500/5 focus:border-emerald-500/20 transition-all outline-none" value={newProduct.sku} onChange={e=>setNewProduct({...newProduct, sku: e.target.value})} />
                                     </div>
                                  </div>
                                  <div className="space-y-2">
-                                    <label className="text-[9px] md:text-[10px] font-bold text-slate-500">Category Placement</label>
-                                    <select className="w-full p-3 md:p-4 bg-white border border-slate-200 rounded-xl text-xs md:text-sm font-semibold focus:ring-4 focus:ring-emerald-500/5 focus:border-emerald-500/20 transition-all outline-none appearance-none" value={newProduct.category} onChange={e=>setNewProduct({...newProduct, category: e.target.value})}>
+                                    <label className="text-[10px] font-bold text-slate-800">Category Placement</label>
+                                    <select className="w-full p-4 bg-white border border-gray-200 rounded-xl text-sm font-semibold focus:ring-4 focus:ring-emerald-500/5 focus:border-emerald-500/20 transition-all outline-none appearance-none" value={newProduct.category} onChange={e=>setNewProduct({...newProduct, category: e.target.value})}>
                                        <option value="">Select Category</option>
                                        {categories.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
                                     </select>
                                  </div>
                                  <div className="space-y-2 pt-2">
-                                    <label className="text-[9px] md:text-[10px] font-bold text-slate-600 uppercase">Gallery Assets</label>
+                                    <label className="text-[10px] font-bold text-slate-800 uppercase">Gallery Assets</label>
                                     <div 
-                                       className="w-full p-3 md:p-4 bg-white border-2 border-dashed border-slate-200 rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-emerald-50 hover:border-emerald-200 transition-all group/upload"
+                                       className="w-full p-4 bg-white border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-emerald-50 hover:border-emerald-200 transition-all group/upload"
                                        onClick={() => fileInputRef.current?.click()}
                                     >
                                        <Upload size={20} className="text-slate-300 group-hover/upload:text-emerald-500 transition-colors" />
-                                       <p className="text-[9px] md:text-[10px] font-bold text-slate-600 group-hover/upload:text-emerald-700 uppercase">{uploading ? 'Processing...' : 'Upload Media'}</p>
+                                       <p className="text-[10px] font-bold text-slate-800 group-hover/upload:text-emerald-700 uppercase">{uploading ? 'Processing...' : 'Upload Media'}</p>
                                     </div>
                                     <input type="file" ref={fileInputRef} onChange={handleImageUpload} className="hidden" />
                                  </div>
                               </div>
                            </div>
-                           <div className="flex justify-end gap-4 pt-8 border-t border-slate-200/60">
-                              <button onClick={()=>{setShowProductForm(false); setEditingId(null);}} className="h-11 md:h-12 px-6 md:px-8 text-[10px] md:text-xs font-bold text-slate-500 hover:text-slate-700 transition-colors uppercase">Cancel</button>
-                              <button onClick={saveProduct} disabled={saving} className="h-11 md:h-12 px-8 md:px-10 bg-[#062d1d] text-white rounded-xl text-[10px] md:text-xs font-bold uppercase hover:bg-black transition-all shadow-xl shadow-emerald-950/5 active:scale-95">
+                           <div className="flex justify-end gap-4 pt-8 border-t border-gray-100">
+                              <button onClick={()=>{setShowProductForm(false); setEditingId(null);}} className="h-11 px-8 text-[11px] font-bold text-slate-800 hover:text-slate-800 transition-colors uppercase">Cancel</button>
+                              <button onClick={saveProduct} disabled={saving} className="h-11 px-10 bg-[#164e33] text-white rounded-xl text-[11px] font-bold uppercase hover:bg-[#113f29] transition-all shadow-sm active:scale-95">
                                  {saving ? 'Syncing...' : editingId ? 'Update Item' : 'Publish Item'}
                               </button>
                            </div>
                         </div>
-                     </motion.div>
-                  )}
-               </AnimatePresence>
+                  </motion.div>
+               )}
+            </AnimatePresence>
 
-               {/* Product Matrix */}
-               <div className="overflow-x-auto scrollbar-hide">
-                  <table className="w-full border-collapse">
-                     <thead className="bg-slate-50/50">
-                        <tr>
-                           <th className="px-6 md:px-8 py-4 md:py-5 text-left text-[9px] md:text-[10px] font-bold text-slate-600 uppercase">Product & Info</th>
-                           <th className="px-6 md:px-8 py-4 md:py-5 text-left text-[9px] md:text-[10px] font-bold text-slate-600 uppercase">Moderation</th>
-                           <th className="px-6 md:px-8 py-4 md:py-5 text-left text-[9px] md:text-[10px] font-bold text-slate-600 uppercase">Visibility</th>
-                           <th className="px-6 md:px-8 py-4 md:py-5 text-[9px] md:text-[10px] font-bold text-slate-600 uppercase text-right">Actions</th>
-                        </tr>
-                     </thead>
-                     <tbody className="divide-y divide-slate-100/60">
-                        {filteredItems.map((item: any, idx: number) => {
+            <div className="overflow-x-auto w-full max-h-[60vh] relative scrollbar-hide">
+               <table className="w-full text-left whitespace-nowrap">
+                  <thead className="sticky top-0 z-20 bg-white">
+                     <tr className="bg-gray-50/50 border-b border-gray-100 shadow-sm">
+                        <th className="px-6 py-4 text-[11px] font-bold text-slate-800 uppercase tracking-wider">Item Details</th>
+                        <th className="px-6 py-4 text-[11px] font-bold text-slate-800 uppercase tracking-wider text-center">Status</th>
+                        <th className="px-6 py-4 text-[11px] font-bold text-slate-800 uppercase tracking-wider">Visibility</th>
+                        <th className="px-6 py-4 text-[11px] font-bold text-slate-800 uppercase tracking-wider text-right">Action</th>
+                     </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-50">
+                     {filteredItems.length > 0 ? (
+                        filteredItems
+                          .slice((page - 1) * limit, page * limit)
+                          .map((item: any, idx: number) => {
                            const score = item.visibilityScore || Math.floor(Math.random() * 40) + 60;
                            return (
                               <tr key={item.id} className="group hover:bg-slate-50/30 transition-all duration-300">
-                                 <td className="px-6 md:px-8 py-5 md:py-6">
-                                    <div className="flex items-center gap-4 md:gap-6">
-                                       <div className="w-12 h-12 md:w-16 md:h-16 bg-slate-50 rounded-xl md:rounded-xl overflow-hidden border border-slate-100 shadow-sm shrink-0 group-hover:scale-105 transition-transform duration-500">
+                                 <td className="px-6 py-4">
+                                    <div className="flex items-center gap-4">
+                                       <div className="w-14 h-14 bg-slate-50 rounded-xl overflow-hidden border border-gray-100 shadow-sm shrink-0 group-hover:scale-105 transition-transform">
                                           {(item.images?.length > 0 || item.imageUrl) ? (
                                              <img src={item.images?.[0] || item.imageUrl} className="w-full h-full object-cover" />
                                           ) : (
                                              <div className="w-full h-full flex items-center justify-center text-slate-300"><Box size={20} /></div>
                                           )}
                                        </div>
-                                       <div className="space-y-1 flex-1 min-w-0">
-                                          <div className="flex flex-wrap items-center gap-2 md:gap-3">
-                                             <p className="text-sm md:text-base font-bold text-slate-900 truncate">{item.name}</p>
-                                             <span className="px-2 py-0.5 bg-emerald-50/50 text-emerald-700 text-[9px] md:text-[10px] font-bold rounded-lg border border-emerald-100/30 uppercase shrink-0">
+                                       <div className="space-y-0.5">
+                                          <div className="flex items-center gap-2">
+                                             <p className="text-sm font-semibold text-slate-900">{item.name}</p>
+                                             <span className="px-2 py-0.5 bg-gray-100 text-slate-800 text-[9px] font-bold rounded uppercase">
                                                 {item.category || 'General'}
                                              </span>
                                           </div>
-                                          <div className="flex items-center gap-3 md:gap-4">
-                                             <p className="text-[10px] md:text-[11px] font-bold text-slate-600">SKU: {item.sku || `REF-${idx+1001}`}</p>
-                                             <p className="text-xs md:text-[13px] font-bold text-emerald-700">₹{item.price}</p>
+                                          <div className="flex items-center gap-3">
+                                             <p className="text-[10px] font-bold text-slate-800">SKU: {item.sku || `REF-${idx+1001}`}</p>
+                                             <p className="text-[11px] font-bold text-emerald-700">₹{item.price}</p>
                                           </div>
                                        </div>
                                     </div>
                                  </td>
-                                 <td className="px-6 md:px-8 py-5 md:py-6">
-                                    <div className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-[10px] md:text-[11px] font-bold border w-fit shadow-sm ${
-                                       item.status === 'APPROVED' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' :
-                                       item.status === 'REJECTED' ? 'bg-rose-50 text-rose-600 border-rose-100' :
-                                       'bg-amber-50 text-amber-600 border-amber-100'
-                                    }`}>
-                                       {item.status === 'APPROVED' ? <CheckCircle2 size={12} /> : 
-                                        item.status === 'REJECTED' ? <X size={12} /> : <Clock size={12} />}
-                                       {item.status === 'APPROVED' ? 'Verified' : 
-                                        item.status === 'REJECTED' ? 'Rejected' : 'Reviewing'}
-                                    </div>
-                                 </td>
-                                 <td className="px-6 md:px-8 py-5 md:py-6">
-                                    <div className="flex items-center gap-3 md:gap-4">
-                                       <span className="text-[11px] md:text-[12px] font-bold text-slate-800 w-8 md:w-10">{score}%</span>
-                                       <div className="h-1.5 md:h-2 w-20 md:w-24 bg-slate-100 rounded-full overflow-hidden shadow-inner">
-                                          <motion.div 
-                                            initial={{ width: 0 }}
-                                            animate={{ width: `${score}%` }}
-                                            transition={{ duration: 1, ease: 'easeOut' }}
-                                            className={`h-full rounded-full ${score > 80 ? 'bg-emerald-500' : score > 60 ? 'bg-amber-400' : 'bg-rose-400'}`} 
-                                          />
-                                       </div>
-                                    </div>
-                                 </td>
-                                 <td className="px-6 md:px-8 py-5 md:py-6 text-right">
-                                    <div className="flex items-center justify-end gap-2 transition-all">
-                                       <button onClick={()=>startEdit(item)} className="p-2 md:p-2.5 bg-emerald-50 border border-emerald-100 text-emerald-600 rounded-xl hover:bg-emerald-600 hover:text-white transition-all shadow-sm"><Edit3 size={16} /></button>
-                                       <button onClick={()=>removeProduct(item.id)} className="p-2 md:p-2.5 bg-rose-50 border border-rose-100 text-rose-600 rounded-xl hover:bg-rose-600 hover:text-white transition-all shadow-sm"><Trash2 size={16} /></button>
-                                    </div>
-                                 </td>
+                                 <td className="px-6 py-4">
+                                     <div className="flex items-center justify-center">
+                                        <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold border ${
+                                           item.status === 'APPROVED' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' :
+                                           item.status === 'REJECTED' ? 'bg-rose-50 text-rose-600 border-rose-100' :
+                                           'bg-amber-50 text-amber-600 border-amber-100'
+                                        }`}>
+                                           {item.status === 'APPROVED' ? <CheckCircle2 size={10} /> : 
+                                            item.status === 'REJECTED' ? <X size={10} /> : <Clock size={10} />}
+                                           {item.status === 'APPROVED' ? 'Verified' : 
+                                            item.status === 'REJECTED' ? 'Rejected' : 'Reviewing'}
+                                        </div>
+                                     </div>
+                                  </td>
+                                  <td className="px-6 py-4">
+                                     <div className="flex items-center gap-3">
+                                        <span className="text-[11px] font-bold text-slate-800">{score}%</span>
+                                        <div className="h-1.5 w-20 bg-gray-100 rounded-full overflow-hidden shadow-inner">
+                                           <motion.div 
+                                             initial={{ width: 0 }}
+                                             animate={{ width: `${score}%` }}
+                                             transition={{ duration: 1, ease: 'easeOut' }}
+                                             className="h-full bg-emerald-500 rounded-full"
+                                           />
+                                        </div>
+                                     </div>
+                                  </td>
+                                  <td className="px-6 py-4 text-right">
+                                     <div className="flex items-center justify-end gap-1">
+                                        <button onClick={() => startEdit(item)} className="p-2 text-slate-800 hover:text-[#164e33] hover:bg-emerald-50 rounded-lg transition-all">
+                                           <Edit3 size={15} />
+                                        </button>
+                                        <button onClick={() => removeProduct(item.id)} className="p-2 text-slate-800 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all">
+                                           <Trash2 size={15} />
+                                        </button>
+                                     </div>
+                                  </td>
                               </tr>
                            );
-                        })}
-                     </tbody>
-                  </table>
-               </div>
+                        })
+                     ) : (
+                        <tr>
+                           <td colSpan={4} className="py-24 text-center">
+                              <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-100">
+                                 <Package className="w-8 h-8 text-slate-300" />
+                              </div>
+                              <p className="text-sm font-semibold text-slate-800 uppercase tracking-tight">No {activeTab.toLowerCase()}s listed yet</p>
+                           </td>
+                        </tr>
+                     )}
+                  </tbody>
+               </table>
+            </div>
 
-               {/* Pagination Footer */}
-               <div className="p-6 md:p-8 border-t border-slate-50 flex flex-col md:flex-row md:items-center justify-between gap-6 bg-slate-50/30">
-                  <p className="text-[10px] md:text-[11px] font-bold text-slate-600 uppercase">
-                     Catalog Density: {filteredItems.length} items active
-                  </p>
-                  <div className="flex items-center gap-4 md:gap-6">
-                     <div className="flex items-center gap-1.5 md:gap-2">
-                        <button className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center bg-white border border-slate-100 rounded-xl text-slate-300 hover:bg-slate-50 transition-all">
-                           <ChevronLeft size={16} />
-                        </button>
-                        <button className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center bg-[#062d1d] text-white rounded-xl font-bold text-[10px] md:text-xs shadow-lg shadow-emerald-950/10">1</button>
-                        <button className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center bg-white border border-slate-100 rounded-xl text-slate-600 font-bold text-[10px] md:text-xs hover:bg-slate-50 transition-all">2</button>
-                        <button className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center bg-white border border-slate-100 rounded-xl text-slate-400 hover:bg-slate-50 transition-all">
-                           <ChevronRight size={16} />
-                        </button>
+            {/* Pagination Footer */}
+            <div className="px-8 py-6 bg-slate-50/50 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-6">
+               <p className="text-xs font-semibold text-slate-800 uppercase tracking-tight">
+                  Showing <span className="text-slate-900 font-bold">{Math.min(((page - 1) * limit) + 1, (vendorData.products?.filter((p: any) => p.type === activeTab).length || 0))}</span> to <span className="text-slate-900 font-bold">{Math.min(page * limit, (vendorData.products?.filter((p: any) => p.type === activeTab).length || 0))}</span> of <span className="text-slate-900 font-bold">{(vendorData.products?.filter((p: any) => p.type === activeTab).length || 0)}</span> items
+               </p>
+
+               <div className="flex items-center gap-6">
+                  <select
+                     value={limit}
+                     onChange={(e) => { setLimit(parseInt(e.target.value)); setPage(1); }}
+                     className="bg-white border border-gray-200 rounded-xl px-4 py-2 text-[10px] font-bold text-slate-800 outline-none hover:border-slate-300 transition-all cursor-pointer uppercase appearance-none pr-8"
+                     style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%23475569\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'%3E%3C/path%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.75rem center', backgroundSize: '1rem' }}
+                  >
+                     <option value={10}>10 items</option>
+                     <option value={20}>20 items</option>
+                     <option value={50}>50 items</option>
+                  </select>
+
+                  <div className="flex items-center gap-2">
+                     <button
+                        onClick={() => setPage(p => Math.max(1, p - 1))}
+                        disabled={page === 1}
+                        className="w-9 h-9 rounded-xl border border-gray-200 flex items-center justify-center text-slate-800 hover:text-slate-900 hover:bg-white disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                     >
+                        <ChevronLeft size={18} />
+                     </button>
+                     
+                     <div className="flex items-center gap-1">
+                        {[...Array((Math.max(0, Math.ceil((vendorData.products?.filter((p: any) => p.type === activeTab).length || 0) / (limit || 10)) || 0)))].slice(0, 5).map((_, i) => (
+                           <button
+                              key={i}
+                              onClick={() => setPage(i + 1)}
+                              className={`w-9 h-9 rounded-xl text-[11px] font-bold transition-all ${page === i + 1 ? 'bg-slate-900 text-white shadow-lg' : 'text-slate-800 hover:bg-slate-100'}`}
+                           >
+                              {i + 1}
+                           </button>
+                        ))}
                      </div>
-                     <div className="bg-white border border-slate-200 px-4 md:px-5 py-2 md:py-2.5 rounded-xl flex items-center gap-2 md:gap-3 cursor-pointer hover:border-slate-300 transition-all group">
-                        <span className="text-[9px] md:text-[11px] font-bold text-slate-700 uppercase">10 PER PAGE</span>
-                        <ChevronDown size={12} className="text-slate-400 group-hover:text-slate-700 transition-colors" />
-                     </div>
+
+                     <button
+                        onClick={() => setPage(p => Math.min((limit > 0 ? Math.ceil((vendorData.products?.filter((p: any) => p.type === activeTab).length || 0) / limit) : 0), p + 1))}
+                        disabled={page >= (limit > 0 ? Math.ceil((vendorData.products?.filter((p: any) => p.type === activeTab).length || 0) / limit) : 0)}
+                        className="w-9 h-9 rounded-xl border border-gray-200 flex items-center justify-center text-slate-800 hover:text-slate-900 hover:bg-white disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                     >
+                        <ChevronRight size={18} />
+                     </button>
                   </div>
                </div>
-
             </div>
          </div>
 
@@ -560,80 +601,82 @@ export default function VendorProducts() {
          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             
             {/* Keywords Management */}
-            <div className="bg-white rounded-xl md:rounded-xl border border-slate-100 p-6 md:p-8 shadow-sm">
-               <h3 className="text-xs md:text-sm font-bold text-slate-900 uppercase mb-6 md:mb-8">Search Keywords</h3>
+            <div className="bg-white rounded-xl border border-gray-100 p-6 md:p-8 shadow-sm">
+               <div className="flex items-center gap-3 mb-6">
+                  <div className="w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center text-emerald-600 border border-emerald-100">
+                     <Target size={16} />
+                  </div>
+                  <h3 className="text-xs md:text-sm font-bold text-slate-900 uppercase">Search Keywords</h3>
+               </div>
                
-               <div className="space-y-4 md:space-y-5">
-                  <div className="relative group">
+               <div className="space-y-4">
+                  <div className="flex gap-2">
                      <input 
                        type="text" 
                        placeholder="e.g. Organic Soap" 
                        value={newKeyword}
                        onChange={e=>setNewKeyword(e.target.value)}
                        onKeyDown={e=>e.key === 'Enter' && addKeyword()}
-                       className="w-full px-4 md:px-5 py-3 md:py-4 bg-slate-50 border border-slate-100 rounded-xl text-xs md:text-sm font-semibold focus:bg-white focus:ring-4 focus:ring-emerald-500/5 focus:border-emerald-500/20 transition-all outline-none"
+                       className="flex-1 px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm font-semibold focus:bg-white focus:border-[#164e33] transition-all outline-none"
                      />
+                     <button 
+                       onClick={addKeyword}
+                       disabled={!newKeyword.trim()}
+                       className="px-4 bg-[#164e33] text-white rounded-xl text-[11px] font-bold hover:bg-[#113f29] disabled:opacity-30 transition-all"
+                     >
+                        Add
+                     </button>
                   </div>
-                  <button 
-                    onClick={addKeyword}
-                    disabled={!newKeyword.trim()}
-                    className="w-full py-3 md:py-4 bg-[#10b981]/10 text-[#10b981] rounded-xl text-[10px] md:text-xs font-bold flex items-center justify-center gap-2 hover:bg-[#10b981] hover:text-white transition-all active:scale-[0.98] disabled:opacity-30 disabled:pointer-events-none"
-                  >
-                     <Plus size={16} /> Add Keyword
-                  </button>
-               </div>
-
-               <div className="mt-8 md:mt-10">
-                  <p className="text-[9px] md:text-[11px] font-bold text-slate-600 uppercase mb-4 md:mb-5">Current Library</p>
-                  <div className="flex flex-wrap gap-2 md:gap-2.5">
+                  
+                  <div className="flex flex-wrap gap-2 pt-2">
                      {vendorData.keywords.length > 0 ? (
                         vendorData.keywords.map((k: any, i: number) => (
-                           <div key={i} className="px-3 py-1 md:px-3.5 md:py-1.5 bg-slate-50 text-slate-700 text-[9px] md:text-[11px] font-bold rounded-xl border border-slate-100 hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-100 transition-all flex items-center gap-2 group/tag">
+                           <div key={i} className="px-3 py-1.5 bg-gray-50 text-slate-800 text-[11px] font-bold rounded-lg border border-gray-100 flex items-center gap-2 group/tag hover:bg-white hover:border-[#164e33]/20 transition-all">
                               #{typeof k === 'string' ? k : k.name}
-                              <button onClick={() => removeKeyword(typeof k === 'string' ? k : k.id)} className="opacity-0 group-hover/tag:opacity-100 text-slate-400 hover:text-rose-500 transition-all"><X size={10} /></button>
+                              <button onClick={() => removeKeyword(typeof k === 'string' ? k : k.id)} className="text-slate-800 hover:text-rose-500 transition-all"><X size={10} /></button>
                            </div>
                         ))
                      ) : (
-                        <p className="text-[10px] md:text-[11px] font-medium text-slate-400 italic">No keywords indexed yet...</p>
+                        <p className="text-[11px] font-medium text-slate-800 italic">No keywords indexed yet...</p>
                      )}
                   </div>
                </div>
             </div>
 
-            {/* Visibility Tips Alert */}
-            <div className="bg-slate-50 rounded-xl md:rounded-xl p-6 md:p-8 border border-slate-100 relative overflow-hidden group">
+            {/* Growth Engine Card */}
+            <div className="bg-[#164e33] rounded-xl p-6 md:p-8 relative overflow-hidden group shadow-xl shadow-emerald-950/10">
+               <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-16 -mt-16 blur-2xl group-hover:bg-white/10 transition-all" />
                <div className="relative z-10 space-y-6">
                   <div className="flex items-center gap-3">
-                     <div className="w-9 h-9 md:w-10 md:h-10 bg-white rounded-xl flex items-center justify-center border border-slate-200 shadow-sm">
-                        <Zap size={18} className="text-[#10b981]" />
+                     <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center border border-white/20 backdrop-blur-sm">
+                        <Zap size={20} className="text-emerald-400" />
                      </div>
-                     <h3 className="text-xs md:text-sm font-bold text-slate-900 uppercase">Growth Engine</h3>
+                     <h3 className="text-xs md:text-sm font-bold text-white uppercase tracking-wider">Growth Engine</h3>
                   </div>
                   
-                  <ul className="space-y-4 md:space-y-5">
+                  <ul className="space-y-4">
                      {[
-                       { text: 'Add 5+ Images', desc: 'Boosts visibility by 3x', icon: ImageIcon, color: 'text-blue-500', bg: 'bg-blue-50' },
-                       { text: 'Keyword Strategy', desc: 'Use search terms', icon: Target, color: 'text-purple-500', bg: 'bg-purple-50' },
-                       { text: 'Deep Catalog', desc: 'Rich descriptions help', icon: Box, color: 'text-emerald-500', bg: 'bg-emerald-50' }
+                       { text: 'Add 5+ Images', desc: 'Boosts visibility by 3x', icon: ImageIcon, color: 'text-blue-400' },
+                       { text: 'Keyword Strategy', desc: 'Higher search ranking', icon: Target, color: 'text-purple-400' },
+                       { text: 'Rich Details', desc: 'Better buyer conversion', icon: Box, color: 'text-emerald-400' }
                      ].map((tip, i) => (
-                       <li key={i} className="flex items-start gap-3 md:gap-4 group/tip">
-                          <div className={`w-9 h-9 md:w-10 md:h-10 ${tip.bg} ${tip.color} rounded-xl flex items-center justify-center shrink-0 border border-white`}>
+                       <li key={i} className="flex items-center gap-4">
+                          <div className={`w-9 h-9 bg-white/10 ${tip.color} rounded-xl flex items-center justify-center shrink-0 border border-white/10`}>
                              <tip.icon size={16} />
                           </div>
                           <div>
-                             <p className="text-[10px] md:text-[11px] font-bold text-slate-900 uppercase">{tip.text}</p>
-                             <p className="text-[9px] md:text-[10px] font-bold text-slate-600">{tip.desc}</p>
+                             <p className="text-[11px] font-bold text-white uppercase tracking-tight">{tip.text}</p>
+                             <p className="text-[10px] font-medium text-emerald-100/60">{tip.desc}</p>
                           </div>
                        </li>
                      ))}
                   </ul>
 
-                  <button className="w-full py-3 md:py-4 bg-white text-slate-900 rounded-xl text-[10px] md:text-[11px] font-bold uppercase border border-slate-200 hover:bg-slate-900 hover:text-white transition-all shadow-sm flex items-center justify-center gap-2">
+                  <button className="w-full py-3.5 bg-white text-[#164e33] rounded-xl text-[11px] font-bold uppercase hover:bg-emerald-50 transition-all shadow-lg flex items-center justify-center gap-2">
                      Learn Strategy <ArrowRight size={14} />
                   </button>
                </div>
             </div>
-
          </div>
 
       </div>
@@ -652,13 +695,8 @@ export default function VendorProducts() {
       </AnimatePresence>
       
       <style jsx global>{`
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
     </div>
   );

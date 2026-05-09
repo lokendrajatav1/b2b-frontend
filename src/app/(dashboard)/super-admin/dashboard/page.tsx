@@ -90,11 +90,11 @@ export default function SuperAdminDashboard() {
       {/* Title and Date Filter */}
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
         <div>
-          <div className="flex items-center gap-1.5 mb-0.5">
-            <h2 className="text-base font-bold text-[#111827] leading-none">Super Admin Control Hub</h2>
-            <ShieldCheck size={16} className="text-green-500" />
+          <div className="flex items-center gap-1.5 mb-1">
+            <h2 className="text-3xl font-semibold text-[#111827] leading-none">Super Admin Panel</h2>
+        
           </div>
-          <p className="text-xs text-gray-900 font-bold">
+          <p className="text-sm text-gray-600 font-normal">
             Monitor platform health, verify applications, and track marketplace performance.
           </p>
         </div>
@@ -138,7 +138,7 @@ export default function SuperAdminDashboard() {
               >
                 <div className="flex flex-col md:flex-row md:items-center gap-3 bg-slate-50 rounded-xl px-4 py-3 border border-slate-100">
                   <div className="flex items-center gap-3">
-                    <Clock size={13} className="text-slate-400 shrink-0" />
+                    <Clock size={13} className="text-slate-600 shrink-0" />
                     <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider shrink-0">Custom Range:</span>
                   </div>
                   <div className="flex items-center gap-2 w-full md:w-auto">
@@ -147,7 +147,7 @@ export default function SuperAdminDashboard() {
                       className="flex-1 md:flex-none bg-white border border-gray-200 rounded-lg px-3 py-1.5 text-[11px] font-bold text-slate-700 outline-none focus:border-emerald-400 transition-all shadow-sm cursor-pointer"
                       onChange={(e) => setCustomRange(prev => ({ ...prev, start: e.target.value }))}
                     />
-                    <span className="text-[11px] font-bold text-slate-400">→</span>
+                    <span className="text-[11px] font-bold text-slate-600">→</span>
                     <input
                       type="date"
                       className="flex-1 md:flex-none bg-white border border-gray-200 rounded-lg px-3 py-1.5 text-[11px] font-bold text-slate-700 outline-none focus:border-emerald-400 transition-all shadow-sm cursor-pointer"
@@ -223,7 +223,7 @@ export default function SuperAdminDashboard() {
             <div className="flex-1 min-h-[300px] flex flex-col">
               <div className="flex-1 flex gap-4">
                 {/* Y-Axis Labels */}
-                <div className="flex flex-col justify-between text-[10px] font-bold text-slate-400 py-2 shrink-0">
+                <div className="flex flex-col justify-between text-[10px] font-bold text-slate-600 py-2 shrink-0">
                   <span>₹20L</span><span>₹15L</span><span>₹10L</span><span>₹5L</span><span>₹0</span>
                 </div>
                 {/* Chart Visualization */}
@@ -246,20 +246,20 @@ export default function SuperAdminDashboard() {
             {/* Revenue Stats */}
             <div className="w-full xl:w-64 grid grid-cols-1 sm:grid-cols-3 xl:flex xl:flex-col gap-6 xl:border-l xl:border-gray-100 xl:pl-8 pt-6 xl:pt-0 border-t xl:border-t-0 border-gray-50">
               <div className="space-y-1">
-                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Total Revenue</p>
+                <p className="text-[10px] font-bold text-slate-800 uppercase tracking-widest">Total Revenue</p>
                 <p className="text-xl font-bold text-slate-900 leading-none">₹{dashboardData?.summary?.totalRevenue?.toLocaleString() || '0'}</p>
                 <div className="flex items-center gap-1.5 mt-2">
                   <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">+16.4%</span>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">vs last month</span>
+                  <span className="text-[10px] font-bold text-slate-800 uppercase tracking-tighter">vs last month</span>
                 </div>
               </div>
               <div className="space-y-1">
-                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Subscriptions</p>
+                <p className="text-[10px] font-bold text-slate-800 uppercase tracking-widest">Subscriptions</p>
                 <p className="text-lg font-bold text-slate-900 leading-none">₹11,20,430</p>
                 <span className="inline-block text-[10px] font-bold text-emerald-600 mt-1">+12.6%</span>
               </div>
               <div className="space-y-1">
-                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Listings</p>
+                <p className="text-[10px] font-bold text-slate-700 uppercase tracking-widest">Listings</p>
                 <p className="text-lg font-bold text-slate-900 leading-none">₹7,55,000</p>
                 <span className="inline-block text-[10px] font-bold text-emerald-600 mt-1">+21.3%</span>
               </div>
@@ -296,7 +296,7 @@ export default function SuperAdminDashboard() {
         <div className="bg-white p-8 rounded-xl border border-gray-100 min-h-[400px] flex flex-col">
           <div className="flex items-center justify-between mb-6">
             <h4 className="font-bold text-[14px] text-gray-900 uppercase">Top Cities by Vendors</h4>
-            <BarChart2 size={18} className="text-gray-400" />
+            <BarChart2 size={18} className="text-slate-600" />
           </div>
           <div className="flex-1 w-full">
             <ResponsiveContainer width="100%" height={250}>
@@ -327,7 +327,7 @@ export default function SuperAdminDashboard() {
                 {categories.map(cat => <option key={cat.id} value={cat.name}>{cat.name}</option>)}
               </select>
             </div>
-            <TrendingUp size={18} className="text-gray-400" />
+            <TrendingUp size={18} className="text-slate-600" />
           </div>
           <div className="flex-1 w-full">
             <ResponsiveContainer width="100%" height={250}>
@@ -424,7 +424,7 @@ const ActivityItem = ({ title, sub, time }: any) => (
       <div className="flex items-center gap-2">
         <p className="text-xs text-gray-500 font-bold">{sub}</p>
         <span className="w-1 h-1 rounded-full bg-gray-300" />
-        <span className="text-xs text-gray-400 font-bold uppercase">{time}</span>
+        <span className="text-xs text-slate-600 font-bold uppercase">{time}</span>
       </div>
     </div>
   </div>

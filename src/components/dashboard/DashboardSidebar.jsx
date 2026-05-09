@@ -105,7 +105,7 @@ export default function DashboardSidebar({ isCollapsed, onToggle, mobileOpen, se
                   {userRole === 'SUPERADMIN' ? 'SA' : (userRole === 'ADMIN' ? 'AD' : 'VP')}
                 </div>
               ) : (
-                <span className="text-white font-bold text-base uppercase truncate pl-2">
+                <span className="text-white/90 font-semibold text-sm uppercase truncate pl-2">
                    {userRole === 'SUPERADMIN' ? 'SUPER ADMIN' : (userRole === 'ADMIN' ? 'ADMIN PANEL' : 'VENDOR PANEL')}
                 </span>
               )}
@@ -132,14 +132,14 @@ export default function DashboardSidebar({ isCollapsed, onToggle, mobileOpen, se
                  href={item.href}
                  onClick={() => setMobileOpen(false)}
                  title={isCollapsed ? item.label : ''}
-                 className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group relative ${isActive ? 'bg-[#124131] text-white' : 'text-white/70 hover:text-white hover:bg-white/5 font-medium'}`}
+                 className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group relative ${isActive ? 'bg-[#124131] text-white' : 'text-white/70 hover:text-white hover:bg-white/5 font-semibold'}`}
                >
                  <div className={`transition-all ${isActive ? 'text-white' : 'text-white/60 group-hover:text-white'}`}>
                    <item.icon className="w-5 h-5 stroke-[2]" />
                  </div>
                  {!isCollapsed && (
                     <div className="flex items-center justify-between w-full">
-                      <span className="text-base font-semibold">{item.label}</span>
+                      <span className="text-sm font-semibold">{item.label}</span>
                       {item.badge && (
                         <span className="bg-[#BA2B1E] text-white text-xs font-bold px-2 py-0.5 rounded-lg ">
                           {item.badge}
@@ -161,8 +161,8 @@ export default function DashboardSidebar({ isCollapsed, onToggle, mobileOpen, se
                {/* Background Decorative Element */}
                <div className="absolute -right-4 -top-4 w-16 h-16 bg-white/5 rounded-full blur-xl group-hover:bg-white/10 transition-all" />
                
-               <p className="text-sm font-bold text-white mb-1.5 relative z-10 tracking-tight">Need Help?</p>
-               <p className="text-[11px] font-medium text-white/50 mb-4 leading-relaxed relative z-10">
+               <p className="text-sm font-semibold text-white mb-1.5 relative z-10 tracking-tight">Need Help?</p>
+               <p className="text-[11px] font-semibold text-white/50 mb-4 leading-relaxed relative z-10">
                   Our support team is available to help you with anything.
                </p>
                

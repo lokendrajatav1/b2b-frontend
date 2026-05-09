@@ -125,13 +125,13 @@ export default function VendorDashboard() {
                <div key={i} className="bg-white p-5 rounded-xl border border-gray-100 flex items-center justify-between group hover: shadow-sm transition-all">
                   <div className="flex-1">
                      <div className="flex items-center gap-2 mb-3">
-                        <div className="w-8 h-8 bg-gray-50 rounded-lg flex items-center justify-center text-slate-700">
+                        <div className="w-8 h-8 bg-gray-50 rounded-lg flex items-center justify-center text-slate-800">
                            <stat.icon size={16} />
                         </div>
-                        <span className="text-[11px] font-bold text-slate-500 uppercase tracking-tight">{stat.label}</span>
+                        <span className="text-[11px] font-bold text-slate-800 uppercase tracking-tight">{stat.label}</span>
                      </div>
                      <h3 className="text-2xl font-bold text-slate-900 leading-none mb-1.5">{stat.value}</h3>
-                     <p className="text-[11px] font-medium text-slate-400">{stat.sub}</p>
+                     <p className="text-[11px] font-medium text-slate-800">{stat.sub}</p>
                   </div>
                   <SparkLine data={sparkData} color={stat.color} />
                </div>
@@ -160,13 +160,13 @@ export default function VendorDashboard() {
                      {leads.length > 0 ? leads.map((lead) => (
                         <div key={lead.id} className="p-5 hover:bg-gray-50/50 transition-colors flex flex-col md:flex-row md:items-center justify-between gap-4">
                            <div className="flex items-center gap-4">
-                              <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-sm font-bold text-slate-700 border border-gray-200">
+                              <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-sm font-bold text-slate-800 border border-gray-200">
                                  {lead.buyerName?.charAt(0) || 'B'}
                               </div>
                               <div>
                                  <h4 className="text-sm font-bold text-slate-900 leading-none mb-1.5">{lead.buyerName || 'Marketplace Inquiry'}</h4>
                                  <div className="flex items-center gap-3">
-                                    <span className="flex items-center gap-1 text-xs font-bold text-slate-500">
+                                    <span className="flex items-center gap-1 text-xs font-bold text-slate-800">
                                        <MapPin size={12} /> {lead.city || 'India'}
                                     </span>
                                     <span className="px-2 py-0.5 bg-emerald-50 text-emerald-700 text-[10px] font-bold rounded-lg border border-emerald-100/50">
@@ -177,16 +177,16 @@ export default function VendorDashboard() {
                            </div>
                            <div className="flex items-center gap-6">
                               <div className="text-right">
-                                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Received</p>
-                                 <p className="text-xs font-bold text-slate-700">{new Date(lead.createdAt).toLocaleDateString()}</p>
+                                 <p className="text-[10px] font-bold text-slate-800 uppercase tracking-tighter">Received</p>
+                                 <p className="text-xs font-bold text-slate-800">{new Date(lead.createdAt).toLocaleDateString()}</p>
                               </div>
-                              <Link href={`/vendor/leads?id=${lead.id}`} className="px-4 py-2 bg-white border border-gray-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-gray-50 hover:text-emerald-700 transition-all">
+                              <Link href={`/vendor/leads?id=${lead.id}`} className="px-4 py-2 bg-white border border-gray-200 rounded-xl text-xs font-bold text-slate-800 hover:bg-gray-50 hover:text-emerald-700 transition-all">
                                  Reply to Lead
                               </Link>
                            </div>
                         </div>
                      )) : (
-                        <div className="p-10 text-center text-slate-400 text-sm font-bold uppercase ">
+                        <div className="p-10 text-center text-slate-800 text-sm font-bold uppercase ">
                            No Recent Activity
                         </div>
                      )}
@@ -201,8 +201,8 @@ export default function VendorDashboard() {
                         <h3 className="text-sm font-bold text-slate-800 uppercase tracking-tight">Lead Performance Analytics</h3>
                      </div>
                      <div className="bg-gray-50 border border-gray-100 px-3 py-1.5 rounded-xl flex items-center gap-2">
-                        <span className="text-xs font-bold text-slate-700">Last 6 Months</span>
-                        <Clock size={12} className="text-slate-400" />
+                        <span className="text-xs font-bold text-slate-800">Last 6 Months</span>
+                        <Clock size={12} className="text-slate-800" />
                      </div>
                   </div>
 
@@ -240,7 +240,7 @@ export default function VendorDashboard() {
                <div className="bg-white rounded-xl border border-gray-100 p-6">
                   <div className="flex items-center justify-between mb-6">
                      <h3 className="text-sm font-bold text-slate-800 uppercase tracking-tight">Social Links</h3>
-                     <Globe size={16} className="text-slate-400" />
+                     <Globe size={16} className="text-slate-800" />
                   </div>
 
                   <div className="space-y-3">
@@ -258,7 +258,7 @@ export default function VendorDashboard() {
                                  </div>
                                  <div>
                                     <p className="text-xs font-bold text-slate-900 leading-none mb-1">{social.label}</p>
-                                    <p className="text-[10px] font-medium text-slate-400 truncate max-w-[150px]">{url}</p>
+                                    <p className="text-[10px] font-medium text-slate-800 truncate max-w-[150px]">{url}</p>
                                  </div>
                               </div>
                               <ExternalLink size={14} className="text-slate-300 group-hover:text-emerald-600 transition-colors" />
@@ -272,7 +272,7 @@ export default function VendorDashboard() {
                <div className="bg-white rounded-xl border border-gray-100 p-6 overflow-hidden">
                   <div className="flex items-center justify-between mb-6">
                      <h3 className="text-sm font-bold text-slate-800 uppercase tracking-tight">Business Location</h3>
-                     <MapPin size={16} className="text-slate-400" />
+                     <MapPin size={16} className="text-slate-800" />
                   </div>
 
                   <div className="relative rounded-xl overflow-hidden h-32 mb-6 border border-gray-100">
@@ -295,13 +295,13 @@ export default function VendorDashboard() {
                      </div>
 
                      <div className="flex items-center gap-3 py-3 border-t border-gray-50">
-                        <div className="w-8 h-8 bg-gray-50 rounded-lg flex items-center justify-center text-slate-600">
+                        <div className="w-8 h-8 bg-gray-50 rounded-lg flex items-center justify-center text-slate-800">
                            <ShieldCheck size={16} />
                         </div>
-                        <p className="text-xs font-bold text-slate-700">{profile?.phone || profile?.user?.phone || 'Contact pending'}</p>
+                        <p className="text-xs font-bold text-slate-800">{profile?.phone || profile?.user?.phone || 'Contact pending'}</p>
                      </div>
 
-                     <p className="text-[10px] font-bold text-slate-400 uppercase">{profile?.city || 'India'} Marketplace</p>
+                     <p className="text-[10px] font-bold text-slate-800 uppercase">{profile?.city || 'India'} Marketplace</p>
                   </div>
                </div>
 

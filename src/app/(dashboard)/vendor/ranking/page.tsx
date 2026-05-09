@@ -119,10 +119,10 @@ export default function VendorPerformance() {
                  <div className={`w-8 h-8 ${kpi.bg} rounded-lg flex items-center justify-center`} style={{ color: kpi.color }}>
                     <kpi.icon size={16} />
                  </div>
-                 <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tight">{kpi.label}</span>
+                 <span className="text-[10px] font-bold text-slate-800 uppercase tracking-tight">{kpi.label}</span>
               </div>
               <h3 className="text-xl font-bold text-slate-900 leading-none mb-1">{kpi.value}</h3>
-              <p className="text-[10px] font-medium text-slate-400 truncate">{kpi.sub}</p>
+              <p className="text-[10px] font-medium text-slate-800 truncate">{kpi.sub}</p>
             </div>
             <SparkLine data={sparkData} color={kpi.color} />
           </div>
@@ -139,7 +139,7 @@ export default function VendorPerformance() {
              <div className="flex items-center justify-between mb-6">
                 <div>
                    <h3 className="text-sm font-bold text-slate-800 uppercase tracking-tight">GROWTH ACCELERATION MATRIX</h3>
-                   <p className="text-[11px] font-medium text-slate-400">High-impact tasks to boost your visibility score</p>
+                   <p className="text-[11px] font-medium text-slate-800">High-impact tasks to boost your visibility score</p>
                 </div>
                 <button className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-100 uppercase">Rank Accelerator</button>
              </div>
@@ -163,7 +163,7 @@ export default function VendorPerformance() {
                               <h4 className="text-sm font-bold text-slate-800">{task.label}</h4>
                               <span className={`text-[9px] font-bold px-2 py-0.5 rounded-md ${i === 0 ? 'bg-emerald-100 text-emerald-700' : i === 1 ? 'bg-orange-100 text-orange-700' : 'bg-blue-100 text-blue-700'}`}>{task.impact}</span>
                            </div>
-                           <p className="text-[11px] font-medium text-slate-400">{task.sub}</p>
+                           <p className="text-[11px] font-medium text-slate-800">{task.sub}</p>
                         </div>
                      </div>
                      <div className="flex items-center gap-3">
@@ -186,7 +186,7 @@ export default function VendorPerformance() {
           <div className="bg-white rounded-xl border border-gray-100 p-6">
              <div className="flex items-center justify-between mb-8">
                 <h3 className="text-sm font-bold text-slate-800 uppercase tracking-tight">PERFORMANCE OVERVIEW</h3>
-                <div className="text-[10px] font-bold text-slate-500 bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-100 uppercase flex items-center gap-2 cursor-pointer">
+                <div className="text-[10px] font-bold text-slate-700 bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-100 uppercase flex items-center gap-2 cursor-pointer">
                    Last 6 Months <ChevronRight size={10} className="rotate-90" />
                 </div>
              </div>
@@ -199,7 +199,7 @@ export default function VendorPerformance() {
                   { label: 'Customer Rating', value: '4.8/5', trend: '↑ 0.3', tColor: 'text-emerald-500' },
                 ].map((stat, i) => (
                   <div key={i}>
-                     <p className="text-[10px] font-bold text-slate-400 uppercase mb-1">{stat.label}</p>
+                     <p className="text-[10px] font-bold text-slate-800 uppercase mb-1">{stat.label}</p>
                      <div className="flex items-end gap-2">
                         <span className="text-lg font-bold text-slate-900 leading-none">{stat.value}</span>
                         <span className={`text-[10px] font-bold ${stat.tColor}`}>{stat.trend}</span>
@@ -240,10 +240,10 @@ export default function VendorPerformance() {
                    </div>
                    <h3 className="text-sm font-bold text-slate-800 uppercase tracking-tight">VISIBILITY PULSE</h3>
                 </div>
-                <span className="text-[10px] font-bold text-slate-400">Last 7 Days</span>
+                <span className="text-[10px] font-bold text-slate-800">Last 7 Days</span>
              </div>
 
-             <p className="text-[11px] font-medium text-slate-400 leading-relaxed mb-4">
+             <p className="text-[11px] font-medium text-slate-800 leading-relaxed mb-4">
                 Your brand appeared in <span className="text-slate-900 font-bold">42</span> intent-driven searches with a <span className="text-emerald-600 font-bold">4.0%</span> engagement velocity.
              </p>
 
@@ -267,7 +267,7 @@ export default function VendorPerformance() {
                       <Tooltip />
                    </LineChart>
                 </ResponsiveContainer>
-                <div className="flex justify-between mt-2 text-[8px] font-bold text-slate-400 uppercase px-1">
+                <div className="flex justify-between mt-2 text-[8px] font-bold text-slate-800 uppercase px-1">
                    <span>May 10</span>
                    <span>May 12</span>
                    <span>May 14</span>
@@ -277,14 +277,14 @@ export default function VendorPerformance() {
 
              <div className="pt-6 border-t border-gray-50">
                 <div className="flex items-center justify-between mb-2">
-                   <p className="text-[10px] font-bold text-slate-400 uppercase">ALGORITHMIC STANDING</p>
-                   <div className="w-8 h-8 bg-gray-50 rounded-lg flex items-center justify-center text-slate-400 cursor-pointer hover:text-emerald-600 transition-colors">
+                   <p className="text-[10px] font-bold text-slate-800 uppercase">ALGORITHMIC STANDING</p>
+                   <div className="w-8 h-8 bg-gray-50 rounded-lg flex items-center justify-center text-slate-800 cursor-pointer hover:text-emerald-600 transition-colors">
                       <ArrowUpRight size={16} />
                    </div>
                 </div>
                 <div className="flex items-end gap-1.5 mb-2">
                    <span className="text-xl font-bold text-slate-900">0.2</span>
-                   <span className="text-xs font-bold text-slate-400 pb-0.5">/100</span>
+                   <span className="text-xs font-bold text-slate-800 pb-0.5">/100</span>
                 </div>
                 <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
                    <div className="h-full bg-emerald-500" style={{ width: '20%' }}></div>
@@ -296,7 +296,7 @@ export default function VendorPerformance() {
           <div className="bg-white rounded-xl border border-gray-100 p-6">
              <div className="flex items-center justify-between mb-6">
                 <h3 className="text-sm font-bold text-slate-800 uppercase tracking-tight">RECENT ACTIVITY</h3>
-                <button className="text-[10px] font-bold text-slate-400 border border-gray-100 px-3 py-1 rounded-lg hover:bg-gray-50 transition-all uppercase">View All</button>
+                <button className="text-[10px] font-bold text-slate-800 border border-gray-100 px-3 py-1 rounded-lg hover:bg-gray-50 transition-all uppercase">View All</button>
              </div>
 
              <div className="space-y-6">
@@ -311,10 +311,10 @@ export default function VendorPerformance() {
                      </div>
                      <div className="flex-1 min-w-0">
                         <p className="text-[11px] font-bold text-slate-900 leading-tight mb-0.5 truncate">{act.title}</p>
-                        <p className="text-[10px] font-medium text-slate-400">{act.sub}</p>
+                        <p className="text-[10px] font-medium text-slate-800">{act.sub}</p>
                      </div>
                      <div className="flex items-center gap-1.5 shrink-0 pt-1">
-                        <span className="text-[9px] font-bold text-slate-400">{act.time}</span>
+                        <span className="text-[9px] font-bold text-slate-800">{act.time}</span>
                         <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
                      </div>
                   </div>
@@ -330,7 +330,7 @@ export default function VendorPerformance() {
                   { label: 'Edit Business Profile', sub: 'Update your business details', icon: UserCircle2, color: 'text-emerald-600', bg: 'bg-emerald-50' },
                   { label: 'Manage Products', sub: 'Add or update your products', icon: Package, color: 'text-blue-600', bg: 'bg-blue-50' },
                   { label: 'View Leads', sub: 'Check and respond to leads', icon: Target, color: 'text-indigo-600', bg: 'bg-indigo-50' },
-                  { label: 'Billing & Invoices', sub: 'View your invoices and payments', icon: Wallet, color: 'text-slate-600', bg: 'bg-slate-50' },
+                  { label: 'Billing & Invoices', sub: 'View your invoices and payments', icon: Wallet, color: 'text-slate-800', bg: 'bg-slate-50' },
                 ].map((action, i) => (
                   <div key={i} className="flex items-center justify-between p-3 border border-gray-50 rounded-xl hover:bg-gray-50 transition-all cursor-pointer group">
                      <div className="flex items-center gap-3">
@@ -339,7 +339,7 @@ export default function VendorPerformance() {
                         </div>
                         <div>
                            <h4 className="text-[11px] font-bold text-slate-800 leading-none mb-1">{action.label}</h4>
-                           <p className="text-[9px] font-medium text-slate-400">{action.sub}</p>
+                           <p className="text-[9px] font-medium text-slate-800">{action.sub}</p>
                         </div>
                      </div>
                      <ChevronRight size={14} className="text-slate-300 group-hover:text-slate-900 transition-colors" />

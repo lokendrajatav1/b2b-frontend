@@ -83,8 +83,8 @@ export default function AdminCategories() {
       {/* Header Section */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-gray-100 max-w-7xl mx-auto">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 uppercase tracking-tight">Marketplace Categories</h1>
-          <p className="text-slate-600 font-medium mt-1 text-sm">Manage the industry classifications for your hub's vendors and products.</p>
+          <h1 className="text-xl font-semibold text-slate-900">Marketplace Categories</h1>
+          <p className="text-sm text-slate-600 font-normal mt-1">Manage the industry classifications for your hub's vendors and products.</p>
         </div>
 
         <div className="flex flex-wrap items-center gap-4">
@@ -96,7 +96,7 @@ export default function AdminCategories() {
               placeholder="Search categories..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-3.5 bg-white border border-gray-200 rounded-xl text-sm font-semibold outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-50 transition-all shadow-sm"
+              className="w-full pl-10 pr-4 py-3.5 bg-white border border-gray-200 rounded-xl text-sm font-medium outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-50 transition-all shadow-sm"
             />
           </div>
 
@@ -130,7 +130,7 @@ export default function AdminCategories() {
                   <Plus className="w-6 h-6" />
                 </div>
                 <h3 className="text-lg font-bold text-slate-900 mb-1">Create New Category</h3>
-                <p className="text-[12px] font-semibold text-slate-400 uppercase tracking-widest mb-6">Define an industry sector</p>
+                <p className="text-[12px] font-bold text-slate-600 uppercase tracking-widest mb-6">Define an industry sector</p>
 
                 <form onSubmit={handleAdd}>
                   <div className="space-y-4">
@@ -202,7 +202,7 @@ export default function AdminCategories() {
                     <div className="flex flex-col">
                       <h3 className="text-[15px] font-bold text-slate-900 capitalize tracking-tight leading-tight">{cat.name}</h3>
                       <div className="flex items-center gap-2 mt-1">
-                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">ID: {cat.id.slice(-6).toUpperCase()}</span>
+                        <span className="text-[10px] font-bold text-slate-700 uppercase tracking-wider">ID: {cat.id.slice(-6).toUpperCase()}</span>
                         <span className="w-1 h-1 rounded-full bg-slate-200" />
                         <span className="text-[10px] font-bold text-emerald-600 uppercase">Active Sector</span>
                       </div>
@@ -225,7 +225,7 @@ export default function AdminCategories() {
           ) : (
             <div className="col-span-full py-24 text-center border-2 border-dashed border-gray-100 rounded-xl bg-gray-50/50">
               <LayoutGrid className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-              <p className="text-sm font-bold text-slate-500 uppercase">No categories discovered</p>
+              <p className="text-sm font-bold text-slate-700 uppercase">No categories discovered</p>
             </div>
           )}
         </div>

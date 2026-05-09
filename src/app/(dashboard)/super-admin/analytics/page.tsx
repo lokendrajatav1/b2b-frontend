@@ -23,6 +23,8 @@ import {
   BarChart3,
   Headphones,
   Clock
+,
+  BarChart2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -119,39 +121,44 @@ export default function SuperAdminAnalytics() {
            <div className="w-14 h-14 bg-white rounded-xl  border border-gray-100 flex items-center justify-center text-slate-600">
               <TrendingUp className="w-8 h-8" />
            </div>
-           <div>
-              <h1 className="text-lg font-bold text-slate-900 leading-none mb-1">Detailed Analytics</h1>
-              <p className="text-slate-600 font-medium text-xs">
+           <div className="flex items-center gap-5">
+              <div className="w-12 h-12 bg-blue-50/50 rounded-xl border border-blue-100 flex items-center justify-center text-blue-600">
+                 <BarChart2 className="w-6 h-6" />
+              </div>
+              <div>
+              <h1 className="text-xl font-semibold text-slate-900">Detailed Analytics</h1>
+              <p className="text-sm text-gray-600 font-normal mt-1">
                  In-depth performance metrics • Updated today, {lastUpdated}
               </p>
+              </div>
            </div>
         </div>
 
         <div className="flex flex-col gap-3">
           <div className="flex flex-wrap items-center gap-4">
-          <div className="flex items-center gap-2 bg-white border border-gray-300 rounded-xl px-3 py-1.5 shadow-sm">
-            <Clock size={14} className="text-gray-500" />
-            <select 
-              value={timeRange}
-              onChange={(e) => setTimeRange(e.target.value)}
-              className="text-xs font-bold text-gray-900 outline-none bg-transparent cursor-pointer"
-            >
-              <option value="today">Today</option>
-              <option value="yesterday">Yesterday</option>
-              <option value="weekly">Last 7 Days</option>
-              <option value="monthly">Last 30 Days</option>
-              <option value="yearly">Last 12 Months</option>
-              <option value="custom">Custom Range</option>
-            </select>
-          </div>
+            <div className="flex items-center gap-2 bg-white border border-gray-100 rounded-xl px-3 py-1.5 shadow-sm">
+              <Clock size={14} className="text-slate-600" />
+              <select 
+                value={timeRange}
+                onChange={(e) => setTimeRange(e.target.value)}
+                className="text-xs font-semibold text-slate-900 outline-none bg-transparent cursor-pointer"
+              >
+                <option value="today">Today</option>
+                <option value="yesterday">Yesterday</option>
+                <option value="weekly">Last 7 Days</option>
+                <option value="monthly">Last 30 Days</option>
+                <option value="yearly">Last 12 Months</option>
+                <option value="custom">Custom Range</option>
+              </select>
+            </div>
 
-           <button 
-             onClick={fetchDashboardStats}
-             className="flex items-center gap-2 px-5 py-2.5 bg-white text-slate-700 rounded-xl font-bold text-sm hover:bg-gray-50 transition-all border border-gray-100 "
-           >
-              <RefreshCcw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-              Refresh
-           </button>
+            <button 
+              onClick={fetchDashboardStats}
+              className="flex items-center gap-2 px-5 py-2.5 bg-white text-slate-700 rounded-xl font-semibold text-sm hover:bg-gray-50 transition-all border border-gray-100 "
+            >
+               <RefreshCcw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+               Refresh
+            </button>
           </div>
 
           {/* Custom Date Range Sub-row */}
@@ -166,19 +173,19 @@ export default function SuperAdminAnalytics() {
               >
                 <div className="flex flex-col md:flex-row md:items-center gap-3 bg-slate-50 rounded-xl px-4 py-3 border border-slate-100">
                   <div className="flex items-center gap-3">
-                    <Clock size={13} className="text-slate-400 shrink-0" />
-                    <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider shrink-0">Custom Range:</span>
+                    <Clock size={13} className="text-slate-600 shrink-0" />
+                    <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider shrink-0">Custom Range:</span>
                   </div>
                   <div className="flex items-center gap-2 w-full md:w-auto">
                     <input
                       type="date"
-                      className="flex-1 md:flex-none bg-white border border-gray-200 rounded-lg px-3 py-1.5 text-[11px] font-bold text-slate-700 outline-none focus:border-emerald-400 transition-all shadow-sm cursor-pointer"
+                      className="flex-1 md:flex-none bg-white border border-gray-200 rounded-lg px-3 py-1.5 text-[11px] font-semibold text-slate-700 outline-none focus:border-emerald-400 transition-all shadow-sm cursor-pointer"
                       onChange={(e) => setCustomRange(prev => ({ ...prev, start: e.target.value }))}
                     />
-                    <span className="text-[11px] font-bold text-slate-400">→</span>
+                    <span className="text-[11px] font-semibold text-slate-600">→</span>
                     <input
                       type="date"
-                      className="flex-1 md:flex-none bg-white border border-gray-200 rounded-lg px-3 py-1.5 text-[11px] font-bold text-slate-700 outline-none focus:border-emerald-400 transition-all shadow-sm cursor-pointer"
+                      className="flex-1 md:flex-none bg-white border border-gray-200 rounded-lg px-3 py-1.5 text-[11px] font-semibold text-slate-700 outline-none focus:border-emerald-400 transition-all shadow-sm cursor-pointer"
                       onChange={(e) => setCustomRange(prev => ({ ...prev, end: e.target.value }))}
                     />
                   </div>
@@ -211,9 +218,9 @@ export default function SuperAdminAnalytics() {
                <card.icon className="w-5 h-5" />
             </div>
             <div>
-               <p className="text-xs font-bold text-slate-700 uppercase mb-0.5">{card.label}</p>
+               <p className="text-xs font-semibold text-slate-700 uppercase mb-0.5">{card.label}</p>
                <h3 className="text-lg font-bold text-slate-800 leading-none mb-1">{card.value}</h3>
-               <p className="text-xs font-bold text-slate-600">{card.sub}</p>
+               <p className="text-xs font-semibold text-slate-600">{card.sub}</p>
             </div>
           </motion.div>
         ))}
@@ -225,7 +232,7 @@ export default function SuperAdminAnalytics() {
         <div className="bg-white rounded-xl p-6 border border-gray-100  flex flex-col">
            <div className="flex items-center gap-2 mb-6">
               <Users className="w-4 h-4 text-slate-600" />
-              <h3 className="text-sm font-bold text-slate-800 uppercase tracking-tight">Lead Pipeline</h3>
+              <h3 className="text-sm font-semibold text-slate-800 uppercase tracking-tight">Lead Pipeline</h3>
            </div>
 
            <div className="flex items-center justify-between flex-1 gap-4">
@@ -247,7 +254,7 @@ export default function SuperAdminAnalytics() {
                  </ResponsiveContainer>
                  <div className="absolute inset-0 flex flex-col items-center justify-center">
                     <span className="text-2xl font-bold text-slate-800">28</span>
-                    <span className="text-xs font-bold text-slate-600 uppercase">Total</span>
+                    <span className="text-xs font-semibold text-slate-600 uppercase">Total</span>
                  </div>
               </div>
 
@@ -256,7 +263,7 @@ export default function SuperAdminAnalytics() {
                     <div key={i} className="flex items-center justify-between group">
                        <div className="flex items-center gap-2">
                           <div className="w-2 h-2 rounded-full" style={{ backgroundColor: item.color }} />
-                          <span className="text-xs font-bold text-slate-700 group-hover:text-slate-900 transition-colors">{item.name}</span>
+                          <span className="text-xs font-semibold text-slate-700 group-hover:text-slate-900 transition-colors">{item.name}</span>
                        </div>
                        <div className="text-right">
                           <span className="text-xs font-bold text-slate-800 block">{item.value}</span>
@@ -275,23 +282,23 @@ export default function SuperAdminAnalytics() {
         <div className="bg-white rounded-xl p-6 border border-gray-100  flex flex-col">
            <div className="flex items-center gap-2 mb-6">
               <Activity className="w-4 h-4 text-slate-600" />
-              <h3 className="text-sm font-bold text-slate-800 uppercase tracking-tight">Conversion Rate</h3>
+              <h3 className="text-sm font-semibold text-slate-800 uppercase tracking-tight">Conversion Rate</h3>
            </div>
 
            <div className="flex flex-col items-center justify-center flex-1 space-y-6">
               <div className="text-center">
                  <h2 className="text-4xl font-bold text-slate-800 leading-none mb-1">17.86%</h2>
-                 <p className="text-xs font-bold text-slate-600 uppercase">Lead Closure Rate</p>
+                 <p className="text-xs font-semibold text-slate-600 uppercase">Lead Closure Rate</p>
               </div>
 
               <div className="grid grid-cols-2 gap-3 w-full">
                  <div className="bg-slate-50 rounded-xl p-3 text-center border border-gray-100">
                     <span className="text-base font-bold text-slate-800 block mb-0.5">28</span>
-                    <span className="text-xs font-bold text-slate-600 uppercase">Total</span>
+                    <span className="text-xs font-semibold text-slate-600 uppercase">Total</span>
                  </div>
                  <div className="bg-emerald-50 rounded-xl p-3 text-center border border-emerald-100/50">
                     <span className="text-base font-bold text-emerald-700 block mb-0.5">5</span>
-                    <span className="text-xs font-bold text-emerald-600 uppercase">Closed</span>
+                    <span className="text-xs font-semibold text-emerald-600 uppercase">Closed</span>
                  </div>
               </div>
            </div>
@@ -305,7 +312,7 @@ export default function SuperAdminAnalytics() {
         <div className="bg-white rounded-xl p-6 border border-gray-100  flex flex-col">
            <div className="flex items-center gap-2 mb-6">
               <PieIcon className="w-4 h-4 text-slate-600" />
-              <h3 className="text-sm font-bold text-slate-800 uppercase tracking-tight">Subscription Plans</h3>
+              <h3 className="text-sm font-semibold text-slate-800 uppercase tracking-tight">Subscription Plans</h3>
            </div>
 
            <div className="flex-1 space-y-2">
@@ -313,10 +320,10 @@ export default function SuperAdminAnalytics() {
                  <div key={i} className="flex items-center justify-between group cursor-pointer p-2 rounded-xl hover:bg-gray-100 transition-all">
                     <div className="flex items-center gap-2">
                        <div className="w-2 h-2 rounded-full" style={{ backgroundColor: plan.color }} />
-                       <span className="text-xs font-bold text-slate-700 group-hover:text-slate-900">{plan.name}</span>
+                       <span className="text-xs font-semibold text-slate-700 group-hover:text-slate-900">{plan.name}</span>
                     </div>
                     <div className="text-right">
-                       <p className="text-xs font-bold text-slate-800">{plan.vendors} vendors</p>
+                       <p className="text-xs font-semibold text-slate-800">{plan.vendors} vendors</p>
                     </div>
                  </div>
               ))}
@@ -334,10 +341,10 @@ export default function SuperAdminAnalytics() {
            <div className="flex items-center justify-between mb-8">
               <div>
                  <h3 className="text-[16px] font-bold text-slate-900 uppercase tracking-tight">Category Distribution</h3>
-                 <p className="text-[11px] font-bold text-slate-400 mt-1 uppercase ">Market share by vendor count</p>
+                 <p className="text-[11px] font-bold text-slate-600 mt-1 uppercase ">Market share by vendor count</p>
               </div>
               <div className="p-2 bg-slate-50 rounded-xl">
-                 <BarChart3 className="w-5 h-5 text-slate-400" />
+                 <BarChart3 className="w-5 h-5 text-slate-600" />
               </div>
            </div>
 
@@ -349,12 +356,12 @@ export default function SuperAdminAnalytics() {
                       dataKey="name" 
                       axisLine={false} 
                       tickLine={false} 
-                      tick={{ fontSize: 10, fontWeight: 700, fill: '#94a3b8' }}
+                      tick={{ fontSize: 10, fontWeight: 700, fill: '#475569' }}
                     />
                     <YAxis 
                       axisLine={false} 
                       tickLine={false} 
-                      tick={{ fontSize: 10, fontWeight: 700, fill: '#94a3b8' }}
+                      tick={{ fontSize: 10, fontWeight: 700, fill: '#475569' }}
                     />
                     <RechartsTooltip 
                       contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
@@ -382,7 +389,7 @@ export default function SuperAdminAnalytics() {
                  </div>
               </div>
               <div className="p-2 bg-slate-50 rounded-xl">
-                 <TrendingUp className="w-5 h-5 text-slate-400" />
+                 <TrendingUp className="w-5 h-5 text-slate-600" />
               </div>
            </div>
 
@@ -394,12 +401,12 @@ export default function SuperAdminAnalytics() {
                       dataKey="name" 
                       axisLine={false} 
                       tickLine={false} 
-                      tick={{ fontSize: 10, fontWeight: 700, fill: '#94a3b8' }}
+                      tick={{ fontSize: 10, fontWeight: 700, fill: '#475569' }}
                     />
                     <YAxis 
                       axisLine={false} 
                       tickLine={false} 
-                      tick={{ fontSize: 10, fontWeight: 700, fill: '#94a3b8' }}
+                      tick={{ fontSize: 10, fontWeight: 700, fill: '#475569' }}
                     />
                     <RechartsTooltip 
                       contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}

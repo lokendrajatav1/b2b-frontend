@@ -82,11 +82,11 @@ export default function VendorRefunds() {
                 <Briefcase className="w-5 h-5" />
              </div>
            </h1>
-           <p className="text-slate-700 font-medium mt-1 text-sm">Track your refund requests and submit new disputes.</p>
+           <p className="text-slate-800 font-medium mt-1 text-sm">Track your refund requests and submit new disputes.</p>
         </div>
 
         <div className="flex items-center gap-3">
-           <button onClick={fetchRefunds} className="p-2.5 bg-white border border-gray-200 rounded-xl text-slate-700 hover:text-[#164e33] hover:bg-[#164e33]/5 transition-all ">
+           <button onClick={fetchRefunds} className="p-2.5 bg-white border border-gray-200 rounded-xl text-slate-800 hover:text-[#164e33] hover:bg-[#164e33]/5 transition-all ">
               <RefreshCcw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
            </button>
            <button 
@@ -99,16 +99,16 @@ export default function VendorRefunds() {
       </div>
 
       <div className="max-w-7xl mx-auto">
-         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden ">
-            <div className="overflow-x-auto w-full no-scrollbar">
-               <table className="w-full text-left min-w-[800px]">
-               <thead>
-                  <tr className="bg-gray-50/50 border-b border-gray-100">
-                     <th className="px-6 py-4 text-sm font-semibold text-slate-700 uppercase ">Date</th>
-                     <th className="px-6 py-4 text-sm font-semibold text-slate-700 uppercase ">Transaction ID</th>
-                     <th className="px-6 py-4 text-sm font-semibold text-slate-700 uppercase ">Amount</th>
-                     <th className="px-6 py-4 text-sm font-semibold text-slate-700 uppercase ">Reason</th>
-                     <th className="px-6 py-4 text-sm font-semibold text-slate-700 uppercase ">Status</th>
+         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+            <div className="overflow-x-auto overflow-y-auto w-full max-h-[calc(70vh-50px)] relative">
+               <table className="w-full text-left border-collapse min-w-[800px]">
+               <thead className="sticky top-0 z-20 bg-white">
+                  <tr className="bg-white border-b border-gray-100 shadow-sm">
+                     <th className="px-6 py-4 text-xs font-semibold text-slate-800 uppercase tracking-tight">Date</th>
+                     <th className="px-6 py-4 text-xs font-semibold text-slate-800 uppercase tracking-tight">Transaction ID</th>
+                     <th className="px-6 py-4 text-xs font-semibold text-slate-800 uppercase tracking-tight">Amount</th>
+                     <th className="px-6 py-4 text-xs font-semibold text-slate-800 uppercase tracking-tight">Reason</th>
+                     <th className="px-6 py-4 text-xs font-semibold text-slate-800 uppercase tracking-tight">Status</th>
                   </tr>
                </thead>
                <tbody className="divide-y divide-gray-50">
@@ -121,7 +121,7 @@ export default function VendorRefunds() {
                   ) : refunds.length > 0 ? (
                      refunds.map((refund) => (
                         <tr key={refund.id} className="group hover:bg-gray-50/50 transition-colors">
-                           <td className="px-6 py-4 text-sm font-semibold text-slate-700 flex items-center gap-2">
+                           <td className="px-6 py-4 text-sm font-semibold text-slate-800 flex items-center gap-2">
                              <Clock className="w-3.5 h-3.5" />
                              {new Date(refund.createdAt).toLocaleDateString()}
                            </td>
@@ -130,11 +130,11 @@ export default function VendorRefunds() {
                            </td>
                            <td className="px-6 py-4">
                               <span className="flex items-center gap-1 text-sm font-semibold text-slate-900">
-                                <IndianRupee className="w-3.5 h-3.5 text-slate-700" />
+                                <IndianRupee className="w-3.5 h-3.5 text-slate-800" />
                                 {refund.amount.toLocaleString()}
                               </span>
                            </td>
-                           <td className="px-6 py-4 text-sm font-medium text-slate-700 max-w-[200px] truncate">
+                           <td className="px-6 py-4 text-sm font-medium text-slate-800 max-w-[200px] truncate">
                              {refund.reason}
                            </td>
                            <td className="px-6 py-4">
@@ -155,7 +155,7 @@ export default function VendorRefunds() {
                      <tr>
                         <td colSpan={5} className="py-24 text-center">
                            <Briefcase className="w-16 h-16 text-gray-200 mx-auto mb-4" />
-                           <p className="text-sm font-semibold text-slate-700">No refunds requested yet.</p>
+                           <p className="text-sm font-semibold text-slate-800">No refunds requested yet.</p>
                         </td>
                      </tr>
                   )}
@@ -181,7 +181,7 @@ export default function VendorRefunds() {
             >
               <div className="p-8 pb-6 border-b border-gray-50 flex justify-between items-center">
                  <h2 className="text-lg font-semibold text-slate-900">Request Refund</h2>
-                 <button onClick={() => setIsModalOpen(false)} className="text-slate-700 hover:text-slate-800 transition-colors">
+                 <button onClick={() => setIsModalOpen(false)} className="text-slate-800 hover:text-slate-800 transition-colors">
                     <XCircle className="w-6 h-6" />
                  </button>
               </div>
@@ -195,7 +195,7 @@ export default function VendorRefunds() {
 
                  <div className="space-y-4">
                     <div>
-                       <label className="text-sm font-semibold text-slate-700 uppercase  pl-1">Transaction ID</label>
+                       <label className="text-sm font-semibold text-slate-800 uppercase  pl-1">Transaction ID</label>
                        <input 
                          required
                          type="text"
@@ -206,7 +206,7 @@ export default function VendorRefunds() {
                        />
                     </div>
                     <div>
-                       <label className="text-sm font-semibold text-slate-700 uppercase  pl-1">Requested Amount (₹)</label>
+                       <label className="text-sm font-semibold text-slate-800 uppercase  pl-1">Requested Amount (₹)</label>
                        <input 
                          required
                          type="number"
@@ -218,7 +218,7 @@ export default function VendorRefunds() {
                        />
                     </div>
                     <div>
-                       <label className="text-sm font-semibold text-slate-700 uppercase  pl-1">Reason for Refund</label>
+                       <label className="text-sm font-semibold text-slate-800 uppercase  pl-1">Reason for Refund</label>
                        <textarea 
                          required
                          rows={4}
@@ -234,7 +234,7 @@ export default function VendorRefunds() {
                     <button 
                       type="button" 
                       onClick={() => setIsModalOpen(false)}
-                      className="px-6 py-3 font-semibold text-slate-700 hover:text-slate-900 transition-colors text-sm rounded-xl hover:bg-gray-50"
+                      className="px-6 py-3 font-semibold text-slate-800 hover:text-slate-900 transition-colors text-sm rounded-xl hover:bg-gray-50"
                     >
                       Cancel
                     </button>

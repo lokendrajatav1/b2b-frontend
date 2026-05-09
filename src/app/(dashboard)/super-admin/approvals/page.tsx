@@ -76,22 +76,21 @@ export default function AdminApprovals() {
     <div className="space-y-8 animate-simple-fade pb-20 p-2 md:p-0">
       {/* Clean Approvals Header */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-gray-100 mb-8 max-w-7xl mx-auto">
-        <div>
-            <h1 className="text-2xl font-semibold text-slate-900  flex items-center gap-3">
-              Vendor Approvals
-              <div className="flex items-center gap-1.5 px-2.5 py-1 bg-amber-50 border border-amber-100 rounded-lg">
-                <ShieldAlert className="w-4 h-4 text-amber-600" />
-                <span className="text-sm font-semibold text-amber-700">Pending Review</span>
-              </div>
-            </h1>
-            <p className="text-slate-700 font-medium mt-1 text-sm">Review business credentials and approve new vendors.</p>
+        <div className="flex items-center gap-5">
+           <div className="w-12 h-12 bg-amber-50/50 rounded-xl border border-amber-100 flex items-center justify-center text-amber-600">
+              <ShieldAlert className="w-6 h-6" />
+           </div>
+           <div>
+             <h1 className="text-xl font-semibold text-slate-900">Vendor Approvals</h1>
+             <p className="text-sm text-gray-600 font-normal mt-1">Review business credentials and approve new vendors.</p>
+           </div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
         {/* Verification Queue: Clean Sidebar */}
         <div className="lg:col-span-1 space-y-4">
-            <h3 className="text-sm font-semibold text-slate-700 uppercase  mb-2 ml-2">Queue ({vendors.length})</h3>
+            <h3 className="text-sm font-semibold text-slate-700 uppercase mb-2 ml-2">Queue ({vendors.length})</h3>
             <div className="space-y-2">
                 {vendors.length > 0 ? vendors.map((user: any) => (
                     <button
@@ -99,7 +98,7 @@ export default function AdminApprovals() {
                         onClick={() => setSelectedVendor(user)}
                         className={`w-full text-left p-4 rounded-xl flex items-center gap-4 border transition-colors ${ selectedVendor?.id === user.id ? 'bg-[#164e33]/5 border-blue-200' : 'bg-white border-gray-100 hover:border-gray-200 hover:bg-gray-50' }`}
                     >
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center font-semibold text-sm border  ${ selectedVendor?.id === user.id ? 'bg-white text-[#164e33] border-[#164e33]/10' : 'bg-gray-50 text-slate-800 border-gray-200' }`}>
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center font-semibold text-sm border ${ selectedVendor?.id === user.id ? 'bg-white text-[#164e33] border-[#164e33]/10' : 'bg-gray-50 text-slate-800 border-gray-200' }`}>
                             {user.vendor?.businessName.charAt(0).toUpperCase()}
                         </div>
                         <div className="flex-1 min-w-0">
@@ -125,11 +124,11 @@ export default function AdminApprovals() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
                         key={selectedVendor.id}
-                        className="bg-white rounded-xl border border-gray-200 p-6 md:p-8 space-y-8 "
+                        className="bg-white rounded-xl border border-gray-200 p-6 md:p-8 space-y-8"
                     >
                         <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 border-b border-gray-100 pb-8">
                             <div className="space-y-4">
-                                <h2 className="text-2xl font-semibold text-slate-900  capitalize leading-none">{selectedVendor.vendor.businessName}</h2>
+                                <h2 className="text-xl font-semibold text-slate-900 capitalize leading-none">{selectedVendor.vendor.businessName}</h2>
                                 <div className="flex flex-wrap items-center gap-3">
                                     <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 rounded-xl border border-gray-200 text-sm font-medium text-slate-800 capitalize">
                                         <MapPin className="w-3.5 h-3.5 text-slate-700" />
@@ -149,14 +148,14 @@ export default function AdminApprovals() {
                             <div className="flex gap-3">
                                 <button 
                                     onClick={() => handleApprove(selectedVendor.vendor.id)}
-                                    className="px-5 py-2.5 bg-[#164e33] text-white rounded-xl font-semibold text-sm hover:bg-[#113f29] transition-colors  flex items-center gap-2"
+                                    className="px-5 py-2.5 bg-[#164e33] text-white rounded-xl font-semibold text-sm hover:bg-[#113f29] transition-colors flex items-center gap-2"
                                 >
                                     <CheckCircle2 className="w-4 h-4" />
                                     Approve Vendor
                                 </button>
                                 <button 
                                    onClick={() => handleReject(selectedVendor.vendor.id)}
-                                   className="p-2.5 bg-white border border-gray-200 text-red-500 rounded-xl hover:bg-red-50 transition-colors " title="Reject Vendor"
+                                   className="p-2.5 bg-white border border-gray-200 text-red-500 rounded-xl hover:bg-red-50 transition-colors" title="Reject Vendor"
                                 >
                                    <XCircle className="w-5 h-5" />
                                 </button>
@@ -201,7 +200,7 @@ export default function AdminApprovals() {
                                 </h4>
                                 <div className="flex flex-wrap gap-2">
                                     {selectedVendor.vendor.products?.map((p: any) => (
-                                        <span key={p.id} className="px-3 py-1.5 bg-white border border-gray-200 rounded-xl text-sm font-medium text-slate-800 ">{p.name}</span>
+                                        <span key={p.id} className="px-3 py-1.5 bg-white border border-gray-200 rounded-xl text-sm font-medium text-slate-800">{p.name}</span>
                                     )) || <span className="text-sm text-slate-700 italic">No products declared</span>}
                                 </div>
                             </div>
@@ -243,6 +242,3 @@ export default function AdminApprovals() {
     </div>
   );
 }
-
-
-

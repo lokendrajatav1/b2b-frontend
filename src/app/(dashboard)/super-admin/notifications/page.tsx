@@ -111,8 +111,8 @@ export default function AdminNotifications() {
               <Bell className="w-6 h-6" />
            </div>
            <div>
-              <h1 className="text-2xl font-bold text-slate-900 leading-none mb-1">Notifications & Announcements</h1>
-              <p className="text-slate-600 font-medium text-sm">
+              <h1 className="text-xl font-semibold text-slate-900">Notifications & Announcements</h1>
+              <p className="text-sm text-gray-600 font-normal mt-1">
                  Manage system alerts and send updates to all members.
               </p>
            </div>
@@ -198,9 +198,9 @@ export default function AdminNotifications() {
             <div className="px-8 py-6 bg-slate-50/30 border-t border-gray-50 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <p className="text-sm font-bold text-slate-700">Showing 1 to {notifications.length} of {total}</p>
                 <div className="flex items-center gap-2">
-                   <button className="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-slate-300"><ChevronLeft size={16} /></button>
+                   <button className="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-slate-600"><ChevronLeft size={16} /></button>
                    <button className="w-8 h-8 rounded-lg bg-emerald-600 text-white font-bold text-xs">1</button>
-                   <button className="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-slate-300"><ChevronRight size={16} /></button>
+                   <button className="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-slate-600"><ChevronRight size={16} /></button>
                 </div>
             </div>
           </motion.div>

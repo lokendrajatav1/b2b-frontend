@@ -10,7 +10,8 @@ import {
   IndianRupee,
   Clock,
   XCircle,
-  MoreVertical
+  MoreVertical,
+  Undo2
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -53,32 +54,32 @@ export default function AdminRefunds() {
   return (
     <div className="space-y-8 animate-simple-fade pb-20 p-2 md:p-0">
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-gray-100 max-w-7xl mx-auto">
-        <div>
-           <h1 className="text-2xl font-semibold text-slate-900  flex items-center gap-3">
-             Refund Processing
-             <div className="p-1.5 bg-rose-50 text-rose-600 rounded-lg border border-rose-100">
-                <Briefcase className="w-5 h-5" />
-             </div>
-           </h1>
-           <p className="text-slate-700 font-medium mt-1 text-sm">Review, approve, or reject vendor refund requests globally.</p>
+        <div className="flex items-center gap-5">
+           <div className="w-12 h-12 bg-rose-50/50 rounded-xl border border-rose-100 flex items-center justify-center text-rose-600">
+              <Undo2 className="w-6 h-6" />
+           </div>
+           <div>
+              <h1 className="text-xl font-semibold text-slate-900">Refund Processing</h1>
+              <p className="text-sm text-gray-600 font-normal mt-1">Review, approve, or reject vendor refund requests globally.</p>
+           </div>
         </div>
 
-        <button onClick={fetchRefunds} className="p-2.5 bg-white border border-gray-200 rounded-xl text-slate-700 hover:text-[#164e33] hover:bg-[#164e33]/5 transition-all ">
+        <button onClick={fetchRefunds} className="p-2.5 bg-white border border-gray-200 rounded-xl text-slate-700 hover:text-[#164e33] hover:bg-[#164e33]/5 transition-all">
            <RefreshCcw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
         </button>
       </div>
 
       <div className="max-w-7xl mx-auto">
-         <div className="bg-white rounded-xl border border-gray-200  relative w-full">
+         <div className="bg-white rounded-xl border border-gray-200 relative w-full">
             <div className="overflow-x-auto w-full no-scrollbar">
                <table className="w-full text-left whitespace-nowrap min-w-[800px]">
                <thead>
                   <tr className="bg-gray-50/50 border-b border-gray-100">
-                     <th className="px-6 py-4 text-sm font-semibold text-slate-700 uppercase ">Date / Vendor</th>
-                     <th className="px-6 py-4 text-sm font-semibold text-slate-700 uppercase ">Transaction ID</th>
-                     <th className="px-6 py-4 text-sm font-semibold text-slate-700 uppercase ">Amount</th>
-                     <th className="px-6 py-4 text-sm font-semibold text-slate-700 uppercase ">Reason</th>
-                     <th className="px-6 py-4 text-sm font-semibold text-slate-700 uppercase ">Status / Action</th>
+                     <th className="px-6 py-4 text-sm font-semibold text-slate-700 uppercase">Date / Vendor</th>
+                     <th className="px-6 py-4 text-sm font-semibold text-slate-700 uppercase">Transaction ID</th>
+                     <th className="px-6 py-4 text-sm font-semibold text-slate-700 uppercase">Amount</th>
+                     <th className="px-6 py-4 text-sm font-semibold text-slate-700 uppercase">Reason</th>
+                     <th className="px-6 py-4 text-sm font-semibold text-slate-700 uppercase">Status / Action</th>
                   </tr>
                </thead>
                <tbody className="divide-y divide-gray-50">
@@ -97,7 +98,7 @@ export default function AdminRefunds() {
                                  <Clock className="w-3 h-3 text-slate-700" />
                                  {new Date(refund.createdAt).toLocaleDateString()}
                                </span>
-                               <span className="text-sm font-semibold uppercase  text-slate-600">
+                               <span className="text-sm font-semibold uppercase text-slate-600">
                                  Vendor: {refund.vendorId}
                                </span>
                              </div>
@@ -116,7 +117,7 @@ export default function AdminRefunds() {
                            </td>
                            <td className="px-6 py-4">
                               <div className="flex items-center justify-between gap-4">
-                                 <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-sm font-semibold uppercase  ${
+                                 <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-sm font-semibold uppercase ${
                                     refund.status === 'PENDING' ? 'bg-amber-50 text-amber-700 border border-amber-100' :
                                     refund.status === 'APPROVED' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' :
                                     'bg-rose-50 text-rose-700 border border-rose-100'
@@ -166,6 +167,3 @@ export default function AdminRefunds() {
     </div>
   );
 }
-
-
-

@@ -86,14 +86,14 @@ export default function VendorLeads() {
 
          {/* Header Row */}
          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-               <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-3">
-                  My Leads
-                  <span className="flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 text-emerald-600 text-xs font-bold rounded-full border border-emerald-100">
-                     <Activity size={12} /> Receiving Leads
+            <div className="space-y-1.5">
+               <div className="flex items-center gap-3">
+                  <h1 className="text-xl font-semibold text-slate-900">My Leads</h1>
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-emerald-50 text-emerald-600 text-[10px] font-bold rounded-full border border-emerald-100 uppercase tracking-wider">
+                     <Activity size={10} className="animate-pulse" /> Receiving Leads
                   </span>
-               </h1>
-               <p className="text-sm font-medium text-slate-400">Review and respond to inquiries from potential buyers.</p>
+               </div>
+               <p className="text-sm font-medium text-slate-800">Review and respond to inquiries from potential buyers.</p>
             </div>
             <button className="px-6 py-2.5 bg-white border border-gray-100 text-slate-700 rounded-xl font-bold text-sm flex items-center gap-2 hover:bg-gray-50 transition-all">
                <Download size={16} /> Export Leads
@@ -108,7 +108,7 @@ export default function VendorLeads() {
                sub="Lifetime requirements"
                icon={MessageSquare} 
                iconBg="bg-slate-50" 
-               iconColor="text-slate-600" 
+               iconColor="text-slate-800" 
             />
             <VendorLeadStatCard 
                label="Active Deals" 
@@ -148,7 +148,7 @@ export default function VendorLeads() {
                   <button
                      key={tab.id}
                      onClick={() => setFilter(tab.id)}
-                     className={`px-6 py-2 rounded-xl text-sm font-bold transition-all ${filter === tab.id ? 'bg-[#062d1d] text-white shadow-lg' : 'text-slate-400 hover:text-slate-600'}`}
+                     className={`px-6 py-2 rounded-xl text-sm font-bold transition-all ${filter === tab.id ? 'bg-[#062d1d] text-white shadow-lg' : 'text-slate-800 hover:text-slate-800'}`}
                   >
                      {tab.label}
                   </button>
@@ -156,12 +156,12 @@ export default function VendorLeads() {
             </div>
 
             <div className="flex items-center gap-3">
-               <button className="px-4 py-2.5 bg-white border border-gray-100 text-slate-600 rounded-xl text-xs font-bold flex items-center gap-2 hover:bg-gray-50 transition-all">
+               <button className="px-4 py-2.5 bg-white border border-gray-100 text-slate-800 rounded-xl text-xs font-bold flex items-center gap-2 hover:bg-gray-50 transition-all">
                   <Filter size={14} /> Filter
                </button>
                <div className="px-4 py-2.5 bg-white border border-gray-100 text-slate-700 rounded-xl text-xs font-bold flex items-center gap-4 hover:bg-gray-50 transition-all cursor-pointer group">
                   <span>Sort: Newest</span>
-                  <ChevronDown size={14} className="text-slate-400" />
+                  <ChevronDown size={14} className="text-slate-800" />
                </div>
             </div>
          </div>
@@ -185,16 +185,16 @@ export default function VendorLeads() {
                   >
                      {/* Left Column: Status */}
                      <div className={`md:w-32 shrink-0 p-6 flex flex-col items-center justify-center text-center gap-3 border-b md:border-b-0 md:border-r border-gray-50 ${isNew ? 'bg-emerald-50/20' : isWon ? 'bg-orange-50/20' : 'bg-gray-50/20'}`}>
-                        <div className={`w-12 h-12 rounded-full flex items-center justify-center border ${isNew ? 'bg-white text-emerald-600 border-emerald-100' : isWon ? 'bg-white text-orange-500 border-orange-100' : 'bg-white text-slate-400 border-gray-100'}`}>
+                        <div className={`w-12 h-12 rounded-full flex items-center justify-center border ${isNew ? 'bg-white text-emerald-600 border-emerald-100' : isWon ? 'bg-white text-orange-500 border-orange-100' : 'bg-white text-slate-800 border-gray-100'}`}>
                            {isNew ? <Users size={20} /> : isWon ? <ShieldCheck size={20} /> : <Clock size={20} />}
                         </div>
                         <div>
-                           <p className={`text-[10px] font-bold uppercase tracking-wider mb-1.5 ${isNew ? 'text-emerald-600' : isWon ? 'text-orange-600' : 'text-slate-400'}`}>
+                           <p className={`text-[10px] font-bold uppercase tracking-wider mb-1.5 ${isNew ? 'text-emerald-600' : isWon ? 'text-orange-600' : 'text-slate-800'}`}>
                               {isNew ? 'NEW LEAD' : isWon ? 'WON' : lead.status}
                            </p>
                            <div className="space-y-0.5">
-                              <p className="text-[10px] font-bold text-slate-400 flex items-center justify-center gap-1.5"><Calendar size={10} /> {dateStr}</p>
-                              <p className="text-[10px] font-bold text-slate-400 flex items-center justify-center gap-1.5"><Clock size={10} /> {timeStr}</p>
+                              <p className="text-[10px] font-bold text-slate-800 flex items-center justify-center gap-1.5"><Calendar size={10} /> {dateStr}</p>
+                              <p className="text-[10px] font-bold text-slate-800 flex items-center justify-center gap-1.5"><Clock size={10} /> {timeStr}</p>
                            </div>
                         </div>
                      </div>
@@ -204,17 +204,17 @@ export default function VendorLeads() {
                         <div className="space-y-4">
                            <div className="flex flex-wrap items-center gap-3">
                               <h3 className="text-xl font-bold text-slate-900">{lead.buyerName}</h3>
-                              <span className="text-[10px] font-bold text-slate-400 bg-gray-50 px-2 py-1 rounded-md border border-gray-100 uppercase">ID #{lead.id.slice(0, 8)}</span>
+                              <span className="text-[10px] font-bold text-slate-800 bg-gray-50 px-2 py-1 rounded-md border border-gray-100 uppercase">ID #{lead.id.slice(0, 8)}</span>
                            </div>
 
                            <div className="flex flex-wrap items-center gap-3">
-                              <div className="flex items-center gap-1.5 px-3 py-1 bg-gray-50 text-slate-500 text-[10px] font-bold rounded-lg border border-gray-100">
+                              <div className="flex items-center gap-1.5 px-3 py-1 bg-gray-50 text-slate-700 text-[10px] font-bold rounded-lg border border-gray-100">
                                  <MapPin size={12} /> {lead.city}
                               </div>
                               <div className="flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-700 text-[10px] font-bold rounded-lg border border-emerald-100/50">
                                  <Layers size={12} /> {lead.category?.name || 'General'}
                               </div>
-                              <div className="flex items-center gap-1.5 px-3 py-1 bg-gray-50 text-slate-500 text-[10px] font-bold rounded-lg border border-gray-100">
+                              <div className="flex items-center gap-1.5 px-3 py-1 bg-gray-50 text-slate-700 text-[10px] font-bold rounded-lg border border-gray-100">
                                  <Phone size={12} /> {lead.phone}
                               </div>
                            </div>
@@ -228,7 +228,7 @@ export default function VendorLeads() {
                                  <p className="text-sm font-medium text-slate-700 leading-relaxed italic">
                                     "{lead.message || (lead.searchKeyword ? `Buyer was searching for '${lead.searchKeyword}' and your business matched.` : `Inquiry for ${lead.category?.name} in ${lead.city}.`)}"
                                  </p>
-                                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">
+                                 <p className="text-[10px] font-bold text-slate-800 uppercase tracking-tighter">
                                     Source: {lead.source || 'Search Page'} &nbsp;•&nbsp; 2 min ago
                                  </p>
                               </div>
@@ -261,7 +261,7 @@ export default function VendorLeads() {
                               </button>
                               <button
                                  onClick={() => handleUpdateStatus(lead.id, 'REDISTRIBUTE')}
-                                 className="w-full py-2 text-xs font-bold text-slate-400 hover:text-red-500 transition-colors uppercase "
+                                 className="w-full py-2 text-xs font-bold text-slate-800 hover:text-red-500 transition-colors uppercase "
                               >
                                  Pass
                               </button>
@@ -277,7 +277,7 @@ export default function VendorLeads() {
                   </div>
                   <div className="space-y-1">
                      <h3 className="text-base font-bold text-slate-900">No leads found</h3>
-                     <p className="text-sm font-medium text-slate-400">Your potential customer inquiries will appear here.</p>
+                     <p className="text-sm font-medium text-slate-800">Your potential customer inquiries will appear here.</p>
                   </div>
                </div>
             )}
@@ -285,24 +285,24 @@ export default function VendorLeads() {
 
          {/* Pagination Footer */}
          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pt-10 px-2">
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tight">
+            <p className="text-[10px] font-bold text-slate-800 uppercase tracking-tight">
                Showing 1 to {filteredLeads.length} of {leads.length} leads
             </p>
             <div className="flex items-center gap-3">
                <div className="flex items-center gap-1">
-                  <button className="w-8 h-8 flex items-center justify-center bg-white border border-gray-100 rounded-lg text-slate-400 hover:bg-gray-50 transition-all">
+                  <button className="w-8 h-8 flex items-center justify-center bg-white border border-gray-100 rounded-lg text-slate-800 hover:bg-gray-50 transition-all">
                      <ChevronLeft size={16} />
                   </button>
                   <button className="w-8 h-8 flex items-center justify-center bg-[#164e33] text-white rounded-lg font-bold text-xs">1</button>
-                  <button className="w-8 h-8 flex items-center justify-center bg-white border border-gray-100 rounded-lg text-slate-600 font-bold text-xs hover:bg-gray-50 transition-all">2</button>
-                  <button className="w-8 h-8 flex items-center justify-center bg-white border border-gray-100 rounded-lg text-slate-600 font-bold text-xs hover:bg-gray-50 transition-all">3</button>
-                  <button className="w-8 h-8 flex items-center justify-center bg-white border border-gray-100 rounded-lg text-slate-600 hover:bg-gray-50 transition-all">
+                  <button className="w-8 h-8 flex items-center justify-center bg-white border border-gray-100 rounded-lg text-slate-800 font-bold text-xs hover:bg-gray-50 transition-all">2</button>
+                  <button className="w-8 h-8 flex items-center justify-center bg-white border border-gray-100 rounded-lg text-slate-800 font-bold text-xs hover:bg-gray-50 transition-all">3</button>
+                  <button className="w-8 h-8 flex items-center justify-center bg-white border border-gray-100 rounded-lg text-slate-800 hover:bg-gray-50 transition-all">
                      <ChevronRight size={16} />
                   </button>
                </div>
                <div className="bg-gray-50 border border-gray-100 px-3 py-1.5 rounded-lg flex items-center gap-2 cursor-pointer">
                   <span className="text-[10px] font-bold text-slate-700 uppercase">10 / page</span>
-                  <ChevronDown size={10} className="text-slate-400" />
+                  <ChevronDown size={10} className="text-slate-800" />
                </div>
             </div>
          </div>
@@ -314,9 +314,9 @@ export default function VendorLeads() {
 const VendorLeadStatCard = ({ label, value, sub, icon: Icon, iconColor, iconBg }: any) => (
   <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between group hover:shadow-md transition-all">
      <div>
-        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">{label}</p>
-        <h4 className="text-2xl font-bold text-slate-900">{value}</h4>
-        <p className="text-[10px] font-medium text-slate-400 mt-0.5">{sub}</p>
+        <p className="text-[10px] font-bold text-slate-800 uppercase tracking-widest mb-1">{label}</p>
+        <h4 className="text-xl font-semibold text-slate-900">{value}</h4>
+        <p className="text-[10px] font-medium text-slate-800 mt-0.5">{sub}</p>
      </div>
      <div className={`w-12 h-12 rounded-xl ${iconBg} ${iconColor} flex items-center justify-center`}>
         <Icon size={20} />

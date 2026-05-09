@@ -91,11 +91,11 @@ export default function VendorSettings() {
         <div className="space-y-2">
             <h1 className="text-2xl font-semibold text-slate-900  flex items-center gap-3">
                Settings
-               <div className="p-1.5 bg-gray-50 text-slate-700 rounded-xl border border-gray-100">
+               <div className="p-1.5 bg-gray-50 text-slate-800 rounded-xl border border-gray-100">
                   <Settings className="w-4 h-4" />
                </div>
             </h1>
-            <p className="text-slate-700 font-medium text-sm">Manage your profile, security, and notification preferences.</p>
+            <p className="text-slate-800 font-medium text-sm">Manage your profile, security, and notification preferences.</p>
         </div>
         
         <button 
@@ -121,10 +121,10 @@ export default function VendorSettings() {
                     onClick={() => setActiveTab(tab.id as any)}
                     className={`w-full px-4 py-3 rounded-xl text-left flex items-center gap-3 transition-colors ${ activeTab === tab.id ? 'bg-[#164e33]/5 text-slate-800 font-semibold' : 'text-slate-800 hover:bg-gray-50' }`}
                 >
-                    <tab.icon className={`w-4 h-4 ${activeTab === tab.id ? 'text-[#164e33]' : 'text-slate-700 '}`} />
+                    <tab.icon className={`w-4 h-4 ${activeTab === tab.id ? 'text-[#164e33]' : 'text-slate-800 '}`} />
                     <div className="flex flex-col">
                         <span className="text-sm font-semibold">{tab.label}</span>
-                        <span className={`text-sm font-medium ${activeTab === tab.id ? 'text-slate-600' : 'text-slate-700'}`}>{tab.desc}</span>
+                        <span className={`text-sm font-medium ${activeTab === tab.id ? 'text-slate-600' : 'text-slate-800'}`}>{tab.desc}</span>
                     </div>
                 </button>
             ))}
@@ -160,7 +160,7 @@ export default function VendorSettings() {
                                 </div>
                                 <div className="space-y-1">
                                     <h3 className="text-base font-semibold text-slate-900">{vendor?.businessName || 'Your Business'}</h3>
-                                    <p className="text-sm font-medium text-slate-700 flex items-center gap-1.5">
+                                    <p className="text-sm font-medium text-slate-800 flex items-center gap-1.5">
                                         <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
                                         Verified Business
                                     </p>
@@ -184,7 +184,7 @@ export default function VendorSettings() {
                                         type="text" 
                                         value={vendor?.id?.slice(0, 12)} 
                                         disabled
-                                        className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-100 rounded-xl outline-none font-medium text-slate-700 cursor-not-allowed text-sm"
+                                        className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-100 rounded-xl outline-none font-medium text-slate-800 cursor-not-allowed text-sm"
                                     />
                                 </div>
 
@@ -228,7 +228,7 @@ export default function VendorSettings() {
                                <div className="flex items-center gap-4">
 <div>
                                        <h4 className="text-sm font-semibold text-slate-900 mb-0.5">Change Password</h4>
-                                       <p className="text-sm font-medium text-slate-700">Update your account password</p>
+                                       <p className="text-sm font-medium text-slate-800">Update your account password</p>
                                    </div>
                                </div>
                                <button className="px-5 py-2 bg-white border border-gray-200 rounded-xl text-sm font-semibold text-slate-800 hover:bg-gray-50 transition-colors ">
@@ -240,7 +240,7 @@ export default function VendorSettings() {
                                <div className="flex items-center gap-4">
 <div>
                                        <h4 className="text-sm font-semibold text-slate-900 mb-0.5">Active Devices</h4>
-                                       <p className="text-sm font-medium text-slate-700">Manage where you're logged in</p>
+                                       <p className="text-sm font-medium text-slate-800">Manage where you're logged in</p>
                                    </div>
                                </div>
                                <div className="text-sm font-semibold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-100 w-fit">
@@ -254,7 +254,7 @@ export default function VendorSettings() {
                         <div className="space-y-4">
                            <div className="mb-6 border-b border-gray-50 pb-4">
                                <h3 className="text-sm font-semibold text-slate-900">Email Notifications</h3>
-                               <p className="text-sm font-medium text-slate-700 mt-1">Choose what we email you about.</p>
+                               <p className="text-sm font-medium text-slate-800 mt-1">Choose what we email you about.</p>
                            </div>
                            
                            {[
@@ -266,7 +266,7 @@ export default function VendorSettings() {
                                    <div className="flex items-center gap-4">
 <div className="space-y-0.5">
                                             <h4 className="text-sm font-semibold text-slate-900">{n.title}</h4>
-                                            <p className="text-sm font-medium text-slate-700">{n.desc}</p>
+                                            <p className="text-sm font-medium text-slate-800">{n.desc}</p>
                                        </div>
                                    </div>
                                    <div className="relative w-11 h-6 bg-[#164e33] rounded-full cursor-pointer transition-colors  flex items-center px-0.5">

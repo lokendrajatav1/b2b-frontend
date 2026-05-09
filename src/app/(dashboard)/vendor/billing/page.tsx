@@ -165,10 +165,10 @@ export default function VendorBilling() {
         {/* ── page title ── */}
         <div>
           <h1 className="text-base font-semibold text-slate-900 flex items-center gap-2">
-            <CreditCard className="w-5 h-5 text-slate-700" />
+            <CreditCard className="w-5 h-5 text-slate-800" />
             Billing
           </h1>
-          <p className="text-sm text-slate-700 mt-0.5">Manage your subscription plan</p>
+          <p className="text-sm text-slate-800 mt-0.5">Manage your subscription plan</p>
         </div>
 
         {/* ── expiry alert ── */}
@@ -193,7 +193,7 @@ export default function VendorBilling() {
               isExpired ? 'bg-red-100 text-red-600'
               : isSoon  ? 'bg-amber-100 text-amber-600'
               : currentPkg ? 'bg-green-100 text-green-700'
-              : 'bg-gray-100 text-slate-700'
+              : 'bg-gray-100 text-slate-800'
             }`}>
               {isExpired ? 'Expired' : isSoon ? 'Expiring Soon' : currentPkg ? 'Active' : 'No Plan'}
             </span>
@@ -212,11 +212,11 @@ export default function VendorBilling() {
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-slate-900">{currentPkg.name} Plan</p>
-                        <p className="text-sm text-slate-700">₹{currentPkg.price?.toLocaleString()}/month</p>
+                        <p className="text-sm text-slate-800">₹{currentPkg.price?.toLocaleString()}/month</p>
                       </div>
                     </div>
                     <div className="space-y-1.5">
-                      <div className="flex justify-between text-sm text-slate-700">
+                      <div className="flex justify-between text-sm text-slate-800">
                         <span className="flex items-center gap-1">
                           <Clock className="w-3 h-3" />
                           {vendor?.planExpiry
@@ -235,18 +235,18 @@ export default function VendorBilling() {
                   </div>
                   <div className="grid grid-cols-2 gap-3 sm:w-52">
                     <div className="bg-gray-50 rounded-xl px-3 py-3 text-center border border-gray-100">
-                      <p className="text-sm text-slate-700 mb-1">Monthly Leads</p>
+                      <p className="text-sm text-slate-800 mb-1">Monthly Leads</p>
                       <p className="text-sm font-semibold text-slate-900">{currentPkg.monthlyLeads ?? currentPkg.leadLimit ?? '—'}</p>
                     </div>
                     <div className="bg-gray-50 rounded-xl px-3 py-3 text-center border border-gray-100">
-                      <p className="text-sm text-slate-700 mb-1">Priority</p>
+                      <p className="text-sm text-slate-800 mb-1">Priority</p>
                       <p className="text-sm font-semibold text-slate-900">{currentPkg.priority ?? '—'}</p>
                     </div>
                   </div>
                 </div>
               );
             })() : (
-              <div className="flex items-center gap-3 text-slate-700 text-sm py-2">
+              <div className="flex items-center gap-3 text-slate-800 text-sm py-2">
                 <Package2 className="w-5 h-5 opacity-40" />
                 No active subscription. Choose a plan below to get started.
               </div>
@@ -256,12 +256,12 @@ export default function VendorBilling() {
 
         {/* ── available plans ── */}
         <div>
-          <h2 className="text-sm font-medium text-slate-700 mb-3 uppercase ">
+          <h2 className="text-sm font-medium text-slate-800 mb-3 uppercase ">
             Available Plans
           </h2>
 
           {packages.length === 0 ? (
-            <div className="text-center py-10 border border-dashed border-gray-200 rounded-xl text-slate-700 text-sm">
+            <div className="text-center py-10 border border-dashed border-gray-200 rounded-xl text-slate-800 text-sm">
               No plans available. Please contact admin.
             </div>
           ) : (
@@ -308,16 +308,16 @@ export default function VendorBilling() {
                         <div className="flex flex-col items-start w-fit mx-auto space-y-4">
                           <div className="flex items-center gap-3">
                              <CheckCircle2 className="w-4.5 h-4.5 text-emerald-500 shrink-0" />
-                             <span className="text-base font-semibold text-slate-700 tracking-tight">{pkg.monthlyLeads ?? 0} Monthly Leads</span>
+                             <span className="text-base font-semibold text-slate-800 tracking-tight">{pkg.monthlyLeads ?? 0} Monthly Leads</span>
                           </div>
                           <div className="flex items-center gap-3">
                              <CheckCircle2 className="w-4.5 h-4.5 text-emerald-500 shrink-0" />
-                             <span className="text-base font-semibold text-slate-700 tracking-tight">Priority Hub Access</span>
+                             <span className="text-base font-semibold text-slate-800 tracking-tight">Priority Hub Access</span>
                           </div>
                           {Array.isArray(pkg.features) && pkg.features.slice(0, 3).map((f: string, i: number) => (
                             <div key={i} className="flex items-center gap-3">
                               <CheckCircle2 className="w-4.5 h-4.5 text-emerald-500 shrink-0" />
-                              <span className="text-base font-semibold text-slate-700 tracking-tight truncate max-w-[200px]">{f}</span>
+                              <span className="text-base font-semibold text-slate-800 tracking-tight truncate max-w-[200px]">{f}</span>
                             </div>
                           ))}
                         </div>
@@ -371,7 +371,7 @@ export default function VendorBilling() {
               </div>
             ))}
           </div>
-          <p className="text-sm text-slate-700 mt-4 flex items-center gap-1.5">
+          <p className="text-sm text-slate-800 mt-4 flex items-center gap-1.5">
             <Lock className="w-3 h-3" />
             All transactions secured and encrypted by Razorpay
           </p>

@@ -25,16 +25,19 @@ import {
   Layers,
   Briefcase,
   X,
-  ExternalLink
+  ExternalLink,
+  ChevronLeft
+,
+  Send
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const LeadStatCard = ({ label, value, sub, icon: Icon, iconColor, iconBg }: any) => (
   <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between group hover:shadow-md transition-all">
      <div>
-        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">{label}</p>
-        <h4 className="text-2xl font-bold text-slate-900">{value}</h4>
-        <p className="text-[10px] font-medium text-slate-400 mt-0.5">{sub}</p>
+        <p className="text-[10px] font-bold text-slate-600 uppercase tracking-widest mb-1">{label}</p>
+        <h4 className="text-xl font-semibold text-slate-900">{value}</h4>
+        <p className="text-[10px] font-medium text-slate-600 mt-0.5">{sub}</p>
      </div>
      <div className={`w-12 h-12 rounded-xl ${iconBg} ${iconColor} flex items-center justify-center`}>
         <Icon size={20} />
@@ -55,10 +58,18 @@ export default function SuperAdminLeads() {
   const [assigning, setAssigning] = useState<string | null>(null);
   const [categoryVendors, setCategoryVendors] = useState<any[]>([]);
   const [vendorsLoading, setVendorsLoading] = useState(false);
+  
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
 
   useEffect(() => {
     fetchLeads();
   }, [timeRange, customRange]);
+
+  // Reset page when filters change
+  useEffect(() => {
+    setPage(1);
+  }, [searchTerm, statusFilter, typeFilter]);
 
   useEffect(() => {
     const header = document.getElementById('main-dashboard-header');
@@ -165,27 +176,32 @@ export default function SuperAdminLeads() {
       {/* Header */}
       <div className="flex flex-col gap-3 pb-6 border-b border-gray-100">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-        <div>
-           <h1 className="text-2xl font-bold text-slate-900 uppercase tracking-tight">Hub Demand Streams</h1>
-           <p className="text-slate-600 font-medium mt-1 text-sm">Review incoming buyer requirements and distribute to matching hub partners.</p>
+        <div className="flex items-center gap-5">
+           <div className="w-12 h-12 bg-purple-50/50 rounded-xl border border-purple-100 flex items-center justify-center text-purple-600">
+              <Send className="w-6 h-6" />
+           </div>
+           <div>
+           <h1 className="text-xl font-semibold text-slate-900">Hub Demand Streams</h1>
+           <p className="text-sm text-gray-600 font-normal mt-1">Review incoming buyer requirements and distribute to matching hub partners.</p>
+           </div>
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
            <div className="relative w-full md:w-80 lg:w-96">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600" />
               <input 
                 type="text" 
                 placeholder="Search leads, category or city..." 
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm font-semibold outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-50 transition-all shadow-sm"
+                className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm font-medium outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-50 transition-all shadow-sm"
               />
            </div>
 
            {/* Filters Group */}
            <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto">
               <div className="flex-1 min-w-[140px] lg:flex-none flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-3 py-1.5 shadow-sm">
-                <Clock size={14} className="text-slate-400 shrink-0" />
+                <Clock size={14} className="text-slate-600 shrink-0" />
                 <select 
                   value={timeRange}
                   onChange={(e) => setTimeRange(e.target.value)}
@@ -202,7 +218,7 @@ export default function SuperAdminLeads() {
               </div>
  
               <div className="flex-1 min-w-[120px] lg:flex-none relative">
-                <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
+                <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-600" />
                 <select 
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
@@ -226,7 +242,7 @@ export default function SuperAdminLeads() {
                 <option value="MARKETPLACE">Marketplace</option>
               </select>
  
-              <button onClick={fetchLeads} className="p-2.5 bg-white border border-gray-200 rounded-xl text-slate-400 hover:text-emerald-600 transition-all shadow-sm shrink-0">
+              <button onClick={fetchLeads} className="p-2.5 bg-white border border-gray-200 rounded-xl text-slate-600 hover:text-emerald-600 transition-all shadow-sm shrink-0">
                 <RefreshCcw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
               </button>
            </div>
@@ -245,7 +261,7 @@ export default function SuperAdminLeads() {
             >
               <div className="flex flex-col md:flex-row md:items-center gap-3 bg-slate-50 rounded-xl px-4 py-3 border border-slate-100">
                 <div className="flex items-center gap-3">
-                  <Clock size={13} className="text-slate-400 shrink-0" />
+                  <Clock size={13} className="text-slate-600 shrink-0" />
                   <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider shrink-0">Custom Range:</span>
                 </div>
                 <div className="flex items-center gap-2 w-full md:w-auto">
@@ -254,7 +270,7 @@ export default function SuperAdminLeads() {
                     className="flex-1 min-w-[130px] md:flex-none bg-white border border-gray-200 rounded-lg px-3 py-1.5 text-[11px] font-bold text-slate-700 outline-none focus:border-emerald-400 transition-all shadow-sm cursor-pointer"
                     onChange={(e) => setCustomRange(prev => ({ ...prev, start: e.target.value }))}
                   />
-                  <span className="text-[11px] font-bold text-slate-400">→</span>
+                  <span className="text-[11px] font-bold text-slate-600">→</span>
                   <input
                     type="date"
                     className="flex-1 min-w-[130px] md:flex-none bg-white border border-gray-200 rounded-lg px-3 py-1.5 text-[11px] font-bold text-slate-700 outline-none focus:border-emerald-400 transition-all shadow-sm cursor-pointer"
@@ -308,16 +324,16 @@ export default function SuperAdminLeads() {
 
       <div>
         <div className="bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm">
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto overflow-y-auto w-full max-h-[calc(70vh-50px)] relative">
             <table className="w-full text-left border-collapse whitespace-nowrap min-w-[800px]">
-              <thead>
-                <tr className="bg-slate-50/50 border-b border-gray-100">
-                  <th className="px-8 py-5 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Buyer Details</th>
-                  <th className="px-8 py-5 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Inquiry Type</th>
-                  <th className="px-8 py-5 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Location</th>
-                  <th className="px-8 py-5 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Status</th>
-                  <th className="px-8 py-5 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Matched Vendor</th>
-                  <th className="px-8 py-5 text-[10px] font-bold text-slate-500 uppercase tracking-widest text-right">Actions</th>
+              <thead className="sticky top-0 z-20 bg-white">
+                <tr className="bg-white border-b border-gray-100 shadow-sm">
+                  <th className="px-6 py-4 text-xs font-semibold text-slate-600 uppercase tracking-tight">Buyer Details</th>
+                  <th className="px-6 py-4 text-xs font-semibold text-slate-600 uppercase tracking-tight">Inquiry Type</th>
+                  <th className="px-6 py-4 text-xs font-semibold text-slate-600 uppercase tracking-tight">Location</th>
+                  <th className="px-6 py-4 text-xs font-semibold text-slate-600 uppercase tracking-tight">Status</th>
+                  <th className="px-6 py-4 text-xs font-semibold text-slate-600 uppercase tracking-tight">Matched Vendor</th>
+                  <th className="px-6 py-4 text-xs font-semibold text-slate-600 uppercase tracking-tight text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
@@ -328,35 +344,35 @@ export default function SuperAdminLeads() {
                     </tr>
                   ))
                 ) : filteredLeads.length > 0 ? (
-                  filteredLeads.map((lead) => (
+                  filteredLeads.slice((page - 1) * limit, page * limit).map((lead) => (
                   <tr key={lead.id} className="group hover:bg-slate-50/50 transition-colors">
-                    <td className="px-8 py-5">
+                    <td className="px-6 py-4">
                         <div className="flex flex-col">
-                           <span className="text-[15px] font-bold text-slate-900 leading-tight group-hover:text-emerald-700 transition-colors">
+                           <span className="text-[15px] font-semibold text-slate-900 leading-tight group-hover:text-emerald-700 transition-colors">
                              {lead.searchKeyword ? `Looking for "${lead.searchKeyword}"` : `Inquiry from ${lead.buyerName}`}
                            </span>
                            <div className="flex items-center gap-3 mt-1.5">
-                              <span className="text-[11px] font-bold text-emerald-600 uppercase tracking-wider">
+                              <span className="text-[11px] font-semibold text-emerald-600 uppercase tracking-wider">
                                  {lead.phone || 'N/A'}
                               </span>
                            </div>
-                           <span className="text-[11px] font-bold text-slate-400 uppercase tracking-tighter mt-1">
+                           <span className="text-[11px] font-semibold text-slate-600 uppercase tracking-tighter mt-1">
                              Posted {new Date(lead.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
                            </span>
                         </div>
                     </td>
-                    <td className="px-8 py-5">
-                      <div className="text-[11px] font-bold text-slate-500 uppercase">
+                    <td className="px-6 py-4">
+                      <div className="text-[11px] font-semibold text-slate-500 uppercase">
                          {lead.category?.name || 'N/A'}
                       </div>
                     </td>
-                    <td className="px-8 py-5">
-                        <div className="text-sm font-bold text-slate-700 uppercase tracking-tight">
+                    <td className="px-6 py-4">
+                        <div className="text-sm font-semibold text-slate-700 uppercase tracking-tight">
                            {lead.city || 'Global Reach'}
                         </div>
                     </td>
-                    <td className="px-8 py-5">
-                       <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-[10px] font-bold uppercase border transition-all ${
+                    <td className="px-6 py-4">
+                       <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-[10px] font-semibold uppercase border transition-all ${
                          lead.status === 'PENDING' ? 'bg-amber-50 text-amber-600 border-amber-100' :
                          lead.status === 'DISTRIBUTED' ? 'bg-blue-50 text-blue-600 border-blue-100' :
                          'bg-emerald-50 text-emerald-600 border-emerald-100'
@@ -368,27 +384,27 @@ export default function SuperAdminLeads() {
                           {lead.status === 'PENDING' ? 'Open Market' : lead.status === 'DISTRIBUTED' ? 'Assigned' : 'Closed'}
                        </div>
                     </td>
-                    <td className="px-8 py-5">
+                    <td className="px-6 py-4">
                        {lead.vendor ? (
                          <div className="flex items-center gap-3">
-                            <div className="w-9 h-9 rounded-xl bg-slate-100 border border-gray-100 overflow-hidden flex items-center justify-center text-slate-400 text-xs font-bold shrink-0">
+                            <div className="w-9 h-9 rounded-xl bg-slate-100 border border-gray-100 overflow-hidden flex items-center justify-center text-slate-600 text-xs font-semibold shrink-0">
                                {(lead.vendor.logo || lead.vendor.logoUrl) ? (
                                  <img src={lead.vendor.logo || lead.vendor.logoUrl} className="w-full h-full object-cover" />
                                ) : lead.vendor.businessName?.charAt(0)}
                             </div>
                             <div>
-                               <p className="text-[14px] font-bold text-slate-900 leading-none capitalize truncate max-w-[150px]">{lead.vendor.businessName}</p>
-                               <p className="text-[11px] font-bold text-slate-400 mt-1 uppercase tracking-tighter">Verified Partner</p>
+                               <p className="text-[14px] font-semibold text-slate-900 leading-none capitalize truncate max-w-[150px]">{lead.vendor.businessName}</p>
+                               <p className="text-[11px] font-semibold text-slate-600 mt-1 uppercase tracking-tighter">Verified Partner</p>
                             </div>
                          </div>
                        ) : (
-                         <span className="text-[11px] font-bold text-slate-400 uppercase">Unassigned</span>
+                         <span className="text-[11px] font-semibold text-slate-600 uppercase">Unassigned</span>
                        )}
                     </td>
-                    <td className="px-8 py-5 text-right">
+                    <td className="px-6 py-4 text-right">
                        <button 
                          onClick={() => { setSelectedLead(lead); setIsDetailOpen(true); }}
-                         className="px-5 py-2 bg-slate-900 text-white rounded-xl text-[12px] font-bold uppercase tracking-tight hover:bg-black transition-all"
+                         className="px-5 py-2 bg-slate-900 text-white rounded-xl text-[12px] font-semibold uppercase tracking-tight hover:bg-black transition-all"
                        >
                           Review
                        </button>
@@ -406,6 +422,55 @@ export default function SuperAdminLeads() {
                 )}
               </tbody>
             </table>
+          </div>
+          {/* Pagination Footer */}
+          <div className="px-8 py-6 bg-slate-50/30 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-6">
+             <p className="text-xs font-semibold text-slate-500 uppercase tracking-tight">
+                Showing <span className="text-slate-900 font-bold">{Math.min(((page - 1) * limit) + 1, filteredLeads.length)}</span> to <span className="text-slate-900 font-bold">{Math.min(page * limit, filteredLeads.length)}</span> of <span className="text-slate-900 font-bold">{filteredLeads.length}</span> leads
+             </p>
+
+             <div className="flex items-center gap-6">
+                <select
+                   value={limit}
+                   onChange={(e) => { setLimit(parseInt(e.target.value)); setPage(1); }}
+                   className="bg-white border border-gray-200 rounded-xl px-4 py-2 text-[10px] font-bold text-slate-700 outline-none hover:border-slate-300 transition-all cursor-pointer uppercase appearance-none pr-8"
+                   style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%23475569\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'%3E%3C/path%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.75rem center', backgroundSize: '1rem' }}
+                >
+                   <option value={10}>10 leads</option>
+                   <option value={25}>25 leads</option>
+                   <option value={50}>50 leads</option>
+                </select>
+
+                <div className="flex items-center gap-2">
+                   <button
+                      onClick={() => setPage(p => Math.max(1, p - 1))}
+                      disabled={page === 1}
+                      className="w-9 h-9 rounded-xl border border-gray-200 flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-white disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                   >
+                      <ChevronLeft size={18} />
+                   </button>
+                   
+                   <div className="flex items-center gap-1">
+                      {[...Array((Math.max(0, Math.ceil((filteredLeads?.length || 0) / (limit || 10)) || 0)))].slice(0, 5).map((_, i) => (
+                         <button
+                            key={i}
+                            onClick={() => setPage(i + 1)}
+                            className={`w-9 h-9 rounded-xl text-[11px] font-bold transition-all ${page === i + 1 ? 'bg-slate-900 text-white shadow-lg' : 'text-slate-500 hover:bg-slate-100'}`}
+                         >
+                            {i + 1}
+                         </button>
+                      ))}
+                   </div>
+
+                   <button
+                      onClick={() => setPage(p => Math.min((limit > 0 ? Math.ceil(filteredLeads.length / limit) : 0), p + 1))}
+                      disabled={page >= (limit > 0 ? Math.ceil(filteredLeads.length / limit) : 0)}
+                      className="w-9 h-9 rounded-xl border border-gray-200 flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-white disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                   >
+                      <ChevronRight size={18} />
+                   </button>
+                </div>
+             </div>
           </div>
         </div>
       </div>
@@ -434,10 +499,10 @@ export default function SuperAdminLeads() {
                      </div>
                      <div>
                         <h2 className="text-[15px] font-bold text-slate-900 uppercase tracking-tight">Inquiry Intelligence</h2>
-                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Hub Demand Analysis</p>
+                        <p className="text-[10px] font-bold text-slate-600 uppercase tracking-widest mt-0.5">Hub Demand Analysis</p>
                      </div>
                   </div>
-                  <button onClick={() => setIsDetailOpen(false)} className="p-2.5 hover:bg-slate-50 rounded-xl transition-all text-slate-400 hover:text-slate-900 border border-transparent hover:border-slate-100">
+                  <button onClick={() => setIsDetailOpen(false)} className="p-2.5 hover:bg-slate-50 rounded-xl transition-all text-slate-600 hover:text-slate-900 border border-transparent hover:border-slate-100">
                      <X className="w-5 h-5" />
                   </button>
                </div>
@@ -451,7 +516,7 @@ export default function SuperAdminLeads() {
                          <h3 className="text-base font-bold text-slate-900 leading-tight">
                             {selectedLead.searchKeyword ? `Requirement: ${selectedLead.searchKeyword}` : `Inquiry from ${selectedLead.buyerName}`}
                          </h3>
-                         <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-2">Reference: {selectedLead.id.split('-')[0].toUpperCase()}</p>
+                         <p className="text-[10px] font-bold text-slate-600 uppercase tracking-wider mt-2">Reference: {selectedLead.id.split('-')[0].toUpperCase()}</p>
                       </div>
                    </div>
 
@@ -501,7 +566,7 @@ export default function SuperAdminLeads() {
                             categoryVendors.map(vendor => (
                                <div key={vendor.id} className="flex items-center justify-between p-4 bg-white border border-gray-100 rounded-xl hover:border-emerald-200 hover:shadow-sm transition-all group">
                                    <div className="flex items-center gap-3">
-                                       <div className="w-10 h-10 rounded-xl bg-slate-50 border border-gray-100 flex items-center justify-center text-slate-400 text-sm font-bold shrink-0 overflow-hidden">
+                                       <div className="w-10 h-10 rounded-xl bg-slate-50 border border-gray-100 flex items-center justify-center text-slate-600 text-sm font-bold shrink-0 overflow-hidden">
                                           {(vendor.logo || vendor.logoUrl) ? <img src={vendor.logo || vendor.logoUrl} className="w-full h-full object-cover" /> : vendor.businessName?.charAt(0)}
                                        </div>
                                        <div>
@@ -511,7 +576,7 @@ export default function SuperAdminLeads() {
                                                <ShieldCheck size={12} className="text-emerald-500" />
                                              )}
                                            </div>
-                                           <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{vendor.city} Hub</span>
+                                           <span className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">{vendor.city} Hub</span>
                                        </div>
                                    </div>
                                  <button 
