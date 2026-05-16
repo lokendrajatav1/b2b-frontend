@@ -121,14 +121,14 @@ export default function AdminDashboard() {
           <select 
             value={timeRange} 
             onChange={(e) => setTimeRange(e.target.value)}
-            className="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-slate-700 outline-none focus:ring-4 focus:ring-[#164e33]/5 focus:border-[#164e33]/20 transition-all cursor-pointer"
+            className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-bold text-slate-700 outline-none focus:ring-4 focus:ring-[#164e33]/5 focus:border-[#164e33]/20 transition-all cursor-pointer"
           >
             <option value="all">All Time</option>
             <option value="yearly">This Year</option>
             <option value="monthly">This Month</option>
             <option value="weekly">This Week</option>
           </select>
-          <button className="px-5 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-bold text-slate-700 hover:bg-slate-50 transition-all flex items-center gap-2 shadow-sm active:scale-95">
+          <button className="px-5 py-2.5 bg-white border border-gray-200 rounded-lg text-sm font-bold text-slate-700 hover:bg-slate-50 transition-all flex items-center gap-2 shadow-sm active:scale-95">
             <Filter size={16} /> Filters
           </button>
         </div>
@@ -139,7 +139,7 @@ export default function AdminDashboard() {
         {dashboardCards.map((card, idx) => (
           <div
             key={card.label}
-            className="bg-white p-6 rounded-xl border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-slate-200/40 transition-all duration-500 relative flex flex-col justify-between min-h-[180px] group overflow-hidden"
+            className="bg-white p-6 rounded-lg border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-slate-200/40 transition-all duration-500 relative flex flex-col justify-between min-h-[180px] group overflow-hidden"
           >
             <div className="flex items-start justify-between relative z-10">
               <div className="space-y-1">
@@ -148,7 +148,7 @@ export default function AdminDashboard() {
                  </div>
                  <h3 className="text-2xl md:text-3xl font-bold text-slate-900 leading-none">{loading ? '...' : card.value}</h3>
               </div>
-              <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110 duration-500`} style={{ backgroundColor: `${card.color}15`, color: card.color }}>
+              <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-110 duration-500`} style={{ backgroundColor: `${card.color}15`, color: card.color }}>
                  <card.icon size={20} />
               </div>
             </div>
@@ -188,7 +188,7 @@ export default function AdminDashboard() {
       {/* Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-2">
         {/* Top Left: Bar Chart */}
-        <div className="bg-white p-6 rounded-xl border border-gray-200  col-span-1 min-h-[300px] flex flex-col relative">
+        <div className="bg-white p-6 rounded-lg border border-gray-200  col-span-1 min-h-[300px] flex flex-col relative">
           <div className="flex items-start justify-between mb-6">
             <h3 className="text-base font-semibold text-slate-800">Forecast - weighted</h3>
             <button className="text-gray-600 hover:text-gray-600"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="5" r="1" /><circle cx="12" cy="12" r="1" /><circle cx="12" cy="19" r="1" /></svg></button>
@@ -207,7 +207,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Middle: Donut Chart */}
-        <div className="bg-white p-6 rounded-xl border border-gray-200  col-span-1 min-h-[300px] flex flex-col relative">
+        <div className="bg-white p-6 rounded-lg border border-gray-200  col-span-1 min-h-[300px] flex flex-col relative">
           <div className="flex items-start justify-between mb-2">
             <h3 className="text-base font-semibold text-slate-800">Won leads by reason</h3>
             <button className="text-gray-600 hover:text-gray-600"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="5" r="1" /><circle cx="12" cy="12" r="1" /><circle cx="12" cy="19" r="1" /></svg></button>
@@ -248,7 +248,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Right: Large Area Chart overlapping */}
-        <div className="bg-white p-6 rounded-xl border border-gray-200  col-span-1 lg:col-span-1 min-h-[300px] flex flex-col relative">
+        <div className="bg-white p-6 rounded-lg border border-gray-200  col-span-1 lg:col-span-1 min-h-[300px] flex flex-col relative">
           <div className="flex items-start justify-between mb-4">
             <h3 className="text-base font-semibold text-slate-800">Demand this year compared</h3>
             <button className="text-gray-600 hover:text-gray-600"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="5" r="1" /><circle cx="12" cy="12" r="1" /><circle cx="12" cy="19" r="1" /></svg></button>
@@ -270,7 +270,7 @@ export default function AdminDashboard() {
       {/* Bottom Layout Row */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-2">
         {/* Live Activity (reusing functionality) */}
-        <div className="lg:col-span-8 bg-white rounded-xl p-6 border border-gray-200  min-h-[300px]">
+        <div className="lg:col-span-8 bg-white rounded-lg p-6 border border-gray-200  min-h-[300px]">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-base font-semibold text-slate-800">Live Regional Demand Activity</h3>
             <button onClick={fetchDashboardStats} className="text-gray-600 hover:text-gray-600">
@@ -296,7 +296,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Sales falling behind Equivalent */}
-        <div className="lg:col-span-4 bg-white rounded-xl p-6 border border-gray-200  min-h-[300px]">
+        <div className="lg:col-span-4 bg-white rounded-lg p-6 border border-gray-200  min-h-[300px]">
           <div className="flex items-start justify-between mb-6">
             <h3 className="text-base font-semibold text-slate-800">Pending Actions - Act now</h3>
             <button className="text-gray-600 hover:text-gray-600"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="5" r="1" /><circle cx="12" cy="12" r="1" /><circle cx="12" cy="19" r="1" /></svg></button>

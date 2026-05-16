@@ -145,7 +145,7 @@ export default function VendorPublicProfile() {
                 <div className="space-y-6 max-w-4xl">
                     <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
                         {/* Business Logo */}
-                        <div className="w-24 h-24 md:w-32 md:h-32 rounded-3xl bg-[#164e33]/10 border border-[#164e33]/20 flex items-center justify-center shrink-0 overflow-hidden shadow-2xl">
+                        <div className="w-24 h-24 md:w-32 md:h-32 rounded-xl bg-[#164e33]/10 border border-[#164e33]/20 flex items-center justify-center shrink-0 overflow-hidden shadow-2xl">
                             {vendor.logoUrl ? (
                                 <img src={vendor.logoUrl} alt={vendor.businessName} className="w-full h-full object-cover" />
                             ) : (
@@ -271,7 +271,7 @@ export default function VendorPublicProfile() {
                                 <motion.div
                                     whileHover={{ y: -4, boxShadow: '0 20px 40px -12px rgba(0,0,0,0.1)' }}
                                     transition={{ duration: 0.2 }}
-                                    className="bg-white border border-gray-100 rounded-2xl overflow-hidden flex flex-col cursor-pointer h-full"
+                                    className="bg-white border border-gray-100 rounded-lg overflow-hidden flex flex-col cursor-pointer h-full"
                                 >
                                     {/* Image Area */}
                                     <div className="relative h-52 bg-gray-50 overflow-hidden">
@@ -342,7 +342,7 @@ export default function VendorPublicProfile() {
                             ))}
                         </div>
                     ) : (
-                        <div className="py-20 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center text-center">
+                        <div className="py-20 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200 flex flex-col items-center justify-center text-center">
                            <ImageIcon className="w-10 h-10 text-gray-200 mb-3" />
                            <p className="text-sm text-gray-400 font-medium">No offerings available yet</p>
                         </div>
@@ -358,7 +358,7 @@ export default function VendorPublicProfile() {
                         </h3>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                             {vendor.gallery.map((img: any) => (
-                                <div key={img.id} className="aspect-square rounded-2xl overflow-hidden bg-gray-100 group relative border border-gray-100 shadow-sm">
+                                <div key={img.id} className="aspect-square rounded-lg overflow-hidden bg-gray-100 group relative border border-gray-100 shadow-sm">
                                     <img src={img.url} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Gallery asset" />
                                 </div>
                             ))}
@@ -385,7 +385,7 @@ export default function VendorPublicProfile() {
                     {vendor.reviews?.length > 0 ? (
                         <div className="space-y-6">
                             {vendor.reviews.map((rev: any) => (
-                                <div key={rev.id} className="bg-white p-8 rounded-3xl border border-gray-100 shadow-xs relative overflow-hidden group">
+                                <div key={rev.id} className="bg-white p-8 rounded-lg border border-gray-100 shadow-xs relative overflow-hidden group">
                                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
                                         <div className="flex items-center gap-4">
                                             <div className="w-12 h-12 rounded-full bg-[#164e33]/10 flex items-center justify-center text-[#164e33] font-bold">
@@ -432,7 +432,7 @@ export default function VendorPublicProfile() {
                             ))}
                         </div>
                     ) : (
-                        <div className="py-16 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center text-center">
+                        <div className="py-16 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200 flex flex-col items-center justify-center text-center">
                             <Star className="w-12 h-12 text-gray-200 mb-4" />
                             <p className="text-sm font-semibold text-gray-500 uppercase ">No Client Testimonials Yet</p>
                             <p className="text-xs text-gray-400 mt-2">Become the first to verify this merchant's performance.</p>
@@ -443,7 +443,7 @@ export default function VendorPublicProfile() {
 
             {/* Inquiry Context Sidebar */}
             <aside className="lg:w-[400px] shrink-0">
-                <div className="bg-white p-10 rounded-2xl border border-gray-100 shadow-sm sticky top-28 space-y-10">
+                <div className="bg-white p-10 rounded-lg border border-gray-100 shadow-sm sticky top-28 space-y-10">
                     <div>
                         <h3 className="text-2xl font-semibold text-[#164e33] mb-3">Send Inquiry</h3>
                         <p className="text-sm text-gray-500 font-medium leading-relaxed">Transmit your technical payload or request a quote directly to this authorized partner.</p>

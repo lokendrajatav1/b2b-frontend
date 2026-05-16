@@ -107,7 +107,7 @@ export default function AdminNotifications() {
       {/* --- HEADER --- */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
         <div className="flex items-center gap-5">
-           <div className="w-12 h-12 bg-emerald-50/50 rounded-xl border border-emerald-100 flex items-center justify-center text-emerald-600 ">
+           <div className="w-12 h-12 bg-emerald-50/50 rounded-lg border border-emerald-100 flex items-center justify-center text-emerald-600 ">
               <Bell className="w-6 h-6" />
            </div>
            <div>
@@ -118,7 +118,7 @@ export default function AdminNotifications() {
            </div>
         </div>
 
-        <div className="flex items-center p-1 bg-slate-100 rounded-xl">
+        <div className="flex items-center p-1 bg-slate-100 rounded-lg">
            <button 
              onClick={() => setActiveTab('ALERTS')}
              className={`px-6 py-2 rounded-lg text-sm font-bold uppercase transition-all duration-200 ${activeTab === 'ALERTS' ? 'bg-white text-slate-900 ' : 'text-slate-600 hover:text-slate-600'}`}
@@ -141,7 +141,7 @@ export default function AdminNotifications() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="bg-white border border-gray-100 rounded-xl  overflow-hidden flex flex-col"
+            className="bg-white border border-gray-100 rounded-lg  overflow-hidden flex flex-col"
           >
             {/* TABS BAR */}
             <div className="px-4 sm:px-8 py-5 border-b border-gray-50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -212,7 +212,7 @@ export default function AdminNotifications() {
             exit={{ opacity: 0, y: -10 }}
             className="grid grid-cols-1 lg:grid-cols-12 gap-8"
           >
-             <div className="lg:col-span-7 bg-white rounded-xl border border-gray-100 p-8  space-y-8">
+             <div className="lg:col-span-7 bg-white rounded-lg border border-gray-100 p-8  space-y-8">
                 <div className="space-y-1">
                    <h2 className="text-base font-bold text-slate-900">New Announcement</h2>
                    <p className="text-sm font-medium text-slate-600">Send a platform-wide message to members.</p>
@@ -225,7 +225,7 @@ export default function AdminNotifications() {
                         type="text" 
                         value={formData.title}
                         onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                        className="w-full px-4 py-3 bg-slate-50 border border-gray-200 rounded-xl text-sm font-bold outline-none focus:border-emerald-500 focus:bg-white transition-all"
+                        className="w-full px-4 py-3 bg-slate-50 border border-gray-200 rounded-lg text-sm font-bold outline-none focus:border-emerald-500 focus:bg-white transition-all"
                         placeholder="Announcement Title"
                       />
                    </div>
@@ -236,7 +236,7 @@ export default function AdminNotifications() {
                          <select 
                            value={formData.type}
                            onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-                           className="w-full px-4 py-3 bg-slate-50 border border-gray-200 rounded-xl text-sm font-bold outline-none"
+                           className="w-full px-4 py-3 bg-slate-50 border border-gray-200 rounded-lg text-sm font-bold outline-none"
                          >
                             <option value="INFO">Information</option>
                             <option value="WARNING">Warning</option>
@@ -248,7 +248,7 @@ export default function AdminNotifications() {
                          <select 
                            value={formData.target}
                            onChange={(e) => setFormData({ ...formData, target: e.target.value })}
-                           className="w-full px-4 py-3 bg-slate-50 border border-gray-200 rounded-xl text-sm font-bold outline-none"
+                           className="w-full px-4 py-3 bg-slate-50 border border-gray-200 rounded-lg text-sm font-bold outline-none"
                          >
                             <option value="ALL">All Users</option>
                             <option value="VENDORS">Vendors Only</option>
@@ -263,7 +263,7 @@ export default function AdminNotifications() {
                          value={formData.message}
                          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                          rows={5}
-                         className="w-full px-4 py-3 bg-slate-50 border border-gray-200 rounded-xl text-sm font-bold outline-none focus:border-emerald-500 focus:bg-white transition-all resize-none"
+                         className="w-full px-4 py-3 bg-slate-50 border border-gray-200 rounded-lg text-sm font-bold outline-none focus:border-emerald-500 focus:bg-white transition-all resize-none"
                          placeholder="Message details..."
                       />
                    </div>
@@ -271,7 +271,7 @@ export default function AdminNotifications() {
                    <button 
                      type="submit"
                      disabled={broadcasting || !formData.title || !formData.message}
-                     className="w-full py-4 bg-slate-900 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-3 hover:bg-black transition-all disabled:opacity-50"
+                     className="w-full py-4 bg-slate-900 text-white rounded-lg font-bold text-sm flex items-center justify-center gap-3 hover:bg-black transition-all disabled:opacity-50"
                    >
                       {broadcasting ? <RefreshCcw className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
                       {broadcasting ? 'Sending...' : 'Broadcast Message'}
@@ -280,11 +280,11 @@ export default function AdminNotifications() {
              </div>
 
              <div className="lg:col-span-5 space-y-6">
-                <div className="bg-white rounded-xl border border-gray-100 p-8 ">
+                <div className="bg-white rounded-lg border border-gray-100 p-8 ">
                    <h3 className="text-xs font-bold text-slate-700 uppercase flex items-center gap-2 mb-6">
                       <Info className="w-4 h-4" /> Guidelines
                    </h3>
-                   <div className="p-5 bg-amber-50 rounded-xl border border-amber-100 flex gap-4">
+                   <div className="p-5 bg-amber-50 rounded-lg border border-amber-100 flex gap-4">
                       <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0" />
                       <p className="text-xs font-bold text-amber-800 leading-relaxed">
                         Broadcasts are sent instantly. Verify details carefully before sending.
@@ -298,7 +298,7 @@ export default function AdminNotifications() {
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0 }}
-                        className={`p-6 rounded-xl font-bold text-sm flex items-center gap-4  ${status.type === 'success' ? 'bg-emerald-600 text-white' : 'bg-red-600 text-white'}`}
+                        className={`p-6 rounded-lg font-bold text-sm flex items-center gap-4  ${status.type === 'success' ? 'bg-emerald-600 text-white' : 'bg-red-600 text-white'}`}
                      >
                         {status.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <XCircle className="w-5 h-5" />}
                         {status.text}

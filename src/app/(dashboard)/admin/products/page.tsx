@@ -102,7 +102,7 @@ export default function AdminProducts() {
 
         <div className="flex flex-wrap items-center gap-2">
            {/* Date Range Selector */}
-           <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-3 py-2 shadow-sm">
+           <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-2 shadow-sm">
              <Clock size={14} className="text-slate-400" />
              <select 
                value={timeRange}
@@ -123,7 +123,7 @@ export default function AdminProducts() {
               <select 
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="px-4 py-2 bg-white border border-gray-200 rounded-xl text-[11px] font-bold text-slate-700 outline-none hover:bg-gray-50 transition-all shadow-sm cursor-pointer"
+                className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-[11px] font-bold text-slate-700 outline-none hover:bg-gray-50 transition-all shadow-sm cursor-pointer"
               >
                 <option value="ALL">All Status</option>
                 <option value="PENDING">Pending</option>
@@ -134,14 +134,14 @@ export default function AdminProducts() {
               <select 
                 value={typeFilter}
                 onChange={(e) => setTypeFilter(e.target.value)}
-                className="px-4 py-2 bg-white border border-gray-200 rounded-xl text-[11px] font-bold text-slate-700 outline-none hover:bg-gray-50 transition-all shadow-sm cursor-pointer"
+                className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-[11px] font-bold text-slate-700 outline-none hover:bg-gray-50 transition-all shadow-sm cursor-pointer"
               >
                 <option value="ALL">All Types</option>
                 <option value="PRODUCT">Products</option>
                 <option value="SERVICE">Services</option>
               </select>
 
-              <button onClick={fetchOfferings} className="p-2 bg-white border border-gray-200 rounded-xl text-slate-400 hover:text-emerald-600 transition-all shadow-sm">
+              <button onClick={fetchOfferings} className="p-2 bg-white border border-gray-200 rounded-lg text-slate-400 hover:text-emerald-600 transition-all shadow-sm">
                 <RefreshCcw size={16} className={loading ? 'animate-spin' : ''} />
               </button>
            </div>
@@ -158,7 +158,7 @@ export default function AdminProducts() {
               transition={{ duration: 0.2 }}
               className="overflow-hidden"
             >
-              <div className="flex flex-col md:flex-row md:items-center gap-3 bg-slate-50 rounded-xl px-4 py-3 border border-slate-100">
+              <div className="flex flex-col md:flex-row md:items-center gap-3 bg-slate-50 rounded-lg px-4 py-3 border border-slate-100">
                 <div className="flex items-center gap-3">
                   <Clock size={13} className="text-slate-400 shrink-0" />
                   <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider shrink-0">Custom Range:</span>
@@ -194,7 +194,7 @@ export default function AdminProducts() {
               placeholder="Search by product name, vendor, category or city..." 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-11 pr-4 py-3.5 bg-white border border-gray-200 rounded-xl text-[13px] font-bold text-slate-700 outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all shadow-sm placeholder:text-slate-300"
+              className="w-full pl-11 pr-4 py-3.5 bg-white border border-gray-200 rounded-lg text-[13px] font-bold text-slate-700 outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all shadow-sm placeholder:text-slate-300"
             />
          </div>
       </div>
@@ -207,12 +207,12 @@ export default function AdminProducts() {
            { label: 'Live Products', value: offerings.filter(o => o.status === 'APPROVED').length, icon: CheckCheck, color: 'text-emerald-600', bg: 'bg-emerald-100/50' },
            { label: 'Hidden/Rejected', value: offerings.filter(o => o.status === 'REJECTED').length, icon: XCircle, color: 'text-rose-600', bg: 'bg-rose-100/50' },
          ].map((stat, i) => (
-           <div key={i} className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between group hover:shadow-md transition-all">
+           <div key={i} className="bg-white p-6 rounded-lg border border-gray-100 shadow-sm flex items-center justify-between group hover:shadow-md transition-all">
               <div>
                  <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">{stat.label}</p>
                  <h4 className="text-2xl font-bold text-slate-900">{stat.value}</h4>
               </div>
-              <div className={`w-12 h-12 rounded-xl ${stat.bg} ${stat.color} flex items-center justify-center`}>
+              <div className={`w-12 h-12 rounded-lg ${stat.bg} ${stat.color} flex items-center justify-center`}>
                  <stat.icon size={20} />
               </div>
            </div>
@@ -220,7 +220,7 @@ export default function AdminProducts() {
       </div>
 
       <div className="max-w-7xl mx-auto">
-         <div className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm">
+         <div className="bg-white rounded-lg border border-gray-100 overflow-hidden shadow-sm">
             <div className="overflow-x-auto w-full no-scrollbar">
                <table className="w-full text-left whitespace-nowrap min-w-[900px]">
                   <thead>
@@ -245,7 +245,7 @@ export default function AdminProducts() {
                     {/* Product Info */}
                     <td className="px-6 py-5">
                        <div className="flex items-center gap-4">
-                          <div className="w-14 h-14 rounded-xl bg-slate-50 border border-gray-100 overflow-hidden flex items-center justify-center shrink-0">
+                          <div className="w-14 h-14 rounded-lg bg-slate-50 border border-gray-100 overflow-hidden flex items-center justify-center shrink-0">
                              {(offer.images?.[0] || offer.imageUrl) ? (
                                <img src={offer.images?.[0] || offer.imageUrl} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                              ) : <Package className="text-slate-200" size={20} />}
@@ -305,7 +305,7 @@ export default function AdminProducts() {
                     <td className="px-6 py-5 text-right">
                        <button 
                          onClick={() => { setSelectedOffering(offer); setIsModalOpen(true); }}
-                         className="px-5 py-2.5 bg-slate-900 text-white rounded-xl text-[11px] font-bold uppercase tracking-wider hover:bg-black hover:shadow-lg transition-all active:scale-95"
+                         className="px-5 py-2.5 bg-slate-900 text-white rounded-lg text-[11px] font-bold uppercase tracking-wider hover:bg-black hover:shadow-lg transition-all active:scale-95"
                        >
                          Review
                        </button>
@@ -345,7 +345,7 @@ export default function AdminProducts() {
                {/* Sidebar Header */}
                <div className="p-6 border-b border-gray-100 flex items-center justify-between bg-white shrink-0">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center shadow-sm border border-emerald-100">
+                    <div className="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center shadow-sm border border-emerald-100">
                        <Briefcase className="w-5 h-5" />
                     </div>
                     <div>
@@ -353,7 +353,7 @@ export default function AdminProducts() {
                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Verification Hub node</p>
                     </div>
                   </div>
-                  <button onClick={() => setIsModalOpen(false)} className="p-2.5 hover:bg-slate-50 rounded-xl transition-all text-slate-400 hover:text-slate-900 border border-transparent hover:border-slate-100">
+                  <button onClick={() => setIsModalOpen(false)} className="p-2.5 hover:bg-slate-50 rounded-lg transition-all text-slate-400 hover:text-slate-900 border border-transparent hover:border-slate-100">
                      <X className="w-5 h-5" />
                   </button>
                </div>
@@ -368,16 +368,16 @@ export default function AdminProducts() {
                      <div className="flex gap-3 overflow-x-auto no-scrollbar pb-1 snap-x">
                         {selectedOffering.images && selectedOffering.images.length > 0 ? (
                            selectedOffering.images.map((img: string, idx: number) => (
-                              <div key={idx} className="aspect-[3/2] w-[320px] shrink-0 bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm snap-center group/img">
+                              <div key={idx} className="aspect-[3/2] w-[320px] shrink-0 bg-white rounded-lg border border-gray-100 overflow-hidden shadow-sm snap-center group/img">
                                  <img src={img} className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-700" alt={`${selectedOffering.name} ${idx + 1}`} />
                               </div>
                            ))
                         ) : selectedOffering.imageUrl ? (
-                           <div className="aspect-[3/2] w-full bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm group/img">
+                           <div className="aspect-[3/2] w-full bg-white rounded-lg border border-gray-100 overflow-hidden shadow-sm group/img">
                               <img src={selectedOffering.imageUrl} className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-700" alt={selectedOffering.name} />
                            </div>
                         ) : (
-                           <div className="aspect-video w-full bg-white rounded-xl border border-gray-100 flex flex-col items-center justify-center gap-2 shadow-sm">
+                           <div className="aspect-video w-full bg-white rounded-lg border border-gray-100 flex flex-col items-center justify-center gap-2 shadow-sm">
                               <div className="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center border border-slate-100">
                                  <Package className="w-6 h-6 text-slate-200" />
                               </div>
@@ -388,7 +388,7 @@ export default function AdminProducts() {
                   </div>
 
                   {/* Core Specifications */}
-                  <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm space-y-5 relative overflow-hidden">
+                  <div className="bg-white p-6 rounded-lg border border-gray-100 shadow-sm space-y-5 relative overflow-hidden">
                      <div className="absolute top-0 right-0 p-6">
                         <Zap size={32} className="text-slate-50 opacity-10" />
                      </div>
@@ -409,7 +409,7 @@ export default function AdminProducts() {
                         </div>
                      </div>
 
-                     <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                     <div className="p-4 bg-slate-50 rounded-lg border border-slate-100">
                         <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 text-center">Summary</p>
                         <p className="text-[12px] text-slate-600 leading-relaxed font-medium">
                            {selectedOffering.description || 'No description provided.'}
@@ -424,7 +424,7 @@ export default function AdminProducts() {
                            <Layers size={12} className="text-slate-400" />
                            <h4 className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Technical Ledger</h4>
                         </div>
-                        <div className="p-6 bg-slate-900 rounded-xl shadow-lg relative overflow-hidden">
+                        <div className="p-6 bg-slate-900 rounded-lg shadow-lg relative overflow-hidden">
                            <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 rounded-full blur-3xl -mr-8 -mt-8" />
                            <pre className="text-[12px] text-emerald-50/80 whitespace-pre-wrap font-mono leading-relaxed relative z-10">
                               {selectedOffering.specifications}
@@ -436,8 +436,8 @@ export default function AdminProducts() {
                   {/* Business Metadata */}
                   <div className="space-y-3">
                      <h4 className="text-[10px] font-bold text-slate-500 uppercase tracking-wider px-1">Vendor Context</h4>
-                     <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group transition-all">
-                        <div className="w-12 h-12 rounded-xl bg-slate-50 border border-gray-100 flex items-center justify-center text-slate-400 text-lg font-bold overflow-hidden shrink-0 group-hover:shadow-sm transition-all">
+                     <div className="bg-white p-4 rounded-lg border border-gray-100 shadow-sm flex items-center gap-4 group transition-all">
+                        <div className="w-12 h-12 rounded-lg bg-slate-50 border border-gray-100 flex items-center justify-center text-slate-400 text-lg font-bold overflow-hidden shrink-0 group-hover:shadow-sm transition-all">
                            {(selectedOffering.vendor?.logo || selectedOffering.vendor?.logoUrl) ? (
                              <img src={selectedOffering.vendor?.logo || selectedOffering.vendor?.logoUrl} className="w-full h-full object-cover" />
                            ) : selectedOffering.vendor?.businessName?.charAt(0)}
@@ -461,7 +461,7 @@ export default function AdminProducts() {
                   <button 
                      onClick={() => handleStatusUpdate(selectedOffering.id, 'APPROVED')}
                      disabled={!!processingId}
-                     className="flex-1 py-3.5 bg-slate-900 hover:bg-black text-white rounded-xl font-bold text-[12px] uppercase tracking-wider flex items-center justify-center gap-2 transition-all disabled:opacity-50 active:scale-95 shadow-lg shadow-slate-900/10"
+                     className="flex-1 py-3.5 bg-slate-900 hover:bg-black text-white rounded-lg font-bold text-[12px] uppercase tracking-wider flex items-center justify-center gap-2 transition-all disabled:opacity-50 active:scale-95 shadow-lg shadow-slate-900/10"
                   >
                      <CheckCheck className="w-4 h-4 text-emerald-400" />
                      {processingId === selectedOffering.id ? 'Wait...' : 'Authorize'}
@@ -469,7 +469,7 @@ export default function AdminProducts() {
                   <button 
                      onClick={() => handleStatusUpdate(selectedOffering.id, 'REJECTED')}
                      disabled={!!processingId}
-                     className="px-5 py-3.5 bg-white border border-rose-100 hover:bg-rose-50 text-rose-600 rounded-xl font-bold text-[12px] uppercase flex items-center justify-center gap-2 transition-all disabled:opacity-50 active:scale-95"
+                     className="px-5 py-3.5 bg-white border border-rose-100 hover:bg-rose-50 text-rose-600 rounded-lg font-bold text-[12px] uppercase flex items-center justify-center gap-2 transition-all disabled:opacity-50 active:scale-95"
                   >
                      <XCircle className="w-4 h-4" />
                   </button>

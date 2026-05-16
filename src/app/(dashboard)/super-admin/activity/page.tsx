@@ -78,9 +78,9 @@ export default function AdminActivityLogs() {
         <div className="flex items-center gap-6">
            <div>
               <div className="flex items-center gap-3 mb-1">
-                <h1 className="text-2xl font-bold text-slate-900 leading-none uppercase tracking-tight">System Activity Audit</h1>
+                <h1 className="text-2xl font-semibold text-slate-900 leading-none capitalize tracking-tight">System Activity Audit</h1>
               </div>
-              <p className="text-slate-600 font-medium text-sm">
+              <p className="text-slate-700 font-medium text-sm">
                  Chronological secure logs of all administrative team movements.
               </p>
            </div>
@@ -88,35 +88,35 @@ export default function AdminActivityLogs() {
 
         <div className="flex items-center gap-4">
            {/* Date Range Selector */}
-           <div className="flex items-center gap-2 bg-white border border-gray-100 rounded-xl px-3 py-2 shadow-sm">
-             <Clock size={14} className="text-gray-500" />
-             <select 
-               value={timeRange}
-               onChange={(e) => setTimeRange(e.target.value)}
-               className="text-xs font-bold text-gray-900 outline-none bg-transparent cursor-pointer"
-             >
-               <option value="ALL">Lifetime</option>
-               <option value="today">Today</option>
-               <option value="yesterday">Yesterday</option>
-               <option value="weekly">Last 7 Days</option>
-               <option value="monthly">Last 30 Days</option>
-               <option value="yearly">Last 12 Months</option>
-               <option value="custom">Custom Range</option>
-             </select>
-           </div>
+            <div className="flex items-center gap-2 bg-white border border-gray-100 rounded-lg px-4 h-[42px] shadow-sm hover:border-emerald-600/50 transition-all">
+              <Clock size={16} className="text-slate-600" />
+              <select 
+                value={timeRange}
+                onChange={(e) => setTimeRange(e.target.value)}
+                className="text-sm font-medium text-slate-700 outline-none bg-transparent cursor-pointer"
+              >
+                <option value="ALL">Lifetime</option>
+                <option value="today">Today</option>
+                <option value="yesterday">Yesterday</option>
+                <option value="weekly">Last 7 Days</option>
+                <option value="monthly">Last 30 Days</option>
+                <option value="yearly">Last 12 Months</option>
+                <option value="custom">Custom Range</option>
+              </select>
+            </div>
 
             {timeRange === 'custom' && (
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 bg-gray-50 p-2 rounded-xl border border-gray-100">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 bg-gray-50 p-2 rounded-lg border border-gray-100">
                 <div className="flex items-center gap-2 w-full">
                   <input 
                     type="date" 
-                    className="flex-1 bg-white border border-gray-100 rounded-lg px-2 py-1.5 text-[10px] font-bold outline-none"
+                    className="flex-1 bg-white border border-gray-100 rounded-lg px-2 py-1.5 text-[10px] font-semibold outline-none"
                     onChange={(e) => setCustomRange(prev => ({ ...prev, start: e.target.value }))}
                   />
-                  <span className="text-[10px] font-bold text-gray-500 uppercase tracking-tighter shrink-0">to</span>
+                  <span className="text-[10px] font-semibold text-gray-700 uppercase tracking-tighter shrink-0">to</span>
                   <input 
                     type="date" 
-                    className="flex-1 bg-white border border-gray-100 rounded-lg px-2 py-1.5 text-[10px] font-bold outline-none"
+                    className="flex-1 bg-white border border-gray-100 rounded-lg px-2 py-1.5 text-[10px] font-semibold outline-none"
                     onChange={(e) => setCustomRange(prev => ({ ...prev, end: e.target.value }))}
                   />
                 </div>
@@ -124,14 +124,14 @@ export default function AdminActivityLogs() {
             )}
 
            {/* Module Selector */}
-           <div className="relative group min-w-[180px]">
+           <div className="relative group min-w-[200px]">
               <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
                  <Filter className="w-4 h-4 text-slate-600 group-focus-within:text-emerald-600 transition-colors" />
               </div>
               <select 
                 value={module}
                 onChange={(e) => { setModule(e.target.value); setPage(1); }}
-                className="w-full pl-10 pr-10 py-3 bg-white border border-gray-100 rounded-xl text-sm font-bold text-slate-700 outline-none focus:border-emerald-600/50 focus:ring-4 focus:ring-emerald-50 transition-all appearance-none cursor-pointer shadow-sm"
+                className="w-full pl-11 pr-10 h-[42px] bg-white border border-gray-100 rounded-lg text-sm font-medium text-slate-700 outline-none focus:border-emerald-600/50 focus:ring-4 focus:ring-emerald-50 transition-all appearance-none cursor-pointer shadow-sm"
               >
                  <option value="">All Modules</option>
                  <option value="VENDOR">Vendors</option>
@@ -146,7 +146,7 @@ export default function AdminActivityLogs() {
            {/* Refresh Button */}
            <button 
              onClick={() => fetchLogs()} 
-             className="p-4 bg-white border border-gray-100 rounded-xl text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 transition-all  group active:scale-95"
+             className="w-[42px] h-[42px] flex items-center justify-center bg-white border border-gray-100 rounded-lg text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 transition-all shadow-sm active:scale-95"
            >
               <RefreshCcw className={`w-5 h-5 ${loading ? 'animate-spin' : ''}`} />
            </button>
@@ -155,7 +155,7 @@ export default function AdminActivityLogs() {
       </div>
 
       {/* Analytics Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-7xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl mx-auto">
         <ActivityStatCard 
           label="Total Operational Traces" 
           value={total} 
@@ -180,27 +180,20 @@ export default function AdminActivityLogs() {
           iconBg="bg-emerald-50" 
           iconColor="text-emerald-600" 
         />
-        <ActivityStatCard 
-          label="Active Registry" 
-          value={module || 'All Hubs'} 
-          sub="Selected Focus"
-          icon={Layers} 
-          iconBg="bg-blue-50" 
-          iconColor="text-blue-600" 
-        />
+        
       </div>
 
       {/* --- ACTIVITY TABLE --- */}
-      <div className="bg-white border border-gray-100 rounded-xl  overflow-hidden flex flex-col shadow-sm">
+      <div className="bg-white border border-gray-100 rounded-lg  overflow-hidden flex flex-col shadow-sm">
           <div className="overflow-x-auto w-full">
               <table className="w-full text-left border-collapse min-w-[1200px]">
               <thead className="sticky top-0 z-20 bg-white">
                 <tr className="bg-white border-b border-gray-100 ">
-                       <th className="px-8 py-5 text-xs font-bold text-slate-600 uppercase tracking-tight">Time Trace</th>
-                       <th className="px-8 py-5 text-xs font-bold text-slate-600 uppercase tracking-tight">Team Member</th>
-                       <th className="px-8 py-5 text-xs font-bold text-slate-600 uppercase tracking-tight">Module</th>
-                       <th className="px-8 py-5 text-xs font-bold text-slate-600 uppercase tracking-tight">Execution</th>
-                       <th className="px-8 py-5 text-xs font-bold text-slate-600 uppercase tracking-tight">Transaction Details</th>
+                       <th className="px-8 py-5 text-xs font-semibold text-slate-700 uppercase tracking-tight">Time Trace</th>
+                       <th className="px-8 py-5 text-xs font-semibold text-slate-700 uppercase tracking-tight">Team Member</th>
+                       <th className="px-8 py-5 text-xs font-semibold text-slate-700 uppercase tracking-tight">Module</th>
+                       <th className="px-8 py-5 text-xs font-semibold text-slate-700 uppercase tracking-tight">Execution</th>
+                       <th className="px-8 py-5 text-xs font-semibold text-slate-700 uppercase tracking-tight">Transaction Details</th>
                        <th className="px-8 py-5"></th>
                     </tr>
                  </thead>
@@ -218,8 +211,8 @@ export default function AdminActivityLogs() {
                              <td className="px-8 py-5 whitespace-nowrap">
                                 <div className="flex items-center gap-4">
                                    <div className="flex flex-col">
-                                      <span className="text-sm font-bold text-slate-900 leading-none mb-1">{format(new Date(log.createdAt), 'MMM dd, yyyy')}</span>
-                                      <span className="text-xs font-bold text-slate-600 flex items-center gap-1.5">
+                                      <span className="text-sm font-semibold text-slate-900 leading-none mb-1">{format(new Date(log.createdAt), 'MMM dd, yyyy')}</span>
+                                      <span className="text-xs font-semibold text-slate-600 flex items-center gap-1.5">
                                          {format(new Date(log.createdAt), 'HH:mm:ss')}
                                       </span>
                                    </div>
@@ -237,8 +230,8 @@ export default function AdminActivityLogs() {
                                       )}
                                    </div>
                                    <div className="flex flex-col">
-                                      <span className="text-sm font-bold text-slate-900 capitalize">{log.user.name}</span>
-                                      <span className={`text-xs font-bold uppercase tracking-tight mt-0.5 ${log.user.role === 'SUPERADMIN' ? 'text-emerald-600' : 'text-slate-600'}`}>
+                                      <span className="text-sm font-semibold text-slate-900 capitalize">{log.user.name}</span>
+                                      <span className={`text-xs font-semibold uppercase tracking-tight mt-0.5 ${log.user.role === 'SUPERADMIN' ? 'text-emerald-600' : 'text-slate-600'}`}>
                                          {log.user.role === 'SUPERADMIN' ? 'SUPER ADMIN' : log.user.role}
                                       </span>
                                    </div>
@@ -247,22 +240,22 @@ export default function AdminActivityLogs() {
 
                              {/* Module */}
                              <td className="px-8 py-5">
-                                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 text-slate-700 rounded-xl border border-gray-100 w-fit">
-                                   <span className="text-sm font-bold uppercase tracking-tight">{log.module}</span>
+                                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 text-slate-700 rounded-lg border border-gray-100 w-fit">
+                                   <span className="text-sm font-semibold uppercase tracking-tight">{log.module}</span>
                                 </div>
                              </td>
 
                              {/* Execution */}
                              <td className="px-8 py-5">
-                                <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border w-fit  ${getActionColor(log.action)}`}>
+                                <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border w-fit  ${getActionColor(log.action)}`}>
                                    <div className="w-1.5 h-1.5 rounded-full bg-current" />
-                                   <span className="text-xs font-bold uppercase whitespace-nowrap">{log.action.replace(/_/g, ' ')}</span>
+                                   <span className="text-xs font-semibold uppercase whitespace-nowrap">{log.action.replace(/_/g, ' ')}</span>
                                 </div>
                              </td>
 
                              {/* Transaction Details */}
                              <td className="px-8 py-5 max-w-md">
-                                <p className="text-sm font-bold text-slate-600 leading-relaxed group-hover:text-slate-900 transition-colors">
+                                <p className="text-sm font-semibold text-slate-700 leading-relaxed group-hover:text-slate-900 transition-colors">
                                    {log.details || 'Administrative movement logged and verified successfully.'}
                                  </p>
                              </td>
@@ -279,7 +272,7 @@ export default function AdminActivityLogs() {
                        <tr>
                           <td colSpan={6} className="px-10 py-24 text-center">
                              <History className="w-16 h-16 text-slate-100 mx-auto mb-6" />
-                             <h3 className="text-lg font-bold text-slate-600">No activity logs found</h3>
+                             <h3 className="text-lg font-semibold text-slate-700">No activity logs found</h3>
                              <p className="text-slate-300 font-medium mt-2">Try adjusting your filters or time range.</p>
                           </td>
                        </tr>
@@ -290,7 +283,7 @@ export default function AdminActivityLogs() {
 
           {/* --- PAGINATION FOOTER --- */}
           <div className="px-8 py-6 bg-slate-50/30 border-t border-gray-50 flex flex-col sm:flex-row items-center justify-between gap-6">
-              <p className="text-sm font-bold text-slate-700">
+              <p className="text-sm font-semibold text-slate-700">
                  Showing <span className="text-slate-900">{((page - 1) * limit) + 1}</span> to <span className="text-slate-900">{Math.min(page * limit, total)}</span> of <span className="text-slate-900">{total}</span> entries
               </p>
 
@@ -299,7 +292,7 @@ export default function AdminActivityLogs() {
                     <select 
                       value={limit}
                       onChange={(e) => { setLimit(parseInt(e.target.value)); setPage(1); }}
-                      className="bg-white border border-gray-200 rounded-xl px-4 py-2 text-xs font-bold text-slate-700 outline-none focus:border-emerald-600/30  appearance-none pr-8 relative"
+                      className="bg-white border border-gray-200 rounded-lg px-4 py-2 text-xs font-semibold text-slate-700 outline-none focus:border-emerald-600/30  appearance-none pr-8 relative"
                       style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%2394a3b8\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'%3E%3C/path%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.75rem center', backgroundSize: '1rem' }}
                     >
                        <option value={10}>10 per page</option>
@@ -312,7 +305,7 @@ export default function AdminActivityLogs() {
                     <button 
                       onClick={() => setPage(p => Math.max(1, p - 1))}
                       disabled={page === 1}
-                      className="w-9 h-9 rounded-xl border border-gray-200 flex items-center justify-center text-slate-600 hover:text-emerald-600 hover:bg-white hover:border-emerald-100 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                      className="w-9 h-9 rounded-lg border border-gray-200 flex items-center justify-center text-slate-600 hover:text-emerald-600 hover:bg-white hover:border-emerald-100 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
                     >
                        <ChevronLeft size={18} />
                     </button>
@@ -321,7 +314,7 @@ export default function AdminActivityLogs() {
                       <button 
                         key={i}
                         onClick={() => setPage(i + 1)}
-                        className={`w-9 h-9 rounded-xl font-bold text-xs transition-all ${page === i + 1 ? 'bg-emerald-600 text-white  ' : 'text-slate-700 hover:bg-white hover:border-gray-200 border border-transparent'}`}
+                        className={`w-9 h-9 rounded-lg font-semibold text-xs transition-all ${page === i + 1 ? 'bg-emerald-600 text-white  ' : 'text-slate-700 hover:bg-white hover:border-gray-200 border border-transparent'}`}
                       >
                          {i + 1}
                       </button>
@@ -330,7 +323,7 @@ export default function AdminActivityLogs() {
                     <button 
                       onClick={() => setPage(p => Math.min(Math.ceil(total / limit), p + 1))}
                       disabled={page >= Math.ceil(total / limit)}
-                      className="w-9 h-9 rounded-xl border border-gray-200 flex items-center justify-center text-slate-600 hover:text-emerald-600 hover:bg-white hover:border-emerald-100 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                      className="w-9 h-9 rounded-lg border border-gray-200 flex items-center justify-center text-slate-600 hover:text-emerald-600 hover:bg-white hover:border-emerald-100 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
                     >
                        <ChevronRight size={18} />
                     </button>
@@ -343,13 +336,13 @@ export default function AdminActivityLogs() {
 }
 
 const ActivityStatCard = ({ label, value, sub, icon: Icon, iconColor, iconBg }: any) => (
-  <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between group hover:shadow-md transition-all">
+  <div className="bg-white p-6 rounded-lg border border-gray-100 shadow-sm flex items-center justify-between group hover:shadow-md transition-all">
      <div>
-        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">{label}</p>
-        <h4 className="text-2xl font-bold text-slate-900">{value}</h4>
-        <p className="text-[10px] font-medium text-slate-400 mt-0.5">{sub}</p>
+        <p className="text-[10px] font-semibold text-slate-700 uppercase tracking-widest mb-1">{label}</p>
+        <h4 className="text-2xl font-semibold text-slate-900">{value}</h4>
+        <p className="text-[10px] font-medium text-slate-600 mt-0.5">{sub}</p>
      </div>
-     <div className={`w-12 h-12 rounded-xl ${iconBg} ${iconColor} flex items-center justify-center`}>
+     <div className={`w-12 h-12 rounded-lg ${iconBg} ${iconColor} flex items-center justify-center`}>
         <Icon size={20} />
      </div>
   </div>

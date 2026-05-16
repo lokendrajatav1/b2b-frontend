@@ -49,8 +49,8 @@ export default function UniformPremiumContact() {
                     { icon: Phone, label: "PHONE", val: "+91 1800 123 4567" },
                     { icon: MapPin, label: "OFFICE", val: "Mumbai, MH, India" }
                   ].map((item, i) => (
-                    <div key={i} className="p-6 bg-white rounded-3xl border border-emerald-50 flex items-center gap-5 shadow-sm">
-                      <div className="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center text-[#1B5E3D]">
+                    <div key={i} className="p-6 bg-white rounded-lg border border-emerald-50 flex items-center gap-5 shadow-sm">
+                      <div className="w-12 h-12 bg-emerald-50 rounded-lg flex items-center justify-center text-[#1B5E3D]">
                         <item.icon size={20} />
                       </div>
                       <div>
@@ -103,7 +103,7 @@ export default function UniformPremiumContact() {
                     <textarea rows={4} className="w-full pb-3 bg-transparent border-b border-slate-100 focus:border-[#1B5E3D] outline-none transition-all text-base font-semibold text-slate-800 resize-none placeholder:font-normal" placeholder="How can we assist your business?" />
                   </div>
 
-                  <button className="px-10 py-4 bg-[#1B5E3D] text-white rounded-2xl font-semibold uppercase  text-[12px] hover:bg-[#14452d] transition-all flex items-center gap-3 shadow-lg active:scale-95">
+                  <button className="px-10 py-4 bg-[#1B5E3D] text-white rounded-lg font-semibold uppercase  text-[12px] hover:bg-[#14452d] transition-all flex items-center gap-3 shadow-lg active:scale-95">
                     Submit Message <Send size={16} />
                   </button>
                 </form>

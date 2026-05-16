@@ -101,10 +101,10 @@ export default function PostRequirementPage() {
                           initial={{ opacity: 0, y: 10 }} 
                           animate={{ opacity: 1, y: 0 }} 
                           transition={{ delay: idx * 0.1 }}
-                          className="p-4 bg-slate-50 border border-slate-100 rounded-2xl flex items-center justify-between"
+                          className="p-4 bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-between"
                         >
                            <div className="flex items-center gap-4">
-                              <div className="w-12 h-12 bg-white rounded-xl shadow-sm border border-slate-100 flex items-center justify-center text-slate-400 font-semibold shrink-0">
+                              <div className="w-12 h-12 bg-white rounded-lg shadow-sm border border-slate-100 flex items-center justify-center text-slate-400 font-semibold shrink-0">
                                  {vendor.businessName.charAt(0)}
                               </div>
                               <div>
@@ -126,13 +126,13 @@ export default function PostRequirementPage() {
                     ))}
                 </div>
             ) : (
-                <div className="p-6 bg-slate-50 rounded-2xl border border-dashed border-slate-200 text-center mb-10">
+                <div className="p-6 bg-slate-50 rounded-lg border border-dashed border-slate-200 text-center mb-10">
                    <Globe className="w-8 h-8 text-slate-300 mx-auto mb-2" />
                    <p className="text-base font-semibold text-slate-500">Your requirement is active, but no highly-ranked vendors immediately matched. They will contact you shortly.</p>
                 </div>
             )}
 
-            <Link href="/" className="w-full py-4 bg-[#164e33] text-white rounded-xl font-semibold flex items-center justify-center gap-2 hover:bg-[#113f29] transition-all">
+            <Link href="/" className="w-full py-4 bg-[#164e33] text-white rounded-lg font-semibold flex items-center justify-center gap-2 hover:bg-[#113f29] transition-all">
                 Return to Dashboard <ArrowRight className="w-4 h-4" />
             </Link>
         </motion.div>
@@ -151,7 +151,7 @@ export default function PostRequirementPage() {
         <div className="bg-white rounded-4xl shadow-xl shadow-slate-200/60 border border-slate-100 p-8 sm:p-10">
           <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
-              <div className="p-4 bg-red-50 text-red-600 text-base font-semibold border border-red-100 rounded-xl">
+              <div className="p-4 bg-red-50 text-red-600 text-base font-semibold border border-red-100 rounded-lg">
                 {error}
               </div>
             )}
@@ -168,7 +168,7 @@ export default function PostRequirementPage() {
                     required
                     value={formData.buyerName}
                     onChange={handleInputChange}
-                    className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500 focus:bg-white text-base font-semibold text-slate-700 transition-all"
+                    className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:border-blue-500 focus:bg-white text-base font-semibold text-slate-700 transition-all"
                     placeholder="Enter your full name"
                   />
                 </div>
@@ -185,7 +185,7 @@ export default function PostRequirementPage() {
                     required
                     value={formData.phone}
                     onChange={handleInputChange}
-                    className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500 focus:bg-white text-base font-semibold text-slate-700 transition-all"
+                    className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:border-blue-500 focus:bg-white text-base font-semibold text-slate-700 transition-all"
                     placeholder="+91 Mobile"
                   />
                 </div>
@@ -202,7 +202,7 @@ export default function PostRequirementPage() {
                     required
                     value={formData.city}
                     onChange={handleInputChange}
-                    className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500 focus:bg-white text-base font-semibold text-slate-700 transition-all"
+                    className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:border-blue-500 focus:bg-white text-base font-semibold text-slate-700 transition-all"
                     placeholder="Enter city"
                   />
                 </div>
@@ -218,7 +218,7 @@ export default function PostRequirementPage() {
                     required
                     value={formData.categoryId}
                     onChange={handleInputChange}
-                    className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl outline-none appearance-none focus:border-blue-500 focus:bg-white text-base font-semibold text-slate-700 transition-all"
+                    className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-lg outline-none appearance-none focus:border-blue-500 focus:bg-white text-base font-semibold text-slate-700 transition-all"
                   >
                     <option value="">Select Category</option>
                     {categories.map((cat: any) => (
@@ -238,7 +238,7 @@ export default function PostRequirementPage() {
                     name="searchKeyword"
                     value={formData.searchKeyword}
                     onChange={handleInputChange}
-                    className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500 focus:bg-white text-base font-semibold text-slate-700 transition-all"
+                    className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:border-blue-500 focus:bg-white text-base font-semibold text-slate-700 transition-all"
                     placeholder="e.g. Copper wire, raw silk"
                   />
                 </div>
@@ -255,7 +255,7 @@ export default function PostRequirementPage() {
                     rows={4}
                     value={formData.message}
                     onChange={handleInputChange}
-                    className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500 focus:bg-white text-base font-semibold text-slate-700 transition-all resize-none"
+                    className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:border-blue-500 focus:bg-white text-base font-semibold text-slate-700 transition-all resize-none"
                     placeholder="Describe your requirement in detail for better matching..."
                   />
                 </div>
@@ -265,7 +265,7 @@ export default function PostRequirementPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 bg-[#164e33] text-white rounded-xl font-semibold hover:bg-[#113f29] transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full py-4 bg-[#164e33] text-white rounded-lg font-semibold hover:bg-[#113f29] transition-all disabled:opacity-50 flex items-center justify-center gap-2"
             >
               {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Submit Requirement'}
               {!loading && <ArrowRight className="w-4 h-4" />}

@@ -71,7 +71,7 @@ export default function AdminRegistration() {
             
             <div className="relative z-10">
                 <Link href="/" className="flex items-center gap-3 group mb-20 inline-block">
-                    <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-[#164e33] group-hover:scale-110 transition-transform shadow-lg">
+                    <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-[#164e33] group-hover:scale-110 transition-transform shadow-lg">
                         <Sparkles className="w-6 h-6" />
                     </div>
                     <span className="text-xl font-semibold ">Admission Master</span>
@@ -113,7 +113,7 @@ export default function AdminRegistration() {
                         <motion.div 
                           initial={{ opacity: 0, x: -10 }}
                           animate={{ opacity: 1, x: 0 }}
-                          className="p-4 bg-red-50 border border-red-100 rounded-2xl flex items-center gap-3 text-red-700 text-base font-semibold"
+                          className="p-4 bg-red-50 border border-red-100 rounded-lg flex items-center gap-3 text-red-700 text-base font-semibold"
                         >
                             <AlertCircle className="w-5 h-5 shrink-0" />
                             {error}
@@ -147,7 +147,7 @@ export default function AdminRegistration() {
                                     required
                                     value={formData.name}
                                     onChange={(e) => setFormData({...formData, name: e.target.value})}
-                                    className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-transparent rounded-2xl text-base font-semibold focus:bg-white focus:border-[#164e33]/20 outline-none transition-all"
+                                    className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-transparent rounded-lg text-base font-semibold focus:bg-white focus:border-[#164e33]/20 outline-none transition-all"
                                     placeholder="John Doe"
                                 />
                             </div>
@@ -162,7 +162,7 @@ export default function AdminRegistration() {
                                     required
                                     value={formData.email}
                                     onChange={(e) => setFormData({...formData, email: e.target.value})}
-                                    className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-transparent rounded-2xl text-base font-semibold focus:bg-white focus:border-[#164e33]/20 outline-none transition-all"
+                                    className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-transparent rounded-lg text-base font-semibold focus:bg-white focus:border-[#164e33]/20 outline-none transition-all"
                                     placeholder="admin@hub.com"
                                 />
                             </div>
@@ -177,7 +177,7 @@ export default function AdminRegistration() {
                                     required
                                     value={formData.phone}
                                     onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                                    className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-transparent rounded-2xl text-base font-semibold focus:bg-white focus:border-[#164e33]/20 outline-none transition-all"
+                                    className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-transparent rounded-lg text-base font-semibold focus:bg-white focus:border-[#164e33]/20 outline-none transition-all"
                                     placeholder="+91 00000 00000"
                                 />
                             </div>
@@ -192,7 +192,7 @@ export default function AdminRegistration() {
                                     required
                                     value={formData.password}
                                     onChange={(e) => setFormData({...formData, password: e.target.value})}
-                                    className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-transparent rounded-2xl text-base font-semibold focus:bg-white focus:border-[#164e33]/20 outline-none transition-all"
+                                    className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-transparent rounded-lg text-base font-semibold focus:bg-white focus:border-[#164e33]/20 outline-none transition-all"
                                     placeholder="••••••••••••"
                                 />
                             </div>
@@ -207,7 +207,7 @@ export default function AdminRegistration() {
                                     required
                                     value={formData.hubName}
                                     onChange={(e) => setFormData({...formData, hubName: e.target.value})}
-                                    className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-transparent rounded-2xl text-base font-semibold focus:bg-white focus:border-[#164e33]/20 outline-none transition-all"
+                                    className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-transparent rounded-lg text-base font-semibold focus:bg-white focus:border-[#164e33]/20 outline-none transition-all"
                                     placeholder="e.g. Mumbai North"
                                 />
                             </div>
@@ -222,7 +222,7 @@ export default function AdminRegistration() {
                                     required
                                     value={formData.department}
                                     onChange={(e) => setFormData({...formData, department: e.target.value})}
-                                    className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-transparent rounded-2xl text-base font-semibold focus:bg-white focus:border-[#164e33]/20 outline-none transition-all"
+                                    className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-transparent rounded-lg text-base font-semibold focus:bg-white focus:border-[#164e33]/20 outline-none transition-all"
                                     placeholder="e.g. Quality Assurance"
                                 />
                             </div>

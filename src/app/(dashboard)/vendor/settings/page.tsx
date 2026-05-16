@@ -82,7 +82,7 @@ export default function VendorSettings() {
     }
   };
 
-  if (loading) return <div className="p-10 animate-pulse bg-slate-50 rounded-xl h-80 border border-slate-100"></div>;
+  if (loading) return <div className="p-10 animate-pulse bg-slate-50 rounded-lg h-80 border border-slate-100"></div>;
 
   return (
     <div className="space-y-8 animate-simple-fade pb-20 p-2 md:p-0">
@@ -91,7 +91,7 @@ export default function VendorSettings() {
         <div className="space-y-2">
             <h1 className="text-2xl font-semibold text-slate-900  flex items-center gap-3">
                Settings
-               <div className="p-1.5 bg-gray-50 text-slate-700 rounded-xl border border-gray-100">
+               <div className="p-1.5 bg-gray-50 text-slate-700 rounded-lg border border-gray-100">
                   <Settings className="w-4 h-4" />
                </div>
             </h1>
@@ -101,7 +101,7 @@ export default function VendorSettings() {
         <button 
             onClick={handleUpdate}
             disabled={saving}
-            className="px-5 py-2.5 bg-[#164e33] text-white rounded-xl font-semibold text-sm disabled:opacity-50 flex items-center gap-2  hover:bg-[#113f29] transition-colors"
+            className="px-5 py-2.5 bg-[#164e33] text-white rounded-lg font-semibold text-sm disabled:opacity-50 flex items-center gap-2  hover:bg-[#113f29] transition-colors"
         >
             {saving ? <RefreshCcw className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
             Save Changes
@@ -119,7 +119,7 @@ export default function VendorSettings() {
                 <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id as any)}
-                    className={`w-full px-4 py-3 rounded-xl text-left flex items-center gap-3 transition-colors ${ activeTab === tab.id ? 'bg-[#164e33]/5 text-slate-800 font-semibold' : 'text-slate-800 hover:bg-gray-50' }`}
+                    className={`w-full px-4 py-3 rounded-lg text-left flex items-center gap-3 transition-colors ${ activeTab === tab.id ? 'bg-[#164e33]/5 text-slate-800 font-semibold' : 'text-slate-800 hover:bg-gray-50' }`}
                 >
                     <tab.icon className={`w-4 h-4 ${activeTab === tab.id ? 'text-[#164e33]' : 'text-slate-700 '}`} />
                     <div className="flex flex-col">
@@ -138,10 +138,10 @@ export default function VendorSettings() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    className="bg-white rounded-xl border border-gray-100 p-6 md:p-8 relative overflow-hidden "
+                    className="bg-white rounded-lg border border-gray-100 p-6 md:p-8 relative overflow-hidden "
                 >
                     {message && (
-                        <div className={`mb-6 p-4 rounded-xl border text-sm font-semibold flex items-center gap-2 ${ message.includes('success') ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-red-50 text-red-700 border-red-100' }`}>
+                        <div className={`mb-6 p-4 rounded-lg border text-sm font-semibold flex items-center gap-2 ${ message.includes('success') ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-red-50 text-red-700 border-red-100' }`}>
                            {message.includes('success') ? <CheckCircle className="w-4 h-4" /> : <XCircle className="w-4 h-4" />}
                            {message}
                         </div>
@@ -151,7 +151,7 @@ export default function VendorSettings() {
                         <div className="space-y-8">
                             <div className="flex items-center gap-6 border-b border-gray-50 pb-8">
                                 <div className="relative group/avatar">
-                                    <div className="w-20 h-20 bg-gray-50 rounded-xl border border-gray-100 flex items-center justify-center overflow-hidden">
+                                    <div className="w-20 h-20 bg-gray-50 rounded-lg border border-gray-100 flex items-center justify-center overflow-hidden">
                                         {vendor?.logo ? <img src={vendor.logo} alt="Logo" className="w-full h-full object-cover" /> : <Building className="w-8 h-8 text-gray-500" />}
                                     </div>
                                     <button className="absolute -bottom-2 -right-2 w-8 h-8 bg-[#164e33] text-white rounded-full flex items-center justify-center border-2 border-white  hover:bg-[#113f29] transition-colors">
@@ -174,7 +174,7 @@ export default function VendorSettings() {
                                         type="text" 
                                         value={vendor?.businessName} 
                                         onChange={(e) => setVendor({...vendor, businessName: e.target.value})}
-                                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:border-blue-500 focus:bg-white outline-none font-medium text-slate-900 text-sm transition-all"
+                                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 focus:bg-white outline-none font-medium text-slate-900 text-sm transition-all"
                                     />
                                 </div>
 
@@ -184,7 +184,7 @@ export default function VendorSettings() {
                                         type="text" 
                                         value={vendor?.id?.slice(0, 12)} 
                                         disabled
-                                        className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-100 rounded-xl outline-none font-medium text-slate-700 cursor-not-allowed text-sm"
+                                        className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-100 rounded-lg outline-none font-medium text-slate-700 cursor-not-allowed text-sm"
                                     />
                                 </div>
 
@@ -194,7 +194,7 @@ export default function VendorSettings() {
                                         type="text" 
                                         value={vendor?.phone} 
                                         onChange={(e) => setVendor({...vendor, phone: e.target.value})}
-                                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:border-blue-500 focus:bg-white outline-none font-medium text-slate-900 text-sm transition-all"
+                                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 focus:bg-white outline-none font-medium text-slate-900 text-sm transition-all"
                                     />
                                 </div>
 
@@ -204,7 +204,7 @@ export default function VendorSettings() {
                                         type="text" 
                                         value={vendor?.city} 
                                         onChange={(e) => setVendor({...vendor, city: e.target.value})}
-                                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:border-blue-500 focus:bg-white outline-none font-medium text-slate-900 text-sm transition-all"
+                                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 focus:bg-white outline-none font-medium text-slate-900 text-sm transition-all"
                                     />
                                 </div>
 
@@ -214,7 +214,7 @@ export default function VendorSettings() {
                                         rows={4}
                                         value={vendor?.description} 
                                         onChange={(e) => setVendor({...vendor, description: e.target.value})}
-                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:border-blue-500 focus:bg-white outline-none font-medium text-slate-900 text-sm resize-none transition-all"
+                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 focus:bg-white outline-none font-medium text-slate-900 text-sm resize-none transition-all"
                                         placeholder="Tell buyers about your products and services..."
                                     />
                                 </div>
@@ -224,26 +224,26 @@ export default function VendorSettings() {
 
                     {activeTab === 'security' && (
                         <div className="space-y-6">
-                           <div className="p-6 bg-white rounded-xl border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                           <div className="p-6 bg-white rounded-lg border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
                                <div className="flex items-center gap-4">
 <div>
                                        <h4 className="text-sm font-semibold text-slate-900 mb-0.5">Change Password</h4>
                                        <p className="text-sm font-medium text-slate-700">Update your account password</p>
                                    </div>
                                </div>
-                               <button className="px-5 py-2 bg-white border border-gray-200 rounded-xl text-sm font-semibold text-slate-800 hover:bg-gray-50 transition-colors ">
+                               <button className="px-5 py-2 bg-white border border-gray-200 rounded-lg text-sm font-semibold text-slate-800 hover:bg-gray-50 transition-colors ">
                                   Update
                                </button>
                            </div>
 
-                           <div className="p-6 bg-white rounded-xl border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                           <div className="p-6 bg-white rounded-lg border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
                                <div className="flex items-center gap-4">
 <div>
                                        <h4 className="text-sm font-semibold text-slate-900 mb-0.5">Active Devices</h4>
                                        <p className="text-sm font-medium text-slate-700">Manage where you're logged in</p>
                                    </div>
                                </div>
-                               <div className="text-sm font-semibold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-100 w-fit">
+                               <div className="text-sm font-semibold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-100 w-fit">
                                    Secure
                                </div>
                            </div>
@@ -262,7 +262,7 @@ export default function VendorSettings() {
                                { title: 'Ranking Updates', desc: 'Weekly changes to your position', icon: TrendingUp },
                                { title: 'Platform Announcements', desc: 'New features and updates', icon: Globe },
                            ].map((n) => (
-                               <div key={n.title} className="p-4 bg-white rounded-xl border border-gray-100 flex items-center justify-between hover:border-gray-200 transition-colors">
+                               <div key={n.title} className="p-4 bg-white rounded-lg border border-gray-100 flex items-center justify-between hover:border-gray-200 transition-colors">
                                    <div className="flex items-center gap-4">
 <div className="space-y-0.5">
                                             <h4 className="text-sm font-semibold text-slate-900">{n.title}</h4>

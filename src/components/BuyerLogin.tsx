@@ -1,0 +1,284 @@
+import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
+import { X, Loader2, Check } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useAuth } from "@/context/AuthContext";
+import { apiFetch } from "@/lib/api";
+
+interface BuyerAuthDrawerProps {
+  isOpen: boolean;
+  onClose: () => void;
+  isSkipable?: boolean;
+}
+
+export default function BuyerLogin({
+  isOpen,
+  onClose,
+  isSkipable = false,
+}: BuyerAuthDrawerProps) {
+  const { login } = useAuth();
+  const [phone, setPhone] = useState("");
+  const [otp, setOtp] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [agreed, setAgreed] = useState(true);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Lock scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
+  if (!mounted) return null;
+
+  const handleRequestOTP = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!phone || phone.length < 10) {
+      setError("Please enter a valid mobile number");
+      return;
+    }
+    if (!agreed) {
+      setError("Please agree to the Terms and Conditions");
+      return;
+    }
+    setLoading(true);
+    setError("");
+    try {
+      await apiFetch("/auth/request-otp", {
+        method: "POST",
+        body: JSON.stringify({ phone }),
+      });
+      setOtpSent(true);
+    } catch (err: any) {
+      setError(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerifyOTP = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!otp || otp.length < 6) {
+      setError("Please enter a valid 6-digit OTP");
+      return;
+    }
+    setLoading(true);
+    setError("");
+    try {
+      const data = await apiFetch("/auth/verify-otp-login", {
+        method: "POST",
+        body: JSON.stringify({ phone, otp }),
+      });
+      if (data?.data?.token) {
+        login(data.data.token, data.data.user, true);
+        onClose();
+      }
+    } catch (err: any) {
+      setError(err.message || "Invalid OTP. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const modalContent = (
+    <AnimatePresence>
+      {isOpen && (
+        <div key="buyer-login-modal" className="fixed inset-0 z-[10000] flex items-center justify-center p-4 overflow-y-auto no-scrollbar">
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+          />
+
+          {/* Modal Content */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            className="relative w-full max-w-[480px] bg-white rounded-[32px] shadow-2xl overflow-hidden my-auto"
+          >
+            {/* Close Button */}
+            <button
+              onClick={onClose}
+              className="absolute top-6 right-6 p-2 hover:bg-gray-100 rounded-full transition-colors z-20"
+            >
+              <X className="w-5 h-5 text-gray-400" />
+            </button>
+
+            <div className="p-10">
+              {/* Header Section */}
+              <div className="mb-10">
+                <div>
+                  <h2 className="text-xl font-semibold text-gray-900 leading-tight">
+                    Welcome
+                  </h2>
+                  <p className="text-gray-500 text-[15px]">
+                    Login for a seamless experience
+                  </p>
+                </div>
+              </div>
+
+              {/* Form Section */}
+              <form
+                onSubmit={otpSent ? handleVerifyOTP : handleRequestOTP}
+                className="space-y-8"
+              >
+                {error && (
+                  <div className="p-3 bg-red-50 text-red-600 text-xs font-semibold rounded-xl border border-red-100 text-center">
+                    {error}
+                  </div>
+                )}
+
+                {!otpSent ? (
+                  <div className="space-y-6">
+                    {/* Floating Label Input */}
+                    <div className="relative">
+                      <label className="absolute -top-2.5 left-4 bg-white px-2 text-[13px] font-semibold text-[#164e33] z-10">
+                        Enter Mobile Number
+                      </label>
+                      <div className="flex items-center h-[64px] border-2 border-[#164e33] rounded-xl px-5 transition-all">
+                        <div className="flex items-center gap-2 pr-4 border-r border-gray-100">
+                          <img
+                            src="https://flagcdn.com/w40/in.png"
+                            alt="India Flag"
+                            className="w-8 h-auto block"
+                          />
+                          <span className="text-xl font-medium text-gray-900">
+                            +91
+                          </span>
+                        </div>
+                        <input
+                          type="tel"
+                          value={phone}
+                          onChange={(e) =>
+                            setPhone(
+                              e.target.value.replace(/\D/g, "").slice(0, 10),
+                            )
+                          }
+                          className="flex-1 bg-transparent border-none outline-none text-xl font-medium text-gray-900 pl-4 tracking-wider"
+                          placeholder=""
+                          maxLength={10}
+                          autoFocus
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    {/* Checkbox Section */}
+                    <div className="flex flex-col items-center gap-2">
+                      <label className="flex items-center gap-3 cursor-pointer group">
+                        <div className="relative">
+                          <input
+                            type="checkbox"
+                            checked={agreed}
+                            onChange={(e) => setAgreed(e.target.checked)}
+                            className="peer sr-only"
+                          />
+                          <div className="w-5 h-5 border-2 border-gray-300 rounded-[6px] bg-white peer-checked:bg-[#164e33] peer-checked:border-[#164e33] transition-all flex items-center justify-center">
+                            {agreed && (
+                              <Check className="w-3.5 h-3.5 text-white animate-in zoom-in duration-200" strokeWidth={4} />
+                            )}
+                          </div>
+                        </div>
+                        <span className="text-gray-500 font-medium text-[15px]">
+                          I Agree to Terms and Conditions
+                        </span>
+                      </label>
+                      <button
+                        type="button"
+                        className="text-[#164e33] font-medium text-[15px] underline underline-offset-4"
+                      >
+                        T&C's Privacy Policy
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-6">
+                    <div className="relative">
+                      <label className="absolute -top-2.5 left-4 bg-white px-2 text-[13px] font-semibold text-[#164e33] z-10">
+                        Enter OTP
+                      </label>
+                      <div className="flex items-center h-[64px] border-2 border-[#164e33] rounded-xl px-5">
+                        <input
+                          type="text"
+                          value={otp}
+                          onChange={(e) =>
+                            setOtp(
+                              e.target.value.replace(/\D/g, "").slice(0, 6),
+                            )
+                          }
+                          className="w-full bg-transparent border-none outline-none text-2xl text-center font-semibold text-gray-900 tracking-[0.5em]"
+                          placeholder="000000"
+                          maxLength={6}
+                          autoFocus
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center px-2">
+                      <p className="text-sm text-gray-500 font-medium">
+                        OTP sent to +91 {phone}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setOtpSent(false)}
+                        className="text-[#164e33] text-sm font-semibold hover:underline"
+                      >
+                        Change
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Main Action Button */}
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full h-[64px] bg-[#164e33] hover:bg-[#123d28] text-white rounded-xl text-xl font-semibold transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  {loading ? (
+                    <Loader2 className="w-6 h-6 animate-spin" />
+                  ) : otpSent ? (
+                    "Verify OTP"
+                  ) : (
+                    "Login with OTP"
+                  )}
+                </button>
+
+                {/* Footer Skip Button */}
+                {isSkipable && (
+                  <div className="pt-2 text-center">
+                    <button
+                      type="button"
+                      onClick={onClose}
+                      className="text-gray-400 font-semibold text-lg hover:text-gray-900 transition-colors"
+                    >
+                      Skip
+                    </button>
+                  </div>
+                )}
+              </form>
+            </div>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
+  );
+
+  return createPortal(modalContent, document.body);
+}

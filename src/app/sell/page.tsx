@@ -31,13 +31,13 @@ export default function SellWithUsPage() {
               receiving verified inquiries from millions of buyers.
             </p>
             <div className="flex flex-wrap gap-3 pt-2">
-              <Link href="/(auth)/register" className="px-7 py-3.5 bg-[#164e33] hover:bg-[#113f29] text-white rounded-xl font-medium text-base transition-all flex items-center gap-2.5 active:scale-[0.98]">
+              <Link href="/(auth)/register" className="px-7 py-3.5 bg-[#164e33] hover:bg-[#113f29] text-white rounded-lg font-medium text-base transition-all flex items-center gap-2.5 active:scale-[0.98]">
                 Register as Vendor <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
           </div>
           <div className="relative">
-             <div className="aspect-video bg-[#f8faf9] rounded-2xl border border-gray-100 overflow-hidden relative group">
+             <div className="aspect-video bg-[#f8faf9] rounded-lg border border-gray-100 overflow-hidden relative group">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#164e33]/[0.03] to-transparent" />
                 <div className="absolute inset-0 flex items-center justify-center">
                    <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-lg text-[#164e33] group-hover:scale-110 transition-transform">
@@ -46,8 +46,8 @@ export default function SellWithUsPage() {
                 </div>
              </div>
              {/* Floating Badge */}
-             <div className="absolute -bottom-4 -left-4 bg-white p-4 rounded-2xl border border-gray-100 shadow-md flex items-center gap-3">
-                <div className="w-9 h-9 bg-[#164e33]/10 text-[#164e33] rounded-xl flex items-center justify-center">
+             <div className="absolute -bottom-4 -left-4 bg-white p-4 rounded-lg border border-gray-100 shadow-md flex items-center gap-3">
+                <div className="w-9 h-9 bg-[#164e33]/10 text-[#164e33] rounded-lg flex items-center justify-center">
                    <TrendingUp className="w-4 h-4" />
                 </div>
                 <div>
@@ -68,9 +68,9 @@ export default function SellWithUsPage() {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
             {benefits.map((benefit, idx) => (
-              <div key={idx} className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-md transition-all group">
+              <div key={idx} className="p-6 rounded-lg bg-white border border-gray-100 hover:shadow-md transition-all group">
                 <div 
-                  className="w-11 h-11 rounded-xl flex items-center justify-center mb-5 transition-colors"
+                  className="w-11 h-11 rounded-lg flex items-center justify-center mb-5 transition-colors"
                   style={{ backgroundColor: `${benefit.color}10` }}
                 >
                   <benefit.icon className="w-5 h-5" style={{ color: benefit.color }} />
@@ -107,7 +107,7 @@ export default function SellWithUsPage() {
                     ))}
                  </div>
               </div>
-              <div className="p-8 bg-[#f8faf9] rounded-2xl border border-gray-100 space-y-6">
+              <div className="p-8 bg-[#f8faf9] rounded-lg border border-gray-100 space-y-6">
                  <h3 className="text-lg font-semibold text-slate-900">Frequently Asked</h3>
                  <div className="space-y-3">
                     {[
@@ -116,7 +116,7 @@ export default function SellWithUsPage() {
                       'How do I receive payments?',
                       'How are rankings calculated?'
                     ].map((q, i) => (
-                      <div key={i} className="p-4 bg-white rounded-xl border border-gray-100 hover:border-[#164e33]/20 transition-colors cursor-pointer flex items-center justify-between group">
+                      <div key={i} className="p-4 bg-white rounded-lg border border-gray-100 hover:border-[#164e33]/20 transition-colors cursor-pointer flex items-center justify-between group">
                          <span className="font-medium text-base text-slate-800 group-hover:text-slate-900 transition-colors">{q}</span>
                          <ArrowRight className="w-4 h-4 text-[#164e33] opacity-40 group-hover:opacity-100 transition-opacity" />
                       </div>
@@ -129,11 +129,11 @@ export default function SellWithUsPage() {
 
       {/* CTA */}
       <section className="py-16 px-6">
-         <div className="max-w-7xl mx-auto p-10 md:p-14 bg-[#164e33]/[0.04] rounded-2xl text-center border border-[#164e33]/10">
+         <div className="max-w-7xl mx-auto p-10 md:p-14 bg-[#164e33]/[0.04] rounded-lg text-center border border-[#164e33]/10">
             <h2 className="text-2xl md:text-3xl font-semibold text-slate-900  leading-tight mb-3">Ready to scale your <br/> business with us?</h2>
             <p className="text-slate-500 max-w-xl mx-auto text-base font-normal mb-6">Join 50,000+ verified suppliers and brands already growing on our platform.</p>
             <div className="flex justify-center gap-3">
-               <Link href="/(auth)/register" className="px-8 py-3.5 bg-[#164e33] text-white rounded-xl font-medium text-base hover:bg-[#113f29] transition-all">Get Started Now</Link>
+               <Link href="/(auth)/register" className="px-8 py-3.5 bg-[#164e33] text-white rounded-lg font-medium text-base hover:bg-[#113f29] transition-all">Get Started Now</Link>
             </div>
          </div>
       </section>

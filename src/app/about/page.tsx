@@ -95,7 +95,7 @@ export default function PremiumAboutSection() {
           <div className="grid md:grid-cols-3 gap-8">
             {values.map((value, i) => (
               <div key={i} className="bg-white p-10 rounded-[2.5rem] border border-emerald-50 shadow-sm hover:shadow-xl transition-all group">
-                <div className="w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-[#1B5E3D] transition-colors duration-300">
+                <div className="w-14 h-14 bg-emerald-50 rounded-lg flex items-center justify-center mb-6 group-hover:bg-[#1B5E3D] transition-colors duration-300">
                   <value.icon className="text-[#1B5E3D] group-hover:text-white" size={28} />
                 </div>
                 <h3 className="text-2xl font-semibold text-slate-900 mb-4 uppercase ">{value.title}</h3>
@@ -132,10 +132,10 @@ export default function PremiumAboutSection() {
             Join thousands of businesses already scaling their reach with India B2B. Let's build the future of trade together.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <button className="px-12 py-5 bg-[#1B5E3D] text-white rounded-2xl font-semibold shadow-lg shadow-emerald-200 hover:bg-[#14452d] transition-all">
+            <button className="px-12 py-5 bg-[#1B5E3D] text-white rounded-lg font-semibold shadow-lg shadow-emerald-200 hover:bg-[#14452d] transition-all">
               JOIN AS A SUPPLIER
             </button>
-            <button className="px-12 py-5 border-2 border-emerald-100 text-[#1B5E3D] rounded-2xl font-semibold hover:bg-emerald-50 transition-all">
+            <button className="px-12 py-5 border-2 border-emerald-100 text-[#1B5E3D] rounded-lg font-semibold hover:bg-emerald-50 transition-all">
               CONTACT OUR TEAM
             </button>
           </div>

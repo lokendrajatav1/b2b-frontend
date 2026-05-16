@@ -42,7 +42,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
           {/* Brand & Description */}
           <div className="space-y-4">
-            <Link href="/" className="inline-block bg-white p-2.5 rounded-xl">
+            <Link href="/" className="inline-block bg-white p-2.5 rounded-lg">
               <img src="/logo.png" alt={settings.websiteName} className="h-16 w-auto object-contain" />
             </Link>
             <p className="text-white text-base leading-relaxed max-w-xs">
@@ -60,7 +60,7 @@ const Footer = () => {
                   key={idx}
                   href={social.url || "#"}
                   target="_blank"
-                  className={`w-10 h-10 flex items-center justify-center bg-white/5 rounded-xl border border-white/10 transition-all duration-300 group hover:scale-110 hover:shadow-lg hover:shadow-white/5 ${social.color}`}
+                  className={`w-10 h-10 flex items-center justify-center bg-white/5 rounded-lg border border-white/10 transition-all duration-300 group hover:scale-110 hover:shadow-lg hover:shadow-white/5 ${social.color}`}
                 >
                   <social.icon className="w-5 h-5 text-white/80 group-hover:text-white transition-colors" />
                 </Link>
@@ -107,19 +107,19 @@ const Footer = () => {
             <h4 className="text-base font-bold text-white uppercase tracking-wider">Contact</h4>
             <ul className="space-y-4">
               <li className="flex items-start gap-4 text-white/90 text-sm group cursor-default">
-                <div className="w-10 h-10 flex items-center justify-center bg-white/5 rounded-xl border border-white/10 group-hover:bg-[#164e33] group-hover:border-[#164e33] transition-all shrink-0">
+                <div className="w-10 h-10 flex items-center justify-center bg-white/5 rounded-lg border border-white/10 group-hover:bg-[#164e33] group-hover:border-[#164e33] transition-all shrink-0">
                   <MapPin className="w-5 h-5 text-white" />
                 </div>
                 <span className="pt-2">{settings.address}</span>
               </li>
               <li className="flex items-center gap-4 text-white/90 text-sm group cursor-pointer hover:text-white transition-colors">
-                <div className="w-10 h-10 flex items-center justify-center bg-white/5 rounded-xl border border-white/10 group-hover:bg-[#164e33] group-hover:border-[#164e33] transition-all shrink-0">
+                <div className="w-10 h-10 flex items-center justify-center bg-white/5 rounded-lg border border-white/10 group-hover:bg-[#164e33] group-hover:border-[#164e33] transition-all shrink-0">
                   <Phone className="w-5 h-5 text-white" />
                 </div>
                 <span>{settings.contactPhone}</span>
               </li>
               <li className="flex items-center gap-4 text-white/90 text-sm group cursor-pointer hover:text-white transition-colors">
-                <div className="w-10 h-10 flex items-center justify-center bg-white/5 rounded-xl border border-white/10 group-hover:bg-[#164e33] group-hover:border-[#164e33] transition-all shrink-0">
+                <div className="w-10 h-10 flex items-center justify-center bg-white/5 rounded-lg border border-white/10 group-hover:bg-[#164e33] group-hover:border-[#164e33] transition-all shrink-0">
                   <Mail className="w-5 h-5 text-white" />
                 </div>
                 <span className="truncate">{settings.contactEmail}</span>

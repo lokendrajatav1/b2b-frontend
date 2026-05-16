@@ -135,12 +135,12 @@ export default function VendorBilling() {
   /* ── skeleton ── */
   if (loading) return (
     <div className="space-y-5 animate-pulse">
-      <div className="h-8 w-52 bg-gray-200/70 rounded-xl" />
-      <div className="h-36 bg-gray-200/70 rounded-xl" />
+      <div className="h-8 w-52 bg-gray-200/70 rounded-lg" />
+      <div className="h-36 bg-gray-200/70 rounded-lg" />
       <div className="grid grid-cols-3 gap-4">
-        <div className="h-80 bg-gray-200/70 rounded-xl" />
-        <div className="h-80 bg-gray-200/70 rounded-xl" />
-        <div className="h-80 bg-gray-200/70 rounded-xl" />
+        <div className="h-80 bg-gray-200/70 rounded-lg" />
+        <div className="h-80 bg-gray-200/70 rounded-lg" />
+        <div className="h-80 bg-gray-200/70 rounded-lg" />
       </div>
     </div>
   );
@@ -173,7 +173,7 @@ export default function VendorBilling() {
 
         {/* ── expiry alert ── */}
         {(isExpired || isSoon) && (
-          <div className={`flex items-center gap-3 px-4 py-3 rounded-xl border text-sm ${
+          <div className={`flex items-center gap-3 px-4 py-3 rounded-lg border text-sm ${
             isExpired
               ? 'bg-red-50 border-red-200 text-red-600'
               : 'bg-amber-50 border-amber-200 text-amber-600'
@@ -186,7 +186,7 @@ export default function VendorBilling() {
         )}
 
         {/* ── current plan card ── */}
-        <div className="bg-white rounded-xl border border-gray-200  overflow-hidden">
+        <div className="bg-white rounded-lg border border-gray-200  overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
             <span className="text-sm font-medium text-slate-800">Current Subscription</span>
             <span className={`text-sm px-2.5 py-0.5 rounded-full font-medium ${
@@ -206,7 +206,7 @@ export default function VendorBilling() {
                 <div className="flex flex-col sm:flex-row sm:items-center gap-5">
                   <div className="flex-1 space-y-3">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl flex items-center justify-center border"
+                      <div className="w-10 h-10 rounded-lg flex items-center justify-center border"
                         style={{ background: style.lightBg, color: style.accentColor, borderColor: style.borderColor }}>
                         {style.icon}
                       </div>
@@ -234,11 +234,11 @@ export default function VendorBilling() {
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-3 sm:w-52">
-                    <div className="bg-gray-50 rounded-xl px-3 py-3 text-center border border-gray-100">
+                    <div className="bg-gray-50 rounded-lg px-3 py-3 text-center border border-gray-100">
                       <p className="text-sm text-slate-700 mb-1">Monthly Leads</p>
                       <p className="text-sm font-semibold text-slate-900">{currentPkg.monthlyLeads ?? currentPkg.leadLimit ?? '—'}</p>
                     </div>
-                    <div className="bg-gray-50 rounded-xl px-3 py-3 text-center border border-gray-100">
+                    <div className="bg-gray-50 rounded-lg px-3 py-3 text-center border border-gray-100">
                       <p className="text-sm text-slate-700 mb-1">Priority</p>
                       <p className="text-sm font-semibold text-slate-900">{currentPkg.priority ?? '—'}</p>
                     </div>
@@ -261,7 +261,7 @@ export default function VendorBilling() {
           </h2>
 
           {packages.length === 0 ? (
-            <div className="text-center py-10 border border-dashed border-gray-200 rounded-xl text-slate-700 text-sm">
+            <div className="text-center py-10 border border-dashed border-gray-200 rounded-lg text-slate-700 text-sm">
               No plans available. Please contact admin.
             </div>
           ) : (
@@ -276,7 +276,7 @@ export default function VendorBilling() {
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.1 }}
-                    className={`relative bg-white rounded-xl border border-gray-100 transition-all duration-500 flex flex-col group hover:-translate-y-4 hover: hover:-[#164e33]/10 overflow-hidden ${
+                    className={`relative bg-white rounded-lg border border-gray-100 transition-all duration-500 flex flex-col group hover:-translate-y-4 hover: hover:-[#164e33]/10 overflow-hidden ${
                       isPopular ? 'scale-105 z-10  ' : ' '
                     }`}
                   >
@@ -352,7 +352,7 @@ export default function VendorBilling() {
 
 
         {/* ── how it works ── */}
-        <div className="bg-white border border-gray-200 rounded-xl  p-5">
+        <div className="bg-white border border-gray-200 rounded-lg  p-5">
           <p className="text-sm font-medium text-slate-800 mb-4">How It Works</p>
           <div className="flex flex-wrap gap-3">
             {[
@@ -364,7 +364,7 @@ export default function VendorBilling() {
             ].map((s, i) => (
               <div key={s.label} className="flex items-center gap-2">
                 {i > 0 && <ChevronRight className="w-3.5 h-3.5 text-gray-500" />}
-                <div className="flex items-center gap-1.5 bg-gray-50 border border-gray-100 rounded-xl px-3 py-1.5">
+                <div className="flex items-center gap-1.5 bg-gray-50 border border-gray-100 rounded-lg px-3 py-1.5">
                   <span style={{ color: s.color }}>{s.icon}</span>
                   <span className="text-sm text-slate-800">{s.label}</span>
                 </div>

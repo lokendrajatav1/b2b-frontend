@@ -43,9 +43,9 @@ export default function CareersPage() {
               { icon: Heart, title: 'Health & Wellness', desc: 'Comprehensive health insurance and mental wellness support for you and your family.', color: '#f58220' },
               { icon: Star, title: 'Ownership', desc: 'Every employee gets ESOPs. We want you to own a piece of what you build.', color: '#164e33' },
             ].map((perk, idx) => (
-              <div key={idx} className="p-7 rounded-2xl bg-[#f8faf9] border border-gray-100 hover:shadow-sm transition-all group">
+              <div key={idx} className="p-7 rounded-lg bg-[#f8faf9] border border-gray-100 hover:shadow-sm transition-all group">
                 <div 
-                  className="w-11 h-11 rounded-xl flex items-center justify-center mb-5 transition-colors"
+                  className="w-11 h-11 rounded-lg flex items-center justify-center mb-5 transition-colors"
                   style={{ backgroundColor: `${perk.color}10` }}
                 >
                   <perk.icon className="w-5 h-5" style={{ color: perk.color }} />
@@ -67,7 +67,7 @@ export default function CareersPage() {
               <p className="text-slate-500 mt-1.5 text-base font-normal">Join a team that values your craft.</p>
             </div>
             <div className="flex gap-3">
-              <select className="px-4 py-2.5 bg-white border border-gray-100 rounded-xl text-base font-medium text-slate-800 outline-none">
+              <select className="px-4 py-2.5 bg-white border border-gray-100 rounded-lg text-base font-medium text-slate-800 outline-none">
                 <option>All Departments</option>
                 <option>Engineering</option>
                 <option>Design</option>
@@ -80,10 +80,10 @@ export default function CareersPage() {
             {openings.map((job, idx) => (
               <div 
                 key={idx}
-                className="p-5 md:p-6 bg-white border border-gray-100 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 hover:shadow-md hover:border-[#164e33]/20 transition-all cursor-pointer group"
+                className="p-5 md:p-6 bg-white border border-gray-100 rounded-lg flex flex-col md:flex-row md:items-center justify-between gap-4 hover:shadow-md hover:border-[#164e33]/20 transition-all cursor-pointer group"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-11 h-11 bg-[#164e33]/[0.08] rounded-xl flex items-center justify-center text-[#164e33] shrink-0">
+                  <div className="w-11 h-11 bg-[#164e33]/[0.08] rounded-lg flex items-center justify-center text-[#164e33] shrink-0">
                     <Briefcase className="w-5 h-5" />
                   </div>
                   <div>
@@ -106,10 +106,10 @@ export default function CareersPage() {
             ))}
           </div>
 
-          <div className="mt-12 p-8 md:p-10 bg-[#164e33]/[0.04] rounded-2xl text-center border border-[#164e33]/10 relative overflow-hidden">
+          <div className="mt-12 p-8 md:p-10 bg-[#164e33]/[0.04] rounded-lg text-center border border-[#164e33]/10 relative overflow-hidden">
              <h3 className="text-lg font-semibold text-slate-900 mb-2">Don't see a fit?</h3>
              <p className="text-slate-500 mb-6 max-w-lg mx-auto text-base font-normal">We're always looking for brilliant minds. Send your resume to <span className="text-[#164e33] font-medium">careers@b2b-india.com</span></p>
-             <button className="px-8 py-3 bg-[#164e33] text-white rounded-xl font-medium text-base hover:bg-[#113f29] transition-all">General Application</button>
+             <button className="px-8 py-3 bg-[#164e33] text-white rounded-lg font-medium text-base hover:bg-[#113f29] transition-all">General Application</button>
           </div>
         </div>
       </section>

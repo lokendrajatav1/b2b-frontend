@@ -57,7 +57,7 @@ export default function AdminPackages() {
     }
   };
 
-  if (loading) return <div className="p-12 animate-pulse bg-slate-50 rounded-xl h-[400px] border border-gray-100"></div>;
+  if (loading) return <div className="p-12 animate-pulse bg-slate-50 rounded-lg h-[400px] border border-gray-100"></div>;
 
   return (
     <div className="max-w-7xl mx-auto space-y-10 animate-simple-fade pb-24 px-4 lg:px-8">
@@ -65,7 +65,7 @@ export default function AdminPackages() {
         <div className="space-y-1.5">
            <h1 className="text-2xl font-semibold text-slate-900  flex items-center gap-3">
              Membership Tiers
-             <div className="p-1.5 bg-[#164e33]/10 text-[#164e33] rounded-xl border border-[#164e33]/20">
+             <div className="p-1.5 bg-[#164e33]/10 text-[#164e33] rounded-lg border border-[#164e33]/20">
                 <ShieldCheck className="w-5 h-5" />
              </div>
            </h1>
@@ -74,7 +74,7 @@ export default function AdminPackages() {
 
         <button 
            onClick={() => { setCurrentPackage(null); setIsModalOpen(true); }}
-           className="px-5 py-2.5 bg-[#164e33] text-white rounded-xl font-semibold text-sm flex items-center justify-center gap-2  -[#164e33]/20 hover:bg-[#113f29] transition-all active:scale-95"
+           className="px-5 py-2.5 bg-[#164e33] text-white rounded-lg font-semibold text-sm flex items-center justify-center gap-2  -[#164e33]/20 hover:bg-[#113f29] transition-all active:scale-95"
         >
            <Plus className="w-4 h-4" />
            Create New Plan
@@ -91,7 +91,7 @@ export default function AdminPackages() {
                initial={{ opacity: 0, y: 15 }}
                animate={{ opacity: 1, y: 0 }}
                transition={{ delay: idx * 0.1 }}
-               className={`relative bg-white rounded-xl border border-gray-100 transition-all duration-500 flex flex-col group hover:-translate-y-4 hover: hover:-[#164e33]/10 overflow-hidden ${
+               className={`relative bg-white rounded-lg border border-gray-100 transition-all duration-500 flex flex-col group hover:-translate-y-4 hover: hover:-[#164e33]/10 overflow-hidden ${
                  isPopular ? 'scale-105 z-10  ' : ' '
                }`}
             >
@@ -165,7 +165,7 @@ export default function AdminPackages() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto mt-16 bg-[#f0f9f8] border border-[#164e33]/20 rounded-xl p-10 text-slate-900 relative overflow-hidden ">
+      <div className="max-w-7xl mx-auto mt-16 bg-[#f0f9f8] border border-[#164e33]/20 rounded-lg p-10 text-slate-900 relative overflow-hidden ">
           <div className="absolute -right-20 -top-20 w-80 h-80 bg-white/50 rounded-full blur-3xl"></div>
           <div className="absolute left-1/3 bottom-0 w-64 h-64 bg-[#164e33]/5 rounded-full blur-3xl"></div>
           
@@ -181,11 +181,11 @@ export default function AdminPackages() {
              </div>
 
              <div className="grid grid-cols-2 gap-6 w-full lg:w-auto">
-                <div className="bg-white/60 backdrop-blur-md p-6 rounded-xl border border-[#164e33]/10 space-y-2">
+                <div className="bg-white/60 backdrop-blur-md p-6 rounded-lg border border-[#164e33]/10 space-y-2">
                    <p className="text-[#164e33]/80 text-sm font-semibold uppercase ">Global ARPU</p>
                    <p className="text-3xl font-semibold tabular-nums er text-[#164e33]">₹2,840</p>
                 </div>
-                <div className="bg-white/60 backdrop-blur-md p-6 rounded-xl border border-[#164e33]/10 space-y-2">
+                <div className="bg-white/60 backdrop-blur-md p-6 rounded-lg border border-[#164e33]/10 space-y-2">
                    <p className="text-[#164e33]/80 text-sm font-semibold uppercase ">Churn Rate</p>
                    <p className="text-3xl font-semibold tabular-nums er text-[#164e33]">4.2%</p>
                 </div>
@@ -215,7 +215,7 @@ export default function AdminPackages() {
                     <h2 className="text-lg font-semibold text-slate-900 ">{currentPackage ? 'Revise Plan' : 'Define New Tier'}</h2>
                     <p className="text-sm font-medium text-slate-700 mt-1">Configure service limits and commercial terms.</p>
                   </div>
-                  <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-gray-100 rounded-xl transition-colors">
+                  <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                      <AlertCircle className="w-5 h-5 text-slate-700" />
                   </button>
                </div>
@@ -261,7 +261,7 @@ export default function AdminPackages() {
                           name="name"
                           defaultValue={currentPackage?.name}
                           placeholder="e.g. Platinum Plus"
-                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:border-[#164e33] focus:bg-white outline-none font-semibold text-slate-900 text-sm transition-all"
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-[#164e33] focus:bg-white outline-none font-semibold text-slate-900 text-sm transition-all"
                           required
                        />
                     </div>
@@ -274,7 +274,7 @@ export default function AdminPackages() {
                               min="0"
                               defaultValue={currentPackage?.price}
                               placeholder="e.g. 999"
-                              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:border-[#164e33] focus:bg-white outline-none font-semibold text-slate-900 text-sm transition-all"
+                              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-[#164e33] focus:bg-white outline-none font-semibold text-slate-900 text-sm transition-all"
                               required
                            />
                         </div>
@@ -286,7 +286,7 @@ export default function AdminPackages() {
                               min="0"
                               defaultValue={currentPackage?.monthlyLeads ?? 0}
                               placeholder="e.g. 20"
-                              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:border-[#164e33] focus:bg-white outline-none font-semibold text-slate-900 text-sm transition-all"
+                              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-[#164e33] focus:bg-white outline-none font-semibold text-slate-900 text-sm transition-all"
                            />
                         </div>
                      </div>
@@ -299,7 +299,7 @@ export default function AdminPackages() {
                            min="1"
                            defaultValue={currentPackage?.priority ?? 1}
                            placeholder="e.g. 5"
-                           className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:border-[#164e33] focus:bg-white outline-none font-semibold text-slate-900 text-sm transition-all"
+                           className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-[#164e33] focus:bg-white outline-none font-semibold text-slate-900 text-sm transition-all"
                         />
                      </div>
 
@@ -310,7 +310,7 @@ export default function AdminPackages() {
                            type="text"
                            defaultValue={currentPackage?.features?.join(', ')}
                            placeholder="e.g. Verified Badge, Priority Leads, Analytics"
-                           className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:border-[#164e33] focus:bg-white outline-none font-medium text-slate-900 text-sm transition-all"
+                           className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-[#164e33] focus:bg-white outline-none font-medium text-slate-900 text-sm transition-all"
                         />
                      </div>
 
@@ -320,7 +320,7 @@ export default function AdminPackages() {
                           name="description"
                           defaultValue={currentPackage?.description}
                           rows={4}
-                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:border-[#164e33] focus:bg-white outline-none font-medium text-slate-800 text-sm transition-all"
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-[#164e33] focus:bg-white outline-none font-medium text-slate-800 text-sm transition-all"
                        />
                     </div>
                   </div>
@@ -329,13 +329,13 @@ export default function AdminPackages() {
                      <button 
                         type="button"
                         onClick={() => setIsModalOpen(false)}
-                        className="flex-1 py-4 bg-gray-50 text-slate-800 rounded-xl font-semibold uppercase  text-sm hover:bg-gray-100 transition-all"
+                        className="flex-1 py-4 bg-gray-50 text-slate-800 rounded-lg font-semibold uppercase  text-sm hover:bg-gray-100 transition-all"
                      >
                         Discard
                      </button>
                      <button 
                         type="submit"
-                        className="flex-1 py-4 bg-[#164e33] text-white rounded-xl font-semibold uppercase  text-sm  -[#164e33]/20 hover:bg-[#113f29] transition-all"
+                        className="flex-1 py-4 bg-[#164e33] text-white rounded-lg font-semibold uppercase  text-sm  -[#164e33]/20 hover:bg-[#113f29] transition-all"
                      >
                         Commit Changes
                      </button>

@@ -95,7 +95,7 @@ export default function VendorLeads() {
                </h1>
                <p className="text-sm font-medium text-slate-400">Review and respond to inquiries from potential buyers.</p>
             </div>
-            <button className="px-6 py-2.5 bg-white border border-gray-100 text-slate-700 rounded-xl font-bold text-sm flex items-center gap-2 hover:bg-gray-50 transition-all">
+            <button className="px-6 py-2.5 bg-white border border-gray-100 text-slate-700 rounded-lg font-bold text-sm flex items-center gap-2 hover:bg-gray-50 transition-all">
                <Download size={16} /> Export Leads
             </button>
          </div>
@@ -138,7 +138,7 @@ export default function VendorLeads() {
 
          {/* Filter Tabs & Sort Row */}
          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pt-4">
-            <div className="flex items-center gap-2 bg-white p-1.5 rounded-xl border border-gray-100 w-fit">
+            <div className="flex items-center gap-2 bg-white p-1.5 rounded-lg border border-gray-100 w-fit">
                {[
                   { id: 'ALL', label: 'All Leads' },
                   { id: 'DISTRIBUTED', label: 'Active' },
@@ -148,7 +148,7 @@ export default function VendorLeads() {
                   <button
                      key={tab.id}
                      onClick={() => setFilter(tab.id)}
-                     className={`px-6 py-2 rounded-xl text-sm font-bold transition-all ${filter === tab.id ? 'bg-[#062d1d] text-white shadow-lg' : 'text-slate-400 hover:text-slate-600'}`}
+                     className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${filter === tab.id ? 'bg-[#062d1d] text-white shadow-lg' : 'text-slate-400 hover:text-slate-600'}`}
                   >
                      {tab.label}
                   </button>
@@ -156,10 +156,10 @@ export default function VendorLeads() {
             </div>
 
             <div className="flex items-center gap-3">
-               <button className="px-4 py-2.5 bg-white border border-gray-100 text-slate-600 rounded-xl text-xs font-bold flex items-center gap-2 hover:bg-gray-50 transition-all">
+               <button className="px-4 py-2.5 bg-white border border-gray-100 text-slate-600 rounded-lg text-xs font-bold flex items-center gap-2 hover:bg-gray-50 transition-all">
                   <Filter size={14} /> Filter
                </button>
-               <div className="px-4 py-2.5 bg-white border border-gray-100 text-slate-700 rounded-xl text-xs font-bold flex items-center gap-4 hover:bg-gray-50 transition-all cursor-pointer group">
+               <div className="px-4 py-2.5 bg-white border border-gray-100 text-slate-700 rounded-lg text-xs font-bold flex items-center gap-4 hover:bg-gray-50 transition-all cursor-pointer group">
                   <span>Sort: Newest</span>
                   <ChevronDown size={14} className="text-slate-400" />
                </div>
@@ -181,7 +181,7 @@ export default function VendorLeads() {
                      animate={{ opacity: 1, y: 0 }}
                      transition={{ delay: idx * 0.05 }}
                      key={lead.id}
-                     className="bg-white rounded-xl border border-gray-100 overflow-hidden flex flex-col md:flex-row group"
+                     className="bg-white rounded-lg border border-gray-100 overflow-hidden flex flex-col md:flex-row group"
                   >
                      {/* Left Column: Status */}
                      <div className={`md:w-32 shrink-0 p-6 flex flex-col items-center justify-center text-center gap-3 border-b md:border-b-0 md:border-r border-gray-50 ${isNew ? 'bg-emerald-50/20' : isWon ? 'bg-orange-50/20' : 'bg-gray-50/20'}`}>
@@ -220,7 +220,7 @@ export default function VendorLeads() {
                            </div>
                         </div>
 
-                        <div className={`p-5 rounded-xl border relative overflow-hidden group/msg ${isWon ? 'bg-orange-50/30 border-orange-100/50' : 'bg-emerald-50/30 border-emerald-100/50'}`}>
+                        <div className={`p-5 rounded-lg border relative overflow-hidden group/msg ${isWon ? 'bg-orange-50/30 border-orange-100/50' : 'bg-emerald-50/30 border-emerald-100/50'}`}>
                            <div className={`absolute top-0 left-0 w-1 h-full opacity-30 ${isWon ? 'bg-orange-500' : 'bg-emerald-500'}`} />
                            <div className="flex gap-4">
                               <MessageSquare size={18} className={`shrink-0 mt-1 ${isWon ? 'text-orange-300' : 'text-emerald-300'}`} />
@@ -239,23 +239,23 @@ export default function VendorLeads() {
                      {/* Right Column: Actions */}
                      <div className="md:w-64 shrink-0 p-6 md:p-8 flex flex-col justify-center gap-3 border-t md:border-t-0 md:border-l border-gray-50 bg-gray-50/20">
                         <div className="grid grid-cols-2 gap-3">
-                           <a href={`tel:${lead.phone}`} className="h-11 bg-white border border-gray-100 text-slate-700 rounded-xl text-xs font-bold flex items-center justify-center gap-2 hover:bg-gray-100 transition-all shadow-sm">
+                           <a href={`tel:${lead.phone}`} className="h-11 bg-white border border-gray-100 text-slate-700 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-gray-100 transition-all shadow-sm">
                               <Phone size={14} className="text-emerald-600" /> Call
                            </a>
-                           <a href={`https://wa.me/${lead.phone}`} target="_blank" className="h-11 bg-white border border-gray-100 text-slate-700 rounded-xl text-xs font-bold flex items-center justify-center gap-2 hover:bg-gray-100 transition-all shadow-sm">
+                           <a href={`https://wa.me/${lead.phone}`} target="_blank" className="h-11 bg-white border border-gray-100 text-slate-700 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-gray-100 transition-all shadow-sm">
                               <MessageSquare size={14} className="text-emerald-600" /> Chat
                            </a>
                         </div>
 
                         {isWon ? (
-                           <div className="w-full h-12 bg-emerald-50 text-emerald-700 border border-emerald-100 rounded-xl flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider">
+                           <div className="w-full h-12 bg-emerald-50 text-emerald-700 border border-emerald-100 rounded-lg flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider">
                               <CheckCircle2 size={16} /> Deal Successfully Closed
                            </div>
                         ) : (
                            <div className="flex flex-col gap-2">
                               <button
                                  onClick={() => handleUpdateStatus(lead.id, 'CLOSED')}
-                                 className="w-full h-12 bg-[#164e33] text-white rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-[#113f29] transition-all shadow-lg shadow-emerald-900/10"
+                                 className="w-full h-12 bg-[#164e33] text-white rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-[#113f29] transition-all shadow-lg shadow-emerald-900/10"
                               >
                                  Mark as Won
                               </button>
@@ -271,7 +271,7 @@ export default function VendorLeads() {
                   </motion.div>
                );
             }) : (
-               <div className="p-20 text-center space-y-4 bg-white rounded-xl border border-gray-100">
+               <div className="p-20 text-center space-y-4 bg-white rounded-lg border border-gray-100">
                   <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto border border-gray-100">
                      <History size={24} className="text-slate-300" />
                   </div>
@@ -312,13 +312,13 @@ export default function VendorLeads() {
 }
 
 const VendorLeadStatCard = ({ label, value, sub, icon: Icon, iconColor, iconBg }: any) => (
-  <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between group hover:shadow-md transition-all">
+  <div className="bg-white p-6 rounded-lg border border-gray-100 shadow-sm flex items-center justify-between group hover:shadow-md transition-all">
      <div>
         <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">{label}</p>
         <h4 className="text-2xl font-bold text-slate-900">{value}</h4>
         <p className="text-[10px] font-medium text-slate-400 mt-0.5">{sub}</p>
      </div>
-     <div className={`w-12 h-12 rounded-xl ${iconBg} ${iconColor} flex items-center justify-center`}>
+     <div className={`w-12 h-12 rounded-lg ${iconBg} ${iconColor} flex items-center justify-center`}>
         <Icon size={20} />
      </div>
   </div>

@@ -113,7 +113,7 @@ export default function VendorPerformance() {
       {/* KPI Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {kpis.map((kpi, i) => (
-          <div key={i} className="bg-white p-5 rounded-xl border border-gray-100 flex items-center justify-between group hover: shadow-sm transition-all">
+          <div key={i} className="bg-white p-5 rounded-lg border border-gray-100 flex items-center justify-between group hover: shadow-sm transition-all">
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-3">
                  <div className={`w-8 h-8 ${kpi.bg} rounded-lg flex items-center justify-center`} style={{ color: kpi.color }}>
@@ -135,7 +135,7 @@ export default function VendorPerformance() {
         <div className="lg:col-span-8 space-y-6">
           
           {/* Growth Acceleration Matrix */}
-          <div className="bg-white rounded-xl border border-gray-100 p-6">
+          <div className="bg-white rounded-lg border border-gray-100 p-6">
              <div className="flex items-center justify-between mb-6">
                 <div>
                    <h3 className="text-sm font-bold text-slate-800 uppercase tracking-tight">GROWTH ACCELERATION MATRIX</h3>
@@ -150,9 +150,9 @@ export default function VendorPerformance() {
                   { label: 'Keyword Optimization', sub: 'Add trending keywords to improve product discoverability.', impact: 'MEDIUM IMPACT', icon: Clock, color: 'text-orange-500', bg: 'bg-orange-50', status: 'Action Required', sColor: 'text-orange-700', sBg: 'bg-orange-50' },
                   { label: 'Product Enrichment', sub: 'Add detailed specifications to build trust and rank higher.', impact: 'LOW IMPACT', icon: Briefcase, color: 'text-blue-500', bg: 'bg-blue-50', status: 'Start Now', sColor: 'text-blue-700', sBg: 'bg-blue-50' },
                 ].map((task, i) => (
-                  <div key={i} className="flex items-center justify-between p-4 border border-gray-50 rounded-xl group hover:bg-gray-50/50 transition-all cursor-pointer">
+                  <div key={i} className="flex items-center justify-between p-4 border border-gray-50 rounded-lg group hover:bg-gray-50/50 transition-all cursor-pointer">
                      <div className="flex items-center gap-4">
-                        <div className={`w-10 h-10 ${task.bg} ${task.color} rounded-xl flex items-center justify-center border border-current opacity-20`}>
+                        <div className={`w-10 h-10 ${task.bg} ${task.color} rounded-lg flex items-center justify-center border border-current opacity-20`}>
                            <task.icon size={20} className="opacity-100" />
                         </div>
                         <div className="w-10 h-10 absolute flex items-center justify-center">
@@ -167,7 +167,7 @@ export default function VendorPerformance() {
                         </div>
                      </div>
                      <div className="flex items-center gap-3">
-                        <div className={`hidden md:flex items-center gap-1.5 px-4 py-2 ${task.sBg} ${task.sColor} border border-current/10 rounded-xl text-[10px] font-bold uppercase`}>
+                        <div className={`hidden md:flex items-center gap-1.5 px-4 py-2 ${task.sBg} ${task.sColor} border border-current/10 rounded-lg text-[10px] font-bold uppercase`}>
                            {i === 0 ? <CheckCircle2 size={12} /> : i === 1 ? <Clock size={12} /> : <Zap size={12} />}
                            {task.status}
                         </div>
@@ -183,7 +183,7 @@ export default function VendorPerformance() {
           </div>
 
           {/* Performance Overview */}
-          <div className="bg-white rounded-xl border border-gray-100 p-6">
+          <div className="bg-white rounded-lg border border-gray-100 p-6">
              <div className="flex items-center justify-between mb-8">
                 <h3 className="text-sm font-bold text-slate-800 uppercase tracking-tight">PERFORMANCE OVERVIEW</h3>
                 <div className="text-[10px] font-bold text-slate-500 bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-100 uppercase flex items-center gap-2 cursor-pointer">
@@ -232,7 +232,7 @@ export default function VendorPerformance() {
         <div className="lg:col-span-4 space-y-6">
           
           {/* Visibility Pulse */}
-          <div className="bg-white rounded-xl border border-gray-100 p-6">
+          <div className="bg-white rounded-lg border border-gray-100 p-6">
              <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-2">
                    <div className="w-8 h-8 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center">
@@ -293,7 +293,7 @@ export default function VendorPerformance() {
           </div>
 
           {/* Recent Activity (Compact) */}
-          <div className="bg-white rounded-xl border border-gray-100 p-6">
+          <div className="bg-white rounded-lg border border-gray-100 p-6">
              <div className="flex items-center justify-between mb-6">
                 <h3 className="text-sm font-bold text-slate-800 uppercase tracking-tight">RECENT ACTIVITY</h3>
                 <button className="text-[10px] font-bold text-slate-400 border border-gray-100 px-3 py-1 rounded-lg hover:bg-gray-50 transition-all uppercase">View All</button>
@@ -323,7 +323,7 @@ export default function VendorPerformance() {
           </div>
 
           {/* Quick Actions */}
-          <div className="bg-white rounded-xl border border-gray-100 p-6">
+          <div className="bg-white rounded-lg border border-gray-100 p-6">
              <h3 className="text-sm font-bold text-slate-800 uppercase tracking-tight mb-6">QUICK ACTIONS</h3>
              <div className="space-y-2">
                 {[
@@ -332,7 +332,7 @@ export default function VendorPerformance() {
                   { label: 'View Leads', sub: 'Check and respond to leads', icon: Target, color: 'text-indigo-600', bg: 'bg-indigo-50' },
                   { label: 'Billing & Invoices', sub: 'View your invoices and payments', icon: Wallet, color: 'text-slate-600', bg: 'bg-slate-50' },
                 ].map((action, i) => (
-                  <div key={i} className="flex items-center justify-between p-3 border border-gray-50 rounded-xl hover:bg-gray-50 transition-all cursor-pointer group">
+                  <div key={i} className="flex items-center justify-between p-3 border border-gray-50 rounded-lg hover:bg-gray-50 transition-all cursor-pointer group">
                      <div className="flex items-center gap-3">
                         <div className={`w-8 h-8 ${action.bg} ${action.color} rounded-lg flex items-center justify-center`}>
                            <action.icon size={16} />

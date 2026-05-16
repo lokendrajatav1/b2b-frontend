@@ -116,7 +116,7 @@ export default function SuperAdminAnalytics() {
       {/* Platform Insights Header */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
         <div className="flex items-center gap-5">
-           <div className="w-14 h-14 bg-white rounded-xl  border border-gray-100 flex items-center justify-center text-slate-600">
+           <div className="w-14 h-14 bg-white rounded-lg  border border-gray-100 flex items-center justify-center text-slate-600">
               <TrendingUp className="w-8 h-8" />
            </div>
            <div>
@@ -129,7 +129,7 @@ export default function SuperAdminAnalytics() {
 
         <div className="flex flex-col gap-3">
           <div className="flex flex-wrap items-center gap-4">
-          <div className="flex items-center gap-2 bg-white border border-gray-300 rounded-xl px-3 py-1.5 shadow-sm">
+          <div className="flex items-center gap-2 bg-white border border-gray-300 rounded-lg px-3 py-1.5 shadow-sm">
             <Clock size={14} className="text-gray-500" />
             <select 
               value={timeRange}
@@ -147,7 +147,7 @@ export default function SuperAdminAnalytics() {
 
            <button 
              onClick={fetchDashboardStats}
-             className="flex items-center gap-2 px-5 py-2.5 bg-white text-slate-700 rounded-xl font-bold text-sm hover:bg-gray-50 transition-all border border-gray-100 "
+             className="flex items-center gap-2 px-5 py-2.5 bg-white text-slate-700 rounded-lg font-bold text-sm hover:bg-gray-50 transition-all border border-gray-100 "
            >
               <RefreshCcw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
               Refresh
@@ -164,7 +164,7 @@ export default function SuperAdminAnalytics() {
                 transition={{ duration: 0.2 }}
                 className="overflow-hidden"
               >
-                <div className="flex flex-col md:flex-row md:items-center gap-3 bg-slate-50 rounded-xl px-4 py-3 border border-slate-100">
+                <div className="flex flex-col md:flex-row md:items-center gap-3 bg-slate-50 rounded-lg px-4 py-3 border border-slate-100">
                   <div className="flex items-center gap-3">
                     <Clock size={13} className="text-slate-400 shrink-0" />
                     <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider shrink-0">Custom Range:</span>
@@ -205,9 +205,9 @@ export default function SuperAdminAnalytics() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.05 }}
-            className="bg-white p-4 rounded-xl border border-gray-100  flex items-center gap-3"
+            className="bg-white p-4 rounded-lg border border-gray-100  flex items-center gap-3"
           >
-            <div className={`w-10 h-10 ${card.bg} rounded-xl flex items-center justify-center ${card.color}`}>
+            <div className={`w-10 h-10 ${card.bg} rounded-lg flex items-center justify-center ${card.color}`}>
                <card.icon className="w-5 h-5" />
             </div>
             <div>
@@ -222,7 +222,7 @@ export default function SuperAdminAnalytics() {
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Lead Pipeline */}
-        <div className="bg-white rounded-xl p-6 border border-gray-100  flex flex-col">
+        <div className="bg-white rounded-lg p-6 border border-gray-100  flex flex-col">
            <div className="flex items-center gap-2 mb-6">
               <Users className="w-4 h-4 text-slate-600" />
               <h3 className="text-sm font-bold text-slate-800 uppercase tracking-tight">Lead Pipeline</h3>
@@ -272,7 +272,7 @@ export default function SuperAdminAnalytics() {
         </div>
 
         {/* Conversion Rate */}
-        <div className="bg-white rounded-xl p-6 border border-gray-100  flex flex-col">
+        <div className="bg-white rounded-lg p-6 border border-gray-100  flex flex-col">
            <div className="flex items-center gap-2 mb-6">
               <Activity className="w-4 h-4 text-slate-600" />
               <h3 className="text-sm font-bold text-slate-800 uppercase tracking-tight">Conversion Rate</h3>
@@ -285,11 +285,11 @@ export default function SuperAdminAnalytics() {
               </div>
 
               <div className="grid grid-cols-2 gap-3 w-full">
-                 <div className="bg-slate-50 rounded-xl p-3 text-center border border-gray-100">
+                 <div className="bg-slate-50 rounded-lg p-3 text-center border border-gray-100">
                     <span className="text-base font-bold text-slate-800 block mb-0.5">28</span>
                     <span className="text-xs font-bold text-slate-600 uppercase">Total</span>
                  </div>
-                 <div className="bg-emerald-50 rounded-xl p-3 text-center border border-emerald-100/50">
+                 <div className="bg-emerald-50 rounded-lg p-3 text-center border border-emerald-100/50">
                     <span className="text-base font-bold text-emerald-700 block mb-0.5">5</span>
                     <span className="text-xs font-bold text-emerald-600 uppercase">Closed</span>
                  </div>
@@ -302,7 +302,7 @@ export default function SuperAdminAnalytics() {
         </div>
 
         {/* Subscription Plans */}
-        <div className="bg-white rounded-xl p-6 border border-gray-100  flex flex-col">
+        <div className="bg-white rounded-lg p-6 border border-gray-100  flex flex-col">
            <div className="flex items-center gap-2 mb-6">
               <PieIcon className="w-4 h-4 text-slate-600" />
               <h3 className="text-sm font-bold text-slate-800 uppercase tracking-tight">Subscription Plans</h3>
@@ -310,7 +310,7 @@ export default function SuperAdminAnalytics() {
 
            <div className="flex-1 space-y-2">
               {subscriptionPlans.map((plan, i) => (
-                 <div key={i} className="flex items-center justify-between group cursor-pointer p-2 rounded-xl hover:bg-gray-100 transition-all">
+                 <div key={i} className="flex items-center justify-between group cursor-pointer p-2 rounded-lg hover:bg-gray-100 transition-all">
                     <div className="flex items-center gap-2">
                        <div className="w-2 h-2 rounded-full" style={{ backgroundColor: plan.color }} />
                        <span className="text-xs font-bold text-slate-700 group-hover:text-slate-900">{plan.name}</span>
@@ -330,13 +330,13 @@ export default function SuperAdminAnalytics() {
 
       {/* Category Performance Analytics */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-xl p-8 border border-gray-100 flex flex-col shadow-sm">
+        <div className="bg-white rounded-lg p-8 border border-gray-100 flex flex-col shadow-sm">
            <div className="flex items-center justify-between mb-8">
               <div>
                  <h3 className="text-[16px] font-bold text-slate-900 uppercase tracking-tight">Category Distribution</h3>
                  <p className="text-[11px] font-bold text-slate-400 mt-1 uppercase ">Market share by vendor count</p>
               </div>
-              <div className="p-2 bg-slate-50 rounded-xl">
+              <div className="p-2 bg-slate-50 rounded-lg">
                  <BarChart3 className="w-5 h-5 text-slate-400" />
               </div>
            </div>
@@ -366,7 +366,7 @@ export default function SuperAdminAnalytics() {
            </div>
         </div>
 
-        <div className="bg-white rounded-xl p-8 border border-gray-100 flex flex-col shadow-sm">
+        <div className="bg-white rounded-lg p-8 border border-gray-100 flex flex-col shadow-sm">
            <div className="flex items-center justify-between mb-8">
               <div>
                  <h3 className="text-[16px] font-bold text-slate-900 uppercase tracking-tight">Performance Trend</h3>
@@ -381,7 +381,7 @@ export default function SuperAdminAnalytics() {
                     </select>
                  </div>
               </div>
-              <div className="p-2 bg-slate-50 rounded-xl">
+              <div className="p-2 bg-slate-50 rounded-lg">
                  <TrendingUp className="w-5 h-5 text-slate-400" />
               </div>
            </div>

@@ -155,8 +155,8 @@ export default function AdminUsers() {
            { label: 'Admins', value: users.filter(u => u.role === 'ADMIN').length, sub: 'Hub controllers', icon: ShieldCheck, color: 'text-blue-600', bg: 'bg-blue-50' },
            { label: 'Joined This Month', value: users.filter(u => new Date(u.createdAt).getMonth() === new Date().getMonth()).length, sub: 'New registrations', icon: Clock, color: 'text-purple-600', bg: 'bg-purple-50' },
          ].map((stat, i) => (
-           <div key={i} className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:shadow-md transition-all">
-              <div className={`w-12 h-12 rounded-xl ${stat.bg} ${stat.color} flex items-center justify-center shrink-0`}>
+           <div key={i} className="bg-white p-6 rounded-lg border border-gray-100 shadow-sm flex items-center gap-4 group hover:shadow-md transition-all">
+              <div className={`w-12 h-12 rounded-lg ${stat.bg} ${stat.color} flex items-center justify-center shrink-0`}>
                  <stat.icon size={22} />
               </div>
               <div>
@@ -175,7 +175,7 @@ export default function AdminUsers() {
               <select 
                  value={roleFilter}
                  onChange={(e) => setRoleFilter(e.target.value)}
-                 className="pl-10 pr-8 py-2.5 bg-white border border-gray-200 rounded-xl text-xs font-bold text-slate-700 outline-none hover:bg-gray-50 transition-all shadow-sm appearance-none cursor-pointer"
+                 className="pl-10 pr-8 py-2.5 bg-white border border-gray-200 rounded-lg text-xs font-bold text-slate-700 outline-none hover:bg-gray-50 transition-all shadow-sm appearance-none cursor-pointer"
               >
                  <option value="ALL">All Roles</option>
                  <option value="ADMIN">Admin</option>
@@ -194,17 +194,17 @@ export default function AdminUsers() {
                    placeholder="Search members..." 
                    value={searchTerm}
                    onChange={(e) => setSearchTerm(e.target.value)}
-                   className="pl-11 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-xs font-bold text-slate-700 outline-none focus:border-emerald-500 transition-all w-64 shadow-sm"
+                   className="pl-11 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg text-xs font-bold text-slate-700 outline-none focus:border-emerald-500 transition-all w-64 shadow-sm"
                  />
               </div>
-              <button onClick={fetchUsers} className="p-2.5 bg-white border border-gray-200 rounded-xl text-slate-400 hover:text-slate-900 shadow-sm transition-all">
+              <button onClick={fetchUsers} className="p-2.5 bg-white border border-gray-200 rounded-lg text-slate-400 hover:text-slate-900 shadow-sm transition-all">
                  <RefreshCcw size={18} className={loading ? 'animate-spin' : ''} />
               </button>
            </div>
         </div>
 
         {/* Members Table */}
-        <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+        <div className="bg-white rounded-lg border border-gray-100 shadow-sm overflow-hidden">
           <div className="overflow-x-auto no-scrollbar">
             <table className="w-full text-left whitespace-nowrap min-w-[1000px]">
               <thead>
@@ -221,7 +221,7 @@ export default function AdminUsers() {
               {loading ? (
                 [1,2,3,4,5].map(i => (
                   <tr key={i} className="animate-pulse">
-                    <td colSpan={6} className="px-6 py-8"><div className="h-10 bg-gray-50/50 rounded-xl"></div></td>
+                    <td colSpan={6} className="px-6 py-8"><div className="h-10 bg-gray-50/50 rounded-lg"></div></td>
                   </tr>
                 ))
               ) : filteredUsers.length > 0 ? (
@@ -325,7 +325,7 @@ export default function AdminUsers() {
         {isModalOpen && selectedUser && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-gray-900/40 backdrop-blur-sm" onClick={() => setIsModalOpen(false)} />
-            <motion.div initial={{ opacity: 0, scale: 0.95, y: 10 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 10 }} className="relative bg-white rounded-xl w-full max-w-md overflow-hidden border border-gray-100 shadow-2xl">
+            <motion.div initial={{ opacity: 0, scale: 0.95, y: 10 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 10 }} className="relative bg-white rounded-lg w-full max-w-md overflow-hidden border border-gray-100 shadow-2xl">
               <div className="px-6 py-5 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
                 <h3 className="text-base font-semibold text-slate-900 flex items-center gap-2">
                   <Settings className="w-5 h-5 text-slate-700" />
@@ -338,11 +338,11 @@ export default function AdminUsers() {
               <form onSubmit={handleUpdateUser} className="p-6 space-y-5">
                 <div>
                   <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">Full Name</label>
-                  <input type="text" disabled value={selectedUser.name || 'Anonymous User'} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm font-bold text-slate-700 cursor-not-allowed" />
+                  <input type="text" disabled value={selectedUser.name || 'Anonymous User'} className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-sm font-bold text-slate-700 cursor-not-allowed" />
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">Platform Role</label>
-                  <select value={selectedUser.role} onChange={(e) => setSelectedUser({...selectedUser, role: e.target.value})} className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm font-bold text-slate-800 outline-none focus:border-emerald-500 transition-all uppercase appearance-none">
+                  <select value={selectedUser.role} onChange={(e) => setSelectedUser({...selectedUser, role: e.target.value})} className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2.5 text-sm font-bold text-slate-800 outline-none focus:border-emerald-500 transition-all uppercase appearance-none">
                     <option value="BUYER">Procurement Officer</option>
                     <option value="VENDOR">Vendor Partnership</option>
                     <option value="ADMIN">Strategic Admin</option>
@@ -356,7 +356,7 @@ export default function AdminUsers() {
                       value={selectedUser.password || ''}
                       onChange={(e) => setSelectedUser({...selectedUser, password: e.target.value})}
                       placeholder="Enter new secure password..."
-                      className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm font-bold text-slate-800 outline-none focus:border-emerald-500 transition-all" 
+                      className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2.5 text-sm font-bold text-slate-800 outline-none focus:border-emerald-500 transition-all" 
                     />
                     <button 
                       type="button"
@@ -367,7 +367,7 @@ export default function AdminUsers() {
                     </button>
                   </div>
                 </div>
-                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-100">
+                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-100">
                   <div>
                     <h4 className="text-sm font-bold text-slate-900">Access Permissions</h4>
                     <p className="text-[11px] font-medium text-slate-500 mt-0.5 uppercase tracking-tight">Allow platform login & usage</p>
@@ -377,8 +377,8 @@ export default function AdminUsers() {
                   </button>
                 </div>
                 <div className="pt-2 flex items-center justify-end gap-3">
-                  <button type="button" onClick={() => setIsModalOpen(false)} className="px-5 py-2.5 text-sm font-bold text-slate-500 hover:text-slate-700 hover:bg-gray-100 rounded-xl transition-colors uppercase tracking-wider">Cancel</button>
-                  <button type="submit" disabled={!!updatingId} className="px-5 py-2.5 bg-slate-900 text-white text-sm font-bold rounded-xl hover:bg-black transition-all disabled:opacity-50 flex items-center gap-2 shadow-lg shadow-slate-900/10">
+                  <button type="button" onClick={() => setIsModalOpen(false)} className="px-5 py-2.5 text-sm font-bold text-slate-500 hover:text-slate-700 hover:bg-gray-100 rounded-lg transition-colors uppercase tracking-wider">Cancel</button>
+                  <button type="submit" disabled={!!updatingId} className="px-5 py-2.5 bg-slate-900 text-white text-sm font-bold rounded-lg hover:bg-black transition-all disabled:opacity-50 flex items-center gap-2 shadow-lg shadow-slate-900/10">
                     {updatingId === 'modal' ? <RefreshCcw className="w-4 h-4 animate-spin" /> : <ShieldCheck className="w-4 h-4" />}
                     Commit Changes
                   </button>
@@ -393,12 +393,12 @@ export default function AdminUsers() {
         {isBoostModalOpen && boostConfig && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-gray-900/40 backdrop-blur-sm" onClick={() => setIsBoostModalOpen(false)} />
-            <motion.div initial={{ opacity: 0, scale: 0.9, y: 30 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9, y: 30 }} className="relative bg-white/95 backdrop-blur-xl rounded-xl shadow-2xl w-full max-w-md overflow-hidden border border-white/50">
+            <motion.div initial={{ opacity: 0, scale: 0.9, y: 30 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9, y: 30 }} className="relative bg-white/95 backdrop-blur-xl rounded-lg shadow-2xl w-full max-w-md overflow-hidden border border-white/50">
               <div className={`px-8 py-7 relative overflow-hidden transition-colors duration-500 ${parseFloat(boostConfig.score) <= 0 ? 'bg-gray-100 text-slate-900' : parseFloat(boostConfig.score) < 10 ? 'bg-gradient-to-br from-amber-400 to-amber-600 text-white' : parseFloat(boostConfig.score) < 25 ? 'bg-gradient-to-br from-orange-500 to-red-600 text-white' : 'bg-gradient-to-br from-purple-600 to-indigo-700 text-white'}`}>
                 <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl" />
                 <div className="flex items-center justify-between relative z-10">
                   <div className="flex items-center gap-3">
-                    <div className="p-2.5 bg-white/20 backdrop-blur-md rounded-xl border border-white/30">
+                    <div className="p-2.5 bg-white/20 backdrop-blur-md rounded-lg border border-white/30">
                       <Zap className="w-6 h-6 fill-white" />
                     </div>
                     <div>
@@ -422,11 +422,11 @@ export default function AdminUsers() {
                   <div className="flex items-center gap-4">
                     <input type="range" min="0" max="50" step="0.5" value={boostConfig.score} onChange={(e) => setBoostConfig({...boostConfig, score: e.target.value})} className="flex-1 accent-amber-500 h-1.5 bg-gray-100 rounded-lg appearance-none cursor-pointer" />
                     <div className="relative min-w-[80px]">
-                      <input type="number" step="0.1" value={boostConfig.score} onChange={(e) => setBoostConfig({...boostConfig, score: e.target.value})} className="w-full bg-gray-50 border-2 rounded-xl px-2 py-3 text-2xl font-bold text-center border-gray-100" />
+                      <input type="number" step="0.1" value={boostConfig.score} onChange={(e) => setBoostConfig({...boostConfig, score: e.target.value})} className="w-full bg-gray-50 border-2 rounded-lg px-2 py-3 text-2xl font-bold text-center border-gray-100" />
                     </div>
                   </div>
                 </div>
-                <div className="bg-gray-50 rounded-xl p-5 border border-gray-100">
+                <div className="bg-gray-50 rounded-lg p-5 border border-gray-100">
                   <div className="flex items-center gap-3 mb-2">
                     <Target className={`w-4 h-4 ${parseFloat(boostConfig.score) > 0 ? 'text-amber-500' : 'text-slate-400'}`} />
                     <span className="text-xs font-bold text-slate-900">Experience Forecast</span>
@@ -436,7 +436,7 @@ export default function AdminUsers() {
                   </p>
                 </div>
                 <div className="pt-2 flex flex-col gap-3">
-                  <button type="submit" disabled={updatingId === 'boost'} className={`w-full py-4 text-xs font-bold rounded-xl transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2 uppercase tracking-widest ${parseFloat(boostConfig.score) <= 0 ? 'bg-slate-900 text-white ' : parseFloat(boostConfig.score) < 10 ? 'bg-amber-500 text-white' : parseFloat(boostConfig.score) < 25 ? 'bg-orange-500 text-white' : 'bg-purple-600 text-white'}`}>
+                  <button type="submit" disabled={updatingId === 'boost'} className={`w-full py-4 text-xs font-bold rounded-lg transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2 uppercase tracking-widest ${parseFloat(boostConfig.score) <= 0 ? 'bg-slate-900 text-white ' : parseFloat(boostConfig.score) < 10 ? 'bg-amber-500 text-white' : parseFloat(boostConfig.score) < 25 ? 'bg-orange-500 text-white' : 'bg-purple-600 text-white'}`}>
                     {updatingId === 'boost' ? <RefreshCcw className="w-5 h-5 animate-spin" /> : <><Zap className="w-5 h-5" />Authorize Boost Level</>}
                   </button>
                   <button type="button" onClick={() => setIsBoostModalOpen(false)} className="w-full py-3 text-xs font-bold text-slate-500 hover:text-slate-700 transition-colors uppercase tracking-widest font-bold">Dismiss</button>
@@ -451,9 +451,9 @@ export default function AdminUsers() {
         {isDeleteModalOpen && userToDelete && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-gray-900/60 backdrop-blur-md" onClick={() => !updatingId && setIsDeleteModalOpen(false)} />
-            <motion.div initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 20 }} className="relative bg-white rounded-xl w-full max-w-sm overflow-hidden border border-gray-100 shadow-2xl">
+            <motion.div initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 20 }} className="relative bg-white rounded-lg w-full max-w-sm overflow-hidden border border-gray-100 shadow-2xl">
                <div className="p-8 text-center">
-                  <div className="w-20 h-20 bg-rose-50 text-rose-600 rounded-xl flex items-center justify-center mx-auto mb-6 border border-rose-100 shadow-xl shadow-rose-100/50">
+                  <div className="w-20 h-20 bg-rose-50 text-rose-600 rounded-lg flex items-center justify-center mx-auto mb-6 border border-rose-100 shadow-xl shadow-rose-100/50">
                     <Trash2 className="w-10 h-10" />
                   </div>
                   <h3 className="text-lg font-bold text-slate-900 mb-2 uppercase">Permanently Remove?</h3>
@@ -461,11 +461,11 @@ export default function AdminUsers() {
                     Are you sure you want to delete <span className="text-slate-900 font-bold">{userToDelete.name || userToDelete.email}</span>? Their access and registry data will be removed.
                   </p>
                   <div className="flex flex-col gap-3">
-                    <button onClick={handleDeleteUser} disabled={updatingId === userToDelete.id} className="w-full py-4 bg-rose-600 text-white text-sm font-bold rounded-xl hover:bg-rose-700 transition-all disabled:opacity-50 flex items-center justify-center gap-2 uppercase tracking-widest shadow-lg shadow-rose-600/20">
+                    <button onClick={handleDeleteUser} disabled={updatingId === userToDelete.id} className="w-full py-4 bg-rose-600 text-white text-sm font-bold rounded-lg hover:bg-rose-700 transition-all disabled:opacity-50 flex items-center justify-center gap-2 uppercase tracking-widest shadow-lg shadow-rose-600/20">
                       {updatingId === userToDelete.id ? <RefreshCcw className="w-4 h-4 animate-spin" /> : null}
                       Yes, Remove Profile
                     </button>
-                    <button onClick={() => setIsDeleteModalOpen(false)} disabled={updatingId === userToDelete.id} className="w-full py-4 text-xs font-bold text-slate-500 hover:text-slate-700 hover:bg-gray-50 rounded-xl transition-all uppercase tracking-widest">Cancel</button>
+                    <button onClick={() => setIsDeleteModalOpen(false)} disabled={updatingId === userToDelete.id} className="w-full py-4 text-xs font-bold text-slate-500 hover:text-slate-700 hover:bg-gray-50 rounded-lg transition-all uppercase tracking-widest">Cancel</button>
                   </div>
                </div>
             </motion.div>

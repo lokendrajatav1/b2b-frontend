@@ -66,7 +66,7 @@ export default function PrivacyPolicy() {
               {/* Timeline Indicator (Creative Bullet) */}
               <div className="absolute -left-[41px] md:-left-[73px] top-1.5 w-4 h-4 rounded-full border-2 border-white bg-emerald-500 shadow-sm group-hover:scale-125 transition-transform duration-300" />
               
-              <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] hover:shadow-md transition-shadow duration-300">
+              <div className="bg-white p-8 rounded-lg border border-slate-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] hover:shadow-md transition-shadow duration-300">
                 <h2 className="text-xl font-semibold text-slate-900 mb-4 flex items-center gap-3">
                   <span className="text-emerald-500 opacity-50 font-mono text-sm">0{index + 1}</span>
                   {section.title}

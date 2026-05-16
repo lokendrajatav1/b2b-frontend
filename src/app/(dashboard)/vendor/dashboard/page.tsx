@@ -122,7 +122,7 @@ export default function VendorDashboard() {
                { label: 'Response Rate', value: stats.responseTime, icon: Clock, color: '#f59e0b', sub: 'Efficiency in replying' },
                { label: 'Trust Index', value: stats.trustIndex.toFixed(1), icon: Star, color: '#10b981', sub: 'Your marketplace reputation' },
             ].map((stat, i) => (
-               <div key={i} className="bg-white p-5 rounded-xl border border-gray-100 flex items-center justify-between group hover: shadow-sm transition-all">
+               <div key={i} className="bg-white p-5 rounded-lg border border-gray-100 flex items-center justify-between group hover: shadow-sm transition-all">
                   <div className="flex-1">
                      <div className="flex items-center gap-2 mb-3">
                         <div className="w-8 h-8 bg-gray-50 rounded-lg flex items-center justify-center text-slate-700">
@@ -145,7 +145,7 @@ export default function VendorDashboard() {
             <div className="lg:col-span-8 space-y-6">
 
                {/* Recent Activity */}
-               <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
+               <div className="bg-white rounded-lg border border-gray-100 overflow-hidden">
                   <div className="p-6 border-b border-gray-50 flex items-center justify-between">
                      <div className="flex items-center gap-2">
                         <Activity size={18} className="text-emerald-600" />
@@ -180,7 +180,7 @@ export default function VendorDashboard() {
                                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Received</p>
                                  <p className="text-xs font-bold text-slate-700">{new Date(lead.createdAt).toLocaleDateString()}</p>
                               </div>
-                              <Link href={`/vendor/leads?id=${lead.id}`} className="px-4 py-2 bg-white border border-gray-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-gray-50 hover:text-emerald-700 transition-all">
+                              <Link href={`/vendor/leads?id=${lead.id}`} className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-xs font-bold text-slate-700 hover:bg-gray-50 hover:text-emerald-700 transition-all">
                                  Reply to Lead
                               </Link>
                            </div>
@@ -194,13 +194,13 @@ export default function VendorDashboard() {
                </div>
 
                {/* Lead Performance Chart */}
-               <div className="bg-white rounded-xl border border-gray-100 p-6">
+               <div className="bg-white rounded-lg border border-gray-100 p-6">
                   <div className="flex items-center justify-between mb-8">
                      <div className="flex items-center gap-2">
                         <TrendingUp size={18} className="text-emerald-600" />
                         <h3 className="text-sm font-bold text-slate-800 uppercase tracking-tight">Lead Performance Analytics</h3>
                      </div>
-                     <div className="bg-gray-50 border border-gray-100 px-3 py-1.5 rounded-xl flex items-center gap-2">
+                     <div className="bg-gray-50 border border-gray-100 px-3 py-1.5 rounded-lg flex items-center gap-2">
                         <span className="text-xs font-bold text-slate-700">Last 6 Months</span>
                         <Clock size={12} className="text-slate-400" />
                      </div>
@@ -237,7 +237,7 @@ export default function VendorDashboard() {
             <div className="lg:col-span-4 space-y-6">
 
                {/* Social Links */}
-               <div className="bg-white rounded-xl border border-gray-100 p-6">
+               <div className="bg-white rounded-lg border border-gray-100 p-6">
                   <div className="flex items-center justify-between mb-6">
                      <h3 className="text-sm font-bold text-slate-800 uppercase tracking-tight">Social Links</h3>
                      <Globe size={16} className="text-slate-400" />
@@ -251,7 +251,7 @@ export default function VendorDashboard() {
                      ].map((social, i) => {
                         const url = profile?.socialLinks?.[social.id] || `Not Linked`;
                         return (
-                           <div key={i} className="group p-3 bg-gray-50/50 border border-gray-50 rounded-xl flex items-center justify-between hover:border-emerald-100 hover:bg-emerald-50/30 transition-all cursor-pointer">
+                           <div key={i} className="group p-3 bg-gray-50/50 border border-gray-50 rounded-lg flex items-center justify-between hover:border-emerald-100 hover:bg-emerald-50/30 transition-all cursor-pointer">
                               <div className="flex items-center gap-3">
                                  <div className={`w-8 h-8 ${social.bg} ${social.color} rounded-lg flex items-center justify-center`}>
                                     <social.icon size={16} />
@@ -269,13 +269,13 @@ export default function VendorDashboard() {
                </div>
 
                {/* Business Location */}
-               <div className="bg-white rounded-xl border border-gray-100 p-6 overflow-hidden">
+               <div className="bg-white rounded-lg border border-gray-100 p-6 overflow-hidden">
                   <div className="flex items-center justify-between mb-6">
                      <h3 className="text-sm font-bold text-slate-800 uppercase tracking-tight">Business Location</h3>
                      <MapPin size={16} className="text-slate-400" />
                   </div>
 
-                  <div className="relative rounded-xl overflow-hidden h-32 mb-6 border border-gray-100">
+                  <div className="relative rounded-lg overflow-hidden h-32 mb-6 border border-gray-100">
                      <div className="absolute inset-0 bg-[#f8fafc] flex items-center justify-center">
                         <div className="relative">
                            <div className="w-12 h-12 bg-emerald-100 rounded-full animate-pulse flex items-center justify-center">

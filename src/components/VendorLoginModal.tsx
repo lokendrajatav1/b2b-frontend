@@ -74,7 +74,7 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
     setLoading(true);
     setError('');
     try {
-      const data = await apiFetch('/auth/verify-otp', {
+      const data = await apiFetch('/auth/verify-otp-login', {
         method: 'POST',
         body: JSON.stringify({ phone, otp }),
       });
@@ -95,7 +95,7 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
         initial={{ opacity: 0, scale: 0.95, y: 10 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 10 }}
-        className="max-w-4xl w-full bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row border border-gray-100 relative"
+        className="max-w-4xl w-full bg-white rounded-lg shadow-2xl overflow-hidden flex flex-col md:flex-row border border-gray-100 relative"
       >
         {/* Close Button */}
         <button 
@@ -114,7 +114,7 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
           </div>
 
           {/* Business Logo Placeholder */}
-          <div className="w-24 h-24 bg-[#f0f9f4] border border-[#e0f2e9] rounded-2xl flex items-center justify-center mb-8 overflow-hidden shadow-sm">
+          <div className="w-24 h-24 bg-[#f0f9f4] border border-[#e0f2e9] rounded-lg flex items-center justify-center mb-8 overflow-hidden shadow-sm">
             {vendor.logoUrl ? (
                 <img src={vendor.logoUrl} alt={vendor.businessName} className="w-full h-full object-cover" />
             ) : (
@@ -125,7 +125,7 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
           </div>
 
           <div className="space-y-4">
-            <p className="text-[#006d3c] font-bold text-xs uppercase tracking-wider">{vendor.category?.name || 'Business Service'}</p>
+            <p className="text-[#006d3c] font-semibold text-xs uppercase tracking-wider">{vendor.category?.name || 'Business Service'}</p>
             <h1 className="text-3xl font-extrabold text-[#1a2b3c] leading-tight">
               {vendor.businessName}
             </h1>
@@ -152,20 +152,20 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
               <div className="flex items-center gap-2">
                 <Star size={24} fill="#fbbf24" className="text-[#fbbf24]" />
                 <div>
-                  <div className="text-xl font-bold">4.5</div>
+                  <div className="text-xl font-semibold">4.5</div>
                   <div className="text-[10px] text-gray-500">(24 reviews)</div>
                 </div>
               </div>
               <div className="flex items-center gap-2">
                 <ShieldCheck size={24} className="text-[#006d3c]" />
                 <div>
-                  <div className="text-[10px] font-bold text-[#006d3c] uppercase tracking-tighter">Trustseal</div>
+                  <div className="text-[10px] font-semibold text-[#006d3c] uppercase tracking-tighter">Trustseal</div>
                   <div className="text-[10px] text-gray-500 font-medium">Verified Business</div>
                 </div>
               </div>
             </div>
 
-            <div className="bg-gray-50 p-3 rounded-xl border border-gray-100 flex items-center gap-3">
+            <div className="bg-gray-50 p-3 rounded-lg border border-gray-100 flex items-center gap-3">
               <div className="bg-white p-2 rounded-full shadow-sm">
                 <ShieldCheck size={20} className="text-gray-700" />
               </div>
@@ -179,7 +179,7 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
         {/* Right Side: Form */}
         <div className="w-full md:w-7/12 p-10 bg-white flex flex-col justify-center">
           <div className="mt-4">
-            <h2 className="text-[40px] font-bold text-[#111827] leading-[1.1] mb-2">
+            <h2 className="text-[40px] font-semibold text-[#111827] leading-[1.1] mb-2">
               Connect with this<br />Supplier
             </h2>
             <div className="w-12 h-1 bg-[#006d3c] mb-6 mt-4"></div>
@@ -189,7 +189,7 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
             </p>
 
             {error && (
-                <div className="mb-6 p-4 bg-red-50 text-red-600 text-sm font-bold border border-red-100 rounded-xl flex items-center gap-2 animate-shake">
+                <div className="mb-6 p-4 bg-red-50 text-red-600 text-sm font-semibold border border-red-100 rounded-lg flex items-center gap-2 animate-shake">
                     <X size={16} /> {error}
                 </div>
             )}
@@ -197,14 +197,14 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
             <form onSubmit={otpSent ? handleVerifyOTP : handleRequestOTP}>
                 {!otpSent ? (
                     <>
-                        <div className="flex items-stretch border-2 border-gray-200 rounded-xl overflow-hidden focus-within:border-[#006d3c] transition-all mb-8 bg-white shadow-sm">
+                        <div className="flex items-stretch border-2 border-gray-200 rounded-lg overflow-hidden focus-within:border-[#006d3c] transition-all mb-8 bg-white shadow-sm">
                             <div className="flex items-center gap-2 px-4 py-4 bg-gray-50 border-r border-gray-200 cursor-pointer">
                                 <img 
                                 src="https://flagcdn.com/w40/in.png" 
                                 alt="India Flag" 
                                 className="w-6 h-4 object-cover rounded-sm"
                                 />
-                                <span className="font-bold text-gray-700">+91</span>
+                                <span className="font-semibold text-gray-700">+91</span>
                                 <span className="text-gray-400 text-xs mt-1">▼</span>
                             </div>
                             <input 
@@ -217,7 +217,7 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
                                     if (val.length <= 10) setPhone(val);
                                 }}
                                 placeholder="Enter your mobile number" 
-                                className="w-full px-4 py-4 text-lg focus:outline-none placeholder:text-gray-300 font-bold"
+                                className="w-full px-4 py-4 text-lg focus:outline-none placeholder:text-gray-300 font-semibold"
                             />
                         </div>
 
@@ -226,7 +226,7 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
                                 <Zap size={20} className="text-[#22c55e]" fill="#22c55e" />
                             </div>
                             <div className="space-y-1">
-                                <p className="font-bold text-[#111827] text-sm">
+                                <p className="font-semibold text-[#111827] text-sm">
                                 Verified suppliers get your requirement instantly.
                                 </p>
                                 <p className="text-xs text-gray-400 leading-relaxed font-medium">
@@ -245,14 +245,14 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
                                 autoFocus
                                 value={otp}
                                 onChange={(e) => setOtp(e.target.value.replace(/[^0-9]/g, ''))}
-                                className="w-full px-6 py-5 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-[#006d3c] text-center text-4xl font-black text-slate-900 transition-all tracking-[0.5em] shadow-inner"
+                                className="w-full px-6 py-5 bg-gray-50 border-2 border-gray-200 rounded-lg outline-none focus:border-[#006d3c] text-center text-4xl font-black text-slate-900 transition-all tracking-[0.5em] shadow-inner"
                                 placeholder="••••••"
                             />
                         </div>
                         <button 
                             type="button" 
                             onClick={() => setOtpSent(false)} 
-                            className="mt-4 text-[#006d3c] text-sm font-bold hover:underline"
+                            className="mt-4 text-[#006d3c] text-sm font-semibold hover:underline"
                         >
                             Change Phone Number
                         </button>
@@ -262,7 +262,7 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
                 <button 
                     type="submit"
                     disabled={loading || (!otpSent && phone.length !== 10) || (otpSent && otp.length !== 6)}
-                    className="w-full bg-[#0d824d] hover:bg-[#0a6b3f] text-white py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-3 shadow-lg shadow-green-100 transition-all active:scale-[0.98] disabled:opacity-50"
+                    className="w-full bg-[#0d824d] hover:bg-[#0a6b3f] text-white py-4 rounded-lg font-semibold text-lg flex items-center justify-center gap-3 shadow-lg shadow-green-100 transition-all active:scale-[0.98] disabled:opacity-50"
                 >
                     {loading ? (
                         <Loader2 className="w-6 h-6 animate-spin" />
@@ -278,7 +278,7 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
 
             <p className="mt-8 text-center text-[11px] text-gray-500 font-medium">
               By logging in, you agree to our <br />
-              <a href="#" className="text-[#0d824d] font-bold underline">Terms of Service</a> and <a href="#" className="text-[#0d824d] font-bold underline">Privacy Policy.</a>
+              <a href="#" className="text-[#0d824d] font-semibold underline">Terms of Service</a> and <a href="#" className="text-[#0d824d] font-semibold underline">Privacy Policy.</a>
             </p>
           </div>
         </div>

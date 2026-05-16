@@ -53,7 +53,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(data.data);
     } catch (error) {
       console.error('Auth check failed:', error);
-      logout();
+      // Only logout if error is not token expired (which apiFetch handles)
+      if (error instanceof Error && error.message !== 'TOKEN_EXPIRED') {
+        logout();
+      }
     } finally {
       setLoading(false);
     }
@@ -81,7 +84,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
+    try {
+      await apiFetch('/auth/logout', { method: 'POST' });
+    } catch (err) {
+      console.error('Logout request failed:', err);
+    }
+
     localStorage.removeItem('token');
     setToken(null);
     setUser(null);

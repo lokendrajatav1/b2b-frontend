@@ -226,15 +226,15 @@ export default function SimpleVendorProfile() {
           <div className="h-8 w-64 bg-slate-200 rounded-lg"></div>
           <div className="h-4 w-96 bg-slate-100 rounded-lg"></div>
         </div>
-        <div className="h-10 w-32 bg-slate-200 rounded-xl"></div>
+        <div className="h-10 w-32 bg-slate-200 rounded-lg"></div>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <div className="h-[400px] bg-white border border-gray-100 rounded-xl"></div>
+          <div className="h-[400px] bg-white border border-gray-100 rounded-lg"></div>
         </div>
         <div className="space-y-6">
-          <div className="h-48 bg-white border border-gray-100 rounded-xl"></div>
-          <div className="h-64 bg-white border border-gray-100 rounded-xl"></div>
+          <div className="h-48 bg-white border border-gray-100 rounded-lg"></div>
+          <div className="h-64 bg-white border border-gray-100 rounded-lg"></div>
         </div>
       </div>
     </div>
@@ -243,7 +243,7 @@ export default function SimpleVendorProfile() {
   if (!user && !loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-center p-6">
-        <div className="w-16 h-16 bg-rose-50 text-rose-500 rounded-xl flex items-center justify-center mb-4">
+        <div className="w-16 h-16 bg-rose-50 text-rose-500 rounded-lg flex items-center justify-center mb-4">
            <AlertCircle size={32} />
         </div>
         <h2 className="text-xl font-bold text-slate-900">Authentication Required</h2>
@@ -264,7 +264,7 @@ export default function SimpleVendorProfile() {
         <button 
             onClick={handleUpdate}
             disabled={saving}
-            className="px-5 py-2.5 bg-[#164e33] text-white rounded-xl font-semibold text-sm flex items-center gap-2 hover:bg-[#113f29] transition-colors disabled:opacity-50 "
+            className="px-5 py-2.5 bg-[#164e33] text-white rounded-lg font-semibold text-sm flex items-center gap-2 hover:bg-[#113f29] transition-colors disabled:opacity-50 "
         >
             {saving ? <RefreshCcw className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
             Save Profile
@@ -277,7 +277,7 @@ export default function SimpleVendorProfile() {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className={`p-4 rounded-xl border text-sm font-semibold flex items-center gap-2 ${ message.type === 'success' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-red-50 text-red-700 border-red-100' }`}
+                className={`p-4 rounded-lg border text-sm font-semibold flex items-center gap-2 ${ message.type === 'success' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-red-50 text-red-700 border-red-100' }`}
             >
                 {message.type === 'success' ? <CheckCircle2 className="w-4 h-4" /> : <AlertCircle className="w-4 h-4" />}
                 {message.text}
@@ -288,7 +288,7 @@ export default function SimpleVendorProfile() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
         
         {/* Section 1: Identity - Spans 2 Columns */}
-        <section className="bg-white p-6 md:p-8 rounded-xl border border-gray-100 space-y-6  lg:col-span-2">
+        <section className="bg-white p-6 md:p-8 rounded-lg border border-gray-100 space-y-6  lg:col-span-2">
             <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2 border-b border-gray-50 pb-4">
                 <Building2 className="w-4 h-4 text-[#164e33]" /> Basic Information
             </h3>
@@ -296,7 +296,7 @@ export default function SimpleVendorProfile() {
             {/* Profile/Logo Upload Section */}
             <div className="flex flex-col md:flex-row items-center gap-6 pb-6 border-b border-gray-50">
                <div className="relative group">
-                  <div className="w-24 h-24 rounded-xl bg-gray-50 border-2 border-dashed border-gray-200 flex items-center justify-center overflow-hidden relative transition-all group-hover:border-blue-300">
+                  <div className="w-24 h-24 rounded-lg bg-gray-50 border-2 border-dashed border-gray-200 flex items-center justify-center overflow-hidden relative transition-all group-hover:border-blue-300">
                     {vendorData.logoUrl ? (
                       <img src={vendorData.logoUrl} alt="Business Logo" className="w-full h-full object-cover" />
                     ) : (
@@ -315,7 +315,7 @@ export default function SimpleVendorProfile() {
                   <button 
                     type="button"
                     onClick={() => logoInputRef.current?.click()}
-                    className="absolute -bottom-2 -right-2 bg-white  border border-gray-100 p-2 rounded-xl text-[#164e33] hover:bg-[#164e33]/5 transition-all hover:scale-110"
+                    className="absolute -bottom-2 -right-2 bg-white  border border-gray-100 p-2 rounded-lg text-[#164e33] hover:bg-[#164e33]/5 transition-all hover:scale-110"
                   >
                     <Upload className="w-4 h-4" />
                   </button>
@@ -342,7 +342,7 @@ export default function SimpleVendorProfile() {
                         type="text" 
                         value={vendorData.businessName}
                         onChange={(e) => setVendorData({...vendorData, businessName: e.target.value})}
-                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-sm transition-all"
+                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-sm transition-all"
                     />
                 </div>
                 <div className="md:col-span-2 space-y-2.5 relative" ref={dropdownRef}>
@@ -389,7 +389,7 @@ export default function SimpleVendorProfile() {
                                 setSearchTerm(e.target.value);
                                 setIsDropdownOpen(true);
                             }}
-                            className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-sm transition-all"
+                            className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-sm transition-all"
                         />
                         <button 
                            type="button"
@@ -406,7 +406,7 @@ export default function SimpleVendorProfile() {
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: 10 }}
-                                    className="absolute left-0 right-0 top-full mt-2 bg-white border border-gray-100 rounded-xl  z-50 max-h-60 overflow-y-auto p-2"
+                                    className="absolute left-0 right-0 top-full mt-2 bg-white border border-gray-100 rounded-lg  z-50 max-h-60 overflow-y-auto p-2"
                                 >
                                     {Array.isArray(categories) && categories
                                         .filter((c: any) => c.name?.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -424,7 +424,7 @@ export default function SimpleVendorProfile() {
                                                         setVendorData({...vendorData, categoryIds: next});
                                                         setSearchTerm('');
                                                     }}
-                                                    className={`w-full px-4 py-2.5 rounded-xl text-left text-sm font-semibold transition-all flex items-center justify-between group ${
+                                                    className={`w-full px-4 py-2.5 rounded-lg text-left text-sm font-semibold transition-all flex items-center justify-between group ${
                                                         isSelected 
                                                         ? 'bg-[#164e33]/5 text-slate-800' 
                                                         : 'hover:bg-gray-50 text-slate-800'
@@ -448,7 +448,7 @@ export default function SimpleVendorProfile() {
                         type="email" 
                         value={vendorData.email}
                         onChange={(e) => setVendorData({...vendorData, email: e.target.value})}
-                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-sm transition-all "
+                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-sm transition-all "
                     />
                 </div>
                 <div className="space-y-1.5">
@@ -459,7 +459,7 @@ export default function SimpleVendorProfile() {
                         type="tel" 
                         value={vendorData.phone}
                         onChange={(e) => setVendorData({...vendorData, phone: e.target.value})}
-                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-sm transition-all "
+                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-sm transition-all "
                     />
                 </div>
                 
@@ -471,7 +471,7 @@ export default function SimpleVendorProfile() {
                         type="text" 
                         value={vendorData.gstNumber}
                         onChange={(e) => setVendorData({...vendorData, gstNumber: e.target.value})}
-                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-sm transition-all "
+                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-sm transition-all "
                     />
                 </div>
                 
@@ -484,14 +484,14 @@ export default function SimpleVendorProfile() {
                         value={vendorData.aadhaarNumber}
                         onChange={(e) => setVendorData({...vendorData, aadhaarNumber: e.target.value})}
                         maxLength={12}
-                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-sm transition-all "
+                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-sm transition-all "
                     />
                 </div>
             </div>
         </section>
 
         {/* Section 2: Verification Documents - Spans 1 Column */}
-        <section className="bg-white p-6 md:p-8 rounded-xl border border-gray-100 space-y-6 ">
+        <section className="bg-white p-6 md:p-8 rounded-lg border border-gray-100 space-y-6 ">
             <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2 border-b border-gray-50 pb-4">
                 <Box className="w-4 h-4 text-[#164e33]" /> Verification Docs
             </h3>
@@ -502,7 +502,7 @@ export default function SimpleVendorProfile() {
                          <Upload className="w-3.5 h-3.5 text-[#164e33] opacity-60" /> JPG/PNG Proof
                     </label>
                     
-                    <div className="p-4 border border-dashed border-gray-200 rounded-xl bg-gray-50/50 hover:bg-gray-50 transition-colors">
+                    <div className="p-4 border border-dashed border-gray-200 rounded-lg bg-gray-50/50 hover:bg-gray-50 transition-colors">
                         <input 
                             type="file" 
                             ref={fileInputRef}
@@ -527,7 +527,7 @@ export default function SimpleVendorProfile() {
                                 </>
                             ) : (
                                 <div className="w-full space-y-3">
-                                    <div className="flex items-center justify-between p-2.5 bg-white border border-gray-100 rounded-xl">
+                                    <div className="flex items-center justify-between p-2.5 bg-white border border-gray-100 rounded-lg">
                                         <FileText className="w-3.5 h-3.5 text-[#164e33] shrink-0" />
                                         <p className="text-sm font-semibold text-slate-700 truncate ml-2">Verification_Proof</p>
                                         <button 
@@ -554,7 +554,7 @@ export default function SimpleVendorProfile() {
         </section>
 
         {/* Section 3: Connectivity - Full Width Below or Side? Spans 3 columns */}
-        <section className="bg-white p-6 md:p-8 rounded-xl border border-gray-100 space-y-6  lg:col-span-3">
+        <section className="bg-white p-6 md:p-8 rounded-lg border border-gray-100 space-y-6  lg:col-span-3">
             <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2 border-b border-gray-50 pb-4">
                 <Globe className="w-4 h-4 text-[#164e33]" /> Professional Presence & Description
             </h3>
@@ -571,7 +571,7 @@ export default function SimpleVendorProfile() {
                             ...vendorData, socialLinks: { ...vendorData.socialLinks, linkedin: e.target.value }
                         })}
                         placeholder="Profile URL"
-                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-sm transition-all"
+                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-sm transition-all"
                     />
                 </div>
                 <div className="space-y-1.5">
@@ -585,7 +585,7 @@ export default function SimpleVendorProfile() {
                             ...vendorData, socialLinks: { ...vendorData.socialLinks, instagram: e.target.value }
                         })}
                         placeholder="Profile URL"
-                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-sm transition-all"
+                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-sm transition-all"
                     />
                 </div>
                 <div className="space-y-1.5">
@@ -599,7 +599,7 @@ export default function SimpleVendorProfile() {
                             ...vendorData, socialLinks: { ...vendorData.socialLinks, facebook: e.target.value }
                         })}
                         placeholder="Page URL"
-                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-sm transition-all"
+                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-sm transition-all"
                     />
                 </div>
                 <div className="space-y-1.5">
@@ -611,7 +611,7 @@ export default function SimpleVendorProfile() {
                         value={vendorData.googleBusinessLink || ''}
                         onChange={(e) => setVendorData({ ...vendorData, googleBusinessLink: e.target.value })}
                         placeholder="Map Link"
-                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-sm transition-all "
+                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-sm transition-all "
                     />
                 </div>
             </div>
@@ -627,7 +627,7 @@ export default function SimpleVendorProfile() {
                                 type="text" 
                                 value={vendorData.city}
                                 onChange={(e) => setVendorData({...vendorData, city: e.target.value})}
-                                className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-sm transition-all"
+                                className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-sm transition-all"
                             />
                         </div>
                         <div className="space-y-1.5">
@@ -639,7 +639,7 @@ export default function SimpleVendorProfile() {
                                 value={vendorData.workingHours}
                                 onChange={(e) => setVendorData({...vendorData, workingHours: e.target.value})}
                                 placeholder="e.g. 9:00 AM - 6:00 PM"
-                                className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-sm transition-all"
+                                className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-sm transition-all"
                             />
                         </div>
                     </div>
@@ -652,7 +652,7 @@ export default function SimpleVendorProfile() {
                             onChange={(e) => setVendorData({...vendorData, address: e.target.value})}
                             rows={3}
                             placeholder="Enter your full business/office address..."
-                            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-sm transition-all resize-none "
+                            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-sm transition-all resize-none "
                         />
                     </div>
                 </div>
@@ -664,7 +664,7 @@ export default function SimpleVendorProfile() {
                             onChange={(e) => setVendorData({...vendorData, description: e.target.value})}
                             rows={6}
                             placeholder="Tell buyers about your marketplace expertise..."
-                            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-sm transition-all resize-none "
+                            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:border-blue-500 outline-none font-medium text-slate-900 text-sm transition-all resize-none "
                         />
                     </div>
                 </div>
@@ -685,7 +685,7 @@ export default function SimpleVendorProfile() {
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="relative w-full max-w-4xl max-h-[90vh] bg-white rounded-xl  overflow-hidden flex flex-col"
+              className="relative w-full max-w-4xl max-h-[90vh] bg-white rounded-lg  overflow-hidden flex flex-col"
               onClick={e => e.stopPropagation()}
             >
               <div className="flex items-center justify-between p-4 border-b border-gray-100">

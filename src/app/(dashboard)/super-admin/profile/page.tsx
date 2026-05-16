@@ -128,7 +128,7 @@ export default function SuperAdminProfile() {
            </div>
            <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-3">
              Super Admin Credentials
-             <div className="p-1.5 bg-[#164e33]/5 text-[#164e33] rounded-xl border border-[#164e33]/10">
+             <div className="p-1.5 bg-[#164e33]/5 text-[#164e33] rounded-lg border border-[#164e33]/10">
                 <Shield className="w-5 h-5" />
              </div>
            </h1>
@@ -139,12 +139,12 @@ export default function SuperAdminProfile() {
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 px-4 lg:px-0">
          {/* Sidebar / Stats */}
          <div className="lg:col-span-4 space-y-8">
-            <div className="bg-white rounded-xl border border-gray-100 p-10 text-center relative overflow-hidden group shadow-sm">
+            <div className="bg-white rounded-lg border border-gray-100 p-10 text-center relative overflow-hidden group shadow-sm">
                <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-br from-[#164e33] to-[#113f29] opacity-5 group-hover:opacity-10 transition-opacity" />
                
                <div className="relative mb-8 flex justify-center">
                   <div className="relative w-32 h-32">
-                    <div className="w-full h-full bg-white rounded-xl border-4 border-gray-50 flex items-center justify-center text-4xl font-bold text-[#164e33] overflow-hidden group/img shadow-inner">
+                    <div className="w-full h-full bg-white rounded-lg border-4 border-gray-50 flex items-center justify-center text-4xl font-bold text-[#164e33] overflow-hidden group/img shadow-inner">
                        {user?.avatar ? (
                          <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
                        ) : (
@@ -158,7 +158,7 @@ export default function SuperAdminProfile() {
                          {uploading ? <Loader2 className="w-6 h-6 animate-spin" /> : <Camera className="w-6 h-6" />}
                        </div>
                     </div>
-                    <div className="absolute bottom-0 right-0 p-2 bg-[#f58220] text-white rounded-xl border-2 border-white translate-x-2 translate-y-2 shadow-lg">
+                    <div className="absolute bottom-0 right-0 p-2 bg-[#f58220] text-white rounded-lg border-2 border-white translate-x-2 translate-y-2 shadow-lg">
                        <Shield className="w-3.5 h-3.5" />
                     </div>
                   </div>
@@ -169,13 +169,13 @@ export default function SuperAdminProfile() {
                <p className="text-sm font-bold text-[#f58220] uppercase mt-2">Level 10: {user?.role}</p>
                
                <div className="mt-10 pt-8 border-t border-gray-50 space-y-4 text-left">
-                  <div className="p-4 bg-gray-50 rounded-xl border border-gray-100 group/item hover:bg-white hover:border-[#164e33]/20 transition-all">
+                  <div className="p-4 bg-gray-50 rounded-lg border border-gray-100 group/item hover:bg-white hover:border-[#164e33]/20 transition-all">
                      <p className="text-sm font-bold text-black uppercase mb-1.5 flex items-center gap-1.5">
                         <Building2 className="w-3 h-3 text-[#164e33]" /> Global Department
                      </p>
                      <p className="text-sm font-bold text-slate-900">{formData.department}</p>
                   </div>
-                  <div className="p-4 bg-gray-50 rounded-xl border border-gray-100 group/item hover:bg-white hover:border-[#164e33]/20 transition-all">
+                  <div className="p-4 bg-gray-50 rounded-lg border border-gray-100 group/item hover:bg-white hover:border-[#164e33]/20 transition-all">
                      <p className="text-sm font-bold text-black uppercase mb-1.5 flex items-center gap-1.5">
                         <MapPin className="w-3 h-3 text-[#164e33]" /> Authority Hub
                      </p>
@@ -184,8 +184,8 @@ export default function SuperAdminProfile() {
                </div>
             </div>
 
-            <div className="bg-white rounded-xl p-10 border border-gray-100 space-y-6 shadow-sm">
-               <div className="w-12 h-12 bg-[#164e33]/5 rounded-xl flex items-center justify-center">
+            <div className="bg-white rounded-lg p-10 border border-gray-100 space-y-6 shadow-sm">
+               <div className="w-12 h-12 bg-[#164e33]/5 rounded-lg flex items-center justify-center">
                   <Key className="w-6 h-6 text-[#164e33]" />
                </div>
                <div>
@@ -206,10 +206,10 @@ export default function SuperAdminProfile() {
          </div>
 
          {/* Main Form */}
-         <div className="lg:col-span-8 bg-white rounded-xl border border-gray-100 p-10 relative shadow-sm">
+         <div className="lg:col-span-8 bg-white rounded-lg border border-gray-100 p-10 relative shadow-sm">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-10 pb-6 border-b border-gray-50 gap-4">
                <h3 className="text-lg font-bold text-slate-900 uppercase">Identity Profile</h3>
-               <div className="flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-600 rounded-xl border border-emerald-100 text-sm font-bold uppercase w-fit">
+               <div className="flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-600 rounded-lg border border-emerald-100 text-sm font-bold uppercase w-fit">
                   <Shield className="w-3.5 h-3.5" /> Root Access Active
                </div>
             </div>
@@ -221,7 +221,7 @@ export default function SuperAdminProfile() {
                       initial={{ opacity: 0, scale: 0.95 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.95 }}
-                      className={`p-5 rounded-xl border flex items-center gap-4 text-sm font-bold ${message.type === 'success' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-red-50 text-red-700 border-red-100'}`}
+                      className={`p-5 rounded-lg border flex items-center gap-4 text-sm font-bold ${message.type === 'success' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-red-50 text-red-700 border-red-100'}`}
                     >
                       {message.type === 'success' ? <CheckCircle2 className="w-6 h-6" /> : <AlertCircle className="w-6 h-6" />}
                       {message.text}
@@ -238,7 +238,7 @@ export default function SuperAdminProfile() {
                            type="text" 
                            value={formData.name}
                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                           className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-transparent rounded-xl text-sm font-bold focus:bg-white focus:border-[#164e33]/20 transition-all outline-none placeholder:text-gray-500"
+                           className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-transparent rounded-lg text-sm font-bold focus:bg-white focus:border-[#164e33]/20 transition-all outline-none placeholder:text-gray-500"
                            placeholder="Enter full name"
                         />
                      </div>
@@ -252,7 +252,7 @@ export default function SuperAdminProfile() {
                            type="email" 
                            value={formData.email}
                            disabled
-                           className="w-full pl-12 pr-5 py-4 bg-gray-50/50 border border-transparent rounded-xl text-sm font-bold text-gray-500 cursor-not-allowed outline-none"
+                           className="w-full pl-12 pr-5 py-4 bg-gray-50/50 border border-transparent rounded-lg text-sm font-bold text-gray-500 cursor-not-allowed outline-none"
                         />
                      </div>
                   </div>
@@ -265,7 +265,7 @@ export default function SuperAdminProfile() {
                            type="tel" 
                            value={formData.phone}
                            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                           className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-transparent rounded-xl text-sm font-bold focus:bg-white focus:border-[#164e33]/20 transition-all outline-none placeholder:text-gray-500"
+                           className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-transparent rounded-lg text-sm font-bold focus:bg-white focus:border-[#164e33]/20 transition-all outline-none placeholder:text-gray-500"
                            placeholder="+91 00000 00000"
                         />
                      </div>
@@ -279,7 +279,7 @@ export default function SuperAdminProfile() {
                            type="text" 
                            value={formData.hubName}
                            onChange={(e) => setFormData({ ...formData, hubName: e.target.value })}
-                           className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-transparent rounded-xl text-sm font-bold focus:bg-white focus:border-[#164e33]/20 transition-all outline-none placeholder:text-gray-500"
+                           className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-transparent rounded-lg text-sm font-bold focus:bg-white focus:border-[#164e33]/20 transition-all outline-none placeholder:text-gray-500"
                            placeholder="Global Authority Hub"
                         />
                      </div>
@@ -293,7 +293,7 @@ export default function SuperAdminProfile() {
                            type="text" 
                            value={formData.department}
                            onChange={(e) => setFormData({ ...formData, department: e.target.value })}
-                           className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-transparent rounded-xl text-sm font-bold focus:bg-white focus:border-[#164e33]/20 transition-all outline-none placeholder:text-gray-500"
+                           className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-transparent rounded-lg text-sm font-bold focus:bg-white focus:border-[#164e33]/20 transition-all outline-none placeholder:text-gray-500"
                            placeholder="e.g. Executive Governance"
                         />
                      </div>
@@ -307,7 +307,7 @@ export default function SuperAdminProfile() {
                            type={showPassword ? "text" : "password"}
                            value={formData.password}
                            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                           className="w-full pl-12 pr-12 py-4 bg-gray-50 border border-gray-100 rounded-xl text-sm font-bold focus:bg-white focus:border-[#164e33]/30 transition-all outline-none"
+                           className="w-full pl-12 pr-12 py-4 bg-gray-50 border border-gray-100 rounded-lg text-sm font-bold focus:bg-white focus:border-[#164e33]/30 transition-all outline-none"
                            autoComplete="new-password"
                         />
                         <button 
@@ -325,7 +325,7 @@ export default function SuperAdminProfile() {
                   <button 
                     type="submit"
                     disabled={saving}
-                    className="w-full sm:w-auto px-12 py-4.5 bg-[#164e33] hover:bg-[#113f29] text-white rounded-xl font-bold flex items-center justify-center gap-3 transition-all active:scale-95 disabled:opacity-50 shadow-md shadow-[#164e33]/10"
+                    className="w-full sm:w-auto px-12 py-4.5 bg-[#164e33] hover:bg-[#113f29] text-white rounded-lg font-bold flex items-center justify-center gap-3 transition-all active:scale-95 disabled:opacity-50 shadow-md shadow-[#164e33]/10"
                   >
                      {saving ? <RefreshCcw className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
                      {saving ? 'Synchronizing Data...' : 'Commit Global Changes'}

@@ -470,7 +470,7 @@ export default function SuppliersPage() {
       if (selectedCategory) params.append("categoryId", selectedCategory);
       if (verifiedOnly) params.append("verified", "true");
       params.append("page", page);
-      params.append("limit", "10");
+      params.append("limit", "100");
 
       const data = await apiFetch(`/vendor?${params.toString()}`);
       setVendors(data.data?.vendors || []);
@@ -836,37 +836,7 @@ export default function SuppliersPage() {
           </div>
         )}
 
-        {/* Pagination */}
-        {!loading && totalPages > 1 && (
-          <div className="flex items-center justify-center gap-2 mt-10">
-            <button
-              disabled={currentPage === 1}
-              onClick={() => fetchVendors(currentPage - 1)}
-              className="px-4 py-2 rounded-lg border border-gray-200 text-base font-semibold disabled:opacity-40 hover:border-[#164e33] hover:text-[#164e33] transition-colors"
-            >
-              Previous
-            </button>
-            {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-              let page = totalPages <= 5 ? i + 1 : currentPage <= 3 ? i + 1 : currentPage >= totalPages - 2 ? totalPages - 4 + i : currentPage - 2 + i;
-              return (
-                <button
-                  key={page}
-                  onClick={() => fetchVendors(page)}
-                  className={`w-10 h-10 rounded-lg text-base font-semibold transition-colors ${currentPage === page ? "bg-[#164e33] text-white shadow-md" : "border border-gray-200 text-slate-800 hover:border-[#164e33] hover:text-[#164e33]"}`}
-                >
-                  {page}
-                </button>
-              );
-            })}
-            <button
-              disabled={currentPage === totalPages}
-              onClick={() => fetchVendors(currentPage + 1)}
-              className="px-4 py-2 rounded-lg border border-gray-200 text-base font-semibold disabled:opacity-40 hover:border-[#164e33] hover:text-[#164e33] transition-colors"
-            >
-              Next
-            </button>
-          </div>
-        )}
+
       </div>
     </div>
   );

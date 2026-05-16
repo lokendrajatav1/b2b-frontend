@@ -1,15 +1,49 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import { 
-  Settings, Cpu, Box, HardHat, Stethoscope, Pill, Monitor, Package, 
-  FlaskConical, Layers, Sparkles, Wrench, Laptop, Diamond, Home, Leaf, 
-  Gamepad2, Truck, Briefcase, Plane, BookOpen, PenTool, Users, Ship, 
-  Brush, CircuitBoard, Sprout, Utensils, Shirt, Printer, Zap, LayoutGrid,
-  Search, CheckCircle2, Award, Handshake, Headphones, ArrowRight, Activity
-} from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { apiFetch } from '@/lib/api';
+import React, { useState, useEffect } from "react";
+import {
+  Settings,
+  Cpu,
+  Box,
+  HardHat,
+  Stethoscope,
+  Pill,
+  Monitor,
+  Package,
+  FlaskConical,
+  Layers,
+  Sparkles,
+  Wrench,
+  Laptop,
+  Diamond,
+  Home,
+  Leaf,
+  Gamepad2,
+  Truck,
+  Briefcase,
+  Plane,
+  BookOpen,
+  PenTool,
+  Users,
+  Ship,
+  Brush,
+  CircuitBoard,
+  Sprout,
+  Utensils,
+  Shirt,
+  Printer,
+  Zap,
+  LayoutGrid,
+  Search,
+  CheckCircle2,
+  Award,
+  Handshake,
+  Headphones,
+  ArrowRight,
+  Activity,
+} from "lucide-react";
+import { useRouter } from "next/navigation";
+import { apiFetch } from "@/lib/api";
 
 const defaultIcons = [
   { icon: Settings, color: "text-green-600", bg: "bg-green-50" },
@@ -48,12 +82,11 @@ const defaultIcons = [
 const ServiceGrid = () => {
   const router = useRouter();
   const [categories, setCategories] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await apiFetch('/categories');
+        const response = await apiFetch("/categories");
         if (response.success && response.data) {
           setCategories(response.data);
         }
@@ -64,13 +97,6 @@ const ServiceGrid = () => {
     fetchCategories();
   }, []);
 
-  const handleSearch = (e) => {
-    if (e.key === 'Enter' || e.type === 'click') {
-      if (searchQuery.trim()) {
-        router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
-      }
-    }
-  };
 
   const handleCategoryClick = (categoryName) => {
     router.push(`/search?q=${encodeURIComponent(categoryName)}`);
@@ -82,29 +108,15 @@ const ServiceGrid = () => {
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-12 gap-8">
         <div className="flex-1 max-w-3xl">
           <h1 className="text-3xl sm:text-4xl lg:text-4xl font-bold text-slate-800 leading-tight">
-            Explore Our <span className="text-3xl sm:text-4xl lg:text-4xl font-bold text-[#134e4a]">Marketplace</span>
+            Explore Our{" "}
+            <span className="text-3xl sm:text-4xl lg:text-4xl font-bold text-[#134e4a]">
+              Marketplace
+            </span>
           </h1>
           <p className="text-gray-500 mt-4 text-lg sm:text-xl font-medium leading-relaxed">
-            Discover products and connect with verified vendors across diverse industries.
+            Discover products and connect with verified vendors across diverse
+            industries.
           </p>
-        </div>
-        
-        {/* Right Aligned Search Bar */}
-        <div className="relative w-full lg:w-[500px]">
-          <input 
-            type="text" 
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyDown={handleSearch}
-            placeholder="Search industries, products..." 
-            className="w-full pl-5 pr-14 py-4 md:py-5 bg-gray-50 border border-gray-100 rounded-xl focus:outline-none focus:ring-4 focus:ring-emerald-500/5 focus:border-emerald-500/30 text-base shadow-sm transition-all font-medium"
-          />
-          <div 
-            className="absolute right-5 top-1/2 -translate-y-1/2 text-emerald-800 cursor-pointer hover:scale-110 transition-transform p-1"
-            onClick={handleSearch}
-          >
-            <Search className="w-6 h-6 md:w-7 h-7" />
-          </div>
         </div>
       </div>
 
@@ -114,34 +126,47 @@ const ServiceGrid = () => {
           const style = defaultIcons[index % defaultIcons.length];
           const IconComponent = style.icon;
           return (
-            <div 
-              key={cat.id} 
+            <div
+              key={cat.id}
               onClick={() => handleCategoryClick(cat.name)}
-              className="group border border-gray-100 rounded-xl p-5 flex flex-col items-center justify-center text-center hover:shadow-xl hover:border-emerald-100 transition-all duration-300 cursor-pointer bg-white min-h-[160px]"
+              className="group border border-gray-100 rounded-lg p-5 flex flex-col items-center justify-center text-center hover:shadow-xl hover:border-emerald-100 transition-all duration-300 cursor-pointer bg-white min-h-[160px]"
             >
               {/* Bigger Icons */}
-              <div className={`p-4 rounded-xl ${style.bg} mb-4 group-hover:scale-110 transition-transform duration-300 shadow-sm`}>
-                <IconComponent className={`w-8 h-8 ${style.color}`} strokeWidth={1.8} />
+              <div
+                className={`p-4 rounded-lg ${style.bg} mb-4 group-hover:scale-110 transition-transform duration-300 shadow-sm`}
+              >
+                <IconComponent
+                  className={`w-8 h-8 ${style.color}`}
+                  strokeWidth={1.8}
+                />
               </div>
-              <h3 className="text-[14px] font-bold text-slate-800 leading-snug mb-1.5 group-hover:text-emerald-900">{cat.name}</h3>
-              <p className="text-[12px] text-gray-400 font-medium">{cat._count?.vendors || 0} Vendors</p>
+              <h3 className="text-[14px] font-bold text-slate-800 leading-snug mb-1.5 group-hover:text-emerald-900">
+                {cat.name}
+              </h3>
+              <p className="text-[12px] text-gray-400 font-medium">
+                {cat._count?.vendors || 0} Vendors
+              </p>
             </div>
           );
         })}
-        
+
         {/* Special 'View All' Card */}
-        <div 
-          onClick={() => router.push('/search')}
-          className="bg-[#134e4a] rounded-xl p-5 flex flex-col items-start justify-center cursor-pointer hover:bg-[#0d3633] transition-all duration-300 relative overflow-hidden group shadow-lg min-h-[160px]"
+        <div
+          onClick={() => router.push("/search")}
+          className="bg-[#134e4a] rounded-lg p-5 flex flex-col items-start justify-center cursor-pointer hover:bg-[#0d3633] transition-all duration-300 relative overflow-hidden group shadow-lg min-h-[160px]"
         >
           <LayoutGrid className="text-white/90 w-8 h-8 mb-3" />
-          <h3 className="text-base font-bold text-white mb-1">View All Categories</h3>
-          <p className="text-[12px] text-white/70">{categories.length > 0 ? `${categories.length}+ Categories` : 'Explore All'}</p>
+          <h3 className="text-base font-bold text-white mb-1">
+            View All Categories
+          </h3>
+          <p className="text-[12px] text-white/70">
+            {categories.length > 0
+              ? `${categories.length}+ Categories`
+              : "Explore All"}
+          </p>
           <ArrowRight className="absolute right-4 bottom-4 text-white w-6 h-6 opacity-0 group-hover:opacity-100 translate-x-[-10px] group-hover:translate-x-0 transition-all duration-300" />
         </div>
       </div>
-
-    
     </div>
   );
 };

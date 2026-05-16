@@ -40,7 +40,7 @@ export default function TermsOfService() {
           
           {/* Left Side: Creative Visual Element */}
           <div className="hidden lg:block lg:col-span-4 sticky top-24 h-fit">
-            <div className="relative p-8 bg-white border border-slate-100 rounded-3xl shadow-sm overflow-hidden">
+            <div className="relative p-8 bg-white border border-slate-100 rounded-lg shadow-sm overflow-hidden">
               <div className="absolute -right-8 -top-8 w-32 h-32 bg-emerald-50 rounded-full blur-3xl" />
               <h3 className="text-sm font-bold text-emerald-600 uppercase mb-6 ">Navigation</h3>
               <nav className="space-y-6">

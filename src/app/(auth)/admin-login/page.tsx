@@ -45,7 +45,7 @@ export default function AdminLoginPage() {
         throw new Error('Access denied. This portal is for administrative personnel only.');
       }
       
-      login(data.data.token, data.data.user);
+      login(data.data.token, data.data.user, false);
     } catch (err: any) {
       setError(err.message || 'Invalid administrative credentials');
     } finally {
@@ -75,7 +75,7 @@ export default function AdminLoginPage() {
         <div className="bg-white rounded-[2.5rem] shadow-2xl p-8 sm:p-10 border border-white/10">
             <div className="space-y-6">
                {error && (
-                  <motion.div initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} className="p-4 bg-red-50 text-red-600 text-base font-semibold border border-red-100 rounded-xl flex items-center gap-2">
+                  <motion.div initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} className="p-4 bg-red-50 text-red-600 text-base font-semibold border border-red-100 rounded-lg flex items-center gap-2">
                      <AlertCircle className="w-4 h-4 shrink-0" />
                      {error}
                   </motion.div>
@@ -91,7 +91,7 @@ export default function AdminLoginPage() {
                                 required
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="w-full pl-11 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-[#164e33] focus:bg-white text-base font-medium text-slate-800 transition-all"
+                                className="w-full pl-11 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-lg outline-none focus:border-[#164e33] focus:bg-white text-base font-medium text-slate-800 transition-all"
                                 placeholder="admin@indiab2b.com"
                              />
                           </div>
@@ -108,7 +108,7 @@ export default function AdminLoginPage() {
                                 required
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="w-full pl-11 pr-11 py-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-[#164e33] focus:bg-white text-base font-medium text-slate-800 transition-all"
+                                className="w-full pl-11 pr-11 py-4 bg-gray-50 border border-gray-100 rounded-lg outline-none focus:border-[#164e33] focus:bg-white text-base font-medium text-slate-800 transition-all"
                                 placeholder="••••••••"
                              />
                              <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-300 hover:text-slate-800 p-1">
@@ -117,7 +117,7 @@ export default function AdminLoginPage() {
                           </div>
                        </div>
 
-                       <button type="submit" disabled={loading} className="w-full py-4 bg-gray-900 text-white rounded-xl font-semibold text-base hover:bg-black transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2 shadow-xl shadow-gray-200">
+                       <button type="submit" disabled={loading} className="w-full py-4 bg-gray-900 text-white rounded-lg font-semibold text-base hover:bg-black transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2 shadow-xl shadow-gray-200">
                           {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Authenticate as Administrator'}
                           {!loading && <ShieldAlert className="w-4 h-4" />}
                        </button>

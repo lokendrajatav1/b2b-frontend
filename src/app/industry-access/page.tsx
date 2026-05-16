@@ -47,8 +47,8 @@ export default function IndustryAccess() {
                  { title: 'Global Protocol', desc: 'Full API access, cross-border trade tools, and dedicated account management.', icon: Globe },
                  { title: 'Real-time Streams', desc: 'Direct market demand synchronization and automated lead funneling.', icon: Zap }
                ].map((item, i) => (
-                 <div key={i} className="p-8 bg-slate-50 rounded-3xl border border-slate-100 hover:border-emerald-200 transition-all group">
-                    <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-emerald-600 shadow-sm mb-6 group-hover:scale-110 transition-transform">
+                 <div key={i} className="p-8 bg-slate-50 rounded-lg border border-slate-100 hover:border-emerald-200 transition-all group">
+                    <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center text-emerald-600 shadow-sm mb-6 group-hover:scale-110 transition-transform">
                        <item.icon size={24} />
                     </div>
                     <h3 className="text-xl font-bold text-slate-900 mb-3 uppercase tracking-tight">{item.title}</h3>
@@ -85,7 +85,7 @@ export default function IndustryAccess() {
       </label>
       <input 
         type="email" 
-        className="w-full bg-emerald-900/40 border border-emerald-800 rounded-2xl px-5 py-4 text-sm text-white placeholder:text-emerald-700 outline-none focus:border-emerald-400 focus:bg-emerald-900/60 transition-all" 
+        className="w-full bg-emerald-900/40 border border-emerald-800 rounded-lg px-5 py-4 text-sm text-white placeholder:text-emerald-700 outline-none focus:border-emerald-400 focus:bg-emerald-900/60 transition-all" 
         placeholder="name@company.com" 
       />
     </div>
@@ -96,7 +96,7 @@ export default function IndustryAccess() {
         Target Industry Sector
       </label>
       <div className="relative">
-        <select className="w-full bg-emerald-900/40 border border-emerald-800 rounded-2xl px-5 py-4 text-sm text-white outline-none focus:border-emerald-400 focus:bg-emerald-900/60 transition-all appearance-none cursor-pointer">
+        <select className="w-full bg-emerald-900/40 border border-emerald-800 rounded-lg px-5 py-4 text-sm text-white outline-none focus:border-emerald-400 focus:bg-emerald-900/60 transition-all appearance-none cursor-pointer">
           <option className="bg-emerald-950 text-white">Manufacturing</option>
           <option className="bg-emerald-950 text-white">Retail & Distribution</option>
           <option className="bg-emerald-950 text-white">Service Infrastructure</option>
@@ -111,7 +111,7 @@ export default function IndustryAccess() {
     </div>
 
     {/* Submit Button */}
-    <button className="w-full py-5 bg-emerald-500 hover:bg-emerald-400 text-emerald-950 font-bold rounded-2xl uppercase text-sm transition-all shadow-lg shadow-emerald-950/50 active:scale-[0.98] mt-4">
+    <button className="w-full py-5 bg-emerald-500 hover:bg-emerald-400 text-emerald-950 font-bold rounded-lg uppercase text-sm transition-all shadow-lg shadow-emerald-950/50 active:scale-[0.98] mt-4">
       Request Verification
     </button>
 

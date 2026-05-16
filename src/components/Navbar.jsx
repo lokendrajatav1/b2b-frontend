@@ -1,181 +1,808 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import {
   Search,
-  ChevronDown,
   Menu,
   X,
-  LayoutDashboard,
-  LogOut,
   MapPin,
+  LocateFixed,
+  User,
+  LogOut,
+  ShoppingBag,
+  ChevronDown,
   Building2,
-  UserCircle2
+  Bell
 } from "lucide-react";
-import Link from "next/link";
-import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import { useRouter, useParams, useSearchParams } from "next/navigation";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  setSearchQuery as setReduxQuery,
+  setCity as setReduxCity,
+  setCategory as setReduxCategory,
+} from "@/redux/slices/filterSlice";
 import { useAuth } from "@/context/AuthContext";
+import { apiFetch } from "@/lib/api";
+import { slugify, generateDiscoveryUrl } from "@/lib/utils";
+import BuyerLogin from "./BuyerLogin";
+import VendorLogin from "./VendorLogin";
 
 const Navbar = () => {
-  const pathname = usePathname();
-  const isDashboard = pathname.includes('/dashboard') || pathname.includes('/vendor/') || pathname.includes('/admin/') || pathname.includes('/super-admin/');
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [cityQuery, setCityQuery] = useState("");
-  const [isCityDropdownOpen, setIsCityDropdownOpen] = useState(false);
-  const { user, logout } = useAuth();
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const popularCities = ['Indore', 'Bhopal', 'Vadodara', 'Bengaluru', 'Delhi', 'Chennai', 'Pune', 'Ahmedabad', 'Coimbatore', 'Hyderabad', 'Mumbai'];
+  const { user, logout } = useAuth();
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [location, setLocation] = useState("India");
+  const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
+  const [isSearchDropdownOpen, setIsSearchDropdownOpen] = useState(false);
+  const [isDetecting, setIsDetecting] = useState(false);
+  const [dynamicLocations, setDynamicLocations] = useState([]);
+  const [isSearchingLocations, setIsSearchingLocations] = useState(false);
+  const [recentLocations, setRecentLocations] = useState([]);
+  const [popularCategories, setPopularCategories] = useState([]);
+  const [allCategories, setAllCategories] = useState([]);
+  const [trendingSearches, setTrendingSearches] = useState([]);
+  const [trendingLocations, setTrendingLocations] = useState([]);
+  const [isBuyerDrawerOpen, setIsBuyerDrawerOpen] = useState(false);
+  const [isVendorDrawerOpen, setIsVendorDrawerOpen] = useState(false);
+
+  const dispatch = useDispatch();
+  const {
+    query: reduxQuery,
+    city: reduxCity,
+    category: reduxCategory,
+  } = useSelector((state) => state.filter);
 
   useEffect(() => {
-    const q = searchParams.get('q') || "";
-    const city = searchParams.get('city') || "";
-    setSearchQuery(q);
-    setCityQuery(city);
-  }, [searchParams]);
-
-  useEffect(() => {
-    if (searchParams.get('city')) return;
-    const fetchUserCity = async () => {
+    const fetchDiscoveryData = async () => {
       try {
-        const response = await fetch('https://ipapi.co/json/');
-        const data = await response.json();
-        if (data && data.city) setCityQuery(data.city);
-      } catch (error) {
-        console.warn("Could not automatically determine user city");
+        const [catRes, trendRes] = await Promise.allSettled([
+          apiFetch("/categories"),
+          apiFetch("/trending"),
+        ]);
+
+        if (catRes.status === "fulfilled" && catRes.value.success) {
+          const categories = catRes.value.data;
+          setAllCategories(categories);
+          setPopularCategories(categories.slice(0, 20)); // Show more in "Popular" if needed, or just use allCategories
+
+          // Use surplus categories as trending searches if analytics API missing
+          if (!trendingSearches.length) {
+            setTrendingSearches(categories.slice(20, 25).map((c) => c.name));
+          }
+        }
+
+        if (trendRes.status === "fulfilled" && trendRes.value.success) {
+          if (trendRes.value.data.searches)
+            setTrendingSearches(trendRes.value.data.searches);
+          if (trendRes.value.data.locations)
+            setTrendingLocations(trendRes.value.data.locations);
+        } else {
+          setTrendingLocations([
+            "Mumbai",
+            "Indore",
+            "Delhi",
+            "Thane",
+            "Ahmedabad",
+          ]);
+        }
+      } catch (err) {
+        console.error("Discovery data sync failed:", err);
       }
     };
-    fetchUserCity();
-  }, [searchParams]);
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    const params = new URLSearchParams();
-    if (searchQuery.trim()) params.append('q', searchQuery.trim());
-    if (cityQuery.trim()) params.append('city', cityQuery.trim());
-    router.push(params.toString() ? `/search?${params.toString()}` : '/search');
+    fetchDiscoveryData();
+  }, []);
+
+  // Load recent locations from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem("recentLocations");
+    if (saved) setRecentLocations(JSON.parse(saved));
+  }, []);
+
+  const saveRecentLocation = (loc) => {
+    const updated = [loc, ...recentLocations.filter((r) => r !== loc)].slice(
+      0,
+      5,
+    );
+    setRecentLocations(updated);
+    localStorage.setItem("recentLocations", JSON.stringify(updated));
   };
 
-  const handleCitySelect = (city) => {
-    setCityQuery(city);
-    setIsCityDropdownOpen(false);
+  const clearRecentLocations = () => {
+    setRecentLocations([]);
+    localStorage.removeItem("recentLocations");
+  };
+
+  // Dynamic location search as user types
+  useEffect(() => {
+    if (location.length < 3 || isDetecting) {
+      setDynamicLocations([]);
+      return;
+    }
+
+    const fetchLocations = async () => {
+      setIsSearchingLocations(true);
+      try {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(location)}&countrycodes=in&limit=8&accept-language=en&addressdetails=1`,
+        );
+        const data = await response.json();
+
+        const formatted = data.map((item) => {
+          const addr = item.address;
+          const area =
+            addr.suburb ||
+            addr.neighbourhood ||
+            addr.residential ||
+            addr.industrial ||
+            addr.road ||
+            "";
+          const city =
+            addr.city || addr.town || addr.village || addr.city_district || "";
+
+          if (area && city) return `${area}, ${city}`;
+          if (city) return city;
+          return item.display_name.split(",").slice(0, 2).join(", ");
+        });
+
+        // Filter out duplicates and empty strings
+        const uniqueFormatted = [...new Set(formatted)].filter(Boolean);
+        setDynamicLocations(uniqueFormatted);
+      } catch (error) {
+        console.error("Error searching locations:", error);
+      } finally {
+        setIsSearchingLocations(false);
+      }
+    };
+
+    const timeoutId = setTimeout(fetchLocations, 500);
+    return () => clearTimeout(timeoutId);
+  }, [location, isDetecting]);
+
+  const handleDetectLocation = () => {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser");
+      return;
+    }
+
+    setIsDetecting(true);
+    setLocation("Detecting...");
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const { latitude, longitude } = position.coords;
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}&accept-language=en`,
+          );
+          const data = await response.json();
+          const city =
+            data.address.city ||
+            data.address.town ||
+            data.address.village ||
+            data.address.suburb ||
+            "Indore";
+          const area = data.address.suburb || data.address.neighbourhood || "";
+          setLocation(area ? `${area}, ${city}` : city);
+        } catch (error) {
+          console.error("Error fetching location:", error);
+          setLocation("Indore, MP");
+        } finally {
+          setIsDetecting(false);
+          setIsLocationDropdownOpen(false);
+        }
+      },
+      (error) => {
+        console.error("Geolocation error:", error);
+        setLocation("India");
+        setIsDetecting(false);
+        setIsLocationDropdownOpen(false);
+        alert("Please enable location access to use this feature.");
+      },
+    );
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const params = useParams();
+  const searchParams = useSearchParams();
+
+  // Sync state with URL
+  useEffect(() => {
+    // 1. Handle Search Query
+    let q = "";
+    if (params?.service) {
+      const decodedService = decodeURIComponent(params.service).replace(
+        /-/g,
+        " ",
+      );
+      q = decodedService.split(" in ")[0];
+    } else {
+      q = searchParams.get("q") || "";
+    }
+    if (q) {
+      setSearchQuery(q);
+      dispatch(setReduxQuery(q));
+    }
+
+    // 2. Handle Location
+    let loc = "";
+    if (params?.city) {
+      const city = decodeURIComponent(params.city).replace(/-/g, " ");
+      let area = "";
+      if (params.service && params.service.includes("-in-")) {
+        area = decodeURIComponent(params.service.split("-in-")[1]).replace(
+          /-/g,
+          " ",
+        );
+      }
+      loc = area ? `${area}, ${city}` : city;
+    } else {
+      loc = searchParams.get("city") || "India";
+    }
+    if (loc && loc !== "India") {
+      setLocation(loc);
+      dispatch(setReduxCity(loc));
+    }
+  }, [params, searchParams, dispatch]);
+
+  // Sync with Redux Query for search bar persistence
+  useEffect(() => {
+    if (reduxQuery && reduxQuery !== searchQuery) {
+      setSearchQuery(reduxQuery);
+    }
+  }, [reduxQuery]);
+
+  // Sync Redux Category if not set
+  useEffect(() => {
+    if (
+      !reduxCategory.name &&
+      params?.service &&
+      popularCategories.length > 0
+    ) {
+      const decodedService = decodeURIComponent(params.service).replace(
+        /-/g,
+        " ",
+      );
+      const q = decodedService.split(" in ")[0];
+      const foundCat = popularCategories.find(
+        (c) => slugify(c.name) === slugify(q),
+      );
+      if (foundCat) {
+        dispatch(setReduxCategory({ id: foundCat.id, name: foundCat.name }));
+      }
+    }
+  }, [params, popularCategories, reduxCategory, dispatch]);
+
+  const handleSearch = (
+    e,
+    customQuery = null,
+    catId = null,
+    catName = null,
+  ) => {
+    if (e) e.preventDefault();
+    const query = customQuery || searchQuery;
+    const finalCatId = catId || reduxCategory.id;
+    const finalCatName = catName || (catId ? customQuery : reduxCategory.name);
+
+    if (query.trim()) {
+      setSearchQuery(query.trim());
+      dispatch(setReduxQuery(query.trim()));
+      if (finalCatName) {
+        dispatch(setReduxCategory({ id: finalCatId, name: finalCatName }));
+      }
+
+      const targetUrl = generateDiscoveryUrl(
+        query.trim(),
+        location,
+        finalCatId,
+      );
+      router.push(targetUrl);
+      setIsSearchDropdownOpen(false);
+    }
   };
 
   return (
-    <header className="w-full sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-3.5 flex items-center justify-between">
-        {/* Logo Section */}
-        <Link href="/" className="flex items-center gap-2 shrink-0 group">
-          <img 
-            src="/logo.png" 
-            alt="INDIA B2B" 
-            className="h-10 w-auto object-contain transition-transform group-hover:scale-105"
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? "bg-white/90 backdrop-blur-md shadow-sm py-2"
+          : "bg-white py-4"
+      }`}
+    >
+      <div className="max-w-[1440px] mx-auto px-4 md:px-6 flex items-center justify-between gap-4">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2 flex-shrink-0">
+          <Image
+            src="/logo.png"
+            alt="MarketHub Logo"
+            width={150}
+            height={40}
+            className="h-10 w-auto object-contain"
+            priority
           />
         </Link>
 
-        {/* Desktop Search Bar (Pixel Perfect) - Hidden on Dashboards */}
-        {!isDashboard && (
-          <form onSubmit={handleSearch} className="hidden lg:flex flex-1 max-w-2xl mx-10 h-11 border border-slate-200 rounded-xl overflow-hidden focus-within:border-[#164e33] focus-within:shadow-md transition-all shadow-sm bg-white">
-            <div className="relative flex items-center px-4 bg-slate-50 border-r border-slate-200 gap-2 min-w-[150px] city-dropdown-container">
-              <MapPin size={16} className="text-red-500 shrink-0" />
-              <input 
-                type="text" 
-                value={cityQuery}
-                onChange={(e) => setCityQuery(e.target.value)}
-                onFocus={() => setIsCityDropdownOpen(true)}
-                className="bg-transparent text-sm font-semibold text-slate-800 focus:outline-none w-full truncate cursor-pointer"
-                placeholder="City"
+        {/* Search Bar - Main Layout */}
+        <div className="hidden md:flex flex-grow max-w-3xl mx-4">
+          <form
+            onSubmit={handleSearch}
+            className="w-full flex items-center gap-3"
+          >
+            {/* Location Container */}
+            <div className="relative group input_location_box">
+              <div className="flex items-center h-[46px] bg-slate-50 border border-slate-200 rounded-lg w-[220px] shadow-sm hover:border-slate-300 transition-all cursor-pointer overflow-hidden">
+                <div className="h-full flex items-center justify-center pl-3">
+                  <MapPin className="w-5 h-5 text-slate-400 flex-shrink-0" />
+                </div>
+                <input
+                  type="text"
+                  id="city-auto-sug"
+                  role="combobox"
+                  aria-autocomplete="list"
+                  aria-expanded={isLocationDropdownOpen}
+                  aria-haspopup="listbox"
+                  aria-controls="locbox"
+                  aria-label="Select Location"
+                  autoComplete="off"
+                  value={location}
+                  onChange={(e) => {
+                    setLocation(e.target.value);
+                    if (!isLocationDropdownOpen)
+                      setIsLocationDropdownOpen(true);
+                  }}
+                  placeholder="Select Location"
+                  className="input_location bg-transparent flex-grow h-full px-3 text-[14px] font-normal text-[#111] leading-normal outline-none placeholder:text-slate-400 cursor-pointer font-sans"
+                  onFocus={() => setIsLocationDropdownOpen(true)}
+                />
+              </div>
+
+              {/* Location Dropdown */}
+              <AnimatePresence>
+                {isLocationDropdownOpen && (
+                  <>
+                    <div
+                      className="fixed inset-0 z-10"
+                      onClick={() => setIsLocationDropdownOpen(false)}
+                    />
+                    <motion.div
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                      className="absolute top-full left-0 mt-2 w-[320px] bg-white border border-slate-300 rounded-xl shadow-2xl z-20 overflow-y-auto max-h-[450px] scrollbar-hide py-2"
+                      style={{
+                        scrollbarWidth: "none",
+                        msOverflowStyle: "none",
+                      }}
+                    >
+                      <button
+                        type="button"
+                        disabled={isDetecting}
+                        className="w-full flex items-center gap-3 px-6 py-4 text-[#FF4F00] hover:bg-orange-50 transition-colors border-b border-slate-200 disabled:opacity-50"
+                        onClick={handleDetectLocation}
+                      >
+                        <LocateFixed
+                          className={`w-5 h-5 ${isDetecting ? "animate-spin" : ""}`}
+                        />
+                        <span className="font-semibold text-[15px]">
+                          {isDetecting ? "Detecting..." : "Detect Location"}
+                        </span>
+                      </button>
+
+                      <div className="px-6 py-4">
+                        <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-widest flex items-center justify-between">
+                          {isSearchingLocations
+                            ? "Searching..."
+                            : location.length >= 3
+                              ? "Suggestions"
+                              : "Your Areas"}
+                          {!isSearchingLocations &&
+                            location.length < 3 &&
+                            recentLocations.length > 0 && (
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  clearRecentLocations();
+                                }}
+                                className="text-[#FF4F00] hover:text-orange-700 capitalize font-semibold text-[11px]"
+                              >
+                                Clear All
+                              </button>
+                            )}
+                        </span>
+
+                        <div className="mt-4 space-y-1">
+                          {isSearchingLocations ? (
+                            <div className="py-4 space-y-3">
+                              <div className="h-4 bg-slate-100 rounded-full animate-pulse w-3/4"></div>
+                              <div className="h-4 bg-slate-100 rounded-full animate-pulse w-1/2"></div>
+                            </div>
+                          ) : dynamicLocations.length > 0 ? (
+                            dynamicLocations.map((loc, i) => (
+                              <button
+                                key={i}
+                                type="button"
+                                onClick={() => {
+                                  setLocation(loc);
+                                  saveRecentLocation(loc);
+                                  setIsLocationDropdownOpen(false);
+                                }}
+                                className="w-full text-left px-0 py-2.5 text-slate-700 hover:text-[#FF4F00] font-medium text-[15px] transition-colors line-clamp-1"
+                              >
+                                {loc}
+                              </button>
+                            ))
+                          ) : location.length >= 3 ? (
+                            <div className="py-4 text-slate-400 text-sm font-medium">
+                              No results found for "{location}"
+                            </div>
+                          ) : (
+                            <>
+                              {/* Recent Locations Section */}
+                              {recentLocations.length > 0 && (
+                                <div className="mb-6">
+                                  <span className="text-[11px] font-semibold text-slate-400 mb-2 block">
+                                    Recent Locations
+                                  </span>
+                                  {recentLocations.map((loc, i) => (
+                                    <button
+                                      key={`recent-${i}`}
+                                      type="button"
+                                      onClick={() => {
+                                        setLocation(loc);
+                                        setIsLocationDropdownOpen(false);
+                                      }}
+                                      className="w-full text-left px-0 py-2.5 text-slate-700 hover:text-[#FF4F00] font-medium text-[15px] transition-colors flex items-center gap-3"
+                                    >
+                                      <span className="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+                                      {loc}
+                                    </button>
+                                  ))}
+                                </div>
+                              )}
+
+                              {/* Trending Areas Section */}
+                              <div>
+                                <span className="text-[11px] font-semibold text-slate-400 mb-2 block">
+                                  Trending Areas
+                                </span>
+                                {trendingLocations.map((loc, i) => (
+                                  <button
+                                    key={`trending-${i}`}
+                                    type="button"
+                                    onClick={() => {
+                                      setLocation(loc);
+                                      saveRecentLocation(loc);
+                                      setIsLocationDropdownOpen(false);
+                                    }}
+                                    className="w-full text-left px-0 py-2.5 text-slate-700 hover:text-[#FF4F00] font-medium text-[15px] transition-colors"
+                                  >
+                                    {loc}
+                                  </button>
+                                ))}
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Search Input Container */}
+            <div className="flex-grow relative flex items-center bg-white border border-slate-200 rounded-lg h-[46px] shadow-sm hover:border-slate-300 transition-all focus-within:border-orange-500/50 pr-1.5">
+              <input
+                type="text"
+                placeholder="Search products, services or suppliers..."
+                className="flex-grow h-full bg-transparent px-4 text-[14px] font-normal text-[#111] leading-normal outline-none placeholder:text-slate-400 font-sans"
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  if (!isSearchDropdownOpen) setIsSearchDropdownOpen(true);
+                }}
+                onFocus={() => setIsSearchDropdownOpen(true)}
               />
-              {isCityDropdownOpen && (
-                <div className="absolute top-full left-0 mt-1 w-[220px] bg-white border border-gray-100 rounded-xl shadow-2xl py-2 z-50 max-h-[300px] overflow-y-auto">
-                  {popularCities.map(city => (
-                    <button key={city} type="button" onClick={() => handleCitySelect(city)} className="w-full text-left px-4 py-2.5 text-sm font-semibold text-slate-800 hover:bg-[#164e33]/5 hover:text-[#164e33] transition-all flex items-center gap-2">
-                      <MapPin className="w-3.5 h-3.5 opacity-40" /> {city}
+              <button
+                type="submit"
+                className="bg-[#FF4F00] hover:bg-[#E64600] text-white w-[34px] h-[34px] rounded-md transition-all flex items-center justify-center flex-shrink-0 shadow-sm active:scale-95"
+              >
+                <Search className="w-4 h-4" />
+              </button>
+
+              <AnimatePresence>
+                {isSearchDropdownOpen && (
+                  <>
+                    <div
+                      className="fixed inset-0 z-10"
+                      onClick={() => setIsSearchDropdownOpen(false)}
+                    />
+                    <motion.div
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                      className="absolute top-full right-0 mt-2 w-full min-w-[320px] bg-white border border-slate-300 rounded-xl shadow-2xl z-20 overflow-y-auto max-h-[450px] scrollbar-hide py-2"
+                      style={{
+                        scrollbarWidth: "none",
+                        msOverflowStyle: "none",
+                      }}
+                    >
+                      <div className="px-6 py-4 space-y-6">
+                        {/* Trending Searches */}
+                        <div>
+                          <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-widest block mb-3">
+                            Trending Searches
+                          </span>
+                          <div className="flex flex-wrap gap-2">
+                            {trendingSearches.map((item, i) => (
+                              <button
+                                key={`trend-${i}`}
+                                type="button"
+                                onClick={() => handleSearch(null, item)}
+                                className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-full text-[13px] text-slate-600 hover:border-[#FF4F00] hover:text-[#FF4F00] transition-all"
+                              >
+                                {item}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* All Categories Section */}
+                        <div>
+                          <div className="flex items-center justify-between mb-3">
+                            <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-widest block">
+                              All Categories
+                            </span>
+                            <span className="text-[10px] font-medium text-slate-400 bg-slate-50 px-2 py-0.5 rounded-full">
+                              {allCategories.length} Categories
+                            </span>
+                          </div>
+                          <div className="grid grid-cols-1 gap-1">
+                            {allCategories.map((cat, i) => (
+                              <button
+                                key={`cat-${i}`}
+                                type="button"
+                                onClick={() =>
+                                  handleSearch(null, cat.name, cat.id)
+                                }
+                                className="w-full text-left px-3 py-2.5 rounded-lg text-slate-700 hover:bg-orange-50 hover:text-[#FF4F00] font-medium text-[14px] transition-all flex items-center gap-3 group"
+                              >
+                                <div className="w-1.5 h-1.5 rounded-full bg-slate-300 group-hover:bg-[#FF4F00] transition-colors"></div>
+                                {cat.name}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
+            </div>
+          </form>
+        </div>
+
+        {/* Right Actions */}
+        <div className="flex items-center gap-2 md:gap-4">
+          <button
+            onClick={() => setIsVendorDrawerOpen(true)}
+            className="hidden lg:flex items-center gap-2 text-sm font-semibold- text-slate-700 px-5 py-2.5 rounded-xl hover:bg-slate-50 transition-all border border-slate-200"
+          >
+            <Building2 className="w-4 h-4 text-[#FF4F00]" />
+            Become a Supplier
+          </button>
+
+          {!user ? (
+            <>
+               <button
+                onClick={() => setIsBuyerDrawerOpen(true)}
+                className="hidden sm:block text-sm font-semibold text-white bg-[#164e33] px-6 py-2.5 rounded-xl hover:bg-[#113a26] transition-all shadow-lg shadow-emerald-100"
+              >
+                Login
+              </button>
+            </>
+          ) : (
+            <div className="relative group">
+              <button className="flex items-center gap-2 bg-slate-100 p-1.5 pr-3 rounded-full hover:bg-slate-200 transition-all">
+                <div className="w-8 h-8 bg-[#164e33] rounded-full flex items-center justify-center text-white text-sm font-semibold shadow-inner overflow-hidden">
+                  {user.avatar ? (
+                    <img 
+                      src={user.avatar} 
+                      alt={user.name || "User"} 
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                        e.target.parentElement.innerText = user.name ? user.name.charAt(0) : "G";
+                      }}
+                    />
+                  ) : (
+                    user.name && user.name !== user.phone ? user.name.charAt(0) : "G"
+                  )}
+                </div>
+                <span className="text-sm font-semibold text-slate-700 hidden lg:block">
+                  {user.name && user.name !== user.phone ? user.name : "Guest User"}
+                </span>
+                <ChevronDown className="w-4 h-4 text-slate-500 transition-transform group-hover:rotate-180" />
+              </button>
+
+              {/* Dropdown Menu */}
+              <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-2xl shadow-2xl border border-slate-100 py-2 hidden group-hover:block animate-in fade-in slide-in-from-top-2 duration-200 z-[1000]">
+                <div className="px-4 py-3 border-b border-slate-50">
+                  <p className="text-xs text-slate-500 font-semibold">Signed in as</p>
+                  <p className="text-sm font-semibold text-slate-700 truncate">
+                    {user.phone}
+                  </p>
+                </div>
+                
+                <div className="py-1">
+                  <Link href="/profile" className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 hover:text-[#164e33] transition-colors">
+                    <User className="w-4 h-4" />
+                    My Profile
+                  </Link>
+                  <Link href="/notifications" className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 hover:text-[#164e33] transition-colors">
+                    <Bell className="w-4 h-4" />
+                    Notifications
+                  </Link>
+                </div>
+
+                <div className="border-t border-slate-50 pt-1">
+                  <button 
+                    onClick={() => logout()}
+                    className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 transition-colors font-medium"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Sign Out
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Mobile Menu Trigger */}
+          <button
+            className="lg:hidden p-2 text-slate-600"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X /> : <Menu />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="lg:hidden bg-white border-t border-slate-100 overflow-hidden"
+          >
+            <div className="p-4 space-y-4">
+              {/* Mobile Search */}
+              <form
+                onSubmit={handleSearch}
+                className="flex bg-slate-50 border border-slate-200 rounded-xl overflow-hidden p-1"
+              >
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="flex-grow bg-transparent px-4 py-2 text-sm outline-none"
+                />
+                <button
+                  type="submit"
+                  className="bg-[#FF4F00] text-white p-2 rounded-lg"
+                >
+                  <Search className="w-4 h-4" />
+                </button>
+              </form>
+
+              {user ? (
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                    <div className="w-12 h-12 bg-[#164e33] rounded-full flex items-center justify-center text-white text-lg font-semibold shadow-inner overflow-hidden shrink-0">
+                      {user.avatar ? (
+                        <img src={user.avatar} alt={user.name || "User"} className="w-full h-full object-cover" />
+                      ) : (
+                        user.name ? user.name.charAt(0) : "G"
+                      )}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="font-bold text-slate-800 truncate">{user.name || "Guest User"}</p>
+                      <p className="text-xs text-slate-500 truncate">{user.phone}</p>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <Link 
+                      href="/profile" 
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex flex-col items-center gap-2 p-4 bg-white border border-slate-100 rounded-xl hover:bg-slate-50 transition-colors"
+                    >
+                      <User className="w-5 h-5 text-slate-400" />
+                      <span className="text-xs font-semibold text-slate-700">Profile</span>
+                    </Link>
+                    <Link 
+                      href="/notifications" 
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex flex-col items-center gap-2 p-4 bg-white border border-slate-100 rounded-xl hover:bg-slate-50 transition-colors"
+                    >
+                      <Bell className="w-5 h-5 text-slate-400" />
+                      <span className="text-xs font-semibold text-slate-700">Alerts</span>
+                    </Link>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <button
+                      onClick={() => {
+                        setIsVendorDrawerOpen(true);
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="flex items-center justify-center gap-2 p-4 bg-slate-50 rounded-xl font-semibold text-slate-700"
+                    >
+                      <ShoppingBag className="w-5 h-5 text-[#FF4F00]" /> Become a Supplier
                     </button>
-                  ))}
+                    <button
+                      onClick={() => {
+                        logout();
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="flex items-center justify-center gap-2 p-4 bg-red-50 text-red-600 rounded-xl font-semibold"
+                    >
+                      <LogOut className="w-5 h-5" /> Logout
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 gap-4">
+                  <button
+                    onClick={() => {
+                      setIsVendorDrawerOpen(true);
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="flex items-center gap-2 p-4 bg-slate-50 rounded-xl font-semibold text-slate-700"
+                  >
+                    <ShoppingBag className="w-5 h-5 text-[#FF4F00]" /> Become a Supplier
+                  </button>
+                  <button
+                    onClick={() => {
+                      setIsBuyerDrawerOpen(true);
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="flex items-center gap-2 p-4 bg-[#164e33] text-white rounded-xl font-semibold"
+                  >
+                    <User className="w-5 h-5" /> Login
+                  </button>
                 </div>
               )}
             </div>
-            <input 
-              type="text" 
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search product / service..." 
-              className="flex-1 px-4 text-sm font-medium focus:outline-none text-slate-800 placeholder:text-slate-500"
-            />
-            <button type="submit" className="bg-[#164e33] text-white px-8 flex items-center gap-2 hover:bg-[#113f29] transition-all !text-white">
-              <Search size={18} className="text-white" />
-              <span className="font-bold text-sm uppercase tracking-wide text-white">Search</span>
-            </button>
-          </form>
+          </motion.div>
         )}
+      </AnimatePresence>
 
-        {/* Action Buttons */}
-        <div className="flex items-center gap-4 lg:gap-8">
-          <Link href="/register" className="hidden sm:flex items-center gap-2 border border-slate-200 px-5 py-2.5 rounded-lg text-sm font-bold text-slate-700 hover:bg-slate-50 hover:border-[#164e33]/30 transition-all shadow-sm">
-            <Building2 size={18} className="text-[#164e33]" />
-            Become a Vendor
-          </Link>
-          
-          <div className="relative">
-            <button 
-              onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
-              className="flex items-center gap-3 p-1.5 hover:bg-slate-50 rounded-xl transition-all border border-transparent hover:border-slate-100 group"
-            >
-              <div className="w-10 h-10 rounded-xl overflow-hidden border-2 border-white shadow-sm bg-slate-100 flex items-center justify-center">
-                <img 
-                  src={user?.profileImage || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"} 
-                  alt="profile" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="hidden lg:flex flex-col items-start leading-none gap-1">
-                <span className="text-[10px] font-bold text-slate-400 uppercase ">{user?.role || 'Welcome'}</span>
-                <span className="text-sm font-bold text-slate-800 group-hover:text-[#164e33] transition-colors">
-                   {user ? user.name?.split(' ')[0] : 'My Account'}
-                </span>
-              </div>
-            </button>
-
-            {isUserDropdownOpen && (
-              <div className="absolute top-full right-0 mt-3 w-64 bg-white border border-gray-100 rounded-xl shadow-2xl py-3 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
-                {user ? (
-                  <div className="p-2">
-                    <Link 
-                      href={user.role === 'SUPERADMIN' ? '/super-admin/profile' : user.role === 'ADMIN' ? '/admin/profile' : '/profile'} 
-                      className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-slate-700 hover:bg-[#164e33]/5 hover:text-[#164e33] transition-all"
-                    >
-                      <UserCircle2 className="w-4 h-4" /> My Profile
-                    </Link>
-                    {user.role !== 'BUYER' && (
-                      <Link 
-                        href={user.role === 'SUPERADMIN' ? '/super-admin/dashboard' : user.role === 'ADMIN' ? '/admin/dashboard' : '/vendor/dashboard'}
-                        className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-slate-700 hover:bg-[#164e33]/5 hover:text-[#164e33] transition-all mt-1"
-                      >
-                        <LayoutDashboard className="w-4 h-4" /> Dashboard
-                      </Link>
-                    )}
-                    <div className="h-px bg-slate-50 my-2 mx-2"></div>
-                    <button onClick={logout} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-red-500 hover:bg-red-50 transition-all">
-                      <LogOut className="w-4 h-4" /> Sign Out
-                    </button>
-                  </div>
-                ) : (
-                  <div className="p-4 text-center">
-                    <Link href="/login" className="block w-full py-3 bg-[#164e33] text-white rounded-xl font-bold text-sm uppercase shadow-lg shadow-[#164e33]/20 transition-all mb-3">Sign In</Link>
-                    <Link href="/register" className="block w-full py-3 border border-slate-200 text-[#164e33] rounded-xl font-bold text-sm uppercase hover:bg-slate-50 transition-all">Create Account</Link>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </header>
+      <BuyerLogin 
+        isOpen={isBuyerDrawerOpen} 
+        onClose={() => setIsBuyerDrawerOpen(false)} 
+      />
+      
+      <VendorLogin 
+        isOpen={isVendorDrawerOpen} 
+        onClose={() => setIsVendorDrawerOpen(false)} 
+      />
+    </nav>
   );
 };
 
 export default Navbar;
-

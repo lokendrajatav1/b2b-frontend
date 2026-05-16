@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { Open_Sans } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 
-const openSans = Open_Sans({
-  variable: "--font-open-sans",
+const poppins = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -15,6 +16,7 @@ export const metadata: Metadata = {
 
 import LayoutWrapper from "@/components/LayoutWrapper";
 import GoogleAdsProvider from "@/components/GoogleAdsProvider";
+import ReduxProvider from "@/redux/ReduxProvider";
 
 export default function RootLayout({
   children,
@@ -24,16 +26,17 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${openSans.variable} font-sans antialiased bg-gray-50 text-slate-800`}
+        className={`${poppins.variable} font-sans antialiased bg-gray-50 text-slate-800`}
       >
-        <AuthProvider>
-          <GoogleAdsProvider />
-          <LayoutWrapper>
-            {children}
-          </LayoutWrapper>
-        </AuthProvider>
+        <ReduxProvider>
+          <AuthProvider>
+            <GoogleAdsProvider />
+            <LayoutWrapper>
+              {children}
+            </LayoutWrapper>
+          </AuthProvider>
+        </ReduxProvider>
       </body>
     </html>
   );
 }
-

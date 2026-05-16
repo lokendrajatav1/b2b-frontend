@@ -3,12 +3,16 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
-import { UserCircle, Mail, Phone, ShieldCheck, Edit3, Check, X, Loader2, Camera, User as UserIcon, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { 
+  UserCircle, Mail, Phone, Edit3, Check, Loader2, Camera, 
+  User as UserIcon, AlertCircle, CheckCircle2, BadgeCheck,
+  LogOut
+} from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { apiFetch } from '@/lib/api';
 
 export default function ProfilePage() {
-  const { user, loading, refreshUser } = useAuth();
+  const { user, loading, refreshUser, logout } = useAuth();
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -35,7 +39,7 @@ export default function ProfilePage() {
         method: 'PUT',
         body: JSON.stringify(formData)
       });
-      await refreshUser(); // Refresh user data in context
+      await refreshUser();
       setMessage({ type: 'success', text: 'Profile updated successfully.' });
       setIsEditing(false);
     } catch (error: any) {
@@ -61,210 +65,211 @@ export default function ProfilePage() {
         body: data
       });
       
-      setMessage({ type: 'success', text: 'Profile identity updated successfully.' });
+      setMessage({ type: 'success', text: 'Profile image updated.' });
       await refreshUser();
     } catch (error: any) {
       console.error('Failed to upload image', error);
-      setMessage({ type: 'error', text: error.message || 'Failed to synchronize profile image.' });
+      setMessage({ type: 'error', text: 'Failed to upload image.' });
     } finally {
       setUploading(false);
       setTimeout(() => setMessage({ type: '', text: '' }), 5000);
     }
   };
 
-  useEffect(() => {
-    if (!loading && !user) {
-      router.push('/login');
-    }
-  }, [user, loading, router]);
+
 
   if (loading || !user) {
     return (
-      <div className="min-h-screen bg-emerald-50/30 flex items-center justify-center">
-        <div className="w-10 h-10 border-4 border-[#1b5e20]/20 border-t-[#1b5e20] rounded-full animate-spin"></div>
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <Loader2 className="w-8 h-8 text-[#164e33] animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] py-12 px-4 sm:px-6">
-      <div className="max-w-3xl mx-auto space-y-6">
+    <div className="min-h-screen bg-[#f9fafb] pt-28 pb-20">
+      <div className="max-w-5xl mx-auto px-4">
         
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
           <div>
-            <h1 className="text-2xl font-semibold text-slate-900">My Profile</h1>
-            <p className="text-base text-slate-800 mt-1">Manage your account details and preferences.</p>
+            <h1 className="text-2xl font-semibold text-gray-900">Account Settings</h1>
+            <p className="text-gray-700 text-sm mt-1">Manage your personal profile and contact information.</p>
           </div>
-          {!isEditing ? (
-            <button 
-              onClick={() => setIsEditing(true)}
-              className="flex items-center gap-2 bg-[#1b5e20] text-white px-5 py-2.5 rounded-xl text-base font-semibold hover:bg-[#145218] active:bg-[#0e3b12] transition-all shadow-md hover:shadow-lg focus:outline-none"
-            >
-              <Edit3 className="w-4 h-4" /> Edit Profile
-            </button>
-          ) : (
-            <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
+             {!isEditing ? (
               <button 
-                onClick={() => setIsEditing(false)}
-                disabled={saving}
-                className="flex items-center gap-2 bg-white border border-gray-200 text-slate-800 px-4 py-2.5 rounded-xl text-base font-semibold hover:bg-gray-50 active:bg-gray-100 transition-all shadow-sm disabled:opacity-50"
+                onClick={() => setIsEditing(true)}
+                className="inline-flex items-center gap-2 bg-[#164e33] text-white px-4 py-2 rounded-lg font-semibold text-sm hover:bg-[#0d3120] transition-colors shadow-sm"
               >
-                <X className="w-4 h-4" /> Cancel
+                <Edit3 className="w-4 h-4" /> Edit Profile
               </button>
-              <button 
-                onClick={handleSave}
-                disabled={saving}
-                className="flex items-center gap-2 bg-[#1b5e20] text-white px-5 py-2.5 rounded-xl text-base font-semibold hover:bg-[#145218] active:bg-[#0e3b12] transition-all shadow-md hover:shadow-lg disabled:opacity-50"
-              >
-                {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />} Save
-              </button>
-            </div>
-          )}
+            ) : (
+              <div className="flex items-center gap-3">
+                <button 
+                  onClick={() => setIsEditing(false)}
+                  className="text-gray-600 font-semibold text-sm hover:text-gray-900"
+                >
+                  Cancel
+                </button>
+                <button 
+                  onClick={handleSave}
+                  disabled={saving}
+                  className="inline-flex items-center gap-2 bg-[#164e33] text-white px-4 py-2 rounded-lg font-semibold text-sm hover:bg-[#0d3120] transition-colors shadow-sm disabled:opacity-50"
+                >
+                  {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />} Save Changes
+                </button>
+              </div>
+            )}
+          </div>
         </div>
-        
-        {/* Notification */}
-        <AnimatePresence mode="wait">
+
+        <AnimatePresence>
           {message.text && (
             <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className={`p-5 rounded-xl border flex items-center gap-4 text-base font-bold shadow-lg ${message.type === 'success' ? 'bg-emerald-50 text-emerald-700 border-emerald-100 shadow-emerald-500/10' : 'bg-red-50 text-red-700 border-red-100 shadow-red-500/10'}`}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className={`p-4 rounded-lg border mb-6 flex items-center gap-3 text-sm font-medium ${
+                message.type === 'success' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-red-50 text-red-700 border-red-100'
+              }`}
             >
-              {message.type === 'success' ? <CheckCircle2 className="w-6 h-6" /> : <AlertCircle className="w-6 h-6" />}
+              {message.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
               {message.text}
             </motion.div>
           )}
         </AnimatePresence>
 
-        {/* Main Card */}
-        <motion.div 
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-xl p-8 border border-emerald-100/60 shadow-sm relative z-10"
-        >
-          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-8">
-            {/* Avatar Section */}
-            <div className="shrink-0 group">
-              <div className="relative w-32 h-32">
-                <div className="w-full h-full rounded-xl overflow-hidden border-4 border-gray-50 bg-gray-100 flex items-center justify-center shadow-inner relative group/img">
-                  {user.avatar ? (
-                    <img 
-                      src={user.avatar} 
-                      alt={user.name} 
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-emerald-50 text-emerald-700 text-4xl font-bold">
-                       {user.name?.charAt(0) || <UserIcon className="w-12 h-12" />}
-                    </div>
-                  )}
-                  
-                  {/* Overlay for upload */}
-                  <div 
-                    onClick={() => fileInputRef.current?.click()}
-                    className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity cursor-pointer text-white"
-                  >
-                    {uploading ? (
-                      <Loader2 className="w-6 h-6 animate-spin" />
-                    ) : (
-                      <>
-                        <Camera className="w-6 h-6 mb-1" />
-                        <span className="text-xs font-bold uppercase ">Change</span>
-                      </>
-                    )}
-                  </div>
-                </div>
-                
-                {/* Status Indicator */}
-                <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-emerald-500 border-2 border-white rounded-full flex items-center justify-center shadow-sm">
-                   <Check className="w-3.5 h-3.5 text-white" />
-                </div>
-              </div>
-              <input 
-                type="file" 
-                ref={fileInputRef} 
-                onChange={handleImageUpload} 
-                className="hidden" 
-                accept="image/*" 
-              />
-            </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          
+          {/* Sidebar Navigation (Industry Standard Layout) */}
+          <div className="lg:col-span-3 space-y-2">
+            <button className="w-full flex items-center gap-3 px-4 py-2.5 bg-white border border-[#164e33] text-[#164e33] rounded-lg font-semibold text-sm text-left">
+              <UserCircle className="w-5 h-5" /> Profile Info
+            </button>
 
-            {/* User Details */}
-            <div className="flex-1 w-full space-y-6 text-center sm:text-left">
-              <div>
-                {isEditing ? (
-                  <div className="mb-4 text-left">
-                    <label className="text-base font-bold text-black uppercase  mb-1 block">Full Name</label>
-                    <input 
-                      type="text" 
-                      value={formData.name} 
-                      onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-base font-semibold text-slate-900 outline-none focus:border-[#1b5e20] transition-all"
-                    />
-                  </div>
-                ) : (
-                  <h2 className="text-2xl font-bold text-slate-900">{user.name}</h2>
-                )}
-                
-                <div className="flex items-center justify-center sm:justify-start gap-2 mt-2">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-50 text-emerald-700 text-base font-bold uppercase  border border-emerald-100">
-                    <ShieldCheck className="w-3.5 h-3.5" />
-                    {user.role}
-                  </span>
-                  {user.vendor?.verified && (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-50 text-emerald-700 text-base font-bold uppercase  border border-emerald-100">
-                      Verified Partner
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-6 border-t border-emerald-50 text-left">
-                {/* Email Field */}
-                <div className="space-y-1 min-w-0">
-                  <p className="text-base font-bold text-black uppercase  flex items-center gap-1.5">
-                    <Mail className="w-3.5 h-3.5 text-emerald-600" /> Email Address
-                  </p>
-                  {isEditing ? (
-                    <input 
-                      type="email" 
-                      value={formData.email} 
-                      onChange={(e) => setFormData({...formData, email: e.target.value})}
-                      placeholder="Enter your email"
-                      className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-base font-semibold text-slate-900 outline-none focus:border-[#1b5e20] transition-all mt-1"
-                    />
-                  ) : (
-                    <p className="text-base font-bold text-slate-900 truncate" title={user.email}>
-                      {user.email || <span className="text-slate-500 italic font-normal">Not provided</span>}
-                    </p>
-                  )}
-                </div>
-                
-                {/* Phone Field */}
-                <div className="space-y-1 min-w-0">
-                  <p className="text-base font-bold text-black uppercase  flex items-center gap-1.5">
-                    <Phone className="w-3.5 h-3.5 text-emerald-600" /> Phone Number
-                  </p>
-                  {isEditing ? (
-                    <input 
-                      type="text" 
-                      value={formData.phone} 
-                      onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                      className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-base font-semibold text-slate-900 outline-none focus:border-[#1b5e20] transition-all mt-1"
-                    />
-                  ) : (
-                    <p className="text-base font-bold text-slate-900 truncate" title={user.phone}>{user.phone || 'Not provided'}</p>
-                  )}
-                </div>
-              </div>
-
+            <div className="pt-4 border-t border-gray-200 mt-4">
+              <button 
+                onClick={() => logout()}
+                className="w-full flex items-center gap-3 px-4 py-2.5 text-red-600 hover:bg-red-50 rounded-lg font-semibold text-sm text-left transition-colors"
+              >
+                <LogOut className="w-5 h-5" /> Logout
+              </button>
             </div>
           </div>
-        </motion.div>
 
-        {/* Security / Other Sections could go here */}
+          {/* Main Content Area */}
+          <div className="lg:col-span-9 space-y-6">
+            
+            {/* Profile Information Card */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+              <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+                <h3 className="text-base font-semibold text-gray-900">Profile Details</h3>
+              </div>
+              
+              <div className="p-6">
+                <div className="flex flex-col md:flex-row items-start gap-10">
+                  
+                  {/* Photo Section */}
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="relative group">
+                      <div className="w-24 h-24 rounded-full overflow-hidden border border-gray-200 bg-gray-50 flex items-center justify-center">
+                        {user.avatar ? (
+                          <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+                        ) : (
+                          <UserIcon className="w-10 h-10 text-gray-300" />
+                        )}
+                        {uploading && (
+                          <div className="absolute inset-0 bg-white/80 flex items-center justify-center">
+                            <Loader2 className="w-6 h-6 text-[#164e33] animate-spin" />
+                          </div>
+                        )}
+                      </div>
+                      <button 
+                        onClick={() => fileInputRef.current?.click()}
+                        className="absolute bottom-0 right-0 p-1.5 bg-white rounded-full border border-gray-200 shadow-sm text-gray-600 hover:text-[#164e33] transition-colors"
+                      >
+                        <Camera className="w-4 h-4" />
+                      </button>
+                      <input type="file" ref={fileInputRef} onChange={handleImageUpload} className="hidden" accept="image/*" />
+                    </div>
+                    <p className="text-[11px] text-gray-700 font-semibold capitalize tracking-tight">Profile Photo</p>
+                  </div>
+
+                  {/* Fields Section */}
+                  <div className="flex-1 w-full space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      
+                      <div className="space-y-1.5">
+                        <label className="text-xs font-semibold text-gray-700 capitalize tracking-wider">Full Name</label>
+                        {isEditing ? (
+                          <input 
+                            type="text" 
+                            value={formData.name} 
+                            onChange={(e) => setFormData({...formData, name: e.target.value})}
+                            className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium focus:ring-1 focus:ring-[#164e33] focus:border-[#164e33] outline-none transition-all"
+                          />
+                        ) : (
+                          <p className="text-sm font-medium text-gray-900">{user.name || "Not provided"}</p>
+                        )}
+                      </div>
+
+                      <div className="space-y-1.5">
+                        <label className="text-xs font-semibold text-gray-700 capitalize tracking-wider">Account Role</label>
+                        <div className="flex items-center gap-2">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-50 text-[#164e33] text-xs font-semibold border border-emerald-100">
+                            {user.role}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="space-y-1.5">
+                        <label className="text-xs font-semibold text-gray-700 capitalize tracking-wider">Email Address</label>
+                        {isEditing ? (
+                          <input 
+                            type="email" 
+                            value={formData.email} 
+                            onChange={(e) => setFormData({...formData, email: e.target.value})}
+                            className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium focus:ring-1 focus:ring-[#164e33] focus:border-[#164e33] outline-none transition-all"
+                          />
+                        ) : (
+                          <div className="flex items-center gap-2">
+                            <p className="text-sm font-medium text-gray-900">
+                              {user.email && !user.email.includes('placeholder.com') ? user.email : "Not linked"}
+                            </p>
+                            {user.emailVerified && <BadgeCheck className="w-4 h-4 text-emerald-500" />}
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="space-y-1.5">
+                        <label className="text-xs font-semibold text-gray-700 capitalize tracking-wider">Phone Number</label>
+                        {isEditing ? (
+                          <input 
+                            type="text" 
+                            value={formData.phone} 
+                            onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                            className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium focus:ring-1 focus:ring-[#164e33] focus:border-[#164e33] outline-none transition-all"
+                          />
+                        ) : (
+                          <div className="flex items-center gap-2">
+                            <p className="text-sm font-medium text-gray-900">{user.phone || "Not linked"}</p>
+                            {user.phoneVerified && <BadgeCheck className="w-4 h-4 text-emerald-500" />}
+                          </div>
+                        )}
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+          </div>
+
+        </div>
       </div>
     </div>
   );

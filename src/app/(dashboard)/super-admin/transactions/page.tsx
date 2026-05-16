@@ -72,7 +72,7 @@ export default function AdminTransactions() {
         <div>
           <h1 className="text-2xl font-semibold text-slate-900  flex items-center gap-3">
             Transactions
-            <div className="p-1.5 bg-[#164e33]/5 text-[#164e33] rounded-xl border border-[#164e33]/10">
+            <div className="p-1.5 bg-[#164e33]/5 text-[#164e33] rounded-lg border border-[#164e33]/10">
               <CreditCard className="w-5 h-5" />
             </div>
           </h1>
@@ -87,11 +87,11 @@ export default function AdminTransactions() {
                 placeholder="Search by vendor..."
                 value={searchVendor}
                 onChange={(e) => setSearchVendor(e.target.value)}
-                className="pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium w-64 outline-none focus:border-blue-500 focus:bg-white transition-all focus:ring-2 focus:ring-blue-100"
+                className="pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm font-medium w-64 outline-none focus:border-blue-500 focus:bg-white transition-all focus:ring-2 focus:ring-blue-100"
               />
            </div>
            
-           <button onClick={fetchTransactions} className="p-2 bg-white border border-gray-200 rounded-xl text-slate-700 hover:text-slate-800 hover:bg-gray-50 transition-all ">
+           <button onClick={fetchTransactions} className="p-2 bg-white border border-gray-200 rounded-lg text-slate-700 hover:text-slate-800 hover:bg-gray-50 transition-all ">
              <RefreshCcw className={`w-5 h-5 ${loading ? 'animate-spin' : ''}`} />
            </button>
         </div>
@@ -104,12 +104,12 @@ export default function AdminTransactions() {
            { label: 'Total Transactions', value: stats.count, icon: CreditCard, bg: 'bg-[#164e33]/5', text: 'text-[#164e33]' },
            { label: 'Pending Settlement', value: stats.pending, icon: Clock, bg: 'bg-amber-50', text: 'text-amber-600' }
          ].map((s, i) => (
-           <div key={i} className="bg-white p-6 rounded-xl border border-gray-200  flex items-center justify-between">
+           <div key={i} className="bg-white p-6 rounded-lg border border-gray-200  flex items-center justify-between">
               <div>
                  <p className="text-sm font-semibold text-slate-700 uppercase  mb-1">{s.label}</p>
                  <h2 className="text-2xl font-semibold text-slate-900 ">{s.value}</h2>
               </div>
-              <div className={`p-3 rounded-xl ${s.bg} ${s.text}`}>
+              <div className={`p-3 rounded-lg ${s.bg} ${s.text}`}>
                  <s.icon className="w-6 h-6" />
               </div>
            </div>
@@ -118,7 +118,7 @@ export default function AdminTransactions() {
 
       {/* Ledger Table */}
       <div className="max-w-7xl mx-auto">
-        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden ">
+        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden ">
            <div className="overflow-x-auto">
               <table className="w-full text-left whitespace-nowrap min-w-[800px]">
                  <thead>

@@ -138,14 +138,14 @@ export default function AdminVendorApprovals() {
             <select 
               value={activeTab}
               onChange={(e) => setActiveTab(e.target.value as any)}
-              className="px-4 py-2 bg-white border border-gray-200 rounded-xl text-[11px] font-bold text-slate-700 outline-none hover:bg-gray-50 transition-all shadow-sm cursor-pointer"
+              className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-[11px] font-bold text-slate-700 outline-none hover:bg-gray-50 transition-all shadow-sm cursor-pointer"
             >
                <option value="PENDING">Pending Check</option>
                <option value="VERIFIED">Verified Hub</option>
                <option value="ALL">All Hub Members</option>
             </select>
 
-           <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-3 py-2 shadow-sm">
+           <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-2 shadow-sm">
              <Clock size={14} className="text-slate-400" />
              <select 
                value={timeRange}
@@ -165,7 +165,7 @@ export default function AdminVendorApprovals() {
            <select 
              value={city}
              onChange={(e) => setCity(e.target.value)}
-             className="px-4 py-2 bg-white border border-gray-200 rounded-xl text-[11px] font-bold text-slate-700 outline-none hover:bg-gray-50 transition-all shadow-sm cursor-pointer"
+             className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-[11px] font-bold text-slate-700 outline-none hover:bg-gray-50 transition-all shadow-sm cursor-pointer"
            >
               <option value="All Cities">All Cities</option>
               {cities.map((c, i) => (
@@ -173,7 +173,7 @@ export default function AdminVendorApprovals() {
               ))}
            </select>
 
-           <button onClick={fetchVendors} className="p-2 bg-white border border-gray-200 rounded-xl text-slate-400 hover:text-emerald-600 transition-all shadow-sm">
+           <button onClick={fetchVendors} className="p-2 bg-white border border-gray-200 rounded-lg text-slate-400 hover:text-emerald-600 transition-all shadow-sm">
               <RefreshCcw size={16} className={loading ? 'animate-spin' : ''} />
            </button>
         </div>
@@ -189,7 +189,7 @@ export default function AdminVendorApprovals() {
               transition={{ duration: 0.2 }}
               className="overflow-hidden"
             >
-              <div className="flex flex-col md:flex-row md:items-center gap-3 bg-slate-50 rounded-xl px-4 py-3 border border-slate-100">
+              <div className="flex flex-col md:flex-row md:items-center gap-3 bg-slate-50 rounded-lg px-4 py-3 border border-slate-100">
                 <div className="flex items-center gap-3">
                   <Clock size={13} className="text-slate-400 shrink-0" />
                   <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider shrink-0">Custom Range:</span>
@@ -225,7 +225,7 @@ export default function AdminVendorApprovals() {
               placeholder="Search business by name, mobile, email or city..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-11 pr-4 py-3.5 bg-white border border-gray-200 rounded-xl text-[13px] font-bold text-slate-700 outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all shadow-sm placeholder:text-slate-300"
+              className="w-full pl-11 pr-4 py-3.5 bg-white border border-gray-200 rounded-lg text-[13px] font-bold text-slate-700 outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all shadow-sm placeholder:text-slate-300"
             />
          </div>
       </div>
@@ -264,7 +264,7 @@ export default function AdminVendorApprovals() {
 
       {/* --- TABLE AREA --- */}
       <div className="max-w-7xl mx-auto w-full">
-         <div className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm">
+         <div className="bg-white rounded-lg border border-gray-100 overflow-hidden shadow-sm">
             <div className="overflow-x-auto w-full no-scrollbar">
                <table className="w-full text-left whitespace-nowrap min-w-[900px]">
                   <thead>
@@ -288,7 +288,7 @@ export default function AdminVendorApprovals() {
                     <tr key={vendor.id} className="group hover:bg-slate-50/50 transition-colors">
                        <td className="px-6 py-5">
                           <div className="flex items-center gap-4">
-                             <div className="w-12 h-12 rounded-xl bg-slate-50 border border-gray-100 overflow-hidden flex items-center justify-center text-lg font-bold text-slate-300 shrink-0">
+                             <div className="w-12 h-12 rounded-lg bg-slate-50 border border-gray-100 overflow-hidden flex items-center justify-center text-lg font-bold text-slate-300 shrink-0">
                                 {(vendor.logoUrl || vendor.logo) ? (
                                   <img src={vendor.logoUrl || vendor.logo} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                 ) : (vendor.businessName || vendor.user?.name)?.charAt(0)}
@@ -316,7 +316,7 @@ export default function AdminVendorApprovals() {
                       <td className="px-6 py-5 text-right">
                          <button 
                             onClick={() => { setSelectedVendor(vendor); setIsModalOpen(true); }}
-                            className="px-5 py-2.5 bg-slate-900 text-white rounded-xl text-[11px] font-bold uppercase tracking-wider hover:bg-black hover:shadow-lg transition-all active:scale-95"
+                            className="px-5 py-2.5 bg-slate-900 text-white rounded-lg text-[11px] font-bold uppercase tracking-wider hover:bg-black hover:shadow-lg transition-all active:scale-95"
                          >
                             Review
                          </button>
@@ -339,7 +339,7 @@ export default function AdminVendorApprovals() {
                           <p className="text-sm font-medium text-slate-600 mb-8">No pending applications found in your registry.</p>
                           <button 
                             onClick={() => setActiveTab('VERIFIED')}
-                            className="px-8 py-3.5 bg-[#164e33] text-white rounded-xl font-bold text-[14px] flex items-center gap-3 hover:bg-[#113f29] transition-all"
+                            className="px-8 py-3.5 bg-[#164e33] text-white rounded-lg font-bold text-[14px] flex items-center gap-3 hover:bg-[#113f29] transition-all"
                           >
                              View Verified Hub <ArrowRight size={18} />
                           </button>
@@ -376,15 +376,15 @@ export default function AdminVendorApprovals() {
                      <ShieldCheck className="w-5 h-5 text-[#164e33]" />
                      <h2 className="text-base font-bold text-slate-900 uppercase tracking-tight">Partner Authorization</h2>
                   </div>
-                  <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-gray-50 rounded-xl transition-colors text-slate-600 hover:text-slate-900">
+                  <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-gray-50 rounded-lg transition-colors text-slate-600 hover:text-slate-900">
                      <X size={20} />
                   </button>
                </div>
 
                <div className="flex-1 overflow-y-auto p-8 space-y-8">
                   {/* Business Header Card */}
-                  <div className="bg-white p-8 rounded-xl border border-gray-100 flex items-start gap-8 shadow-sm">
-                     <div className="w-24 h-24 bg-slate-50 rounded-xl border border-gray-100 overflow-hidden shrink-0 flex items-center justify-center text-3xl font-bold text-slate-300">
+                  <div className="bg-white p-8 rounded-lg border border-gray-100 flex items-start gap-8 shadow-sm">
+                     <div className="w-24 h-24 bg-slate-50 rounded-lg border border-gray-100 overflow-hidden shrink-0 flex items-center justify-center text-3xl font-bold text-slate-300">
                         {(selectedVendor.logoUrl || selectedVendor.logo) ? <img src={selectedVendor.logoUrl || selectedVendor.logo} className="w-full h-full object-cover" /> : (selectedVendor.businessName || selectedVendor.user?.name)?.charAt(0)}
                      </div>
                      <div className="flex-1 min-w-0">
@@ -419,7 +419,7 @@ export default function AdminVendorApprovals() {
                            <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest pl-1">Social Assets</h4>
                            <div className="grid grid-cols-2 gap-2">
                               {['LinkedIn', 'Instagram', 'Facebook', 'Globe'].map((s, i) => (
-                                 <div key={i} className="p-3 bg-white border border-gray-100 rounded-xl flex items-center justify-between group cursor-pointer hover:border-emerald-200 transition-all shadow-sm">
+                                 <div key={i} className="p-3 bg-white border border-gray-100 rounded-lg flex items-center justify-between group cursor-pointer hover:border-emerald-200 transition-all shadow-sm">
                                     <span className="text-sm font-bold text-slate-600">{s}</span>
                                     <ExternalLink size={12} className="text-slate-300 group-hover:text-emerald-500" />
                                  </div>
@@ -435,7 +435,7 @@ export default function AdminVendorApprovals() {
                            <div className="space-y-3">
                               <AssetRow icon={<ShieldCheck className="text-emerald-500" />} label="GSTIN Number" value={selectedVendor.gstNumber || 'PENDING'} />
                               <AssetRow icon={<Zap className="text-amber-500" />} label="Aadhaar ID" value={selectedVendor.aadhaarNumber || 'PENDING'} />
-                              <div className="p-4 bg-white border border-gray-100 rounded-xl flex items-center justify-between hover:border-blue-200 transition-all cursor-pointer shadow-sm">
+                              <div className="p-4 bg-white border border-gray-100 rounded-lg flex items-center justify-between hover:border-blue-200 transition-all cursor-pointer shadow-sm">
                                  <div className="flex items-center gap-3">
                                     <FileText size={18} className="text-blue-500" />
                                     <span className="text-sm font-bold text-slate-700">Verification Doc</span>
@@ -459,7 +459,7 @@ export default function AdminVendorApprovals() {
                   {/* Description */}
                   <div className="space-y-4">
                      <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest pl-1">Business Statement</h4>
-                     <div className="p-6 bg-white rounded-xl border border-gray-100 shadow-sm relative overflow-hidden">
+                     <div className="p-6 bg-white rounded-lg border border-gray-100 shadow-sm relative overflow-hidden">
                         <div className="absolute top-0 left-0 w-1 h-full bg-[#164e33] opacity-20" />
                         <p className="text-[14px] text-slate-700 font-medium leading-relaxed italic">
                            "{selectedVendor.description || 'Individual or business statement pending submission.'}"
@@ -472,7 +472,7 @@ export default function AdminVendorApprovals() {
                      <button 
                         onClick={() => handleStatusUpdate(selectedVendor.id, 'APPROVE')}
                         disabled={processingId === selectedVendor.id}
-                        className="flex-1 py-4 bg-slate-900 hover:bg-black text-white rounded-xl font-bold text-[12px] uppercase tracking-wider flex items-center justify-center gap-2 transition-all disabled:opacity-50 active:scale-95 shadow-lg shadow-slate-900/10"
+                        className="flex-1 py-4 bg-slate-900 hover:bg-black text-white rounded-lg font-bold text-[12px] uppercase tracking-wider flex items-center justify-center gap-2 transition-all disabled:opacity-50 active:scale-95 shadow-lg shadow-slate-900/10"
                      >
                         <ShieldCheck size={18} className="text-emerald-400" />
                         {processingId === selectedVendor.id ? 'Processing...' : 'Authorize Partner'}
@@ -480,7 +480,7 @@ export default function AdminVendorApprovals() {
                      <button 
                         onClick={() => { setSelectedVendor(selectedVendor); setIsRejectConfirmOpen(true); }}
                         disabled={processingId === selectedVendor.id}
-                        className="px-6 py-4 bg-white border border-rose-100 hover:bg-rose-50 text-rose-600 rounded-xl font-bold text-[12px] uppercase flex items-center justify-center gap-2 transition-all disabled:opacity-50 active:scale-95"
+                        className="px-6 py-4 bg-white border border-rose-100 hover:bg-rose-50 text-rose-600 rounded-lg font-bold text-[12px] uppercase flex items-center justify-center gap-2 transition-all disabled:opacity-50 active:scale-95"
                      >
                         <XCircle size={18} />
                      </button>
@@ -504,20 +504,20 @@ export default function AdminVendorApprovals() {
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="relative bg-white p-8 max-w-md w-full rounded-xl border border-gray-200 shadow-2xl"
+              className="relative bg-white p-8 max-w-md w-full rounded-lg border border-gray-200 shadow-2xl"
             >
                <h3 className="text-lg font-bold text-slate-900 mb-2">Confirm Rejection</h3>
                <p className="text-sm text-slate-600 mb-6 font-medium leading-relaxed">Are you sure you want to decline this partnership application? This action will notify the vendor immediately.</p>
                <div className="flex gap-3">
                   <button 
                     onClick={() => { handleStatusUpdate(selectedVendor.id, 'REJECT'); setIsRejectConfirmOpen(false); }}
-                    className="flex-1 py-3 bg-red-600 text-white rounded-xl font-bold text-xs uppercase tracking-widest shadow-lg shadow-red-600/20"
+                    className="flex-1 py-3 bg-red-600 text-white rounded-lg font-bold text-xs uppercase tracking-widest shadow-lg shadow-red-600/20"
                   >
                     Yes, Reject
                   </button>
                   <button 
                     onClick={() => setIsRejectConfirmOpen(false)}
-                    className="flex-1 py-3 bg-gray-50 text-slate-700 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-gray-100 transition-colors"
+                    className="flex-1 py-3 bg-gray-50 text-slate-700 rounded-lg font-bold text-xs uppercase tracking-widest hover:bg-gray-100 transition-colors"
                   >
                     Wait
                   </button>
@@ -531,19 +531,19 @@ export default function AdminVendorApprovals() {
 }
 
 const VerificationStatCard = ({ label, value, icon: Icon, iconColor, iconBg }: any) => (
-  <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between group hover:shadow-md transition-all">
+  <div className="bg-white p-6 rounded-lg border border-gray-100 shadow-sm flex items-center justify-between group hover:shadow-md transition-all">
      <div>
         <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">{label}</p>
         <h4 className="text-2xl font-bold text-slate-900">{value}</h4>
      </div>
-     <div className={`w-12 h-12 rounded-xl ${iconBg} ${iconColor} flex items-center justify-center`}>
+     <div className={`w-12 h-12 rounded-lg ${iconBg} ${iconColor} flex items-center justify-center`}>
         <Icon size={20} />
      </div>
   </div>
 );
 
 const InfoRow = ({ icon, label, value }: any) => (
-  <div className="p-4 bg-white border border-gray-100 rounded-xl flex items-center gap-4 shadow-sm">
+  <div className="p-4 bg-white border border-gray-100 rounded-lg flex items-center gap-4 shadow-sm">
      <div className="w-10 h-10 rounded-lg bg-slate-50 flex items-center justify-center shrink-0">
         {icon}
      </div>
@@ -555,7 +555,7 @@ const InfoRow = ({ icon, label, value }: any) => (
 );
 
 const AssetRow = ({ icon, label, value }: any) => (
-  <div className="p-4 bg-white border border-gray-100 rounded-xl flex items-center gap-4 shadow-sm">
+  <div className="p-4 bg-white border border-gray-100 rounded-lg flex items-center gap-4 shadow-sm">
      <div className="w-10 h-10 rounded-lg bg-slate-50 flex items-center justify-center shrink-0">
         {icon}
      </div>
