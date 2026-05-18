@@ -78,7 +78,7 @@ export default function VendorLogin({
   const modalContent = (
     <AnimatePresence>
       {isOpen && (
-        <div key="vendor-login-main" className="fixed inset-0 z-[10000] flex items-center justify-center p-4 overflow-y-auto no-scrollbar">
+        <div key="vendor-login-main" className="fixed inset-0 z-[10000] flex items-center justify-center p-4 overflow-y-auto scrollbar-none">
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -93,25 +93,25 @@ export default function VendorLogin({
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="relative w-full max-w-[480px] bg-white rounded-[32px] shadow-2xl overflow-hidden my-auto"
+            className="relative w-full max-w-[440px] md:max-w-[480px] bg-white rounded-2xl sm:rounded-[32px] shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col"
           >
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="absolute top-6 right-6 p-2 hover:bg-gray-100 rounded-full transition-colors z-20"
+              className="absolute top-4 right-4 sm:top-6 sm:right-6 p-2 hover:bg-gray-100 rounded-full transition-colors z-20"
             >
-              <X className="w-5 h-5 text-gray-700" />
+              <X className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700" />
             </button>
 
-            <div className="p-10">
-              <div className="mb-10">
+            <div className="p-6 sm:p-10 overflow-y-auto scrollbar-none flex-1 max-h-[92vh]">
+              <div className="mb-6 sm:mb-10">
                 <div>
-                  <h2 className="text-xl font-semibold text-gray-900 leading-tight">Vendor Login</h2>
-                  <p className="text-gray-700 text-[15px]">Manage your business profile</p>
+                  <h2 className="text-lg sm:text-xl font-semibold text-gray-900 leading-tight">Vendor Login</h2>
+                  <p className="text-gray-700 text-xs sm:text-[15px]">Manage your business profile</p>
                 </div>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
                 {error && (
                   <div className="p-3 bg-red-50 text-red-600 text-xs font-semibold rounded-xl border border-red-100 text-center">
                     {error}
@@ -119,16 +119,16 @@ export default function VendorLogin({
                 )}
 
                 <div className="relative">
-                  <label className="absolute -top-2.5 left-4 bg-white px-2 text-[13px] font-semibold text-[#FF4F00] z-10">
+                  <label className="absolute -top-2.5 left-4 bg-white px-2 text-xs sm:text-[13px] font-semibold text-[#FF4F00] z-10">
                     Business Email
                   </label>
-                  <div className="flex items-center h-[64px] border-2 border-gray-100 rounded-xl px-5 focus-within:border-[#FF4F00] transition-all">
-                    <Mail className="w-5 h-5 text-gray-600 mr-4" />
+                  <div className="flex items-center h-[54px] sm:h-[64px] border-2 border-gray-100 rounded-xl px-4 sm:px-5 focus-within:border-[#FF4F00] transition-all">
+                    <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600 mr-3 sm:mr-4" />
                     <input
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="flex-1 bg-transparent border-none outline-none text-lg font-medium text-gray-900"
+                      className="flex-1 bg-transparent border-none outline-none text-base sm:text-lg font-medium text-gray-900"
                       placeholder="business@example.com"
                       required
                     />
@@ -136,28 +136,28 @@ export default function VendorLogin({
                 </div>
 
                 <div className="relative">
-                  <label className="absolute -top-2.5 left-4 bg-white px-2 text-[13px] font-semibold text-[#FF4F00] z-10">
+                  <label className="absolute -top-2.5 left-4 bg-white px-2 text-xs sm:text-[13px] font-semibold text-[#FF4F00] z-10">
                     Password
                   </label>
-                  <div className="flex items-center h-[64px] border-2 border-gray-100 rounded-xl px-5 focus-within:border-[#FF4F00] transition-all">
-                    <Lock className="w-5 h-5 text-gray-600 mr-4" />
+                  <div className="flex items-center h-[54px] sm:h-[64px] border-2 border-gray-100 rounded-xl px-4 sm:px-5 focus-within:border-[#FF4F00] transition-all">
+                    <Lock className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600 mr-3 sm:mr-4" />
                     <input
                       type={showPassword ? 'text' : 'password'}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="flex-1 bg-transparent border-none outline-none text-lg font-medium text-gray-900"
+                      className="flex-1 bg-transparent border-none outline-none text-base sm:text-lg font-medium text-gray-900"
                       placeholder="••••••••"
                       required
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="p-2 hover:bg-gray-50 rounded-lg transition-colors"
+                      className="p-1.5 sm:p-2 hover:bg-gray-50 rounded-lg transition-colors"
                     >
                       {showPassword ? (
-                        <EyeOff className="w-5 h-5 text-gray-600" />
+                        <EyeOff className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
                       ) : (
-                        <Eye className="w-5 h-5 text-gray-600" />
+                        <Eye className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
                       )}
                     </button>
                   </div>
@@ -167,7 +167,7 @@ export default function VendorLogin({
                   <button
                     type="button"
                     onClick={() => setIsForgotPasswordOpen(true)}
-                    className="text-sm font-semibold text-[#FF4F00] hover:underline"
+                    className="text-xs sm:text-sm font-semibold text-[#FF4F00] hover:underline"
                   >
                     Forgot Password?
                   </button>
@@ -176,18 +176,18 @@ export default function VendorLogin({
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full h-[64px] bg-[#FF4F00] hover:bg-[#e64600] text-white rounded-xl text-xl font-semibold transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="w-full h-[54px] sm:h-[64px] bg-[#FF4F00] hover:bg-[#e64600] text-white rounded-xl text-lg sm:text-xl font-semibold transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {loading ? (
-                    <Loader2 className="w-6 h-6 animate-spin" />
+                    <Loader2 className="w-5 h-5 sm:w-6 sm:h-6 animate-spin" />
                   ) : (
                     'Login'
                   )}
-                  {!loading && <ArrowRight className="w-5 h-5" />}
+                  {!loading && <ArrowRight className="w-4.5 h-4.5 sm:w-5 sm:h-5" />}
                 </button>
 
-                <div className="text-center pt-4 border-t border-gray-100">
-                  <p className="text-gray-600 text-sm">
+                <div className="text-center pt-3 sm:pt-4 border-t border-gray-100">
+                  <p className="text-gray-600 text-xs sm:text-sm">
                     Want to sell on IndiaB2B?{' '}
                     <button
                       type="button"

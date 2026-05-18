@@ -60,7 +60,7 @@ export default function BuyerLogin({
         method: "POST",
         body: JSON.stringify({ phone }),
       });
-      
+
       // Log OTP to console in development
       if (data?.data?.otp) {
         console.warn("📱 YOUR OTP IS: " + data.data.otp);
@@ -103,7 +103,10 @@ export default function BuyerLogin({
   const modalContent = (
     <AnimatePresence>
       {isOpen && (
-        <div key="buyer-login-modal" className="fixed inset-0 z-[10000] flex items-center justify-center p-4 overflow-y-auto no-scrollbar">
+        <div
+          key="buyer-login-modal"
+          className="fixed inset-0 z-[10000] flex items-center justify-center p-4 overflow-y-auto scrollbar-none"
+        >
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -118,24 +121,24 @@ export default function BuyerLogin({
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="relative w-full max-w-[480px] bg-white rounded-[32px] shadow-2xl overflow-hidden my-auto"
+            className="relative w-full max-w-[440px] md:max-w-[480px] bg-white rounded-2xl sm:rounded-[32px] shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col"
           >
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="absolute top-6 right-6 p-2 hover:bg-gray-100 rounded-full transition-colors z-20"
+              className="absolute top-4 right-4 sm:top-6 sm:right-6 p-2 hover:bg-gray-100 rounded-full transition-colors z-20"
             >
-              <X className="w-5 h-5 text-gray-400" />
+              <X className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
             </button>
 
-            <div className="p-10">
+            <div className="p-6 sm:p-10 overflow-y-auto scrollbar-none flex-1 max-h-[92vh]">
               {/* Header Section */}
-              <div className="mb-10">
+              <div className="mb-6 sm:mb-10">
                 <div>
-                  <h2 className="text-xl font-semibold text-gray-900 leading-tight">
+                  <h2 className="text-lg sm:text-xl font-semibold text-gray-900 leading-tight">
                     Welcome
                   </h2>
-                  <p className="text-gray-500 text-[15px]">
+                  <p className="text-gray-500 text-xs sm:text-[15px]">
                     Login for a seamless experience
                   </p>
                 </div>
@@ -144,7 +147,7 @@ export default function BuyerLogin({
               {/* Form Section */}
               <form
                 onSubmit={otpSent ? handleVerifyOTP : handleRequestOTP}
-                className="space-y-8"
+                className="space-y-6 sm:space-y-8"
               >
                 {error && (
                   <div className="p-3 bg-red-50 text-red-600 text-xs font-semibold rounded-xl border border-red-100 text-center">
@@ -156,17 +159,17 @@ export default function BuyerLogin({
                   <div className="space-y-6">
                     {/* Floating Label Input */}
                     <div className="relative">
-                      <label className="absolute -top-2.5 left-4 bg-white px-2 text-[13px] font-semibold text-[#164e33] z-10">
+                      <label className="absolute -top-2.5 left-4 bg-white px-2 text-xs sm:text-[13px] font-semibold text-[#164e33] z-10">
                         Enter Mobile Number
                       </label>
-                      <div className="flex items-center h-[64px] border-2 border-[#164e33] rounded-xl px-5 transition-all">
-                        <div className="flex items-center gap-2 pr-4 border-r border-gray-100">
+                      <div className="flex items-center h-[54px] sm:h-[64px] border-2 border-[#164e33] rounded-xl px-4 sm:px-5 transition-all">
+                        <div className="flex items-center gap-1.5 sm:gap-2 pr-3 sm:pr-4 border-r border-gray-100">
                           <img
                             src="https://flagcdn.com/w40/in.png"
                             alt="India Flag"
-                            className="w-8 h-auto block"
+                            className="w-6 sm:w-8 h-auto block"
                           />
-                          <span className="text-xl font-medium text-gray-900">
+                          <span className="text-base sm:text-xl font-medium text-gray-900">
                             +91
                           </span>
                         </div>
@@ -178,7 +181,7 @@ export default function BuyerLogin({
                               e.target.value.replace(/\D/g, "").slice(0, 10),
                             )
                           }
-                          className="flex-1 bg-transparent border-none outline-none text-xl font-medium text-gray-900 pl-4 tracking-wider"
+                          className="flex-1 bg-transparent border-none outline-none text-base sm:text-xl font-medium text-gray-900 pl-3 sm:pl-4 tracking-wider"
                           placeholder=""
                           maxLength={10}
                           autoFocus
@@ -188,8 +191,8 @@ export default function BuyerLogin({
                     </div>
 
                     {/* Checkbox Section */}
-                    <div className="flex flex-col items-center gap-2">
-                      <label className="flex items-center gap-3 cursor-pointer group">
+                    <div className="flex flex-col items-center gap-1.5 sm:gap-2">
+                      <label className="flex items-center gap-2.5 sm:gap-3 cursor-pointer group">
                         <div className="relative">
                           <input
                             type="checkbox"
@@ -197,19 +200,22 @@ export default function BuyerLogin({
                             onChange={(e) => setAgreed(e.target.checked)}
                             className="peer sr-only"
                           />
-                          <div className="w-5 h-5 border-2 border-gray-300 rounded-[6px] bg-white peer-checked:bg-[#164e33] peer-checked:border-[#164e33] transition-all flex items-center justify-center">
+                          <div className="w-4.5 h-4.5 sm:w-5 sm:h-5 border-2 border-gray-300 rounded-[6px] bg-white peer-checked:bg-[#164e33] peer-checked:border-[#164e33] transition-all flex items-center justify-center">
                             {agreed && (
-                              <Check className="w-3.5 h-3.5 text-white animate-in zoom-in duration-200" strokeWidth={4} />
+                              <Check
+                                className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white animate-in zoom-in duration-200"
+                                strokeWidth={4}
+                              />
                             )}
                           </div>
                         </div>
-                        <span className="text-gray-500 font-medium text-[15px]">
+                        <span className="text-gray-500 font-medium text-xs sm:text-[15px]">
                           I Agree to Terms and Conditions
                         </span>
                       </label>
                       <button
                         type="button"
-                        className="text-[#164e33] font-medium text-[15px] underline underline-offset-4"
+                        className="text-[#164e33] font-medium text-xs sm:text-[15px] underline underline-offset-4"
                       >
                         T&C's Privacy Policy
                       </button>
@@ -218,10 +224,10 @@ export default function BuyerLogin({
                 ) : (
                   <div className="space-y-6">
                     <div className="relative">
-                      <label className="absolute -top-2.5 left-4 bg-white px-2 text-[13px] font-semibold text-[#164e33] z-10">
+                      <label className="absolute -top-2.5 left-4 bg-white px-2 text-xs sm:text-[13px] font-semibold text-[#164e33] z-10">
                         Enter OTP
                       </label>
-                      <div className="flex items-center h-[64px] border-2 border-[#164e33] rounded-xl px-5">
+                      <div className="flex items-center h-[54px] sm:h-[64px] border-2 border-[#164e33] rounded-xl px-4 sm:px-5">
                         <input
                           type="text"
                           value={otp}
@@ -230,7 +236,7 @@ export default function BuyerLogin({
                               e.target.value.replace(/\D/g, "").slice(0, 6),
                             )
                           }
-                          className="w-full bg-transparent border-none outline-none text-2xl text-center font-semibold text-gray-900 tracking-[0.5em]"
+                          className="w-full bg-transparent border-none outline-none text-xl sm:text-2xl text-center font-semibold text-gray-900 tracking-[0.5em]"
                           placeholder="000000"
                           maxLength={6}
                           autoFocus
@@ -238,14 +244,14 @@ export default function BuyerLogin({
                         />
                       </div>
                     </div>
-                    <div className="flex justify-between items-center px-2">
-                      <p className="text-sm text-gray-500 font-medium">
+                    <div className="flex justify-between items-center px-1 sm:px-2">
+                      <p className="text-xs sm:text-sm text-gray-500 font-medium">
                         OTP sent to +91 {phone}
                       </p>
                       <button
                         type="button"
                         onClick={() => setOtpSent(false)}
-                        className="text-[#164e33] text-sm font-semibold hover:underline"
+                        className="text-[#164e33] text-xs sm:text-sm font-semibold hover:underline"
                       >
                         Change
                       </button>
@@ -257,10 +263,10 @@ export default function BuyerLogin({
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full h-[64px] bg-[#164e33] hover:bg-[#123d28] text-white rounded-xl text-xl font-semibold transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="w-full h-[54px] sm:h-[64px] bg-[#164e33] hover:bg-[#123d28] text-white rounded-xl text-lg sm:text-xl font-semibold transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {loading ? (
-                    <Loader2 className="w-6 h-6 animate-spin" />
+                    <Loader2 className="w-5 h-5 sm:w-6 sm:h-6 animate-spin" />
                   ) : otpSent ? (
                     "Verify OTP"
                   ) : (
@@ -270,11 +276,11 @@ export default function BuyerLogin({
 
                 {/* Footer Skip Button */}
                 {isSkipable && (
-                  <div className="pt-2 text-center">
+                  <div className="pt-1 sm:pt-2 text-center">
                     <button
                       type="button"
                       onClick={onClose}
-                      className="text-gray-400 font-semibold text-lg hover:text-gray-900 transition-colors"
+                      className="text-gray-400 font-semibold text-base sm:text-lg hover:text-gray-900 transition-colors"
                     >
                       Skip
                     </button>

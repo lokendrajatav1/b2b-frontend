@@ -120,7 +120,7 @@ export default function VendorRegister({
   const modalContent = (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[10001] flex items-center justify-center p-4 overflow-y-auto no-scrollbar">
+        <div className="fixed inset-0 z-[10001] flex items-center justify-center p-4 overflow-y-auto scrollbar-none">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -133,22 +133,22 @@ export default function VendorRegister({
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="relative w-full max-w-[560px] bg-white rounded-[32px] shadow-2xl overflow-hidden my-auto"
+            className="relative w-full max-w-[480px] sm:max-w-[560px] bg-white rounded-2xl sm:rounded-[32px] shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col"
           >
             <button
               onClick={onClose}
-              className="absolute top-6 right-6 p-2 hover:bg-gray-100 rounded-full transition-colors z-20"
+              className="absolute top-4 right-4 sm:top-6 sm:right-6 p-2 hover:bg-gray-100 rounded-full transition-colors z-20"
             >
-              <X className="w-5 h-5 text-gray-400" />
+              <X className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
             </button>
 
-            <div className="p-10">
-              <div className="mb-8">
+            <div className="p-6 sm:p-10 overflow-y-auto scrollbar-none flex-1 max-h-[92vh]">
+              <div className="mb-6 sm:mb-8">
                 <div>
-                  <h2 className="text-xl font-semibold text-gray-900 leading-tight">
+                  <h2 className="text-lg sm:text-xl font-semibold text-gray-900 leading-tight">
                     Join as Supplier
                   </h2>
-                  <p className="text-gray-500 text-[15px]">
+                  <p className="text-gray-500 text-xs sm:text-[15px]">
                     Create your business profile
                   </p>
                 </div>
@@ -168,51 +168,51 @@ export default function VendorRegister({
                   </p>
                   <button
                     onClick={onBackToLogin}
-                    className="w-full h-[64px] bg-[#FF4F00] text-white rounded-xl text-xl font-semibold hover:bg-[#e64600] transition-all"
+                    className="w-full h-[54px] sm:h-[64px] bg-[#FF4F00] text-white rounded-xl text-lg sm:text-xl font-semibold hover:bg-[#e64600] transition-all"
                   >
                     Login Now
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
                   {error && (
                     <div className="p-3 bg-red-50 text-red-600 text-xs font-semibold rounded-xl border border-red-100 text-center">
                       {error}
                     </div>
                   )}
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="relative">
-                      <label className="absolute -top-2 left-4 bg-white px-2 text-[11px] font-semibold text-[#FF4F00] z-10">
+                      <label className="absolute -top-2 left-4 bg-white px-2 text-[10px] sm:text-[11px] font-semibold text-[#FF4F00] z-10">
                         Name
                       </label>
-                      <div className="flex items-center h-[54px] border-2 border-gray-100 rounded-xl px-4 focus-within:border-[#FF4F00] transition-all">
-                        <User className="w-4 h-4 text-gray-400 mr-3" />
+                      <div className="flex items-center h-[48px] sm:h-[54px] border-2 border-gray-100 rounded-xl px-4 focus-within:border-[#FF4F00] transition-all">
+                        <User className="w-4 h-4 text-gray-400 mr-2.5 sm:mr-3 flex-shrink-0" />
                         <input
                           type="text"
                           value={formData.name}
                           onChange={(e) =>
                             setFormData({ ...formData, name: e.target.value })
                           }
-                          className="flex-1 bg-transparent border-none outline-none text-[15px] font-medium text-gray-900"
+                          className="flex-1 bg-transparent border-none outline-none text-sm sm:text-[15px] font-medium text-gray-900"
                           placeholder="Your Name"
                           required
                         />
                       </div>
                     </div>
                     <div className="relative">
-                      <label className="absolute -top-2 left-4 bg-white px-2 text-[11px] font-semibold text-[#FF4F00] z-10">
+                      <label className="absolute -top-2 left-4 bg-white px-2 text-[10px] sm:text-[11px] font-semibold text-[#FF4F00] z-10">
                         Phone
                       </label>
-                      <div className="flex items-center h-[54px] border-2 border-gray-100 rounded-xl px-4 focus-within:border-[#FF4F00] transition-all">
-                        <Phone className="w-4 h-4 text-gray-400 mr-3" />
+                      <div className="flex items-center h-[48px] sm:h-[54px] border-2 border-gray-100 rounded-xl px-4 focus-within:border-[#FF4F00] transition-all">
+                        <Phone className="w-4 h-4 text-gray-400 mr-2.5 sm:mr-3 flex-shrink-0" />
                         <input
                           type="tel"
                           value={formData.phone}
                           onChange={(e) =>
                             setFormData({ ...formData, phone: e.target.value })
                           }
-                          className="flex-1 bg-transparent border-none outline-none text-[15px] font-medium text-gray-900"
+                          className="flex-1 bg-transparent border-none outline-none text-sm sm:text-[15px] font-medium text-gray-900"
                           placeholder="+91..."
                           required
                         />
@@ -221,19 +221,19 @@ export default function VendorRegister({
                   </div>
 
                   <div className="relative">
-                    <label className="absolute -top-2 left-4 bg-white px-2 text-[11px] font-semibold text-[#FF4F00] z-10">
+                    <label className="absolute -top-2 left-4 bg-white px-2 text-[10px] sm:text-[11px] font-semibold text-[#FF4F00] z-10">
                       Email
                     </label>
                     <div className="flex gap-2">
-                      <div className="flex items-center h-[54px] flex-1 border-2 border-gray-100 rounded-xl px-4 focus-within:border-[#FF4F00] transition-all">
-                        <Mail className="w-4 h-4 text-gray-400 mr-3" />
+                      <div className="flex items-center h-[48px] sm:h-[54px] flex-1 border-2 border-gray-100 rounded-xl px-4 focus-within:border-[#FF4F00] transition-all">
+                        <Mail className="w-4 h-4 text-gray-400 mr-2.5 sm:mr-3 flex-shrink-0" />
                         <input
                           type="email"
                           value={formData.email}
                           onChange={(e) =>
                             setFormData({ ...formData, email: e.target.value })
                           }
-                          className="flex-1 bg-transparent border-none outline-none text-[15px] font-medium text-gray-900"
+                          className="flex-1 bg-transparent border-none outline-none text-sm sm:text-[15px] font-medium text-gray-900"
                           placeholder="business@example.com"
                           required
                         />
@@ -242,7 +242,7 @@ export default function VendorRegister({
                         type="button"
                         onClick={handleSendOTP}
                         disabled={otpLoading || otpSent}
-                        className="px-4 h-[54px] bg-[#FF4F00] hover:bg-[#e64600] cursor-pointer text-white rounded-xl text-sm font-semibold disabled:bg-emerald-500 transition-all"
+                        className="px-4 h-[48px] sm:h-[54px] bg-[#FF4F00] hover:bg-[#e64600] cursor-pointer text-white rounded-xl text-xs sm:text-sm font-semibold disabled:bg-emerald-500 transition-all flex items-center justify-center"
                       >
                         {otpLoading ? (
                           <Loader2 className="w-4 h-4 animate-spin" />
@@ -262,18 +262,18 @@ export default function VendorRegister({
                         animate={{ height: "auto", opacity: 1 }}
                         className="relative"
                       >
-                        <label className="absolute -top-2 left-4 bg-white px-2 text-[11px] font-semibold text-emerald-600 z-10">
+                        <label className="absolute -top-2 left-4 bg-white px-2 text-[10px] sm:text-[11px] font-semibold text-emerald-600 z-10">
                           OTP Code
                         </label>
-                        <div className="flex items-center h-[54px] border-2 border-emerald-100 bg-emerald-50/10 rounded-xl px-4 focus-within:border-emerald-500 transition-all">
-                          <KeyRound className="w-4 h-4 text-emerald-500 mr-3" />
+                        <div className="flex items-center h-[48px] sm:h-[54px] border-2 border-emerald-100 bg-emerald-50/10 rounded-xl px-4 focus-within:border-emerald-500 transition-all">
+                          <KeyRound className="w-4 h-4 text-emerald-500 mr-2.5 sm:mr-3 flex-shrink-0" />
                           <input
                             type="text"
                             value={formData.otp}
                             onChange={(e) =>
-                              setFormData({ ...formData, otp: e.target.value })
+                                setFormData({ ...formData, otp: e.target.value })
                             }
-                            className="flex-1 bg-transparent border-none outline-none text-lg font-semibold text-gray-900 text-center tracking-[0.5em]"
+                            className="flex-1 bg-transparent border-none outline-none text-base sm:text-lg font-semibold text-gray-900 text-center tracking-[0.5em]"
                             placeholder="000000"
                             maxLength={6}
                             required
@@ -283,13 +283,13 @@ export default function VendorRegister({
                     )}
                   </AnimatePresence>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="relative">
-                      <label className="absolute -top-2 left-4 bg-white px-2 text-[11px] font-semibold text-[#FF4F00] z-10">
+                      <label className="absolute -top-2 left-4 bg-white px-2 text-[10px] sm:text-[11px] font-semibold text-[#FF4F00] z-10">
                         Password
                       </label>
-                      <div className="flex items-center h-[54px] border-2 border-gray-100 rounded-xl px-4 focus-within:border-[#FF4F00] transition-all">
-                        <Lock className="w-4 h-4 text-gray-400 mr-3" />
+                      <div className="flex items-center h-[48px] sm:h-[54px] border-2 border-gray-100 rounded-xl px-4 focus-within:border-[#FF4F00] transition-all">
+                        <Lock className="w-4 h-4 text-gray-400 mr-2.5 sm:mr-3 flex-shrink-0" />
                         <input
                           type={showPassword ? "text" : "password"}
                           value={formData.password}
@@ -299,18 +299,18 @@ export default function VendorRegister({
                               password: e.target.value,
                             })
                           }
-                          className="flex-1 bg-transparent border-none outline-none text-[15px] font-medium text-gray-900"
+                          className="flex-1 bg-transparent border-none outline-none text-sm sm:text-[15px] font-medium text-gray-900"
                           placeholder="••••••••"
                           required
                         />
                       </div>
                     </div>
                     <div className="relative">
-                      <label className="absolute -top-2 left-4 bg-white px-2 text-[11px] font-semibold text-[#FF4F00] z-10">
+                      <label className="absolute -top-2 left-4 bg-white px-2 text-[10px] sm:text-[11px] font-semibold text-[#FF4F00] z-10">
                         Confirm
                       </label>
-                      <div className="flex items-center h-[54px] border-2 border-gray-100 rounded-xl px-4 focus-within:border-[#FF4F00] transition-all">
-                        <Lock className="w-4 h-4 text-gray-400 mr-3" />
+                      <div className="flex items-center h-[48px] sm:h-[54px] border-2 border-gray-100 rounded-xl px-4 focus-within:border-[#FF4F00] transition-all">
+                        <Lock className="w-4 h-4 text-gray-400 mr-2.5 sm:mr-3 flex-shrink-0" />
                         <input
                           type={showPassword ? "text" : "password"}
                           value={formData.confirmPassword}
@@ -320,7 +320,7 @@ export default function VendorRegister({
                               confirmPassword: e.target.value,
                             })
                           }
-                          className="flex-1 bg-transparent border-none outline-none text-[15px] font-medium text-gray-900"
+                          className="flex-1 bg-transparent border-none outline-none text-sm sm:text-[15px] font-medium text-gray-900"
                           placeholder="••••••••"
                           required
                         />
@@ -331,17 +331,17 @@ export default function VendorRegister({
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full h-[64px] bg-[#FF4F00] text-white rounded-xl text-xl font-semibold hover:bg-[#e64600] transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2 mt-2 cursor-pointer"
+                    className="w-full h-[54px] sm:h-[64px] bg-[#FF4F00] text-white rounded-xl text-lg sm:text-xl font-semibold hover:bg-[#e64600] transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2 mt-2 cursor-pointer"
                   >
                     {loading ? (
-                      <Loader2 className="w-6 h-6 animate-spin" />
+                      <Loader2 className="w-5 h-5 sm:w-6 sm:h-6 animate-spin" />
                     ) : (
                       "Create Account"
                     )}
-                    {!loading && <ArrowRight className="w-5 h-5" />}
+                    {!loading && <ArrowRight className="w-4.5 h-4.5 sm:w-5 sm:h-5" />}
                   </button>
 
-                  <div className="text-center pt-4 border-t border-gray-100">
+                  <div className="text-center pt-3 sm:pt-4 border-t border-gray-100">
                     <p className="text-gray-500 text-sm">
                       Already have an account?{" "}
                       <button

@@ -1,112 +1,170 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Send, Clock, ShieldCheck } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, CheckCircle2 } from 'lucide-react';
 
 export default function UniformPremiumContact() {
-  
-  // Heading Style Constant for absolute uniformity
-  const headingStyle = "text-3xl font-semibold text-[#1B5E3D] uppercase ";
+  const [formSubmitted, setFormSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormSubmitted(true);
+    setTimeout(() => setFormSubmitted(false), 5000);
+  };
 
   return (
-    <div className="min-h-screen bg-[#F8FAF9] text-slate-900 font-sans antialiased">
+    <div className="min-h-screen bg-[#FAFAFA] text-slate-800 font-sans antialiased selection:bg-[#FF4F00]/10 selection:text-[#FF4F00]">
       
       {/* --- HERO SECTION --- */}
-      <section className="relative pt-32 pb-16 bg-white border-b border-emerald-50">
-        <div className="max-w-7xl mx-auto px-6 text-center">
+      <section className="relative pt-32 pb-16 bg-white border-b border-slate-100">
+        <div className="absolute inset-0 bg-grid-pattern opacity-[0.03] pointer-events-none" />
+        <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
           <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="inline-flex items-center gap-2 px-3 py-1 bg-orange-50 rounded-full mb-6"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center gap-2 px-3 py-1 bg-orange-50 rounded-full mb-6 border border-orange-100"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-[#D97706]" />
-            <span className="text-base font-semibold uppercase  text-[#D97706]">24/7 Global Desk</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#FF4F00] animate-pulse" />
+            <span className="text-xs font-semibold uppercase tracking-wider text-[#FF4F00]">24/7 Global Business Desk</span>
           </motion.div>
           
-          {/* Uniform Heading */}
-          <h1 className={headingStyle}>
-            Get In Touch With Us
-          </h1>
+          <motion.h1 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="text-4xl md:text-5xl font-semibold text-slate-900 tracking-tight uppercase"
+          >
+            GET IN TOUCH WITH US
+          </motion.h1>
           
-          <p className="text-slate-400 mt-4 max-w-xl mx-auto text-base font-medium">
-            Connecting Indian excellence with global opportunities through transparent communication.
-          </p>
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="text-slate-500 mt-4 max-w-2xl mx-auto text-base md:text-lg font-normal leading-relaxed"
+          >
+            Connecting manufacturers, suppliers, and exporters with global buyers. Reach out to our trade advisory team for custom enterprise solutions.
+          </motion.p>
         </div>
       </section>
 
-      <section className="py-20">
+      {/* --- CONTENT SECTION --- */}
+      <section className="py-20 bg-[#F9FBFD]">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid lg:grid-cols-12 gap-12">
+          <div className="grid lg:grid-cols-12 gap-12 items-start">
             
             {/* LEFT: INFO */}
-            <div className="lg:col-span-4 space-y-8">
+            <div className="lg:col-span-5 space-y-8">
               <div>
-                <h2 className={headingStyle + " text-xl mb-6"}>Contact Details</h2>
+                <div className="relative pb-2 inline-block mb-6">
+                  <h2 className="text-lg font-bold text-slate-900 uppercase tracking-wider">
+                    Contact Details
+                  </h2>
+                  <div className="absolute bottom-0 left-0 w-8 h-[2px] bg-[#FF4F00] rounded-full" />
+                </div>
+                
                 <div className="space-y-4">
                   {[
-                    { icon: Mail, label: "EMAIL", val: "support@indiab2b.com" },
-                    { icon: Phone, label: "PHONE", val: "+91 1800 123 4567" },
-                    { icon: MapPin, label: "OFFICE", val: "Mumbai, MH, India" }
+                    { icon: Mail, label: "Email Support", val: "support@indiab2bconnect.com", desc: "For general and technical inquiries" },
+                    { icon: Phone, label: "Toll-Free Helpline", val: "+91 1800 123 4567", desc: "Available Mon-Sat, 9AM-7PM IST" },
+                    { icon: MapPin, label: "Registered Office", val: "Sector 62, Noida, Uttar Pradesh, India", desc: "IndiaB2B Connect Corporate HQ" }
                   ].map((item, i) => (
-                    <div key={i} className="p-6 bg-white rounded-lg border border-emerald-50 flex items-center gap-5 shadow-sm">
-                      <div className="w-12 h-12 bg-emerald-50 rounded-lg flex items-center justify-center text-[#1B5E3D]">
-                        <item.icon size={20} />
+                    <div 
+                      key={i} 
+                      className="p-6 bg-white rounded-2xl border border-slate-100 flex items-start gap-5 shadow-sm"
+                    >
+                      <div className="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center text-[#FF4F00] shrink-0 border border-orange-100/50">
+                        <item.icon size={22} />
                       </div>
                       <div>
-                        <p className="text-base font-semibold text-slate-300 uppercase ">{item.label}</p>
-                        <p className="text-base font-semibold text-slate-700">{item.val}</p>
+                        <p className="text-xs font-bold text-[#FF4F00] uppercase tracking-wider mb-0.5">{item.label}</p>
+                        <p className="text-base font-bold text-slate-800 mb-1">{item.val}</p>
+                        <p className="text-xs font-normal text-slate-500">{item.desc}</p>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="p-8 bg-emerald-50 rounded-[2.5rem] border border-emerald-100">
-                <Clock className="text-[#1B5E3D] mb-4" size={28} />
-                <h3 className="text-base font-semibold text-[#1B5E3D] uppercase  mb-2">Operational Hours</h3>
-                <p className="text-base text-slate-500 font-medium">
-                  Monday — Saturday<br />
-                  09:00 AM - 07:00 PM (IST)
-                </p>
-              </div>
             </div>
 
             {/* RIGHT: FORM */}
-            <div className="lg:col-span-8">
-              <div className="bg-white p-10 md:p-14 rounded-[3.5rem] border border-emerald-50 shadow-xl shadow-emerald-900/5">
-                <h2 className={headingStyle + " mb-10"}>Send A Message</h2>
-                
-                <form className="space-y-8">
-                  <div className="grid md:grid-cols-2 gap-8">
-                    <div className="space-y-2">
-                      <label className="text-base font-semibold text-slate-400 uppercase  ml-1">Full Name</label>
-                      <input type="text" className="w-full pb-3 bg-transparent border-b border-slate-100 focus:border-[#1B5E3D] outline-none transition-all text-base font-semibold text-slate-800 placeholder:font-normal" placeholder="Enter your name" />
+            <div className="lg:col-span-7">
+              <div className="bg-white p-8 md:p-12 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-900/5">
+                <div className="relative pb-2 inline-block mb-8">
+                  <h2 className="text-lg font-bold text-slate-900 uppercase tracking-wider">
+                    Send A Message
+                  </h2>
+                  <div className="absolute bottom-0 left-0 w-8 h-[2px] bg-[#FF4F00] rounded-full" />
+                </div>
+
+                {formSubmitted ? (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="p-8 bg-emerald-50 rounded-2xl border border-emerald-100 text-center space-y-3"
+                  >
+                    <div className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center mx-auto text-white shadow-sm">
+                      <CheckCircle2 size={24} />
                     </div>
-                    <div className="space-y-2">
-                      <label className="text-base font-semibold text-slate-400 uppercase  ml-1">Email Address</label>
-                      <input type="email" className="w-full pb-3 bg-transparent border-b border-slate-100 focus:border-[#1B5E3D] outline-none transition-all text-base font-semibold text-slate-800 placeholder:font-normal" placeholder="name@company.com" />
+                    <h3 className="text-lg font-bold text-slate-900">Message Received Successfully!</h3>
+                    <p className="text-sm text-slate-600 max-w-md mx-auto">
+                      Thank you for contacting IndiaB2B Connect. Our business development team will review your inquiry and get back to you within 24 business hours.
+                    </p>
+                  </motion.div>
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Full Name</label>
+                        <input 
+                          type="text" 
+                          required
+                          className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-[#FF4F00] focus:ring-4 focus:ring-[#FF4F00]/10 outline-none transition-all text-sm font-medium text-slate-800 placeholder:text-slate-400" 
+                          placeholder="Enter your name" 
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Email Address</label>
+                        <input 
+                          type="email" 
+                          required
+                          className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-[#FF4F00] focus:ring-4 focus:ring-[#FF4F00]/10 outline-none transition-all text-sm font-medium text-slate-800 placeholder:text-slate-400" 
+                          placeholder="name@company.com" 
+                        />
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="space-y-2">
-                    <label className="text-base font-semibold text-slate-400 uppercase  ml-1">Inquiry Type</label>
-                    <select className="w-full pb-3 bg-transparent border-b border-slate-100 focus:border-[#1B5E3D] outline-none transition-all text-base font-semibold text-slate-800 appearance-none">
-                      <option>General Inquiry</option>
-                      <option>Bulk Order Sourcing</option>
-                      <option>Partnership Opportunity</option>
-                    </select>
-                  </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Inquiry Type</label>
+                      <select className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-[#FF4F00] focus:ring-4 focus:ring-[#FF4F00]/10 outline-none transition-all text-sm font-medium text-slate-800 appearance-none cursor-pointer">
+                        <option>General Corporate Inquiry</option>
+                        <option>Bulk Sourcing Requirement</option>
+                        <option>Vendor Partnership & Onboarding</option>
+                        <option>Technical / Account Support</option>
+                      </select>
+                    </div>
 
-                  <div className="space-y-2">
-                    <label className="text-base font-semibold text-slate-400 uppercase  ml-1">Message</label>
-                    <textarea rows={4} className="w-full pb-3 bg-transparent border-b border-slate-100 focus:border-[#1B5E3D] outline-none transition-all text-base font-semibold text-slate-800 resize-none placeholder:font-normal" placeholder="How can we assist your business?" />
-                  </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Message Details</label>
+                      <textarea 
+                        rows={5} 
+                        required
+                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-[#FF4F00] focus:ring-4 focus:ring-[#FF4F00]/10 outline-none transition-all text-sm font-medium text-slate-800 resize-none placeholder:text-slate-400" 
+                        placeholder="Please elaborate on your business requirement or query..." 
+                      />
+                    </div>
 
-                  <button className="px-10 py-4 bg-[#1B5E3D] text-white rounded-lg font-semibold uppercase  text-[12px] hover:bg-[#14452d] transition-all flex items-center gap-3 shadow-lg active:scale-95">
-                    Submit Message <Send size={16} />
-                  </button>
-                </form>
+                    <button 
+                      type="submit" 
+                      className="w-full md:w-auto px-8 py-4 bg-[#FF4F00] text-white rounded-xl font-bold uppercase tracking-wider text-xs hover:bg-[#e04500] transition-colors flex items-center justify-center gap-3 shadow-lg shadow-orange-600/10 hover:shadow-orange-600/20 active:scale-[0.98] transition-all"
+                    >
+                      Submit Message <Send size={14} />
+                    </button>
+                  </form>
+                )}
               </div>
             </div>
 
@@ -114,17 +172,6 @@ export default function UniformPremiumContact() {
         </div>
       </section>
 
-      {/* --- TRUST FOOTER --- */}
-      <section className="pb-20">
-        <div className="max-w-7xl mx-auto px-6 border-t border-emerald-50 pt-16 flex flex-col md:flex-row justify-between items-center gap-8">
-          <h2 className="text-[12px] font-semibold text-slate-300 uppercase ">Verified Trade Network</h2>
-          <div className="flex gap-8 opacity-40 grayscale">
-            <ShieldCheck size={32} />
-            <div className="font-semibold text-xl">MSME</div>
-            <div className="font-semibold text-xl">ISO</div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }

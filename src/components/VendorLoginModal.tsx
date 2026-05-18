@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '@/context/AuthContext';
-import { apiFetch } from '@/lib/api';
+import React, { useState, useEffect } from "react";
+import { useAuth } from "@/context/AuthContext";
+import { apiFetch } from "@/lib/api";
 import {
   X,
   ShieldCheck,
@@ -14,9 +14,9 @@ import {
   Zap,
   Loader2,
   CheckCircle2,
-  Building2
-} from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+  Building2,
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Vendor {
   id: string;
@@ -34,22 +34,27 @@ interface VendorLoginModalProps {
   onSuccess?: () => void;
 }
 
-export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }: VendorLoginModalProps) {
+export default function VendorLoginModal({
+  isOpen,
+  onClose,
+  vendor,
+  onSuccess,
+}: VendorLoginModalProps) {
   const { login } = useAuth();
-  const [phone, setPhone] = useState('');
-  const [otp, setOtp] = useState('');
+  const [phone, setPhone] = useState("");
+  const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (isOpen && vendor) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     }
     return () => {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     };
   }, [isOpen, vendor]);
 
@@ -58,19 +63,19 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
   const handleRequestOTP = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!phone || phone.length < 10) {
-      setError('Please enter a valid mobile number');
+      setError("Please enter a valid mobile number");
       return;
     }
     setLoading(true);
-    setError('');
+    setError("");
     try {
-      await apiFetch('/auth/request-otp', {
-        method: 'POST',
+      await apiFetch("/auth/request-otp", {
+        method: "POST",
         body: JSON.stringify({ phone }),
       });
       setOtpSent(true);
     } catch (err: any) {
-      setError(err.message || 'Failed to request OTP');
+      setError(err.message || "Failed to request OTP");
     } finally {
       setLoading(false);
     }
@@ -79,14 +84,14 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
   const handleVerifyOTP = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!otp || otp.length < 6) {
-      setError('Please enter the 6-digit OTP');
+      setError("Please enter the 6-digit OTP");
       return;
     }
     setLoading(true);
-    setError('');
+    setError("");
     try {
-      const data = await apiFetch('/auth/verify-otp-login', {
-        method: 'POST',
+      const data = await apiFetch("/auth/verify-otp-login", {
+        method: "POST",
         body: JSON.stringify({ phone, otp }),
       });
 
@@ -94,7 +99,7 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
       if (onSuccess) onSuccess();
       onClose();
     } catch (err: any) {
-      setError(err.message || 'Invalid OTP');
+      setError(err.message || "Invalid OTP");
     } finally {
       setLoading(false);
     }
@@ -106,18 +111,18 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
         initial={{ opacity: 0, scale: 0.95, y: 10 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 10 }}
-        className="max-w-4xl w-full max-h-[90vh] overflow-y-auto bg-white rounded-lg shadow-2xl flex flex-col md:flex-row border border-gray-100 relative scrollbar-thin scrollbar-thumb-gray-200"
+        className="max-w-md md:max-w-4xl w-full max-h-[92vh] md:max-h-[90vh] overflow-y-auto md:overflow-hidden bg-white rounded-lg shadow-2xl flex flex-col md:flex-row border border-gray-100 relative scrollbar-none"
       >
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute right-6 top-6 text-gray-400 hover:text-gray-600 transition-colors z-50 p-2 hover:bg-gray-50 rounded-full"
+          className="absolute right-4 top-4 md:right-6 md:top-6 text-gray-400 hover:text-gray-600 transition-colors z-50 p-2 hover:bg-gray-50 rounded-full"
         >
-          <X size={24} />
+          <X size={20} className="md:w-6 md:h-6" />
         </button>
 
-        {/* Left Side: Business Info */}
-        <div className="w-full md:w-5/12 p-8 bg-white relative border-r border-gray-50">
+        {/* Left Side: Business Info (Hidden on Mobile) */}
+        <div className="hidden md:block md:w-5/12 p-8 bg-white relative border-r border-gray-50">
           {/* Top Badge */}
           <div className="inline-flex items-center gap-1 bg-[#006d3c] text-white px-3 py-1 rounded-lg text-sm font-semibold mb-6">
             <ShieldCheck size={16} />
@@ -127,7 +132,11 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
           {/* Business Logo Placeholder */}
           <div className="w-24 h-24 bg-[#f0f9f4] border border-[#e0f2e9] rounded-lg flex items-center justify-center mb-8 overflow-hidden shadow-sm">
             {vendor.logoUrl ? (
-              <img src={vendor.logoUrl} alt={vendor.businessName} className="w-full h-full object-cover" />
+              <img
+                src={vendor.logoUrl}
+                alt={vendor.businessName}
+                className="w-full h-full object-cover"
+              />
             ) : (
               <div className="text-[#89b39d] opacity-50">
                 <Building2 size={48} strokeWidth={1.5} />
@@ -136,7 +145,9 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
           </div>
 
           <div className="space-y-4">
-            <p className="text-[#006d3c] font-semibold text-xs uppercase tracking-wider">{vendor.category?.name || 'Business Service'}</p>
+            <p className="text-[#006d3c] font-semibold text-xs uppercase tracking-wider">
+              {vendor.category?.name || "Business Service"}
+            </p>
             <h1 className="text-3xl font-extrabold text-[#1a2b3c] leading-tight">
               {vendor.businessName}
             </h1>
@@ -151,7 +162,12 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
                 <Shield size={14} /> GST Registered
               </span>
               <span className="flex items-center gap-1 bg-[#f0fdf4] text-[#166534] border border-[#bbf7d0] px-3 py-1 rounded-md text-xs font-semibold">
-                <ShieldCheck size={14} fill="currentColor" className="text-[#166534]" /> VERIFIED
+                <ShieldCheck
+                  size={14}
+                  fill="currentColor"
+                  className="text-[#166534]"
+                />{" "}
+                VERIFIED
               </span>
             </div>
 
@@ -170,8 +186,12 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
               <div className="flex items-center gap-2">
                 <ShieldCheck size={24} className="text-[#006d3c]" />
                 <div>
-                  <div className="text-[10px] font-semibold text-[#006d3c] uppercase tracking-tighter">Trustseal</div>
-                  <div className="text-[10px] text-gray-500 font-medium">Verified Business</div>
+                  <div className="text-[10px] font-semibold text-[#006d3c] uppercase tracking-tighter">
+                    Trustseal
+                  </div>
+                  <div className="text-[10px] text-gray-500 font-medium">
+                    Verified Business
+                  </div>
                 </div>
               </div>
             </div>
@@ -181,26 +201,32 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
                 <ShieldCheck size={20} className="text-gray-700" />
               </div>
               <p className="text-[11px] text-gray-600 leading-tight">
-                Your information is secure<br /><span className="font-semibold">and encrypted</span>
+                Your information is secure
+                <br />
+                <span className="font-semibold">and encrypted</span>
               </p>
             </div>
           </div>
         </div>
 
         {/* Right Side: Form */}
-        <div className="w-full md:w-7/12 p-6 sm:p-10 bg-white flex flex-col justify-center">
-          <div className="mt-2">
-            <h2 className="text-[32px] sm:text-[40px] font-semibold text-[#111827] leading-[1.1] mb-2">
-              Connect with this<br />Supplier
+        <div className="w-full md:w-7/12 p-5 sm:p-8 md:p-10 bg-white flex flex-col justify-center max-h-[92vh] md:max-h-[90vh] overflow-y-auto scrollbar-none">
+          <div className="mt-2 md:mt-0">
+            <h2 className="text-2xl sm:text-[32px] md:text-[40px] font-semibold text-[#111827] leading-[1.1] mb-2">
+              Connect with this
+              <br />
+              Supplier
             </h2>
-            <div className="w-12 h-1 bg-[#006d3c] mb-4 mt-3"></div>
+            <div className="w-12 h-1 bg-[#006d3c] mb-4 mt-2"></div>
 
-            <p className="text-gray-500 text-base sm:text-lg mb-6 leading-relaxed">
-              {otpSent ? `Enter the 6-digit code sent to +91 ${phone}` : 'We just need to verify your mobile number to get started.'}
+            <p className="text-gray-500 text-sm sm:text-base md:text-lg mb-5 leading-relaxed">
+              {otpSent
+                ? `Enter the 6-digit code sent to +91 ${phone}`
+                : "We just need to verify your mobile number to get started."}
             </p>
 
             {error && (
-              <div className="mb-4 p-4 bg-red-50 text-red-600 text-sm font-semibold border border-red-100 rounded-lg flex items-center gap-2 animate-shake">
+              <div className="mb-4 p-3 bg-red-50 text-red-600 text-sm font-semibold border border-red-100 rounded-lg flex items-center gap-2 animate-shake">
                 <X size={16} /> {error}
               </div>
             )}
@@ -208,15 +234,15 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
             <form onSubmit={otpSent ? handleVerifyOTP : handleRequestOTP}>
               {!otpSent ? (
                 <>
-                  <div className="flex items-stretch border-2 border-gray-200 rounded-lg overflow-hidden focus-within:border-[#006d3c] transition-all mb-5 bg-white shadow-sm">
-                    <div className="flex items-center gap-2 px-4 py-3 bg-gray-50 border-r border-gray-200 cursor-pointer">
+                  <div className="flex items-stretch border-2 border-gray-200 rounded-lg overflow-hidden focus-within:border-[#006d3c] transition-all mb-4 bg-white shadow-sm">
+                    <div className="flex items-center gap-1.5 px-3 py-2 bg-gray-50 border-r border-gray-200 cursor-pointer">
                       <img
                         src="https://flagcdn.com/w40/in.png"
                         alt="India Flag"
-                        className="w-6 h-4 object-cover rounded-sm"
+                        className="w-5 h-3.5 object-cover rounded-sm"
                       />
-                      <span className="font-semibold text-gray-700">+91</span>
-                      <span className="text-gray-400 text-xs mt-1">▼</span>
+                      <span className="font-semibold text-gray-700 text-sm">+91</span>
+                      <span className="text-gray-400 text-[10px] mt-0.5">▼</span>
                     </div>
                     <input
                       type="tel"
@@ -224,30 +250,35 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
                       pattern="[0-9]{10}"
                       value={phone}
                       onChange={(e) => {
-                        const val = e.target.value.replace(/[^0-9]/g, '');
+                        const val = e.target.value.replace(/[^0-9]/g, "");
                         if (val.length <= 10) setPhone(val);
                       }}
                       placeholder="Enter your mobile number"
-                      className="w-full px-4 py-3 text-lg focus:outline-none placeholder:text-gray-300 font-semibold"
+                      className="w-full px-3 py-2 text-base focus:outline-none placeholder:text-gray-300 font-semibold"
                     />
                   </div>
 
-                  <div className="flex items-start gap-4 mb-6">
-                    <div className="mt-1 bg-[#f0fdf4] p-2 rounded-full">
-                      <Zap size={20} className="text-[#22c55e]" fill="#22c55e" />
+                  <div className="flex items-start gap-3 mb-5">
+                    <div className="mt-0.5 bg-[#f0fdf4] p-1.5 rounded-full flex-shrink-0">
+                      <Zap
+                        size={16}
+                        className="text-[#22c55e]"
+                        fill="#22c55e"
+                      />
                     </div>
-                    <div className="space-y-1">
-                      <p className="font-semibold text-[#111827] text-sm">
+                    <div className="space-y-0.5">
+                      <p className="font-semibold text-[#111827] text-xs sm:text-sm">
                         Verified suppliers get your requirement instantly.
                       </p>
-                      <p className="text-xs text-gray-400 leading-relaxed font-medium">
-                        Your number will only be used for verification and will not be shared.
+                      <p className="text-[10px] sm:text-xs text-gray-400 leading-relaxed font-medium">
+                        Your number will only be used for verification and will
+                        not be shared.
                       </p>
                     </div>
                   </div>
                 </>
               ) : (
-                <div className="mb-6">
+                <div className="mb-5">
                   <div className="relative group">
                     <input
                       type="text"
@@ -255,15 +286,17 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
                       required
                       autoFocus
                       value={otp}
-                      onChange={(e) => setOtp(e.target.value.replace(/[^0-9]/g, ''))}
-                      className="w-full px-6 py-4 bg-gray-50 border-2 border-gray-200 rounded-lg outline-none focus:border-[#006d3c] text-center text-3xl font-black text-slate-900 transition-all tracking-[0.5em] shadow-inner"
+                      onChange={(e) =>
+                        setOtp(e.target.value.replace(/[^0-9]/g, ""))
+                      }
+                      className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-lg outline-none focus:border-[#006d3c] text-center text-2xl font-black text-slate-900 transition-all tracking-[0.5em] shadow-inner"
                       placeholder="••••••"
                     />
                   </div>
                   <button
                     type="button"
                     onClick={() => setOtpSent(false)}
-                    className="mt-3 text-[#006d3c] text-sm font-semibold hover:underline"
+                    className="mt-2 text-[#006d3c] text-xs sm:text-sm font-semibold hover:underline"
                   >
                     Change Phone Number
                   </button>
@@ -272,24 +305,34 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
 
               <button
                 type="submit"
-                disabled={loading || (!otpSent && phone.length !== 10) || (otpSent && otp.length !== 6)}
-                className="w-full bg-[#0d824d] hover:bg-[#0a6b3f] text-white py-3.5 rounded-lg font-semibold text-lg flex items-center justify-center gap-3 shadow-lg shadow-green-100 transition-all active:scale-[0.98] disabled:opacity-50"
+                disabled={
+                  loading ||
+                  (!otpSent && phone.length !== 10) ||
+                  (otpSent && otp.length !== 6)
+                }
+                className="w-full bg-[#0d824d] hover:bg-[#0a6b3f] text-white py-3 rounded-lg font-semibold text-base flex items-center justify-center gap-2 shadow-lg shadow-green-100 transition-all active:scale-[0.98] disabled:opacity-50"
               >
                 {loading ? (
-                  <Loader2 className="w-6 h-6 animate-spin" />
+                  <Loader2 className="w-5 h-5 animate-spin" />
                 ) : (
                   <>
-                    {otpSent ? <CheckCircle2 size={20} /> : <Lock size={20} />}
-                    {otpSent ? 'Verify & Connect' : 'Continue'}
-                    <ArrowRight size={20} />
+                    {otpSent ? <CheckCircle2 size={18} /> : <Lock size={18} />}
+                    {otpSent ? "Verify & Connect" : "Continue"}
+                    <ArrowRight size={18} />
                   </>
                 )}
               </button>
             </form>
 
-            <p className="mt-6 text-center text-[11px] text-gray-500 font-medium">
+            <p className="mt-5 text-center text-[10px] text-gray-500 font-medium">
               By logging in, you agree to our <br />
-              <a href="#" className="text-[#0d824d] font-semibold underline">Terms of Service</a> and <a href="#" className="text-[#0d824d] font-semibold underline">Privacy Policy.</a>
+              <a href="#" className="text-[#0d824d] font-semibold underline">
+                Terms of Service
+              </a>{" "}
+              and{" "}
+              <a href="#" className="text-[#0d824d] font-semibold underline">
+                Privacy Policy.
+              </a>
             </p>
           </div>
         </div>

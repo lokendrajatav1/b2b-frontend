@@ -688,27 +688,234 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-white border-t border-slate-100 overflow-hidden"
+            className="lg:hidden bg-white border-t border-slate-100 overflow-y-auto max-h-[85vh] scrollbar-none"
           >
             <div className="p-4 space-y-4">
-              {/* Mobile Search */}
+              {/* Mobile Search & Location Stack */}
               <form
                 onSubmit={handleSearch}
-                className="flex bg-slate-50 border border-slate-200 rounded-xl overflow-hidden p-1"
+                className="space-y-3"
               >
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="flex-grow bg-transparent px-4 py-2 text-sm outline-none"
-                />
-                <button
-                  type="submit"
-                  className="bg-[#FF4F00] text-white p-2 rounded-lg"
-                >
-                  <Search className="w-4 h-4" />
-                </button>
+                {/* Location Selection on Mobile */}
+                <div className="relative">
+                  <div className="flex items-center h-11 bg-slate-50 border border-slate-200 rounded-xl px-3 focus-within:border-[#FF4F00] focus-within:bg-white transition-all cursor-pointer">
+                    <MapPin className="w-4 h-4 text-slate-400 mr-2 flex-shrink-0" />
+                    <input
+                      type="text"
+                      placeholder="Select Location"
+                      value={location}
+                      onChange={(e) => {
+                        setLocation(e.target.value);
+                        if (!isLocationDropdownOpen) setIsLocationDropdownOpen(true);
+                      }}
+                      onFocus={() => {
+                        setIsLocationDropdownOpen(true);
+                        setIsSearchDropdownOpen(false);
+                      }}
+                      className="bg-transparent flex-grow h-full text-sm font-normal text-[#111] outline-none placeholder:text-slate-400"
+                    />
+                    {location && location !== "India" && (
+                      <button
+                        type="button"
+                        onClick={() => setLocation("India")}
+                        className="p-1 hover:bg-slate-200 rounded-full transition-colors"
+                      >
+                        <X className="w-3.5 h-3.5 text-slate-400" />
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Mobile Location Suggestions dropdown */}
+                  <AnimatePresence>
+                    {isLocationDropdownOpen && (
+                      <>
+                        <div
+                          className="fixed inset-0 z-30"
+                          onClick={() => setIsLocationDropdownOpen(false)}
+                        />
+                        <motion.div
+                          initial={{ opacity: 0, y: 5 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 5 }}
+                          className="absolute top-full left-0 right-0 mt-1 bg-white border border-slate-200 rounded-xl shadow-xl z-40 overflow-y-auto max-h-[250px] py-1"
+                        >
+                          <button
+                            type="button"
+                            disabled={isDetecting}
+                            className="w-full flex items-center gap-2.5 px-4 py-3 text-[#FF4F00] hover:bg-orange-50 transition-colors border-b border-slate-100 disabled:opacity-50 text-left font-semibold text-sm"
+                            onClick={handleDetectLocation}
+                          >
+                            <LocateFixed className={`w-4 h-4 ${isDetecting ? "animate-spin" : ""}`} />
+                            <span>{isDetecting ? "Detecting..." : "Detect Location"}</span>
+                          </button>
+
+                          <div className="px-4 py-2">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+                              {isSearchingLocations
+                                ? "Searching..."
+                                : location.length >= 3
+                                  ? "Suggestions"
+                                  : "Your Areas"}
+                            </span>
+
+                            <div className="space-y-0.5">
+                              {isSearchingLocations ? (
+                                <div className="py-2 space-y-2">
+                                  <div className="h-3 bg-slate-100 rounded-full animate-pulse w-3/4"></div>
+                                  <div className="h-3 bg-slate-100 rounded-full animate-pulse w-1/2"></div>
+                                </div>
+                              ) : dynamicLocations.length > 0 ? (
+                                dynamicLocations.map((loc, i) => (
+                                  <button
+                                    key={i}
+                                    type="button"
+                                    onClick={() => {
+                                      setLocation(loc);
+                                      saveRecentLocation(loc);
+                                      setIsLocationDropdownOpen(false);
+                                    }}
+                                    className="w-full text-left py-2 text-slate-700 hover:text-[#FF4F00] font-medium text-sm transition-colors block truncate"
+                                  >
+                                    {loc}
+                                  </button>
+                                ))
+                              ) : location.length >= 3 ? (
+                                <div className="py-2 text-slate-400 text-xs font-medium">
+                                  No results found
+                                </div>
+                              ) : (
+                                <>
+                                  {recentLocations.length > 0 && (
+                                    <div className="mb-2">
+                                      <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+                                        Recent
+                                      </span>
+                                      {recentLocations.map((loc, i) => (
+                                        <button
+                                          key={`recent-${i}`}
+                                          type="button"
+                                          onClick={() => {
+                                            setLocation(loc);
+                                            setIsLocationDropdownOpen(false);
+                                          }}
+                                          className="w-full text-left py-1.5 text-slate-700 hover:text-[#FF4F00] font-medium text-xs transition-colors flex items-center gap-2 truncate"
+                                        >
+                                          <span className="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+                                          {loc}
+                                        </button>
+                                      ))}
+                                    </div>
+                                  )}
+
+                                  <div>
+                                    <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+                                      Trending
+                                    </span>
+                                    {trendingLocations.map((loc, i) => (
+                                      <button
+                                        key={`trending-${i}`}
+                                        type="button"
+                                        onClick={() => {
+                                          setLocation(loc);
+                                          saveRecentLocation(loc);
+                                          setIsLocationDropdownOpen(false);
+                                        }}
+                                        className="w-full text-left py-1.5 text-slate-700 hover:text-[#FF4F00] font-medium text-xs transition-colors block truncate"
+                                      >
+                                        {loc}
+                                      </button>
+                                    ))}
+                                  </div>
+                                </>
+                              )}
+                            </div>
+                          </div>
+                        </motion.div>
+                      </>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                {/* Search Input on Mobile */}
+                <div className="relative flex items-center bg-slate-50 border border-slate-200 rounded-xl h-11 px-3 focus-within:border-[#FF4F00] focus-within:bg-white transition-all pr-1">
+                  <Search className="w-4 h-4 text-slate-400 mr-2 flex-shrink-0" />
+                  <input
+                    type="text"
+                    placeholder="Search products, services or suppliers..."
+                    className="flex-grow h-full bg-transparent text-sm font-normal text-[#111] outline-none placeholder:text-slate-400"
+                    value={searchQuery}
+                    onChange={(e) => {
+                      setSearchQuery(e.target.value);
+                      if (!isSearchDropdownOpen) setIsSearchDropdownOpen(true);
+                    }}
+                    onFocus={() => {
+                      setIsSearchDropdownOpen(true);
+                      setIsLocationDropdownOpen(false);
+                    }}
+                  />
+                  <button
+                    type="submit"
+                    className="bg-[#FF4F00] hover:bg-[#E64600] text-white px-3 h-9 rounded-lg transition-all text-xs font-semibold shadow-sm active:scale-95"
+                  >
+                    Go
+                  </button>
+
+                  {/* Mobile Search Suggestions Dropdown */}
+                  <AnimatePresence>
+                    {isSearchDropdownOpen && (
+                      <>
+                        <div
+                          className="fixed inset-0 z-30"
+                          onClick={() => setIsSearchDropdownOpen(false)}
+                        />
+                        <motion.div
+                          initial={{ opacity: 0, y: 5 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 5 }}
+                          className="absolute top-full left-0 right-0 mt-1 bg-white border border-slate-200 rounded-xl shadow-xl z-40 overflow-y-auto max-h-[250px] py-1"
+                        >
+                          <div className="px-4 py-2 space-y-4">
+                            <div>
+                              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">
+                                Trending Searches
+                              </span>
+                              <div className="flex flex-wrap gap-1.5">
+                                {trendingSearches.map((item, i) => (
+                                  <button
+                                    key={`trend-${i}`}
+                                    type="button"
+                                    onClick={() => handleSearch(null, item)}
+                                    className="px-2.5 py-1 bg-slate-50 border border-slate-200 rounded-full text-xs text-slate-600 hover:border-[#FF4F00] hover:text-[#FF4F00] transition-all"
+                                  >
+                                    {item}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+
+                            <div>
+                              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">
+                                Categories
+                              </span>
+                              <div className="space-y-0.5">
+                                {allCategories.slice(0, 8).map((cat, i) => (
+                                  <button
+                                    key={`cat-${i}`}
+                                    type="button"
+                                    onClick={() => handleSearch(null, cat.name, cat.id)}
+                                    className="w-full text-left py-1.5 text-slate-700 hover:text-[#FF4F00] font-medium text-xs transition-colors block truncate"
+                                  >
+                                    {cat.name}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        </motion.div>
+                      </>
+                    )}
+                  </AnimatePresence>
+                </div>
               </form>
 
               {user ? (
@@ -744,46 +951,46 @@ const Navbar = () => {
                       <span className="text-xs font-semibold text-slate-700">Alerts</span>
                     </Link>
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <button
                       onClick={() => {
                         setIsVendorDrawerOpen(true);
                         setIsMobileMenuOpen(false);
                       }}
-                      className="flex items-center justify-center gap-2 p-4 bg-slate-50 rounded-xl font-semibold text-slate-700"
+                      className="flex items-center justify-center gap-3 p-3.5 bg-slate-50 border border-slate-100 rounded-xl font-semibold text-slate-700 text-sm hover:bg-slate-100 transition-colors w-full"
                     >
-                      <ShoppingBag className="w-5 h-5 text-[#FF4F00]" /> Become a Supplier
+                      <ShoppingBag className="w-5 h-5 text-[#FF4F00] flex-shrink-0" /> Become a Supplier
                     </button>
                     <button
                       onClick={() => {
                         logout();
                         setIsMobileMenuOpen(false);
                       }}
-                      className="flex items-center justify-center gap-2 p-4 bg-red-50 text-red-600 rounded-xl font-semibold"
+                      className="flex items-center justify-center gap-3 p-3.5 bg-red-50 text-red-600 rounded-xl font-semibold text-sm hover:bg-red-100/50 transition-colors w-full"
                     >
-                      <LogOut className="w-5 h-5" /> Logout
+                      <LogOut className="w-5 h-5 flex-shrink-0" /> Logout
                     </button>
                   </div>
                 </div>
               ) : (
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <button
                     onClick={() => {
                       setIsVendorDrawerOpen(true);
                       setIsMobileMenuOpen(false);
                     }}
-                    className="flex items-center gap-2 p-4 bg-slate-50 rounded-xl font-semibold text-slate-700"
+                    className="flex items-center justify-center gap-3 p-3.5 bg-slate-50 border border-slate-100 rounded-xl font-semibold text-slate-700 text-sm hover:bg-slate-100 transition-colors w-full"
                   >
-                    <ShoppingBag className="w-5 h-5 text-[#FF4F00]" /> Become a Supplier
+                    <ShoppingBag className="w-5 h-5 text-[#FF4F00] flex-shrink-0" /> Become a Supplier
                   </button>
                   <button
                     onClick={() => {
                       setIsBuyerDrawerOpen(true);
                       setIsMobileMenuOpen(false);
                     }}
-                    className="flex items-center gap-2 p-4 bg-[#164e33] text-white rounded-xl font-semibold"
+                    className="flex items-center justify-center gap-3 p-3.5 bg-[#164e33] hover:bg-[#113a26] text-white rounded-xl font-semibold text-sm transition-colors w-full shadow-md shadow-emerald-100/50"
                   >
-                    <User className="w-5 h-5" /> Login
+                    <User className="w-5 h-5 flex-shrink-0" /> Login
                   </button>
                 </div>
               )}
