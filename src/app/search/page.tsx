@@ -130,14 +130,14 @@ export function SearchPageContent({
   const [vendors, setVendors] = useState<any[]>(() =>
     getInitialState("vendors", []),
   );
-  const [page, setPage] = useState(() => getInitialState("page", 1));
-  const [batchesCount, setBatchesCount] = useState(() =>
+  const [page, setPage] = useState<number>(() => getInitialState("page", 1));
+  const [batchesCount, setBatchesCount] = useState<number>(() =>
     getInitialState("batchesCount", 0),
   );
-  const [hasMore, setHasMore] = useState(() =>
+  const [hasMore, setHasMore] = useState<boolean>(() =>
     getInitialState("hasMore", true),
   );
-  const [pagination, setPagination] = useState(() =>
+  const [pagination, setPagination] = useState<{ total: number; totalPages: number }>(() =>
     getInitialState("pagination", { total: 0, totalPages: 1 }),
   );
   const [loading, setLoading] = useState(() => {

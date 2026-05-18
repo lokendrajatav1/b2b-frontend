@@ -15,6 +15,8 @@ interface User {
   city?: string;
   vendor?: any;
   admin?: any;
+  phoneVerified?: boolean;
+  emailVerified?: boolean;
 }
 
 
