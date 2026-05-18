@@ -28,6 +28,8 @@ import {
   Handshake,
 } from "lucide-react";
 
+const transitionStyle = { transition: "all 350ms cubic-bezier(0.25, 1, 0.5, 1)" };
+
 const ServiceSection = ({
   title,
   subtitle,
@@ -49,7 +51,7 @@ const ServiceSection = ({
           <h2 className="text-xl md:text-2xl font-bold text-green-950 tracking-tight leading-tight">
             {title}
           </h2>
-          <p className="text-gray-500 text-sm md:text-base mt-0.5">
+          <p className="text-gray-700 text-sm md:text-base mt-0.5">
             {subtitle}
           </p>
         </div>
@@ -69,22 +71,31 @@ const ServiceSection = ({
           onClick={() =>
             router.push(`/search?q=${encodeURIComponent(item.label)}`)
           }
-          className="group cursor-pointer"
+          className="group cursor-pointer hover:-translate-y-1"
+          style={transitionStyle}
         >
           <div className="relative aspect-[4/3] rounded-lg overflow-hidden mb-3 shadow-inner bg-gray-100">
             <img
               src={item.image}
               alt={item.label}
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+              className="w-full h-full object-cover group-hover:scale-108"
+              style={transitionStyle}
             />
-            <div className="absolute bottom-3 left-3 bg-white/95 backdrop-blur-sm p-2 rounded-full shadow-lg border border-white/20">
+            <div
+              className="absolute bottom-3 left-3 bg-white/95 backdrop-blur-sm p-2 rounded-full shadow-lg border border-white/20 group-hover:scale-110 group-hover:bg-green-50"
+              style={transitionStyle}
+            >
               <item.icon
-                className="w-4 h-4 md:w-5 md:h-5 text-green-800"
+                className="w-4 h-4 md:w-5 md:h-5 text-green-800 group-hover:rotate-6"
+                style={transitionStyle}
                 strokeWidth={2}
               />
             </div>
           </div>
-          <p className="text-center font-bold text-gray-800 text-xs md:text-sm transition-colors group-hover:text-green-800">
+          <p
+            className="text-center font-medium text-gray-800 text-xs md:text-sm group-hover:text-green-800"
+            style={transitionStyle}
+          >
             {item.label}
           </p>
         </div>
@@ -93,62 +104,73 @@ const ServiceSection = ({
   </div>
 );
 
-const FeaturesBar = () => (
-  <div className="mt-12 bg-white/50 backdrop-blur-sm border border-white rounded-lg py-10 px-8 md:px-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-10 gap-x-8 shadow-xl shadow-gray-200/20">
-    {[
-      {
-        icon: ShieldCheck,
-        title: "Verified & Trusted",
-        desc: "Quality checked partners",
-        color: "text-green-800",
-        bg: "bg-green-100/50",
-      },
-      {
-        icon: Award,
-        title: "Wide Range",
-        desc: "100+ categories to explore",
-        color: "text-green-800",
-        bg: "bg-green-100/50",
-      },
-      {
-        icon: Handshake,
-        title: "Easy & Reliable",
-        desc: "Quick bookings & secure payments",
-        color: "text-green-800",
-        bg: "bg-green-100/50",
-      },
-      {
-        icon: Headphones,
-        title: "24/7 Support",
-        desc: "We're here to help you",
-        color: "text-green-800",
-        bg: "bg-green-100/50",
-      },
-    ].map((f, i) => (
-      <div
-        key={i}
-        className="flex items-center gap-5 lg:border-r last:border-0 border-gray-100 lg:pr-8 group hover:translate-y-[-2px] transition-transform duration-300"
-      >
+const FeaturesBar = () => {
+  return (
+    <div className="mt-12 bg-white/50 backdrop-blur-sm border border-white rounded-lg py-10 px-8 md:px-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-10 gap-x-8 shadow-xl shadow-gray-200/20">
+      {[
+        {
+          icon: ShieldCheck,
+          title: "Verified & Trusted",
+          desc: "Quality checked partners",
+          color: "text-green-800",
+          bg: "bg-green-100/50",
+        },
+        {
+          icon: Award,
+          title: "Wide Range",
+          desc: "100+ categories to explore",
+          color: "text-green-800",
+          bg: "bg-green-100/50",
+        },
+        {
+          icon: Handshake,
+          title: "Easy & Reliable",
+          desc: "Quick bookings & secure payments",
+          color: "text-green-800",
+          bg: "bg-green-100/50",
+        },
+        {
+          icon: Headphones,
+          title: "24/7 Support",
+          desc: "We're here to help you",
+          color: "text-green-800",
+          bg: "bg-green-100/50",
+        },
+      ].map((f, i) => (
         <div
-          className={`p-4 rounded-lg ${f.bg} shrink-0 transition-transform group-hover:scale-110`}
+          key={i}
+          className="flex items-center gap-5 lg:border-r last:border-0 border-gray-100 lg:pr-8 group hover:-translate-y-1 hover:scale-[1.03] cursor-pointer"
+          style={transitionStyle}
         >
-          <f.icon
-            className={`w-6 h-6 md:w-7 md:h-7 ${f.color}`}
-            strokeWidth={2}
-          />
+          <div
+            className={`p-4 rounded-lg ${f.bg} shrink-0 group-hover:scale-110 group-hover:bg-green-100 group-hover:shadow-[0_4px_12px_rgba(21,128,61,0.08)]`}
+            style={transitionStyle}
+          >
+            <f.icon
+              className={`w-6 h-6 md:w-7 md:h-7 ${f.color} group-hover:rotate-3`}
+              style={transitionStyle}
+              strokeWidth={2}
+            />
+          </div>
+          <div className="min-w-0">
+            <h4
+              className="font-bold text-gray-800 text-sm md:text-[15px] leading-tight group-hover:text-green-800"
+              style={transitionStyle}
+            >
+              {f.title}
+            </h4>
+            <p
+              className="text-gray-500 text-[11px] md:text-xs mt-1 leading-normal group-hover:text-gray-700"
+              style={transitionStyle}
+            >
+              {f.desc}
+            </p>
+          </div>
         </div>
-        <div className="min-w-0">
-          <h4 className="font-bold text-gray-800 text-sm md:text-[15px] leading-tight">
-            {f.title}
-          </h4>
-          <p className="text-gray-500 text-[11px] md:text-xs mt-1 leading-normal">
-            {f.desc}
-          </p>
-        </div>
-      </div>
-    ))}
-  </div>
-);
+      ))}
+    </div>
+  );
+};
 
 const FeaturedServices = () => {
   const router = useRouter();
@@ -261,7 +283,7 @@ const FeaturedServices = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#fcfcfc] py-12 px-4 sm:px-6 md:px-12 font-sans tracking-tight">
+    <div className="min-h-screen bg-[#fcfcfc] py-2 px-4 sm:px-6 md:px-12 font-sans tracking-tight">
       <div className="max-w-[1400px] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
           {sections.map((section, index) => (

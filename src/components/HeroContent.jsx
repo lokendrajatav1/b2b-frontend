@@ -13,13 +13,13 @@ const HeroContent = ({ onMatch, onExplore }) => {
       </p>
 
       <div className="flex flex-col sm:flex-row gap-2.5 mb-6">
-        <button 
+        <button
           onClick={onMatch}
           className="bg-[#164e33] text-white px-5 py-3.5 rounded-lg font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-green-900/20 hover:bg-[#113f29] transition-all active:scale-95 cursor-pointer"
         >
           <Users size={16} /> Match me with vendors
         </button>
-        <button 
+        <button
           onClick={onExplore}
           className="bg-white border border-slate-200 px-5 py-3.5 rounded-lg font-bold text-xs flex items-center justify-center gap-2 hover:bg-slate-50 transition-all active:scale-95 text-slate-700 shadow-sm cursor-pointer"
         >

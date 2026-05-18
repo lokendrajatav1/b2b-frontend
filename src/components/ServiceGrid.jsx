@@ -82,6 +82,7 @@ const defaultIcons = [
 const ServiceGrid = () => {
   const router = useRouter();
   const [categories, setCategories] = useState([]);
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -102,8 +103,10 @@ const ServiceGrid = () => {
     router.push(`/search?q=${encodeURIComponent(categoryName)}`);
   };
 
+  const displayedCategories = showAll ? categories : categories.slice(0, 15);
+
   return (
-    <div className="max-w-[1600px] mx-auto px-4 md:px-8 py-12 bg-white font-sans tracking-tight">
+    <div className="max-w-[1600px] mx-auto px-4 md:px-8 py-2 bg-white font-sans tracking-tight mt-4">
       {/* Header Section */}
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-12 gap-8">
         <div className="flex-1 max-w-3xl">
@@ -113,7 +116,7 @@ const ServiceGrid = () => {
               Marketplace
             </span>
           </h1>
-          <p className="text-gray-500 mt-4 text-lg sm:text-xl font-medium leading-relaxed">
+          <p className="text-gray-800 mt-4 text-lg sm:text-l font-medium leading-relaxed">
             Discover products and connect with verified vendors across diverse
             industries.
           </p>
@@ -122,7 +125,7 @@ const ServiceGrid = () => {
 
       {/* Grid Section */}
       <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-5 mb-20">
-        {categories.map((cat, index) => {
+        {displayedCategories.map((cat, index) => {
           const style = defaultIcons[index % defaultIcons.length];
           const IconComponent = style.icon;
           return (
@@ -140,32 +143,31 @@ const ServiceGrid = () => {
                   strokeWidth={1.8}
                 />
               </div>
-              <h3 className="text-[14px] font-bold text-slate-800 leading-snug mb-1.5 group-hover:text-emerald-900">
+              <h3 className="text-[14px] font-medium text-slate-800 leading-snug mb-1.5 group-hover:text-emerald-900">
                 {cat.name}
               </h3>
-              <p className="text-[12px] text-gray-400 font-medium">
-                {cat._count?.vendors || 0} Vendors
-              </p>
             </div>
           );
         })}
 
-        {/* Special 'View All' Card */}
-        <div
-          onClick={() => router.push("/search")}
-          className="bg-[#134e4a] rounded-lg p-5 flex flex-col items-start justify-center cursor-pointer hover:bg-[#0d3633] transition-all duration-300 relative overflow-hidden group shadow-lg min-h-[160px]"
-        >
-          <LayoutGrid className="text-white/90 w-8 h-8 mb-3" />
-          <h3 className="text-base font-bold text-white mb-1">
-            View All Categories
-          </h3>
-          <p className="text-[12px] text-white/70">
-            {categories.length > 0
-              ? `${categories.length}+ Categories`
-              : "Explore All"}
-          </p>
-          <ArrowRight className="absolute right-4 bottom-4 text-white w-6 h-6 opacity-0 group-hover:opacity-100 translate-x-[-10px] group-hover:translate-x-0 transition-all duration-300" />
-        </div>
+        {/* Special 'View All' Card - Only show when NOT showing all */}
+        {!showAll && categories.length > 15 && (
+          <div
+            onClick={() => setShowAll(true)}
+            className="bg-[#134e4a] rounded-lg p-5 flex flex-col items-start justify-center cursor-pointer hover:bg-[#0d3633] transition-all duration-300 relative overflow-hidden group shadow-lg min-h-[160px]"
+          >
+            <LayoutGrid className="text-white/90 w-8 h-8 mb-3" />
+            <h3 className="text-base font-bold text-white mb-1">
+              View All Categories
+            </h3>
+            <p className="text-[12px] text-white/70">
+              {categories.length > 0
+                ? `${categories.length}+ Categories`
+                : "Explore All"}
+            </p>
+            <ArrowRight className="absolute right-4 bottom-4 text-white w-6 h-6 opacity-0 group-hover:opacity-100 translate-x-[-10px] group-hover:translate-x-0 transition-all duration-300" />
+          </div>
+        )}
       </div>
     </div>
   );

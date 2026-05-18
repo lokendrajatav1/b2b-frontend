@@ -30,7 +30,7 @@ const Hero = () => {
 
   return (
     <div className="bg-white font-sans text-[#1a1a1a]">
-      <section className="relative h-[calc(100vh-72px)] min-h-[500px] lg:min-h-[700px] flex flex-col bg-[#f4f7f6] overflow-x-hidden">
+      <section className="relative h-screen min-h-[500px] lg:min-h-[750px] flex flex-col bg-[#f4f7f6] overflow-hidden pt-24 lg:pt-28 pb-8 lg:pb-10">
         {/* --- Background Images --- */}
         <div className="absolute inset-0 z-0 overflow-hidden lg:block hidden">
           <div className="absolute top-0 right-0 w-[60%] h-full">

@@ -45,20 +45,23 @@ const CityIcon = ({ city }) => {
   return (
     <div
       onClick={() => router.push(`/search?city=${city.name}`)}
-      className="flex flex-col items-center group cursor-pointer transition-all duration-300"
+      className="flex flex-col items-center group cursor-pointer"
     >
-      <div className="w-20 h-20 sm:w-24 sm:h-24 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-center mb-4 transition-all duration-500 group-hover:border-[#164e33]/30 group-hover:bg-white group-hover:shadow-[0_20px_40px_-15px_rgba(0,118,168,0.12)] group-hover:-translate-y-1 relative overflow-hidden">
-        {/* Animated Background Ring */}
-        <div className="absolute inset-0 border-2 border-[#164e33] opacity-0 group-hover:opacity-10 scale-90 group-hover:scale-100 transition-all duration-500 rounded-lg"></div>
-
+      <div 
+        className="w-20 h-20 sm:w-24 sm:h-24 bg-slate-50 border border-slate-200 rounded-full flex items-center justify-center mb-4 group-hover:scale-105 group-hover:border-[#164e33]/40 group-hover:bg-white group-hover:shadow-[0_12px_30px_-8px_rgba(22,78,51,0.08)] relative overflow-hidden"
+        style={{ transition: "all 400ms cubic-bezier(0.25, 1, 0.5, 1)" }}
+      >
         {/* The Icon */}
-        <Icon className="w-10 h-10 text-slate-400 group-hover:text-[#164e33] transition-all duration-500 transform group-hover:scale-110 stroke-[1.5]" />
-
-        {/* Subtle glow effect */}
-        <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-transparent via-[#164e33]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <Icon 
+          className="w-10 h-10 text-slate-800 group-hover:text-[#164e33] stroke-[1.5]"
+          style={{ transition: "all 400ms cubic-bezier(0.25, 1, 0.5, 1)" }}
+        />
       </div>
 
-      <span className="text-base md:text-base font-semibold text-slate-600 group-hover:text-slate-900 transition-colors ">
+      <span 
+        className="text-sm md:text-base font-medium text-slate-700 group-hover:text-[#164e33]"
+        style={{ transition: "all 400ms cubic-bezier(0.25, 1, 0.5, 1)" }}
+      >
         {city.name}
       </span>
     </div>
@@ -68,7 +71,7 @@ const CityIcon = ({ city }) => {
 const CitySuppliers = () => {
   return (
     <section className="w-full max-w-7xl mx-auto py-12 px-4 sm:px-6 bg-white border-t border-gray-100">
-      <h2 className="text-xl md:text-2xl font-semibold text-slate-900 mb-8">
+      <h2 className="text-xl md:text-3xl font-medium text-slate-900 mb-8">
         Explore Vendors by City
       </h2>
 

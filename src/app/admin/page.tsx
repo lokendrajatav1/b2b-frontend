@@ -15,6 +15,7 @@ import {
   ArrowLeft,
   ShieldCheck,
   Users,
+  LayoutDashboard,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 

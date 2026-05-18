@@ -5,7 +5,7 @@ import { Users, Package, Building2, ShieldCheck } from "lucide-react";
 
 const HeroStats = () => {
   return (
-    <div className="relative z-10 max-w-7xl mx-auto px-5 lg:px-12 w-full pb-8 lg:pb-6 mt-6 lg:mt-0 shrink-0 hidden lg:block">
+    <div className="relative z-10 max-w-7xl mx-auto px-5 lg:px-12 w-full pb-4 mt-6 lg:mt-0 shrink-0 hidden lg:block mb-3 lg:mb-4">
       <div className="bg-[#164e33] rounded-lg py-4 lg:py-5 px-4 lg:px-8 grid grid-cols-2 lg:flex lg:flex-nowrap items-center justify-around text-white gap-4 lg:gap-6 shadow-2xl border border-white/5">
         <StatBox icon={<Users size={16} className="text-[#4ade80]" />} num="2,50,000+" label="Verified Vendors" />
         <div className="h-8 w-px bg-white/10 hidden lg:block"></div>

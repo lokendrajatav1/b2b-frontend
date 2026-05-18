@@ -383,13 +383,14 @@ export function SearchPageContent({
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && !isFetchingMore) {
+        if (entries[0].isIntersecting && !isFetchingMore && !loading && hasMore) {
           const nextPage = page + 1;
+          // Only increment if we aren't already fetching
           setPage(nextPage);
           fetchVendors(nextPage);
         }
       },
-      { threshold: 0.1, rootMargin: "400px" }, // Load when user is near bottom
+      { threshold: 0.1, rootMargin: "200px" }, // Reduced margin to be safer
     );
 
     if (observerTarget.current) {
@@ -400,6 +401,7 @@ export function SearchPageContent({
   }, [loading, isFetchingMore, hasMore, batchesCount, page]);
 
   const handleLoadMore = () => {
+    if (isFetchingMore || loading || !hasMore) return;
     const nextPage = page + 1;
     setPage(nextPage);
     fetchVendors(nextPage);
@@ -505,7 +507,7 @@ export function SearchPageContent({
       <FilterDrawer />
 
       {/* --- Main Content Section --- */}
-      <main className="max-w-[1800px] mx-auto px-4 lg:px-12 pt-6 pb-8">
+      <main className={`max-w-[1800px] mx-auto px-4 lg:px-12 pt-6 ${filteredItems.length > 0 ? "pb-8" : "pb-0"}`}>
         {/* --- Main Product Grid --- */}
         <div className="flex-1">
           {loading ? (
@@ -527,8 +529,8 @@ export function SearchPageContent({
                     />
                   ))
                 ) : (
-                  <div className="col-span-full py-32 text-center bg-white rounded-lg border border-gray-100 flex flex-col items-center">
-                    <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-6 text-slate-200">
+                  <div className="col-span-full py-8 text-center bg-white rounded-lg border border-gray-100 flex flex-col items-center">
+                    <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-3 text-slate-200">
                       <Search size={40} />
                     </div>
                     <h3 className="text-xl font-bold text-slate-800 mb-2">
@@ -543,7 +545,7 @@ export function SearchPageContent({
                         dispatch(resetFilters());
                         updateURL({ city: "", category: "", q: "", priceRange: "", ratings: "", verified: "", trustSeal: "", gst: "" });
                       }}
-                      className="mt-8 px-10 py-3 bg-[#164e33] text-white rounded-lg font-bold text-sm shadow-lg shadow-emerald-900/10"
+                      className="mt-4 px-10 py-3 bg-[#164e33] text-white rounded-lg font-bold text-sm shadow-lg shadow-emerald-900/10"
                     >
                       Clear All Filters
                     </button>
@@ -552,44 +554,46 @@ export function SearchPageContent({
               </div>
 
               {/* Loader Sentinel & Load More */}
-              <div className="mt-12 flex flex-col items-center gap-6">
-                {isFetchingMore && (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 w-full">
-                    {[...Array(3)].map((_, i) => (
-                      <ProductSkeleton key={`more-${i}`} />
-                    ))}
-                  </div>
-                )}
-
-                <div ref={observerTarget} className="h-10 w-full" />
-
-                {hasMore && batchesCount >= 3 && !isFetchingMore && (
-                  <button
-                    onClick={handleLoadMore}
-                    className="px-12 py-4 bg-white border-2 border-[#164e33] text-[#164e33] hover:bg-[#164e33] hover:text-white rounded-xl font-bold text-sm transition-all shadow-md active:scale-95 flex items-center gap-2"
-                  >
-                    <Sparkles size={16} /> Load More Products
-                  </button>
-                )}
-
-                {!hasMore && filteredItems.length > 0 && (
-                  <div className="py-8 flex flex-col items-center gap-2 text-slate-400">
-                    <div className="w-8 h-8 bg-slate-50 rounded-full flex items-center justify-center">
-                      <CheckCircle2 size={16} className="text-emerald-500" />
+              {filteredItems.length > 0 && (
+                <div className="mt-12 flex flex-col items-center gap-6">
+                  {isFetchingMore && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 w-full">
+                      {[...Array(3)].map((_, i) => (
+                        <ProductSkeleton key={`more-${i}`} />
+                      ))}
                     </div>
-                    <p className="text-sm font-medium tracking-wide uppercase">
-                      You've reached the end
-                    </p>
-                  </div>
-                )}
-              </div>
+                  )}
+
+                  <div ref={observerTarget} className="h-10 w-full" />
+
+                  {hasMore && batchesCount >= 3 && !isFetchingMore && (
+                    <button
+                      onClick={handleLoadMore}
+                      className="px-12 py-4 bg-white border-2 border-[#164e33] text-[#164e33] hover:bg-[#164e33] hover:text-white rounded-xl font-bold text-sm transition-all shadow-md active:scale-95 flex items-center gap-2"
+                    >
+                      <Sparkles size={16} /> Load More Products
+                    </button>
+                  )}
+
+                  {!hasMore && filteredItems.length > 0 && (
+                    <div className="py-8 flex flex-col items-center gap-2 text-slate-400">
+                      <div className="w-8 h-8 bg-slate-50 rounded-full flex items-center justify-center">
+                        <CheckCircle2 size={16} className="text-emerald-500" />
+                      </div>
+                      <p className="text-sm font-medium tracking-wide uppercase">
+                        You've reached the end
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
             </>
           )}
         </div>
       </main>
 
       {/* --- Footer Feature Bar --- */}
-      <div className="bg-white border-t border-gray-100 mt-20">
+      <div className="bg-white border-t border-gray-100 mt-2">
         <div className="max-w-[1500px] mx-auto px-8 py-12">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {[

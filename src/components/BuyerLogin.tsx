@@ -56,10 +56,18 @@ export default function BuyerLogin({
     setLoading(true);
     setError("");
     try {
-      await apiFetch("/auth/request-otp", {
+      const data = await apiFetch("/auth/request-otp", {
         method: "POST",
         body: JSON.stringify({ phone }),
       });
+      
+      // Log OTP to console in development
+      if (data?.data?.otp) {
+        console.warn("📱 YOUR OTP IS: " + data.data.otp);
+        // Temporary alert for extreme visibility
+        alert("OTP : " + data.data.otp);
+      }
+
       setOtpSent(true);
     } catch (err: any) {
       setError(err.message || "Something went wrong. Please try again.");

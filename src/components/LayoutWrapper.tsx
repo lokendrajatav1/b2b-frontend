@@ -53,13 +53,11 @@ export default function LayoutWrapper({
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hide global Navbar only on search pages to allow for the specialized filter bar */}
-      {!pathname.startsWith("/search") && (
-        <React.Suspense
-          fallback={<div className="h-16 bg-white shadow-sm animate-pulse" />}
-        >
-          <Navbar />
-        </React.Suspense>
-      )}
+      <React.Suspense
+        fallback={<div className="h-16 bg-white shadow-sm animate-pulse" />}
+      >
+        <Navbar />
+      </React.Suspense>
       <main className="flex-1">
         <React.Suspense
           fallback={

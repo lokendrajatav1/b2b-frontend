@@ -242,7 +242,7 @@ export default function VendorRegister({
                         type="button"
                         onClick={handleSendOTP}
                         disabled={otpLoading || otpSent}
-                        className="px-4 h-[54px] bg-gray-900 text-white rounded-xl text-sm font-semibold disabled:bg-emerald-500 transition-all"
+                        className="px-4 h-[54px] bg-[#FF4F00] hover:bg-[#e64600] cursor-pointer text-white rounded-xl text-sm font-semibold disabled:bg-emerald-500 transition-all"
                       >
                         {otpLoading ? (
                           <Loader2 className="w-4 h-4 animate-spin" />
@@ -331,7 +331,7 @@ export default function VendorRegister({
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full h-[64px] bg-gray-900 text-white rounded-xl text-xl font-semibold hover:bg-black transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2 mt-2"
+                    className="w-full h-[64px] bg-[#FF4F00] text-white rounded-xl text-xl font-semibold hover:bg-[#e64600] transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2 mt-2 cursor-pointer"
                   >
                     {loading ? (
                       <Loader2 className="w-6 h-6 animate-spin" />

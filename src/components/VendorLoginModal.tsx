@@ -1,16 +1,16 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { apiFetch } from '@/lib/api';
-import { 
-  X, 
-  ShieldCheck, 
-  MapPin, 
-  Star, 
-  Shield, 
-  Lock, 
-  ArrowRight, 
+import {
+  X,
+  ShieldCheck,
+  MapPin,
+  Star,
+  Shield,
+  Lock,
+  ArrowRight,
   Zap,
   Loader2,
   CheckCircle2,
@@ -42,13 +42,24 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  useEffect(() => {
+    if (isOpen && vendor) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen, vendor]);
+
   if (!isOpen || !vendor) return null;
 
   const handleRequestOTP = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!phone || phone.length < 10) {
-        setError('Please enter a valid mobile number');
-        return;
+      setError('Please enter a valid mobile number');
+      return;
     }
     setLoading(true);
     setError('');
@@ -68,8 +79,8 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
   const handleVerifyOTP = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!otp || otp.length < 6) {
-        setError('Please enter the 6-digit OTP');
-        return;
+      setError('Please enter the 6-digit OTP');
+      return;
     }
     setLoading(true);
     setError('');
@@ -78,7 +89,7 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
         method: 'POST',
         body: JSON.stringify({ phone, otp }),
       });
-      
+
       login(data.data.token, data.data.user, true);
       if (onSuccess) onSuccess();
       onClose();
@@ -91,14 +102,14 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-gray-900/70 backdrop-blur-sm font-sans">
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, scale: 0.95, y: 10 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 10 }}
-        className="max-w-4xl w-full bg-white rounded-lg shadow-2xl overflow-hidden flex flex-col md:flex-row border border-gray-100 relative"
+        className="max-w-4xl w-full max-h-[90vh] overflow-y-auto bg-white rounded-lg shadow-2xl flex flex-col md:flex-row border border-gray-100 relative scrollbar-thin scrollbar-thumb-gray-200"
       >
         {/* Close Button */}
-        <button 
+        <button
           onClick={onClose}
           className="absolute right-6 top-6 text-gray-400 hover:text-gray-600 transition-colors z-50 p-2 hover:bg-gray-50 rounded-full"
         >
@@ -116,11 +127,11 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
           {/* Business Logo Placeholder */}
           <div className="w-24 h-24 bg-[#f0f9f4] border border-[#e0f2e9] rounded-lg flex items-center justify-center mb-8 overflow-hidden shadow-sm">
             {vendor.logoUrl ? (
-                <img src={vendor.logoUrl} alt={vendor.businessName} className="w-full h-full object-cover" />
+              <img src={vendor.logoUrl} alt={vendor.businessName} className="w-full h-full object-cover" />
             ) : (
-                <div className="text-[#89b39d] opacity-50">
-                    <Building2 size={48} strokeWidth={1.5} />
-                </div>
+              <div className="text-[#89b39d] opacity-50">
+                <Building2 size={48} strokeWidth={1.5} />
+              </div>
             )}
           </div>
 
@@ -129,7 +140,7 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
             <h1 className="text-3xl font-extrabold text-[#1a2b3c] leading-tight">
               {vendor.businessName}
             </h1>
-            
+
             <div className="flex items-center gap-1 text-gray-600">
               <MapPin size={18} className="text-gray-400" />
               <span className="text-sm font-medium">{vendor.city}, India</span>
@@ -177,106 +188,106 @@ export default function VendorLoginModal({ isOpen, onClose, vendor, onSuccess }:
         </div>
 
         {/* Right Side: Form */}
-        <div className="w-full md:w-7/12 p-10 bg-white flex flex-col justify-center">
-          <div className="mt-4">
-            <h2 className="text-[40px] font-semibold text-[#111827] leading-[1.1] mb-2">
+        <div className="w-full md:w-7/12 p-6 sm:p-10 bg-white flex flex-col justify-center">
+          <div className="mt-2">
+            <h2 className="text-[32px] sm:text-[40px] font-semibold text-[#111827] leading-[1.1] mb-2">
               Connect with this<br />Supplier
             </h2>
-            <div className="w-12 h-1 bg-[#006d3c] mb-6 mt-4"></div>
-            
-            <p className="text-gray-500 text-lg mb-8 leading-relaxed">
+            <div className="w-12 h-1 bg-[#006d3c] mb-4 mt-3"></div>
+
+            <p className="text-gray-500 text-base sm:text-lg mb-6 leading-relaxed">
               {otpSent ? `Enter the 6-digit code sent to +91 ${phone}` : 'We just need to verify your mobile number to get started.'}
             </p>
 
             {error && (
-                <div className="mb-6 p-4 bg-red-50 text-red-600 text-sm font-semibold border border-red-100 rounded-lg flex items-center gap-2 animate-shake">
-                    <X size={16} /> {error}
-                </div>
+              <div className="mb-4 p-4 bg-red-50 text-red-600 text-sm font-semibold border border-red-100 rounded-lg flex items-center gap-2 animate-shake">
+                <X size={16} /> {error}
+              </div>
             )}
 
             <form onSubmit={otpSent ? handleVerifyOTP : handleRequestOTP}>
-                {!otpSent ? (
-                    <>
-                        <div className="flex items-stretch border-2 border-gray-200 rounded-lg overflow-hidden focus-within:border-[#006d3c] transition-all mb-8 bg-white shadow-sm">
-                            <div className="flex items-center gap-2 px-4 py-4 bg-gray-50 border-r border-gray-200 cursor-pointer">
-                                <img 
-                                src="https://flagcdn.com/w40/in.png" 
-                                alt="India Flag" 
-                                className="w-6 h-4 object-cover rounded-sm"
-                                />
-                                <span className="font-semibold text-gray-700">+91</span>
-                                <span className="text-gray-400 text-xs mt-1">▼</span>
-                            </div>
-                            <input 
-                                type="tel" 
-                                required
-                                pattern="[0-9]{10}"
-                                value={phone}
-                                onChange={(e) => {
-                                    const val = e.target.value.replace(/[^0-9]/g, '');
-                                    if (val.length <= 10) setPhone(val);
-                                }}
-                                placeholder="Enter your mobile number" 
-                                className="w-full px-4 py-4 text-lg focus:outline-none placeholder:text-gray-300 font-semibold"
-                            />
-                        </div>
-
-                        <div className="flex items-start gap-4 mb-10">
-                            <div className="mt-1 bg-[#f0fdf4] p-2 rounded-full">
-                                <Zap size={20} className="text-[#22c55e]" fill="#22c55e" />
-                            </div>
-                            <div className="space-y-1">
-                                <p className="font-semibold text-[#111827] text-sm">
-                                Verified suppliers get your requirement instantly.
-                                </p>
-                                <p className="text-xs text-gray-400 leading-relaxed font-medium">
-                                Your number will only be used for verification and will not be shared.
-                                </p>
-                            </div>
-                        </div>
-                    </>
-                ) : (
-                    <div className="mb-8">
-                        <div className="relative group">
-                            <input
-                                type="text"
-                                maxLength={6}
-                                required
-                                autoFocus
-                                value={otp}
-                                onChange={(e) => setOtp(e.target.value.replace(/[^0-9]/g, ''))}
-                                className="w-full px-6 py-5 bg-gray-50 border-2 border-gray-200 rounded-lg outline-none focus:border-[#006d3c] text-center text-4xl font-black text-slate-900 transition-all tracking-[0.5em] shadow-inner"
-                                placeholder="••••••"
-                            />
-                        </div>
-                        <button 
-                            type="button" 
-                            onClick={() => setOtpSent(false)} 
-                            className="mt-4 text-[#006d3c] text-sm font-semibold hover:underline"
-                        >
-                            Change Phone Number
-                        </button>
+              {!otpSent ? (
+                <>
+                  <div className="flex items-stretch border-2 border-gray-200 rounded-lg overflow-hidden focus-within:border-[#006d3c] transition-all mb-5 bg-white shadow-sm">
+                    <div className="flex items-center gap-2 px-4 py-3 bg-gray-50 border-r border-gray-200 cursor-pointer">
+                      <img
+                        src="https://flagcdn.com/w40/in.png"
+                        alt="India Flag"
+                        className="w-6 h-4 object-cover rounded-sm"
+                      />
+                      <span className="font-semibold text-gray-700">+91</span>
+                      <span className="text-gray-400 text-xs mt-1">▼</span>
                     </div>
-                )}
+                    <input
+                      type="tel"
+                      required
+                      pattern="[0-9]{10}"
+                      value={phone}
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/[^0-9]/g, '');
+                        if (val.length <= 10) setPhone(val);
+                      }}
+                      placeholder="Enter your mobile number"
+                      className="w-full px-4 py-3 text-lg focus:outline-none placeholder:text-gray-300 font-semibold"
+                    />
+                  </div>
 
-                <button 
-                    type="submit"
-                    disabled={loading || (!otpSent && phone.length !== 10) || (otpSent && otp.length !== 6)}
-                    className="w-full bg-[#0d824d] hover:bg-[#0a6b3f] text-white py-4 rounded-lg font-semibold text-lg flex items-center justify-center gap-3 shadow-lg shadow-green-100 transition-all active:scale-[0.98] disabled:opacity-50"
-                >
-                    {loading ? (
-                        <Loader2 className="w-6 h-6 animate-spin" />
-                    ) : (
-                        <>
-                            {otpSent ? <CheckCircle2 size={20} /> : <Lock size={20} />}
-                            {otpSent ? 'Verify & Connect' : 'Continue'}
-                            <ArrowRight size={20} />
-                        </>
-                    )}
-                </button>
+                  <div className="flex items-start gap-4 mb-6">
+                    <div className="mt-1 bg-[#f0fdf4] p-2 rounded-full">
+                      <Zap size={20} className="text-[#22c55e]" fill="#22c55e" />
+                    </div>
+                    <div className="space-y-1">
+                      <p className="font-semibold text-[#111827] text-sm">
+                        Verified suppliers get your requirement instantly.
+                      </p>
+                      <p className="text-xs text-gray-400 leading-relaxed font-medium">
+                        Your number will only be used for verification and will not be shared.
+                      </p>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <div className="mb-6">
+                  <div className="relative group">
+                    <input
+                      type="text"
+                      maxLength={6}
+                      required
+                      autoFocus
+                      value={otp}
+                      onChange={(e) => setOtp(e.target.value.replace(/[^0-9]/g, ''))}
+                      className="w-full px-6 py-4 bg-gray-50 border-2 border-gray-200 rounded-lg outline-none focus:border-[#006d3c] text-center text-3xl font-black text-slate-900 transition-all tracking-[0.5em] shadow-inner"
+                      placeholder="••••••"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setOtpSent(false)}
+                    className="mt-3 text-[#006d3c] text-sm font-semibold hover:underline"
+                  >
+                    Change Phone Number
+                  </button>
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={loading || (!otpSent && phone.length !== 10) || (otpSent && otp.length !== 6)}
+                className="w-full bg-[#0d824d] hover:bg-[#0a6b3f] text-white py-3.5 rounded-lg font-semibold text-lg flex items-center justify-center gap-3 shadow-lg shadow-green-100 transition-all active:scale-[0.98] disabled:opacity-50"
+              >
+                {loading ? (
+                  <Loader2 className="w-6 h-6 animate-spin" />
+                ) : (
+                  <>
+                    {otpSent ? <CheckCircle2 size={20} /> : <Lock size={20} />}
+                    {otpSent ? 'Verify & Connect' : 'Continue'}
+                    <ArrowRight size={20} />
+                  </>
+                )}
+              </button>
             </form>
 
-            <p className="mt-8 text-center text-[11px] text-gray-500 font-medium">
+            <p className="mt-6 text-center text-[11px] text-gray-500 font-medium">
               By logging in, you agree to our <br />
               <a href="#" className="text-[#0d824d] font-semibold underline">Terms of Service</a> and <a href="#" className="text-[#0d824d] font-semibold underline">Privacy Policy.</a>
             </p>
